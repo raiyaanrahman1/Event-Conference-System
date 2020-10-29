@@ -10,4 +10,28 @@ public class Message {
         this.receiver = receiver;
         this.sender = sender;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 }
