@@ -1,11 +1,12 @@
 package Entity;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Attendee extends User{
-    private ArrayList<User> contacts;
-    private ArrayList<Message> receivedMessages;
-    private ArrayList<Message> sentMessages;
-    private ArrayList<Event> eventList;
+    private List<User> contacts;
+    private List<Message> receivedMessages;
+    private List<Message> sentMessages;
+    private List<Event> eventList;
 
     //Attendee Contructor
     public Attendee(String uname, String pword){
@@ -28,7 +29,7 @@ public class Attendee extends User{
 
 
     //contacts Getter
-    public ArrayList<User> getContacts() {
+    public List<User> getContacts() {
         return contacts;
     }
     //Method that appends a contact to contacts
@@ -38,7 +39,7 @@ public class Attendee extends User{
 
 
     //receivedMessages getter
-    public ArrayList<Message> getReceivedMessages() {
+    public List<Message> getReceivedMessages() {
         return receivedMessages;
     }
     //receivedMessages adder
@@ -48,7 +49,7 @@ public class Attendee extends User{
 
 
     //sentMessages getter
-    public ArrayList<Message> getSentMessages() {
+    public List<Message> getSentMessages() {
         return sentMessages;
     }
 
@@ -59,7 +60,7 @@ public class Attendee extends User{
 
 
     //eventList getter
-    public ArrayList<Event> getEventList() {
+    public List<Event> getEventList() {
         return eventList;
     }
     //eventList adder

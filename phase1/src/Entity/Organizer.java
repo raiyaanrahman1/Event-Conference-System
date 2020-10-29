@@ -1,13 +1,14 @@
 package Entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Organizer extends User{
-    private ArrayList<Event> organizedEvents;
-    private ArrayList<User> contacts;
-    private ArrayList<Message> receivedMessages;
-    private ArrayList<Message> sentMessages;
-    private ArrayList<Event> eventList;
+    private List<Event> organizedEvents;
+    private List<User> contacts;
+    private List<Message> receivedMessages;
+    private List<Message> sentMessages;
+    private List<Event> eventList;
 
     public Organizer(String uname, String pword) {
         super(uname, pword);
@@ -29,7 +30,7 @@ public class Organizer extends User{
 
 
     //contacts Getter
-    public ArrayList<User> getContacts() {
+    public List<User> getContacts() {
         return contacts;
     }
     //Method that appends a contact to contacts
@@ -39,7 +40,7 @@ public class Organizer extends User{
 
 
     //receivedMessages getter
-    public ArrayList<Message> getReceivedMessages() {
+    public List<Message> getReceivedMessages() {
         return receivedMessages;
     }
     //receivedMessages adder
@@ -49,7 +50,7 @@ public class Organizer extends User{
 
 
     //sentMessages getter
-    public ArrayList<Message> getSentMessages() {
+    public List<Message> getSentMessages() {
         return sentMessages;
     }
 
@@ -60,7 +61,7 @@ public class Organizer extends User{
 
 
     //eventList getter
-    public ArrayList<Event> getEventList() {
+    public List<Event> getEventList() {
         return eventList;
     }
     //eventList adder
@@ -68,7 +69,7 @@ public class Organizer extends User{
         this.eventList.add(event);
     }
 
-    public ArrayList<Event> getOrganizedEvents() {
+    public List<Event> getOrganizedEvents() {
         return organizedEvents;
     }
     public void addOrganizedEvent(Event event){ this.organizedEvents.add(event); }

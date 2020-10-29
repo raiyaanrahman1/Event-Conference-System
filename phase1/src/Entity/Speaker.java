@@ -1,12 +1,12 @@
 package Entity;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Speaker extends User {
-    private ArrayList<Event> talks;
-    private ArrayList<Message> sentMessages;
-    private ArrayList<Message> receivedMessages;
+    private List<Event> talks;
+    private List<Message> sentMessages;
+    private List<Message> receivedMessages;
 
     public Speaker(String uname, String pword) {
         super(uname, pword);
@@ -24,15 +24,15 @@ public class Speaker extends User {
         return false;
     }
 
-    public ArrayList<Event> getTalks() {
+    public List<Event> getTalks() {
         return talks;
     }
 
-    public ArrayList<Message> getSentMessages() {
+    public List<Message> getSentMessages() {
         return sentMessages;
     }
 
-    public ArrayList<Message> getReceivedMessages() {
+    public List<Message> getReceivedMessages() {
         return receivedMessages;
     }
 
