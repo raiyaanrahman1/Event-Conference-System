@@ -44,7 +44,7 @@ public class Organizer extends User{
         return receivedMessages;
     }
     //receivedMessages adder
-    public void addReceivedMessage(Message receivedMessage) {
+    public void addReceivedMessages(Message receivedMessage) {
         this.receivedMessages.add(receivedMessage);
     }
 
@@ -55,7 +55,7 @@ public class Organizer extends User{
     }
 
     //sentMessages adder
-    public void addSentMessage(Message sentMessage) {
+    public void addSentMessages(Message sentMessage) {
         this.sentMessages.add(sentMessage);
     }
 

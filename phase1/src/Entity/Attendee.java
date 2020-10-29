@@ -64,7 +64,7 @@ public class Attendee extends User{
         return eventList;
     }
     //eventList adder
-    public void addEventList(Event event) {
+    public void addEvent(Event event) {
         this.eventList.add(event);
     }
 

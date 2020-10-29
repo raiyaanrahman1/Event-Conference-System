@@ -63,7 +63,7 @@ public class AttendeeTests {
         Event e = new Event("16:00", "2020.10.29", "100", s);
 
         assertTrue("incorrect eventList list\n", a1.getEventList().isEmpty());
-        a1.addEventList(e);
+        a1.addEvent(e);
         assertEquals("incorrect eventList list\n", 1, a1.getEventList().size());
         assertSame("incorrect eventList list\n", a1.getEventList().get(0), e);
     }
