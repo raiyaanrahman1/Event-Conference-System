@@ -1,10 +1,7 @@
 package entity;
-import java.util;
-import Message;
+import java.util.ArrayList;
 
 public class Attendee extends User{
-    private String username;
-    private String password;
     private ArrayList<User> contacts;
     private ArrayList<Message> receivedMessages;
     private ArrayList<Message> sentMessages;
@@ -19,6 +16,17 @@ public class Attendee extends User{
         this.sentMessages = sentMessages;
         this.eventList = eventList;
     }
+
+    @Override
+    boolean hasBroadcastRights() {
+        return false;
+    }
+
+    @Override
+    boolean hasEventCreatingRights() {
+        return false;
+    }
+
 
     //contacts Getter
     public ArrayList<User> getContacts() {
@@ -59,4 +67,6 @@ public class Attendee extends User{
     public void setEventList(ArrayList<Event> eventList) {
         this.eventList = eventList;
     }
+
+
 }
