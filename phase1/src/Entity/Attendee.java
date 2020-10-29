@@ -8,13 +8,12 @@ public class Attendee extends User{
     private ArrayList<Event> eventList;
 
     //Attendee Contructor
-    public Attendee(String uname, String pword, ArrayList<User> contacts, ArrayList<Message> receivedMessages,
-                    ArrayList<Message> sentMessages, ArrayList<Event> eventList){
+    public Attendee(String uname, String pword){
         super(uname, pword);
-        this.contacts = contacts;
-        this.receivedMessages = receivedMessages;
-        this.sentMessages = sentMessages;
-        this.eventList = eventList;
+        this.contacts = new ArrayList<>();
+        this.receivedMessages = new ArrayList<>();
+        this.sentMessages = new ArrayList<>();
+        this.eventList = new ArrayList<>();
     }
 
     @Override
@@ -42,8 +41,8 @@ public class Attendee extends User{
     public ArrayList<Message> getReceivedMessages() {
         return receivedMessages;
     }
-    //receivedMessages setter
-    public void setReceivedMessages(Message receivedMessage) {
+    //receivedMessages adder
+    public void addReceivedMessages(Message receivedMessage) {
         this.receivedMessages.add(receivedMessage);
     }
 
@@ -53,8 +52,8 @@ public class Attendee extends User{
         return sentMessages;
     }
 
-    //sentMessages setter
-    public void setSentMessages(Message sentMessage) {
+    //sentMessages adder
+    public void addSentMessages(Message sentMessage) {
         this.sentMessages.add(sentMessage);
     }
 
@@ -63,8 +62,8 @@ public class Attendee extends User{
     public ArrayList<Event> getEventList() {
         return eventList;
     }
-    //eventList setter
-    public void setEventList(Event event) {
+    //eventList adder
+    public void addEventList(Event event) {
         this.eventList.add(event);
     }
 
