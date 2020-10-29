@@ -1,4 +1,4 @@
-package entity;
+package Entity;
 import java.util.ArrayList;
 
 public class Attendee extends User{
