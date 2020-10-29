@@ -43,7 +43,7 @@ public class Organizer extends User{
     public List<Message> getReceivedMessages() {
         return receivedMessages;
     }
-    //receivedMessages adder
+    //Method that appends a message to receivedMessages
     public void addReceivedMessages(Message receivedMessage) {
         this.receivedMessages.add(receivedMessage);
     }
@@ -53,8 +53,7 @@ public class Organizer extends User{
     public List<Message> getSentMessages() {
         return sentMessages;
     }
-
-    //sentMessages adder
+    //Method that appends a message to sentMessages
     public void addSentMessages(Message sentMessage) {
         this.sentMessages.add(sentMessage);
     }
@@ -64,14 +63,17 @@ public class Organizer extends User{
     public List<Event> getEventList() {
         return eventList;
     }
-    //eventList adder
+    //Method that appends an event to eventList
     public void addEvent(Event event) {
         this.eventList.add(event);
     }
 
+
+    //organizedEvents list getter
     public List<Event> getOrganizedEvents() {
         return organizedEvents;
     }
+    //Method that appends an event to organizedEvent
     public void addOrganizedEvent(Event event){ this.organizedEvents.add(event); }
 
 }

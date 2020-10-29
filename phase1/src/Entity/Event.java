@@ -18,44 +18,49 @@ public class Event {
         this.speaker = speaker;
         this.attendees = new ArrayList<>();
     }
-
+    //getter for attendees list
     public List<Attendee> getAttendees() {
         return attendees;
     }
+    //appending an attendee to attendees
+    public void addAttendee(Attendee attendee){
+        this.attendees.add(attendee);
+    }
 
+    //getter for time
     public String getTime() {
         return time;
     }
-
-    public String getDate() {
-        return date;
-    }
-
-    public String getRoom() {
-        return room;
-    }
-
-    public Speaker getSpeaker() {
-        return speaker;
-    }
-
+    //setter for time
     public void setTime(String time) {
         this.time = time;
     }
 
+    //getter for date
+    public String getDate() {
+        return date;
+    }
+    //setter for date
     public void setDate(String date) {
         this.date = date;
     }
 
+    //getter for room
+    public String getRoom() {
+        return room;
+    }
+    //setter for room
     public void setRoom(String room) {
         this.room = room;
     }
 
+    //getter for speaker
+    public Speaker getSpeaker() {
+        return speaker;
+    }
+    //setter for speaker
     public void setSpeaker(Speaker speaker) {
         this.speaker = speaker;
     }
 
-    public void addAttendee(Attendee attendee){
-        this.attendees.add(attendee);
-    }
 }

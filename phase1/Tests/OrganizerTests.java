@@ -13,7 +13,7 @@ public class OrganizerTests {
 
     // test Organizer broadcast rights and event creating rights
     @Test(timeout = 50)
-    public void testhasBroadcastAndEventCreatingRights() {
+    public void testHasBroadcastAndEventCreatingRights() {
         Organizer o1 = new Organizer("organizer1", "1");
 
         assertTrue("incorrect Broadcast rights\n", o1.hasBroadcastRights());

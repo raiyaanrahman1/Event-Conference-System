@@ -8,6 +8,7 @@ public class Speaker extends User {
     private List<Message> sentMessages;
     private List<Message> receivedMessages;
 
+    //Speaker constructor
     public Speaker(String uname, String pword) {
         super(uname, pword);
         this.talks = new ArrayList<>();
@@ -24,26 +25,27 @@ public class Speaker extends User {
         return false;
     }
 
+    //getter for talks list
     public List<Event> getTalks() {
         return talks;
-    }
-
-    public List<Message> getSentMessages() {
-        return sentMessages;
-    }
-
-    public List<Message> getReceivedMessages() {
-        return receivedMessages;
-    }
-
+    }//appending an event to the talk list
     public void addTalk(Event talk){
         talks.add(talk);
     }
 
-    public void addSentMessage(Message message){
+    //getter for sentMessages
+    public List<Message> getSentMessages() {
+        return sentMessages;
+    }//appending a messages to sentMessages
+    public void addSentMessages(Message message){
         sentMessages.add(message);
     }
 
+    //getter for receivedMessages
+    public List<Message> getReceivedMessages() {
+        return receivedMessages;
+    }
+    //appending a message to the receivedMessages
     public void addReceivedMessages(Message message){
         receivedMessages.add(message);
     }

@@ -10,28 +10,31 @@ public class Message {
         this.receiver = receiver;
         this.sender = sender;
     }
-
+    //getter for content
     public String getContent() {
         return content;
     }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
+    //setter for content
     public void setContent(String content) {
         this.content = content;
     }
 
+    //getter for receiver
+    public String getReceiver() {
+        return receiver;
+    }
+    //setter for receiver
     public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
+    //getter for sender
+    public String getSender() {
+        return sender;
+    }
+    //setter for sender
     public void setSender(String sender) {
         this.sender = sender;
     }
+
 }
