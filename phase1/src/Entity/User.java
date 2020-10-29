@@ -7,8 +7,8 @@ public abstract class User {
         this.username = uname;
         this.password = pword;
     }
-    abstract boolean hasBroadcastRights();
-    abstract boolean hasEventCreatingRights();
+    public abstract boolean hasBroadcastRights();
+    public abstract boolean hasEventCreatingRights();
 
     public String getUsername() {
         return username;

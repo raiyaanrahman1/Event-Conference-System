@@ -18,12 +18,12 @@ public class Attendee extends User{
     }
 
     @Override
-    boolean hasBroadcastRights() {
+    public boolean hasBroadcastRights() {
         return false;
     }
 
     @Override
-    boolean hasEventCreatingRights() {
+    public boolean hasEventCreatingRights() {
         return false;
     }
 

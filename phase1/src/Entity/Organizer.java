@@ -19,12 +19,12 @@ public class Organizer extends User{
         this.eventList = new ArrayList<>();
     }
     @Override
-    boolean hasBroadcastRights() {
+    public boolean hasBroadcastRights() {
         return true;
     }
 
     @Override
-    boolean hasEventCreatingRights() {
+    public boolean hasEventCreatingRights() {
         return true;
     }
 

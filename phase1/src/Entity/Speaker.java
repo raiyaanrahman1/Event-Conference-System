@@ -15,12 +15,12 @@ public class Speaker extends User {
         this.receivedMessages = new ArrayList<>();
     }
     @Override
-    boolean hasBroadcastRights() {
+    public boolean hasBroadcastRights() {
         return true;
     }
 
     @Override
-    boolean hasEventCreatingRights() {
+    public boolean hasEventCreatingRights() {
         return false;
     }
 
