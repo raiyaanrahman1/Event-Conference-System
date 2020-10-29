@@ -4,8 +4,8 @@ public abstract class User {
     private String username;
     private String password;
     public User(String uname, String pword){
-        username = uname;
-        password = pword;
+        this.username = uname;
+        this.password = pword;
     }
     abstract boolean hasBroadcastRights();
     abstract boolean hasEventCreatingRights();
