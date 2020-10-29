@@ -43,8 +43,8 @@ public class Attendee extends User{
         return receivedMessages;
     }
     //receivedMessages setter
-    public void setReceivedMessages(ArrayList<Message> receivedMessages) {
-        this.receivedMessages = receivedMessages;
+    public void setReceivedMessages(Message receivedMessage) {
+        this.receivedMessages.add(receivedMessage);
     }
 
 
@@ -54,8 +54,8 @@ public class Attendee extends User{
     }
 
     //sentMessages setter
-    public void setSentMessages(ArrayList<Message> sentMessages) {
-        this.sentMessages = sentMessages;
+    public void setSentMessages(Message sentMessage) {
+        this.sentMessages.add(sentMessage);
     }
 
 
@@ -64,8 +64,8 @@ public class Attendee extends User{
         return eventList;
     }
     //eventList setter
-    public void setEventList(ArrayList<Event> eventList) {
-        this.eventList = eventList;
+    public void setEventList(Event event) {
+        this.eventList.add(event);
     }
 
 
