@@ -6,8 +6,8 @@ import java.util.SplittableRandom;
 
 public class Event {
     private List<Attendee> attendees;
-    private String time;
-    private String date;
+    private String time; // 24 hour clock time between 09:00 and 17:00
+    private String date; // mm/dd/yy
     private String room;
     private Speaker speaker; //perhaps more than one speaker in phase 2
 
