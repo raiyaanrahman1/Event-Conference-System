@@ -1,9 +1,9 @@
-package entity.entity;
+package entity;
 
-public abstract class user {
+public abstract class User {
     private String username;
     private String password;
-    public user(String uname, String pword){
+    public User(String uname, String pword){
         username = uname;
         password = pword;
     }
@@ -26,3 +26,4 @@ public abstract class user {
         this.password = password;
     }
 }
+
