@@ -80,7 +80,7 @@ public class Attendee extends User {
      *
      * @param receivedMessage  the new message in this attendee's inbox
      */
-    public void addReceivedMessage(Message receivedMessage) {
+    public void addReceivedMessages(Message receivedMessage) {
         this.receivedMessages.add(receivedMessage);
     }
 
@@ -98,7 +98,7 @@ public class Attendee extends User {
      *
      * @param sentMessage  the new message sent by this user
      */
-    public void addSentMessage(Message sentMessage) {
+    public void addSentMessages(Message sentMessage) {
         this.sentMessages.add(sentMessage);
     }
 

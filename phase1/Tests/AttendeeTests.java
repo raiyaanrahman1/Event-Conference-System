@@ -40,7 +40,7 @@ public class AttendeeTests {
         Message m = new Message("Hello", "attendee2", "attendee1");
 
         assertTrue("incorrect sentMessages list\n", a1.getSentMessages().isEmpty());
-        a1.addSentMessage(m);
+        a1.addSentMessages(m);
         assertEquals("incorrect sentMessages list\n", 1, a1.getSentMessages().size());
         assertSame("incorrect sentMessages list\n", a1.getSentMessages().get(0), m);
     }
@@ -51,7 +51,7 @@ public class AttendeeTests {
         Message m = new Message("Hello", "attendee1", "attendee2");
 
         assertTrue("incorrect receivedMessages list\n", a1.getReceivedMessages().isEmpty());
-        a1.addReceivedMessage(m);
+        a1.addReceivedMessages(m);
         assertEquals("incorrect receivedMessages list\n", 1, a1.getReceivedMessages().size());
         assertSame("incorrect receivedMessages list\n", a1.getReceivedMessages().get(0), m);
     }
