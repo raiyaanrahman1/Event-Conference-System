@@ -1,11 +1,6 @@
-import Entity.Attendee;
-import Entity.Event;
 import Entity.Message;
-import Entity.User;
 import org.junit.*;
-import static org.junit.Assert.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class MessageTests {
 

@@ -7,8 +7,6 @@ import java.util.List;
  */
 public class Attendee extends User {
     private List<User> contacts;
-    private List<Message> receivedMessages;
-    private List<Message> sentMessages;
     private List<Event> eventList;
 
     /**
@@ -20,8 +18,6 @@ public class Attendee extends User {
     public Attendee(String uname, String pword){
         super(uname, pword);
         this.contacts = new ArrayList<>();
-        this.receivedMessages = new ArrayList<>();
-        this.sentMessages = new ArrayList<>();
         this.eventList = new ArrayList<>();
     }
 
@@ -51,7 +47,7 @@ public class Attendee extends User {
     /**
      * Returns this attendee's contacts.
      *
-     * @return  the attende's contact list
+     * @return  the attendee's contact list
      */
     public List<User> getContacts() {
         return contacts;
@@ -64,42 +60,6 @@ public class Attendee extends User {
      */
     public void addContact(User user) {
         this.contacts.add(user);
-    }
-
-    /**
-     * Returns the messages received by this attendee.
-     *
-     * @return  the list of received messages
-     */
-    public List<Message> getReceivedMessages() {
-        return receivedMessages;
-    }
-
-    /**
-     * Adds a new message to this attendee's received messages.
-     *
-     * @param receivedMessage  the new message in this attendee's inbox
-     */
-    public void addReceivedMessages(Message receivedMessage) {
-        this.receivedMessages.add(receivedMessage);
-    }
-
-    /**
-     * Returns all messages sent by this attendee.
-     *
-     * @return  the list of messages sent by this attendee
-     */
-    public List<Message> getSentMessages() {
-        return sentMessages;
-    }
-
-    /**
-     * Adds new message sent by this attendee.
-     *
-     * @param sentMessage  the new message sent by this user
-     */
-    public void addSentMessages(Message sentMessage) {
-        this.sentMessages.add(sentMessage);
     }
 
     /**
@@ -119,6 +79,5 @@ public class Attendee extends User {
     public void addEvent(Event event) {
         this.eventList.add(event);
     }
-
 
 }
