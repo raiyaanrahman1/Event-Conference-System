@@ -39,7 +39,7 @@ public class OrganizerTests {
         Message m = new Message("Hello", "organizer2", "organizer1");
 
         assertTrue("incorrect sentMessages list\n", o1.getSentMessages().isEmpty());
-        o1.addSentMessages(m);
+        o1.addSentMessage(m);
         assertEquals("incorrect sentMessages list\n", 1, o1.getSentMessages().size());
         assertSame("incorrect sentMessages list\n", o1.getSentMessages().get(0), m);
     }
@@ -50,7 +50,7 @@ public class OrganizerTests {
         Message m = new Message("Hello", "organizer1", "organizer2");
 
         assertTrue("incorrect receivedMessages list\n", o1.getReceivedMessages().isEmpty());
-        o1.addReceivedMessages(m);
+        o1.addReceivedMessage(m);
         assertEquals("incorrect receivedMessages list\n", 1, o1.getReceivedMessages().size());
         assertSame("incorrect receivedMessages list\n", o1.getReceivedMessages().get(0), m);
     }
