@@ -1,9 +1,8 @@
 import Entity.*;
-import UseCase.MessageManager;
-import com.sun.org.apache.xpath.internal.operations.Or;
-import org.junit.*;
-import java.util.List;
 import static org.junit.Assert.*;
+import org.junit.*;
+import UseCase.MessageManager;
+import java.util.List;
 
 public class MessageManagerTests {
 

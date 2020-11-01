@@ -1,4 +1,5 @@
-import Entity.*;
+import Entity.Event;
+import Entity.Speaker;
 import org.junit.*;
 import static org.junit.Assert.*;
 

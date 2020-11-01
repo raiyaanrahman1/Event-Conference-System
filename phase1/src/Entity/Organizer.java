@@ -3,7 +3,7 @@ package Entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Organizer extends User{
+public class Organizer extends Attendee{
     private List<Event> organizedEvents;
     private List<User> contacts;
     private List<Event> eventList;
