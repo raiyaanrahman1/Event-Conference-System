@@ -66,14 +66,13 @@ public class AttendeeSignUp {
      * @param pword the Speaker's password
      * @return the speaker account that was created, to be stored in AttendeeManager.
      */
-    public boolean createSpeakerAccount(String uname,
+    public Speaker createSpeakerAccount(String uname,
                                         String pword){
         if (attendee.hasBroadcastRights() && attendee.hasEventCreatingRights()){
-            Speaker speaker = new Speaker(uname, pword);
-            // Should we return the speaker and pass it somewhere to be stored?
-            return true;
+            return new Speaker(uname, pword);
         }
-        return false;
+        // should throw an exception that we haven't coded yet
+        return null;
     }
 
     public Attendee getCurrentUser() {
