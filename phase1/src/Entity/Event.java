@@ -1,4 +1,4 @@
-package EntityTests;
+package Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ public class Event {
     private String date; // mm/dd/yy
     private String room;
     private Speaker speaker; //perhaps more than one speaker in phase 2
+
 
     public Event(String time, String date, String room, Speaker speaker) {
         this.time = time;
