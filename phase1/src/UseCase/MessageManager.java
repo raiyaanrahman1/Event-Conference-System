@@ -1,9 +1,9 @@
 package UseCase;
 
-import EntityTests.Message;
-import EntityTests.Event;
-import EntityTests.User;
-import EntityTests.Attendee;
+import Entity.Message;
+import Entity.Event;
+import Entity.User;
+import Entity.Attendee;
 
 import java.util.List;
 import java.util.ArrayList;

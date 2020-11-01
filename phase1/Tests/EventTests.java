@@ -1,4 +1,5 @@
-package EntityTests;
+import Entity.Event;
+import Entity.Speaker;
 import org.junit.*;
 import static org.junit.Assert.*;
 

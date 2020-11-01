@@ -1,5 +1,4 @@
-package UseCaseTests;
-import EntityTests.*;
+import Entity.*;
 import UseCase.AttendeeSignUp;
 import org.junit.*;
 import static org.junit.Assert.*;

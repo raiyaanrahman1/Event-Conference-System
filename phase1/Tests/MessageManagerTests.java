@@ -1,5 +1,4 @@
-package UseCaseTests;
-import EntityTests.*;
+import Entity.*;
 import static org.junit.Assert.*;
 import org.junit.*;
 import UseCase.MessageManager;
