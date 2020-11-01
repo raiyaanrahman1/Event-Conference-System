@@ -39,20 +39,34 @@ public class EventScheduler {
         return false;
     }
 
-    public ArrayList<Event> getAllowedEvents(){
-        ArrayList<Event> allowedEvents = new ArrayList<>();
+    public List<Integer> getAllowedEvents(){
+        List<Integer> allowedEvents = new ArrayList<>();
         for(Event e : events){
             if(!e.getAttendees().contains(user)){
-                allowedEvents.add(e);
+                allowedEvents.add(e.getEventID());
             }
         }
         return allowedEvents;
     }
 
-    public List<Event> getUserEvents(){
-        return user.getEventList();
+    public List<Integer> getUserEvents(){
+        List<Event> eventList = user.getEventList();
+        List<Integer> eventIDList = new ArrayList<>();
+        for (Event e: eventList){
+            eventIDList.add(e.getEventID());
+        }
+        return eventIDList;
     }
 
+    public Event getEventByID(int ID){
+        for (Event e: events){
+            if (e.getEventID() == ID){
+                return e;
+            }
+        }
+        // throws an exception that we haven't coded yet
+        return null;
+    }
 
 
 
