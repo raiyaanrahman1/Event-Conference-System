@@ -28,7 +28,7 @@ public class SpeakerTests {
         Message m = new Message("Hello", "Speaker2", "Speaker1");
 
         assertTrue("incorrect sentMessages list\n", s1.getSentMessages().isEmpty());
-        s1.addSentMessages(m);
+        s1.addSentMessage(m);
         assertEquals("incorrect sentMessages list\n", 1, s1.getSentMessages().size());
         assertSame("incorrect sentMessages list\n", s1.getSentMessages().get(0), m);
     }
@@ -39,7 +39,7 @@ public class SpeakerTests {
         Message m = new Message("Hello", "speaker1", "speaker2");
 
         assertTrue("incorrect receivedMessages list\n", s1.getReceivedMessages().isEmpty());
-        s1.addReceivedMessages(m);
+        s1.addReceivedMessage(m);
         assertEquals("incorrect receivedMessages list\n", 1, s1.getReceivedMessages().size());
         assertSame("incorrect receivedMessages list\n", s1.getReceivedMessages().get(0), m);
     }
