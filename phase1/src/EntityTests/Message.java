@@ -1,4 +1,4 @@
-package Entity;
+package EntityTests;
 
 public class Message {
     private String content;

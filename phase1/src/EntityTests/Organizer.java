@@ -1,4 +1,4 @@
-package Entity;
+package EntityTests;
 
 import java.util.ArrayList;
 import java.util.List;

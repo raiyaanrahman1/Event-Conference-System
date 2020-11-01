@@ -1,6 +1,6 @@
-import Entity.*;
+package UseCaseTests;
+import EntityTests.*;
 import UseCase.MessageManager;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.junit.*;
 import java.util.List;
 import static org.junit.Assert.*;

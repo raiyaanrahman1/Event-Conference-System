@@ -1,4 +1,4 @@
-import Entity.Message;
+package EntityTests;
 import org.junit.*;
 
 
