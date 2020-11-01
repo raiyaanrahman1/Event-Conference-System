@@ -40,7 +40,7 @@ public class AttendeeTests {
     @Test(timeout = 50)
     public void testSentMessagesList() {
         Attendee a1 = new Attendee("attendee1", "1");
-        Message m = new Message("Hello", "attendee2", "attendee1");
+        Message m = new Message("Hello", "attendee2", "attendee1", "11.01.2020", "13:00");
 
         assertTrue("incorrect sentMessages list\n", a1.getSentMessages().isEmpty());
         a1.addSentMessage(m);
@@ -51,7 +51,7 @@ public class AttendeeTests {
     @Test(timeout = 50)
     public void testReceivedMessagesList() {
         Attendee a1 = new Attendee("attendee1", "1");
-        Message m = new Message("Hello", "attendee1", "attendee2");
+        Message m = new Message("Hello", "attendee1", "attendee2", "11.01.2020", "13:00");
 
         assertTrue("incorrect receivedMessages list\n", a1.getReceivedMessages().isEmpty());
         a1.addReceivedMessage(m);
@@ -63,7 +63,7 @@ public class AttendeeTests {
     public void testEventList() {
         Attendee a1 = new Attendee("attendee1", "1");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s);
+        Event e = new Event("16:00", "2020.10.29", "100", s, 2);
 
         assertTrue("incorrect eventList list\n", a1.getEventList().isEmpty());
         a1.addEvent(e);

@@ -10,16 +10,17 @@ public class Event {
     private String date; // mm/dd/yy
     private String room;
     private Speaker speaker; //perhaps more than one speaker in phase 2
+    private int roomCap;
     private int eventID;
     private static int idCounter = 0;
 
-
-    public Event(String time, String date, String room, Speaker speaker) {
+    public Event(String time, String date, String room, Speaker speaker, int roomCap) {
         this.time = time;
         this.date = date;
         this.room = room;
         this.speaker = speaker;
         this.attendees = new ArrayList<>();
+        this.roomCap = roomCap;
         eventID = idCounter;
         idCounter ++;
 
@@ -71,5 +72,9 @@ public class Event {
 
     public int getEventID() {
         return eventID;
+    }
+
+    public int getRoomCap() {
+        return roomCap;
     }
 }

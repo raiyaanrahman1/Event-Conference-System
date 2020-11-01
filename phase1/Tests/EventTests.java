@@ -12,7 +12,7 @@ public class EventTests {
         String date = "01/01/20";
         String room = "a";
         Speaker speaker = new Speaker("username1","password");
-        Event event = new Event(time, date, room, speaker);
+        Event event = new Event(time, date, room, speaker, 2);
 
     }
 
@@ -22,7 +22,7 @@ public class EventTests {
         String date = "01/01/20";
         String room = "a";
         Speaker speaker = new Speaker("username1","password");
-        Event event = new Event(time, date, room, speaker);
+        Event event = new Event(time, date, room, speaker, 2);
         assertEquals(event.getDate(), date);
         assertEquals(event.getTime(), time);
         assertEquals(event.getRoom(), room);
@@ -31,7 +31,7 @@ public class EventTests {
 
     @Test(timeout = 50)
     public void  testEventSetters()   {
-        Event event = new Event("",  "",  "", new Speaker("",""));
+        Event event = new Event("",  "",  "", new Speaker("",""), 2);
         String time = "10:00";
         String date = "02/01/20";
         String room = "b";

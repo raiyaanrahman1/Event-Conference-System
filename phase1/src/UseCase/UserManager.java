@@ -56,9 +56,9 @@ public class UserManager{
     }
 
     // MessageManager Functionality
-    public boolean broadcast(String user, int eventID, String message){
+    public boolean broadcast(String user, int eventID, String message, String date, String time){
         return messageManager.broadcast(getUserByUsername(user),
-                eventScheduler.getEventByID(eventID), message);
+                eventScheduler.getEventByID(eventID), message, date, time);
     }
 
     public List<String> getMessages(String sender, String receiver) {
