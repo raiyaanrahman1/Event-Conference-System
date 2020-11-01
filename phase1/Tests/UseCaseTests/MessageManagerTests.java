@@ -1,9 +1,9 @@
 package UseCaseTests;
 import EntityTests.*;
-import UseCase.MessageManager;
-import org.junit.*;
-import java.util.List;
 import static org.junit.Assert.*;
+import org.junit.*;
+import UseCase.MessageManager;
+import java.util.List;
 
 public class MessageManagerTests {
 
