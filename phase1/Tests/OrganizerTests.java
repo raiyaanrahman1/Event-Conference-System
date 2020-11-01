@@ -62,7 +62,7 @@ public class OrganizerTests {
     public void testEventList() {
         Organizer o1 = new Organizer("organizer1", "1");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s, 2);
+        Event e = new Event("EventA", "16:00", "2020.10.29", "100", s, 2);
 
         assertTrue("incorrect eventList list\n", o1.getEventList().isEmpty());
         o1.addEvent(e);
@@ -74,7 +74,7 @@ public class OrganizerTests {
     public  void testOrganizedEvents() {
         Organizer o1 = new Organizer("organizer1", "1");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s, 2);
+        Event e = new Event("EventA", "16:00", "2020.10.29", "100", s, 2);
 
         assertTrue("incorrect organizedEvents list\n", o1.getOrganizedEvents().isEmpty());
         o1.addOrganizedEvent(e);

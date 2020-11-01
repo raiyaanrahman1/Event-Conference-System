@@ -29,7 +29,7 @@ public class MessageManagerTests {
         Attendee uDavid = new Attendee("david", "1234");
         Attendee uMark = new Attendee("david", "1234");
 
-        Event event = new Event("", "", "", uJill, 2);
+        Event event = new Event("EventA", "", "", "", uJill, 2);
 
         messageManager.broadcast(uJill, event, message,"11.01.2020", "13:00");
 

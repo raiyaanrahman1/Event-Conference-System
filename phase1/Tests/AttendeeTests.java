@@ -63,7 +63,7 @@ public class AttendeeTests {
     public void testEventList() {
         Attendee a1 = new Attendee("attendee1", "1");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s, 2);
+        Event e = new Event("EventA", "16:00", "2020.10.29", "100", s, 2);
 
         assertTrue("incorrect eventList list\n", a1.getEventList().isEmpty());
         a1.addEvent(e);

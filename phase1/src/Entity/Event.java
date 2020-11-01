@@ -13,8 +13,15 @@ public class Event {
     private int roomCap;
     private int eventID;
     private static int idCounter = 0;
+    private String name;
 
-    public Event(String time, String date, String room, Speaker speaker, int roomCap) {
+    @Override
+    public String toString() {
+        return  name + " at " + time + " PM " + date + " in room " + room + ". Speaker: " + speaker;
+    }
+
+    public Event(String name, String time, String date, String room, Speaker speaker, int roomCap) {
+        this.name = name;
         this.time = time;
         this.date = date;
         this.room = room;

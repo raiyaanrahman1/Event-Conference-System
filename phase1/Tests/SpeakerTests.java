@@ -49,7 +49,7 @@ public class SpeakerTests {
     @Test(timeout = 50)
     public void testTalks() {
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s,2);
+        Event e = new Event("a", "16:00", "2020.10.29", "100", s,2);
 
         assertTrue("incorrect eventList list\n", s.getTalks().isEmpty());
         s.addTalk(e);
