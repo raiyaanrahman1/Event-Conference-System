@@ -1,9 +1,9 @@
 package UseCase;
 
-import EntityTests.Message;
-import EntityTests.Event;
-import EntityTests.User;
-import EntityTests.Attendee;
+import Entity.Message;
+import Entity.Event;
+import Entity.User;
+import Entity.Attendee;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -34,11 +34,17 @@ public class MessageManager {
      * @param event  the event where the message is broadcast
      * @param message  the content of the message
      */
-    public void broadcast(User sender, Event event, String message) {
-        List<Attendee> attendees = event.getAttendees();
+    public boolean broadcast(User sender, Event event, String message) {
+        if (sender.hasBroadcastRights()) {
+            List<Attendee> attendees = event.getAttendees();
 
-        for (User attendee: attendees) {
-            this.message(sender, attendee, message);
+            for (User attendee: attendees) {
+                this.message(sender, attendee, message);
+            }
+
+            return true;
+        } else {
+            return false;
         }
     }
 
