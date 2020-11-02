@@ -3,7 +3,6 @@ package UseCase;
 import Entity.Message;
 import Entity.Event;
 import Entity.User;
-import Entity.Attendee;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -36,9 +35,7 @@ public class MessageManager {
      */
     public boolean broadcast(User sender, Event event, String message) {
         if (sender.hasBroadcastRights()) {
-            List<Attendee> attendees = event.getAttendees();
-
-            for (User attendee: attendees) {
+            for (User attendee: event.getAttendees()) {
                 this.message(sender, attendee, message);
             }
 
