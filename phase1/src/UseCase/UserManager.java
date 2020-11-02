@@ -1,6 +1,7 @@
 package UseCase;
 import Entity.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserManager{
@@ -64,6 +65,10 @@ public class UserManager{
     public List<String> getMessages(String sender, String receiver) {
         return messageManager.getMessages(getUserByUsername(sender),
                 getUserByUsername(receiver));
+    }
+
+    public List<String> getContactList(){
+        return attendeeSignUp.getContactList();
     }
 }
 

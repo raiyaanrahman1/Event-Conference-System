@@ -38,7 +38,8 @@ public class AttendeeSignUp {
     public boolean signUpForEvent(Event event){
         // check if Attendee is attending a talk scheduled at the same time but in a different room
         if (!conflictingTime(event, attendee.getEventList()) &&
-                event.getAttendees().size() + 1 <= 2){
+                event.getAttendees().size() + 1 <= 2 &&
+                !attendee.getEventList().contains(event)){
             attendee.addEvent(event);
             return true;
         } else {
@@ -77,5 +78,14 @@ public class AttendeeSignUp {
 
     public Attendee getCurrentUser() {
         return attendee;
+    }
+
+    public List<String> getContactList(){
+        List<User> users = attendee.getContacts();
+        List<String> userList = new ArrayList<>();
+        for (User u : users){
+            userList.add(u.getUsername());
+        }
+        return userList;
     }
 }
