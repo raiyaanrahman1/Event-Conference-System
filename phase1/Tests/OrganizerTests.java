@@ -39,7 +39,7 @@ public class OrganizerTests {
     @Test(timeout = 50)
     public void testSentMessagesList() {
         Organizer o1 = new Organizer("organizer1", "1");
-        Message m = new Message("Hello", "organizer2", "organizer1");
+        Message m = new Message("Hello", "organizer2", "organizer1", "11.01.2020", "13:00");
 
         assertTrue("incorrect sentMessages list\n", o1.getSentMessages().isEmpty());
         o1.addSentMessage(m);
@@ -50,7 +50,7 @@ public class OrganizerTests {
     @Test(timeout = 50)
     public void testReceivedMessagesList() {
         Organizer o1 = new Organizer("organizer1", "1");
-        Message m = new Message("Hello", "organizer1", "organizer2");
+        Message m = new Message("Hello", "organizer1", "organizer2", "11.01.2020", "13:00");
 
         assertTrue("incorrect receivedMessages list\n", o1.getReceivedMessages().isEmpty());
         o1.addReceivedMessage(m);
@@ -62,7 +62,7 @@ public class OrganizerTests {
     public void testEventList() {
         Organizer o1 = new Organizer("organizer1", "1");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s);
+        Event e = new Event("EventA", "16:00", "2020.10.29", "100", s, 2);
 
         assertTrue("incorrect eventList list\n", o1.getEventList().isEmpty());
         o1.addEvent(e);
@@ -74,7 +74,7 @@ public class OrganizerTests {
     public  void testOrganizedEvents() {
         Organizer o1 = new Organizer("organizer1", "1");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s);
+        Event e = new Event("EventA", "16:00", "2020.10.29", "100", s, 2);
 
         assertTrue("incorrect organizedEvents list\n", o1.getOrganizedEvents().isEmpty());
         o1.addOrganizedEvent(e);

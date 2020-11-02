@@ -1,14 +1,20 @@
 package Entity;
 
+import com.sun.javafx.webkit.UtilitiesImpl;
+
 public class Message {
     private String content;
     private String receiver; //username of receiver
     private String sender;  //username of sender
+    private String date;
+    private String time;
 
-    public Message(String content, String receiver, String sender) {
+    public Message(String content, String receiver, String sender, String date, String time) {
         this.content = content;
         this.receiver = receiver;
         this.sender = sender;
+        this.date = date;
+        this.time = time;
     }
     //getter for content
     public String getContent() {

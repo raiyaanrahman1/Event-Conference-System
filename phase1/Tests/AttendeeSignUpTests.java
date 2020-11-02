@@ -20,7 +20,7 @@ public class AttendeeSignUpTests {
         // passable conditions + testing for EventList mutation
         Attendee a = new Attendee("attendee1", "666");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s);
+        Event e = new Event("EventA", "16:00", "2020.10.29", "100", s, 2);
 
         AttendeeSignUp aa = new AttendeeSignUp(a);
         aa.signUpForEvent(e);
@@ -35,7 +35,7 @@ public class AttendeeSignUpTests {
         Attendee a2 = new Attendee("attendee2", "666");
         Attendee a3 = new Attendee("attendee3", "666");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s);
+        Event e = new Event("EventA", "16:00", "2020.10.29", "100", s,2);
 
         AttendeeSignUp aa1 = new AttendeeSignUp(a1);
         aa1.signUpForEvent(e);
@@ -53,8 +53,8 @@ public class AttendeeSignUpTests {
         Attendee a = new Attendee("attendee1", "666");
         Speaker s1 = new Speaker("Barack Obama", "1");
         Speaker s2 = new Speaker("Barack Obama Clone", "1");
-        Event e1 = new Event("16:00", "2020.10.29", "100", s1);
-        Event e2 = new Event("16:00", "2020.10.29", "100", s2);
+        Event e1 = new Event("EventA", "16:00", "2020.10.29", "100", s1,2);
+        Event e2 = new Event("EventA", "16:00", "2020.10.29", "100", s2,2);
 
         AttendeeSignUp aa = new AttendeeSignUp(a);
         aa.signUpForEvent(e1);
@@ -67,7 +67,7 @@ public class AttendeeSignUpTests {
         // passable conditions + testing for EventList mutation
         Attendee a = new Attendee("attendee1", "666");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s);
+        Event e = new Event("EventA", "16:00", "2020.10.29", "100", s,2);
 
         AttendeeSignUp aa = new AttendeeSignUp(a);
         aa.signUpForEvent(e);
@@ -81,7 +81,7 @@ public class AttendeeSignUpTests {
         // Tests cancelSpot() when Attendee is not signed up for that event
         Attendee a = new Attendee("attendee1", "666");
         Speaker s = new Speaker("Barack Obama", "1");
-        Event e = new Event("16:00", "2020.10.29", "100", s);
+        Event e = new Event("EventA", "16:00", "2020.10.29", "100", s,2);
 
         AttendeeSignUp aa = new AttendeeSignUp(a);
         assertFalse("This Attendee is not attending this event!\n", aa.cancelSpot(e));

@@ -2,6 +2,7 @@ package Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SplittableRandom;
 
 public class Event {
     private List<Attendee> attendees;
@@ -9,13 +10,27 @@ public class Event {
     private String date; // mm/dd/yy
     private String room;
     private Speaker speaker; //perhaps more than one speaker in phase 2
+    private int roomCap;
+    private int eventID;
+    private static int idCounter = 0;
+    private String name;
 
-    public Event(String time, String date, String room, Speaker speaker) {
+    @Override
+    public String toString() {
+        return  name + " at " + time + " PM " + date + " in room " + room + ". Speaker: " + speaker;
+    }
+
+    public Event(String name, String time, String date, String room, Speaker speaker, int roomCap) {
+        this.name = name;
         this.time = time;
         this.date = date;
         this.room = room;
         this.speaker = speaker;
         this.attendees = new ArrayList<>();
+        this.roomCap = roomCap;
+        eventID = idCounter;
+        idCounter ++;
+
     }
     //getter for attendees list
     public List<Attendee> getAttendees() {
@@ -62,4 +77,11 @@ public class Event {
         this.speaker = speaker;
     }
 
+    public int getEventID() {
+        return eventID;
+    }
+
+    public int getRoomCap() {
+        return roomCap;
+    }
 }

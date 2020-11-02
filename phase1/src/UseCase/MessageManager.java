@@ -19,9 +19,11 @@ public class MessageManager {
      * @param sender  the user that sent the message
      * @param receiver  the user that is to receive the message
      * @param message  the content of the message
+     * @param date the date of the message
+     * @param time the time that the message is sent
      */
-    public void message(User sender, User receiver, String message) {
-        Message newMessage = new Message(message, receiver.getUsername(), sender.getUsername());
+    public void message(User sender, User receiver, String message, String date, String time) {
+        Message newMessage = new Message(message, receiver.getUsername(), sender.getUsername(), date, time);
         receiver.addReceivedMessage(newMessage);
         receiver.addSentMessage(newMessage);
     }
@@ -32,11 +34,13 @@ public class MessageManager {
      * @param sender  the user that broadcasts the message
      * @param event  the event where the message is broadcast
      * @param message  the content of the message
+     * @param date the date of the message
+     * @param time the time that the message is sent
      */
-    public boolean broadcast(User sender, Event event, String message) {
+    public boolean broadcast(User sender, Event event, String message, String date, String time) {
         if (sender.hasBroadcastRights()) {
             for (User attendee: event.getAttendees()) {
-                this.message(sender, attendee, message);
+                this.message(sender, attendee, message, date, time);
             }
 
             return true;

@@ -13,7 +13,7 @@ public class MessageManagerTests {
         Attendee uDavid = new Attendee("david", "1234");
         Attendee uMark = new Attendee("david", "1234");
 
-        messageManager.message(uDavid, uMark, message);
+        messageManager.message(uDavid, uMark, message, "11.01.2020", "13:00");
 
         List<String> messagesByDavid = messageManager.getMessages(uDavid, uMark);
 
@@ -29,9 +29,9 @@ public class MessageManagerTests {
         Attendee uDavid = new Attendee("david", "1234");
         Attendee uMark = new Attendee("david", "1234");
 
-        Event event = new Event("", "", "", uJill);
+        Event event = new Event("EventA", "", "", "", uJill, 2);
 
-        messageManager.broadcast(uJill, event, message);
+        messageManager.broadcast(uJill, event, message,"11.01.2020", "13:00");
 
         List<String> messagesDavid = messageManager.getMessages(uJill, uDavid);
         List<String> messagesMark = messageManager.getMessages(uJill, uMark);
@@ -42,7 +42,7 @@ public class MessageManagerTests {
         event.addAttendee(uDavid);
         event.addAttendee(uMark);
 
-        messageManager.broadcast(uJill, event, message);
+        messageManager.broadcast(uJill, event, message, "11.01.2020", "13:00");
 
         messagesDavid = messageManager.getMessages(uJill, uDavid);
         messagesMark = messageManager.getMessages(uJill, uMark);
