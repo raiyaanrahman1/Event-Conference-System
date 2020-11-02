@@ -17,7 +17,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return  name + " at " + time + " PM " + date + " in room " + room + ". Speaker: " + speaker;
+        return  name + " at " + time + " " + date + " in room " + room + ". Speaker: " + speaker;
     }
 
     public Event(String name, String time, String date, String room, Speaker speaker, int roomCap) {

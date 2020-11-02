@@ -1,6 +1,4 @@
 package Controller;
-import Entity.Attendee;
-import UseCase.AttendeeSignUp;
 import Entity.User;
 import UseCase.UserManager;
 import java.util.Scanner;  // Import the Scanner class
@@ -27,6 +25,7 @@ public class LoginSystem {
                 // WHY IS THE METHOD NOT BEING ACCESSED?
             }
 
+            // TO LOGIN:
             // 1. ask for username
             // 2. check if the username is in the userlist
             // 3. if it is, ask for their password, check to see if they match. If they do, set the current
@@ -64,6 +63,7 @@ public class LoginSystem {
             }
             }
 
+            //TO SIGN UP:
             // 1. prompt them with the question 'are you an attendee or an organizer?"
             // 2. if they answer 'attendee': ask them for a username.
                 // - check to see if this username is taken in UserManager.userList. if it is, say 'username is
