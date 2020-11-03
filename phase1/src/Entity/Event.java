@@ -2,8 +2,10 @@ package Entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SplittableRandom;
 
+/**
+ * The Event class represents an event in the conference.
+ */
 public class Event {
     private List<Attendee> attendees;
     private String time; // 24 hour clock time between 09:00 and 17:00
@@ -15,11 +17,16 @@ public class Event {
     private static int idCounter = 0;
     private String name;
 
-    @Override
-    public String toString() {
-        return  name + " at " + time + " " + date + " in room " + room + ". Speaker: " + speaker;
-    }
-
+    /**
+     * Creates a new event object.
+     *
+     * @param name  the Event's name
+     * @param time  the Event's time
+     * @param date  the Event's date
+     * @param room  the Event's room
+     * @param speaker  the Event's Speaker
+     * @param roomCap the Event's maximum capacity of attendees
+     */
     public Event(String name, String time, String date, String room, Speaker speaker, int roomCap) {
         this.name = name;
         this.time = time;
@@ -32,55 +39,105 @@ public class Event {
         idCounter ++;
 
     }
-    //getter for attendees list
+
+    /**
+     * Returns the toString of the Event
+     *
+     * Ex: Tech Conference Opening at 10:00 11.02.2020 in room BA100. Speaker: Bill Gates
+     */
+    @Override
+    public String toString() {
+        return  name + " at " + time + " " + date + " in room " + room + ". Speaker: " + speaker;
+    }
+
+    /**
+     * Returns the Event's list of attendees
+     */
     public List<Attendee> getAttendees() {
         return attendees;
     }
-    //appending an attendee to attendees
+
+    /**
+     * Adds an attendee to the Event's list of attendees
+     *
+     * @param attendee  new attendee of the Event
+     */
     public void addAttendee(Attendee attendee){
         this.attendees.add(attendee);
     }
 
-    //getter for time
+    /**
+     * Returns the Event's time
+     */
     public String getTime() {
         return time;
     }
-    //setter for time
+
+    /**
+     * Changes the Event's time
+     *
+     * @param time  new time of the Event
+     */
     public void setTime(String time) {
         this.time = time;
     }
 
-    //getter for date
+    /**
+     * Returns the Event's date
+     */
     public String getDate() {
         return date;
     }
-    //setter for date
+
+    /**
+     * Changes the Event's date
+     *
+     * @param date new date of the Event
+     */
     public void setDate(String date) {
         this.date = date;
     }
 
-    //getter for room
+    /**
+     * Returns the Event's room
+     */
     public String getRoom() {
         return room;
     }
-    //setter for room
+
+    /**
+     * Changes the Event's room
+     *
+     * @param room new room of the Event
+     */
     public void setRoom(String room) {
         this.room = room;
     }
 
-    //getter for speaker
+    /**
+     * Returns the Event's Speaker
+     */
     public Speaker getSpeaker() {
         return speaker;
     }
-    //setter for speaker
+
+    /**
+     * Changes the Speaker of the Event
+     */
     public void setSpeaker(Speaker speaker) {
         this.speaker = speaker;
     }
 
+    /**
+     * Returns the Event's eventID
+     */
     public int getEventID() {
         return eventID;
     }
 
+    /**
+     * Returns the roomCap of the Event
+     */
     public int getRoomCap() {
         return roomCap;
     }
