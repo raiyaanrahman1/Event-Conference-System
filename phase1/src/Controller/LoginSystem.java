@@ -7,6 +7,9 @@ public class LoginSystem {
 
     //remember to initialize MessengerSystem and EventManagementSystem
 
+    //need to add a sign-out method?
+
+    // helper methods: LogIn, SignUp (one for Attendee and Organizer)
     public static void main(String[] args) {
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
         System.out.println("Would you like to sign up or log in?");
