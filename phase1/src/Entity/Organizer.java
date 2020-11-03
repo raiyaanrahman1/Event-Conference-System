@@ -54,4 +54,11 @@ public class Organizer extends Attendee{
      */
     public void addOrganizedEvent(Event event){ this.organizedEvents.add(event); }
 
+    /**
+     * Removes an event from the list of organized events of this organizer
+     *
+     * @param event  the event that this organizer created
+     */
+    public void removeOrganizedEvent(Event event){ this.organizedEvents.remove(event); }
+
 }
