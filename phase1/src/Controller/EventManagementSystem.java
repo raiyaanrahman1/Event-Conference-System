@@ -1,65 +1,68 @@
 package Controller;
-import Entity.Attendee;
-import Entity.Event;
-import UseCase.AttendeeSignUp;
-import UseCase.EventScheduler;
 import UseCase.UserManager;
-
-import java.util.List;
 import java.util.Scanner;
+import Controller.LoginSystem;
 
 public class EventManagementSystem {
 
     private UserManager user;
 
-    public String EventSignUp(Attendee attendee) {
+    public String EventSignUp() {
 
         Scanner myObj = new Scanner(System.in);
-        System.out.println("What is the name of the event that would you like to sign up for?");
-        System.out.println(ShowListOfEvents(attendee));
+        System.out.println("What is the id of the event that would you like to sign up for?");
+        for (Integer id : user.getAllowedEvents()) {
+            System.out.println(id);
+        }
         String response = myObj.nextLine();
-        if (AttendeeSignUp.signUpForEvent()) {
+        if (user.signUpForEvent(Integer.parseInt(response))) {
             return "You have successfully signed up for this event.";
         }
         return "Sign up failed. Please try signing up for a different event.";
     }
 
-    public String AttendeeCancelEvent(Integer id) {
+    public String AttendeeCancelEvent() {
 
-        // use the event id
-
-
-        System.out.println("What is the name of the event that would you like to cancel your spot for?");
-        System.out.println(ShowListOfAllowedEvents(attendee));
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("What is the id of the event that would you like to cancel your spot for?");
+        for (Integer id : user.getUserEvents()) {
+            System.out.println(id);
+        }
         String response = myObj.nextLine();
-        EventScheduler e = new EventScheduler(attendee);
-        Integer eventid = e.getIdByEventName();
-        if (currentattendee.cancelSpot(event)) {
+        if (user.cancelSpot(Integer.parseInt(response))) {
             return "You have successfully canceled your spot for this event.";
         }
-        return "Cancellation failed. You are not signed up for this event.";
+        return "Cancellation failed. Please try cancelling a different event.";
     }
 
-    public String ShowListOfAllowedEvents(Attendee attendee) {
-        EventScheduler currentattendee = new EventScheduler(attendee);
-        List<Integer> listofevents = currentattendee.getAllowedEvents();
-        for (int id = 0; id < listofevents.size() - 1; id++) {
-            return EventScheduler.getEventByID(id).toString();
+    public void ShowListOfAllowedEvents() {
+
+        System.out.println("Here are the ids of the events that you are allowed to sign up for:");
+        for (Integer id : user.getAllowedEvents()) {
+            System.out.println(id);
         }
     }
 
-    public String ShowList
+    public void AddEvent() {
 
-    public void AddEvent(Attendee attendee, Event event) {
-        EventScheduler currattendee = new EventScheduler(attendee);
-        currattendee.addEvent(event);
-        System.out.println("You have added this event successfully!");
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("What is the id of the event you would like to add?");
+        String eventid = myObj.nextLine();
+        if (user.addEvent(Integer.parseInt(eventid))) {
+            System.out.println("You have successfully added this event.");
+        }
+        System.out.println("You have unsuccessfully added this event.");
     }
 
-    public void CancelEvent(Attendee attendee, Event event) {
-        EventScheduler currattendee = new EventScheduler(attendee);
-        currattendee.removeEvent(event);
-        System.out.println("You have canceled this event successfully!");
+    public void CancelEvent() {
+
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("What is the id of the event you would like to cancel?");
+        String eventid = myObj.nextLine();
+        if (user.removeEvent(Integer.parseInt(eventid))) {
+            System.out.println("You have successfully cancelled this event.");
+        }
+        System.out.println("You have unsuccessfully cancelled this event.");
     }
 
 
