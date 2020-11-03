@@ -2,13 +2,21 @@ package Entity;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The User class represents a user, a user can be an Attendee, an Organizer or a Speaker.
+ */
 public abstract class User {
     private String username;
     private String password;
     private List<Message> receivedMessages;
     private List<Message> sentMessages;
 
+    /**
+     * Creates a new user object.
+     *
+     * @param uname  the User's username
+     * @param pword  the User's password
+     */
     public User(String uname, String pword){
         this.username = uname;
         this.password = pword;

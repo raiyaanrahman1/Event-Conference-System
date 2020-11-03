@@ -25,7 +25,7 @@ public class MessageManager {
     public void message(User sender, User receiver, String message, String date, String time) {
         Message newMessage = new Message(message, receiver.getUsername(), sender.getUsername(), date, time);
         receiver.addReceivedMessage(newMessage);
-        receiver.addSentMessage(newMessage);
+        sender.addSentMessage(newMessage);
     }
 
     /**
@@ -42,7 +42,6 @@ public class MessageManager {
             for (User attendee: event.getAttendees()) {
                 this.message(sender, attendee, message, date, time);
             }
-
             return true;
         } else {
             return false;

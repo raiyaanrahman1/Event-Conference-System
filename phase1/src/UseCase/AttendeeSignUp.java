@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Part of the Sign-Up System and is responsible for the sign-up process of different Users.
- * Operates by requests through AttendeeManager.
+ * Operates by requests through UserManager.
  */
 public class AttendeeSignUp {
     private Attendee attendee;
@@ -38,9 +38,10 @@ public class AttendeeSignUp {
     public boolean signUpForEvent(Event event){
         // check if Attendee is attending a talk scheduled at the same time but in a different room
         if (!conflictingTime(event, attendee.getEventList()) &&
-                event.getAttendees().size() + 1 <= 2 &&
+                event.getAttendees().size() + 1 <= event.getRoomCap() &&
                 !attendee.getEventList().contains(event)){
             attendee.addEvent(event);
+            event.addAttendee(attendee);
             return true;
         } else {
             return false;
@@ -55,6 +56,7 @@ public class AttendeeSignUp {
     public boolean cancelSpot(Event event){
         if (attendee.getEventList().contains(event)) {
             attendee.cancelEvent(event);
+            event.removeAttendee(attendee);
             return true;
         } else {
             return false;
