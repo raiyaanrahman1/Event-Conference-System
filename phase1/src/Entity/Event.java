@@ -67,6 +67,16 @@ public class Event {
     }
 
     /**
+     * Removes an attendee from this Event's list of attendees
+     *
+     * @param attendee  attendee to be removed
+     */
+    public void removeAttendee(Attendee attendee){
+        this.attendees.remove(attendee);
+    }
+
+
+    /**
      * Returns the Event's time
      */
     public String getTime() {
