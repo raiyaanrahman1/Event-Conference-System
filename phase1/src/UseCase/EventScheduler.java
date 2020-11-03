@@ -1,15 +1,23 @@
 package UseCase;
 import Entity.Event;
 import Entity.Attendee;
+import Entity.Organizer;
+
 import java.util.List;
-
-
 import java.util.ArrayList;
 
+/**
+ * Part of the Scheduling System and is responsible for the scheduling of events.
+ * Operates by requests through UserManager.
+ */
 public class EventScheduler {
     private Attendee user;
     private ArrayList<Event> events;
 
+    /**
+     * Creates an EventScheduler instance with user 'logged-in'.
+     * @param user The current Attendee that is logged-in.
+     */
     public EventScheduler(Attendee user) {
         this.user = user;
         this.events = new ArrayList<>();
@@ -19,6 +27,11 @@ public class EventScheduler {
         this.user = user;
     }
 
+    /**
+     * Adds a new event to event list iff this user is an Organiser.
+     * @param event the event that will be added
+     * @return true iff an event was added.
+     */
     public boolean addEvent(Event event){
         if(!user.hasEventCreatingRights()) return false;
 
@@ -28,17 +41,28 @@ public class EventScheduler {
 
         }
         events.add(event);
+        ((Organizer) user).addOrganizedEvent(event);
         return true;
     }
 
+    /**
+     * Remove an event to event list iff this user is an Organiser.
+     * @param event the event that will be removed
+     * @return true iff the event was removed
+     */
     public boolean removeEvent(Event event){
         if(user.hasEventCreatingRights()){
             events.remove(event);
+            ((Organizer) user).removeOrganizedEvent(event);
             return true;
         }
         return false;
     }
 
+    /**
+     * Gets the allowed events that this user may sign up for.
+     * @return a list of event IDs corresponding to the allowed events that this user may sign up for.
+     */
     public List<Integer> getAllowedEvents(){
         List<Integer> allowedEvents = new ArrayList<>();
         for(Event e : events){
@@ -49,6 +73,10 @@ public class EventScheduler {
         return allowedEvents;
     }
 
+    /**
+     * Gets the events that this user is already signed up for.
+     * @return a list of event IDs corresponding to the events this user is signed up for.
+     */
     public List<Integer> getUserEvents(){
         List<Event> eventList = user.getEventList();
         List<Integer> eventIDList = new ArrayList<>();
@@ -58,6 +86,11 @@ public class EventScheduler {
         return eventIDList;
     }
 
+    /**
+     * Get the event object by its ID.
+     * @param ID the ID of the event we want to get
+     * @return the Event object corresponding to ID iff the ID corresponds to an existing Event.
+     */
     public Event getEventByID(int ID){
         for (Event e: events){
             if (e.getEventID() == ID){
