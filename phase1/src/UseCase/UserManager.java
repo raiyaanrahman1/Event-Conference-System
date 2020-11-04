@@ -17,6 +17,7 @@ public class UserManager{
     private MessageManager messageManager;
 
 
+
     private List<String> userInfoList;
     /**
      * Creates a UserManager instance with user 'logged-in' with the username of the given user.
@@ -24,7 +25,10 @@ public class UserManager{
      * @param username The username of the current User that is logged-in
      */
     public UserManager(String username){
+        this.userList = new ArrayList<>();
+        userList.add(new Attendee("username1", "p4ssword"));
         this.user = getUserByUsername(username);
+
 
         userInfoList = new ArrayList<>();
         userInfoList.add(this.user.getUsername());

@@ -3,13 +3,16 @@ import Entity.User;
 import Gateway.FileGateway;
 import Gateway.IGateway;
 import UseCase.UserManager;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;  // Import the Scanner class
 
 public class LoginSystem {
 
     MessengerSystem msgSys = new MessengerSystem();
     EventManagementSystem eventSys = new EventManagementSystem();
-    IGateway g = new FileGateway("");
+    IGateway g = new FileGateway("/Users/oliviawynaparamitha/Desktop/group_0301/phase1/src/Controller/LogInInformation.txt");
 
     //LoginSystem Constructor
     public LoginSystem(){
@@ -21,8 +24,8 @@ public class LoginSystem {
         boolean incorrectOption = false;
         do {
             System.out.println("Choose the number of the option" );
-            System.out.println("1. Messages \n " +
-                    "2. Events \n " +
+            System.out.println("1. Messages \n" +
+                    "2. Events \n" +
                     "3. Log Out" );
             String answer = myObj.nextLine();
             if (answer.equals("1" )) {
@@ -51,6 +54,7 @@ public class LoginSystem {
         String answer = myObj.nextLine();
         if (answer.equals("log in")) {
             logIn();
+            MainPage();
         }
         if (answer.equals("sign up")) {
             signUp();
@@ -113,7 +117,7 @@ public class LoginSystem {
 
     private void signUpOrganizer(){
         Scanner myObj = new Scanner(System.in);
-        String username1 = "";
+        String username1;
         boolean incorrectCode = true;
         do {
             System.out.println("Enter your organizer code.");
@@ -139,12 +143,16 @@ public class LoginSystem {
         while (userExists);
         System.out.println("Enter a password.");
         String password = myObj.nextLine();
-        g.append(username1 + " " + password + " O");
+        List<String> userInfo = new ArrayList<>();
+        userInfo.add(username1);
+        userInfo.add(password);
+        userInfo.add("O");
+        g.append(userInfo);
     }
 
     private void signUpAttendee() {
         Scanner myObj = new Scanner(System.in);
-        String username1 = "";
+        String username1;
         boolean userExists = true;
         do {
             System.out.println("Enter a username");
@@ -158,13 +166,17 @@ public class LoginSystem {
         while (userExists);
         System.out.println("Enter a password.");
         String password = myObj.nextLine();
-        g.append(username1 + " " + password + " A");
+        List<String> userInfo = new ArrayList<>();
+        userInfo.add(username1);
+        userInfo.add(password);
+        userInfo.add("A");
+        g.append(userInfo);
     }
 
     public boolean exists(IGateway gt, String username){
         g.read();
         while (gt.hasNext()) {
-            String actual = gt.next();
+            List<String> actual = gt.next();
             if(actual.contains(username)){
                 return true;
             }

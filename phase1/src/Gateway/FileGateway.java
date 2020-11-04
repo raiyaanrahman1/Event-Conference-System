@@ -4,27 +4,33 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 // Make Iterable or at least add method if you can continue reading (need to know where to stop)
 // be able to read line by line, method hasNext() like iterable
-public class FileGateway implements IGateway, Iterator<String> {
+public class FileGateway implements IGateway, Iterator<List<String>> {
 
     private List<String> lines;
     private String fileName;
+    private ArrayList<List<String>> UserInfo = new ArrayList<>();
 
     public FileGateway(String fileName) {
         this.fileName = fileName;
     }
 
-    public void read() {
+    public ArrayList<List<String>> read() {
         try {
             this.lines = Files.readAllLines(Paths.get(this.fileName));
+//            ArrayList<List<String>> UserInfo = new ArrayList<>();
+            for (String l: lines) {
+                UserInfo.add(Arrays.asList(l.split(" " )));
+            }
+            return UserInfo;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -39,8 +45,8 @@ public class FileGateway implements IGateway, Iterator<String> {
      * @throws NoSuchElementException if the iteration has no more elements
      */
     @Override
-    public String next() {
-        return this.lines.iterator().next();
+    public List<String> next() {
+        return this.UserInfo.iterator().next();
     }
 
     /**
@@ -48,10 +54,14 @@ public class FileGateway implements IGateway, Iterator<String> {
      * @param content The content that will get written to text file
      */
     @Override
-    public void append(String content) {
+    public void append(List<String> content) {
         try {
-            content += System.lineSeparator();
-            Files.write(Paths.get(this.fileName), content.getBytes(), StandardOpenOption.APPEND);
+            String line = new String();
+            for (String s: content){
+                line += s + " "  ;
+            }
+            line += System.lineSeparator();
+            Files.write(Paths.get(this.fileName), line.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
         }

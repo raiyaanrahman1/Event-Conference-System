@@ -54,61 +54,61 @@ public class MessengerSystem {
         System.out.println("Message successfully sent.");
     }
 
-    public void getSpecificMessages() {
+//    public void getSpecificMessages() {
+//
+//        // ask the user for a username
+//        // if the user is not a valid user, i.e, no account has this username, print "username does not exist"
+//        // if the user does not have the receiver on his contact list, then there is still a possibility that the two
+//        // users had messages with each other, i.e., broadcast messages
+//        // if the user is valid, then if there are no messages with this user, print "you don't have any messages with this user"
+//        // if the user is valid and there are messages between them, print the messages in a line by line format
+//
+//        Scanner myObj = new Scanner(System.in);
+//        System.out.println("Enter a username to see the messages you have had with them.");
+//        String receiver = myObj.nextLine();
+//
+//        if (LoginSystem.exists(g, receiver)) { // shouldn't I be able to use this exists method from LoginSystem?
+//            if (user.getMessages(user.getUserInfoList().get(0), receiver) == null){
+//                System.out.println("You have no messages with this user.");
+//            }
+//            else {
+//                for (String msg : user.getMessages(user.getUserInfoList().get(0), receiver)) {
+//                    System.out.println(msg);
+//                }
+//            }
+//        }
+//        else {
+//            System.out.println("Username does not exist");
+//        }
+//    }
 
-        // ask the user for a username
-        // if the user is not a valid user, i.e, no account has this username, print "username does not exist"
-        // if the user does not have the receiver on his contact list, then there is still a possibility that the two
-        // users had messages with each other, i.e., broadcast messages
-        // if the user is valid, then if there are no messages with this user, print "you don't have any messages with this user"
-        // if the user is valid and there are messages between them, print the messages in a line by line format
-
-        Scanner myObj = new Scanner(System.in);
-        System.out.println("Enter a username to see the messages you have had with them.");
-        String receiver = myObj.nextLine();
-
-        if (LoginSystem.exists(g, receiver)) { // shouldn't I be able to use this exists method from LoginSystem?
-            if (user.getMessages(user.getUserInfoList().get(0), receiver) == null){
-                System.out.println("You have no messages with this user.");
-            }
-            else {
-                for (String msg : user.getMessages(user.getUserInfoList().get(0), receiver)) {
-                    System.out.println(msg);
-                }
-            }
-        }
-        else {
-            System.out.println("Username does not exist");
-        }
-    }
-
-    public void organizerBroadcast() {
-
-        // ask the user for the eventid they want to broadcast their message to
-        // if the eventid is not valid, print "This event has not been organized. Please enter a valid event id."
-        // if it is valid, ask for the content of the message
-        // get the current date and time
-        // call the broadcast method, if it returns true, print "You have successfully broadcasted your message."
-        // otherwise, print "Broadcast failed. You do not have broadcasting rights."
-
-        Scanner myObj = new Scanner(System.in);
-        System.out.println("What is the id of event would you like to broadcast a message to?");
-        String eventid = myObj.nextLine();
-        if (!user.getOrganizedEvents.contains(eventid)) {
-            System.out.println("This event has not been organized. Please enter a valid event id.");
-            return;
-        }
-        System.out.println("What is the content of your message?");
-        String content = myObj.nextLine();
-        Date currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
-        if (user.broadcast(user.getUserInfoList().get(0), Integer.parseInt(eventid), content,
-                dateFormat.format(currentDate), timeFormat.format(currentDate))) {
-            System.out.println("You have successfully broadcasted your message.");
-        }
-        System.out.println("Broadcast failed. You do not have broadcasting rights.");
-    }
+//    public void organizerBroadcast() {
+//
+//        // ask the user for the eventid they want to broadcast their message to
+//        // if the eventid is not valid, print "This event has not been organized. Please enter a valid event id."
+//        // if it is valid, ask for the content of the message
+//        // get the current date and time
+//        // call the broadcast method, if it returns true, print "You have successfully broadcasted your message."
+//        // otherwise, print "Broadcast failed. You do not have broadcasting rights."
+//
+//        Scanner myObj = new Scanner(System.in);
+//        System.out.println("What is the id of event would you like to broadcast a message to?");
+//        String eventid = myObj.nextLine();
+//        if (!user.getOrganizedEvents.contains(eventid)) {
+//            System.out.println("This event has not been organized. Please enter a valid event id.");
+//            return;
+//        }
+//        System.out.println("What is the content of your message?");
+//        String content = myObj.nextLine();
+//        Date currentDate = new Date();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+//        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+//        if (user.broadcast(user.getUserInfoList().get(0), Integer.parseInt(eventid), content,
+//                dateFormat.format(currentDate), timeFormat.format(currentDate))) {
+//            System.out.println("You have successfully broadcasted your message.");
+//        }
+//        System.out.println("Broadcast failed. You do not have broadcasting rights.");
+//    }
 
     public void speakerBroadcast() {
 
