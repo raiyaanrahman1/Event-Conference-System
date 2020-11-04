@@ -1,37 +1,60 @@
 package Gateway;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
-public class FileGateway implements IGateway{
+// Make Iterable or at least add method if you can continue reading (need to know where to stop)
+// be able to read line by line, method hasNext() like iterable
+public class FileGateway implements IGateway, Iterator<String> {
 
-    private String filename;
+    private List<String> lines;
+    private String fileName;
 
-    public FileGateway(String fileName){
-        this.filename = fileName;
+    public FileGateway(String fileName) {
+        this.fileName = fileName;
     }
 
-    @Override
-    public String read() {
-        String text = "";
+    public void read() {
         try {
-            text = new String(Files.readAllBytes(Paths.get(this.filename)));
+            this.lines = Files.readAllLines(Paths.get(this.fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return text;
     }
 
     @Override
-    public void write(String content) {
+    public boolean hasNext() {
+        return this.lines.iterator().hasNext();
+    }
+
+    /**
+     * Returns the next element in the iteration.
+     *
+     * @return the next element in the iteration
+     * @throws NoSuchElementException if the iteration has no more elements
+     */
+    @Override
+    public String next() {
+        return this.lines.iterator().next();
+    }
+
+    /**
+     * Appends to a text file.
+     * @param content The content that will get written to text file
+     */
+    @Override
+    public void append(String content) {
         try {
-            Files.write(Paths.get(this.filename), content.getBytes());
+            content += System.lineSeparator();
+            Files.write(Paths.get(this.fileName), content.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
+

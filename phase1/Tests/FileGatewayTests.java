@@ -8,9 +8,12 @@ public class FileGatewayTests {
     @Test(timeout = 50)
     public void testWriteRead() {
         IGateway g = new FileGateway("fileName1.txt");
+        g.read();
         String expected = "testing writing";
-        g.write(expected);
-        String actual = g.read();
-        assertSame(expected, actual);
+        g.append(expected);
+        while (g.hasNext()) {
+            String actual = g.next();
+            assertSame(expected, actual);
+        }
     }
 }

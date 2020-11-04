@@ -51,15 +51,24 @@ public class LoginSystem {
         System.out.println("Are you an attendee or an organizer?");
         Scanner myObj = new Scanner(System.in);
         String response = myObj.nextLine();
+        String username1 = "";
         if (response.equals("attendee")) {
-            System.out.println("Enter a username");
-            String username1 = myObj.nextLine();
-            while (!g.read().contains(username1)) {
-                signUp();
+                boolean userExists = true;
+                do{
+                    System.out.println("Enter a username");
+                    username1 = myObj.nextLine();
+                    if (exists(g, username1)) {
+                        System.out.println("Username already exists");
+                    }
+                    else {
+                        userExists = false;
+                    }
+                }
+                while(userExists);
             }
             System.out.println("Enter a password.");
             String password = myObj.nextLine();
-            g.write(username1 + " " + password + "A");
+            g.append(username1 + " " + password + " A");
         }
         else if (response.equals("organizer")) {
             System.out.println("Enter your organizer code.");
@@ -77,5 +86,16 @@ public class LoginSystem {
             System.out.println("Enter a password.");
             String password = myObj.nextLine();
         }
+    }
+
+    public boolean exists(IGateway gt, String username){
+        g.read();
+        while (gt.hasNext()) {
+            String actual = gt.next();
+            if(actual.contains(username)){
+                return true;
+            }
+        }
+        return false;
     }
 }
