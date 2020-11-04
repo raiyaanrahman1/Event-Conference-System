@@ -15,15 +15,39 @@ public class UserManager{
     private EventScheduler eventScheduler;
     private MessageManager messageManager;
 
+
+    private List<String> userInfoList;
     /**
      * Creates a UserManager instance with user 'logged-in'.
-     *
+     *  Adds the user's username, password and type ("a", "o", "s") in the userInfoList.
      * @param user The current User that is logged-in
      */
     public UserManager(User user){
         this.user = user;
+        userInfoList = new ArrayList<>();
+        userInfoList.add(this.user.getUsername());
+        userInfoList.add(this.user.getPassword());
+
+        if (this.user instanceof Organizer){
+            userInfoList.add("o");
+        }
+        else if (this.user instanceof Attendee){
+            userInfoList.add("a");
+        }
+        else{
+            userInfoList.add("s");
+        }
+
     }
 
+    /**
+     * Gets the userInfoList
+     *
+     * @return a list of Strings containing the user's username, password and type.
+     */
+    public List<String> getUserInfoList() {
+        return userInfoList;
+    }
 
     // AttendeeSignUp Functionality
 
@@ -244,5 +268,6 @@ public class UserManager{
     public String getRoomByEventID(int eventID) {
         return eventScheduler.getEventByID(eventID).getRoom();
     }
+
 }
 
