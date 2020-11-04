@@ -9,6 +9,7 @@ import java.util.List;
  * Communicates with the controllers.
  */
 public class UserManager{
+
     private User user;
     private List<User> userList;
     private AttendeeSignUp attendeeSignUp;
@@ -18,12 +19,13 @@ public class UserManager{
 
     private List<String> userInfoList;
     /**
-     * Creates a UserManager instance with user 'logged-in'.
+     * Creates a UserManager instance with user 'logged-in' with the username of the given user.
      *  Adds the user's username, password and type ("A", "O", "S") in the userInfoList.
-     * @param user The current User that is logged-in
+     * @param username The username of the current User that is logged-in
      */
-    public UserManager(User user){
-        this.user = user;
+    public UserManager(String username){
+        this.user = getUserByUsername(username);
+
         userInfoList = new ArrayList<>();
         userInfoList.add(this.user.getUsername());
         userInfoList.add(this.user.getPassword());
@@ -38,6 +40,15 @@ public class UserManager{
             userInfoList.add("S");
         }
 
+    }
+
+    /**
+     * Gets the user that is currently logge-in
+     *
+     * @return User that is logged in
+     */
+    public User getUser() {
+        return user;
     }
 
     /**
