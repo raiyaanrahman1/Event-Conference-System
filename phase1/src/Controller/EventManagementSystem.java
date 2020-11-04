@@ -11,9 +11,7 @@ public class EventManagementSystem {
 
         Scanner myObj = new Scanner(System.in);
         System.out.println("What is the id of the event that would you like to sign up for?");
-        for (Integer id : user.getAllowedEvents()) {
-            System.out.println(id);
-        }
+        ShowListOfAllowedEvents();
         String response = myObj.nextLine();
         if (user.signUpForEvent(Integer.parseInt(response))) {
             return "You have successfully signed up for this event.";
@@ -25,9 +23,7 @@ public class EventManagementSystem {
 
         Scanner myObj = new Scanner(System.in);
         System.out.println("What is the id of the event that would you like to cancel your spot for?");
-        for (Integer id : user.getUserEvents()) {
-            System.out.println(id);
-        }
+        ShowListOfUserEvents();
         String response = myObj.nextLine();
         if (user.cancelSpot(Integer.parseInt(response))) {
             return "You have successfully canceled your spot for this event.";
@@ -42,6 +38,14 @@ public class EventManagementSystem {
             System.out.println(id);
         }
     }
+
+    public void ShowListOfUserEvents() {
+        System.out.println("Here are the ids of the events that you have signed up for:");
+        for (Integer id : user.getUserEvents()) {
+            System.out.println(id);
+        }
+    }
+
 
     public void AddEvent() {
 

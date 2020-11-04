@@ -22,8 +22,11 @@ public class MessengerSystem {
 
         Scanner myObj = new Scanner(System.in);
         System.out.println("Enter the username you want to send a message to:");
+        for (String ppl: user.getContactList()){ //want to show list of ppl the user can message
+            System.out.println(ppl);
+        }
         String receiver = myObj.nextLine();
-        if (!user.getContactList().contains(receiver)) {
+        if (!user.getContactList().contains(receiver)) { //still need to keep this in case of user error
             System.out.println("You do not have this user in your contact list.");
             return;
         }
@@ -32,19 +35,28 @@ public class MessengerSystem {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
         user.message(user.username, receiver, content, dateFormat, timeFormat);
+        System.out.println("Message successfully sent.");
     }
 
     public void getSpecificMessages() {
         Scanner myObj = new Scanner(System.in);
         System.out.println("Enter a username to see the messages you have had with them.");
+        for (String ppl: user.getContactList()){ //want to show list of ppl the user can message
+            System.out.println(ppl);
+        }
         String receiver = myObj.nextLine();
         if (!user.getContactList().contains(receiver)) {
             System.out.println("You do not have this user in your contact list.");
             return;
+        }
+        // if there is no messages with that user print "no messages with user"
+        if (user.getMessages(user.username(), receiver) == null){
+            System.out.println("You have no messages with this user.");
+        }
         for (String msg : user.getMessages(user.username(), receiver)) {
             System.out.println(msg);
         }
-        }
+
     }
 
     public void replyToMsg() {
