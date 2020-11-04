@@ -7,28 +7,28 @@ public class EventManagementSystem {
 
     private UserManager user;
 
-    public String EventSignUp() {
+    public void EventSignUp() {
 
         Scanner myObj = new Scanner(System.in);
         System.out.println("What is the id of the event that would you like to sign up for?");
         ShowListOfAllowedEvents();
         String response = myObj.nextLine();
         if (user.signUpForEvent(Integer.parseInt(response))) {
-            return "You have successfully signed up for this event.";
+             System.out.println("You have successfully signed up for this event.");
         }
-        return "Sign up failed. Please try signing up for a different event.";
+        System.out.println("Sign up failed. Please try signing up for a different event.");
     }
 
-    public String AttendeeCancelEvent() {
+    public void AttendeeCancelEvent() {
 
         Scanner myObj = new Scanner(System.in);
         System.out.println("What is the id of the event that would you like to cancel your spot for?");
         ShowListOfUserEvents();
         String response = myObj.nextLine();
         if (user.cancelSpot(Integer.parseInt(response))) {
-            return "You have successfully canceled your spot for this event.";
+            System.out.println("You have successfully canceled your spot for this event.");
         }
-        return "Cancellation failed. Please try cancelling a different event.";
+        System.out.println("Cancellation failed. Please try cancelling a different event.");
     }
 
     public void ShowListOfAllowedEvents() {
@@ -68,6 +68,4 @@ public class EventManagementSystem {
         }
         System.out.println("You have unsuccessfully cancelled this event.");
     }
-
-
 }

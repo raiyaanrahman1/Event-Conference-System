@@ -11,6 +11,11 @@ public class LoginSystem {
     EventManagementSystem eventSys = new EventManagementSystem();
     IGateway g = new FileGateway("");
 
+    //LoginSystem Constructor
+    public LoginSystem(){
+        welcome();
+    }
+
     public void welcome() {
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
         System.out.println("Would you like to sign up or log in?");
@@ -23,27 +28,26 @@ public class LoginSystem {
         }
     }
 
-    //LoginSystem Constructor
-    public LoginSystem(){
-        welcome();
-    }
-
     //public void signOut(){}
 
     public void logIn(){
         System.out.println("Enter username");
         Scanner myObj = new Scanner(System.in);
         String username = myObj.nextLine();  // Read user input
-        while (UserManager.getUserByUsername(username) == null) {
+        while (!UserManager.getSignedUpUsers().contains(username)) { //not sure why this doesnt work
             System.out.println("Username does not exist.");
             logIn();
         }
         System.out.println("Enter a password.");
         String password = myObj.nextLine();
+
+        //need a way to access the User Object to access all these
         User userObject = UserManager.getUserByUsername(username);
-        //wait for use case
-        if (userobject.getPassword().equals(password)) {
-            UserManager usermanager = new UserManager(userobject);
+
+        if (UserManager.isPasswordCorrect(username, password)){ // not sure why this doesnt work sorry
+//        if (userObject.getPassword().equals(password)) {
+            UserManager usermanager = new UserManager(userObject); // not sure how to do this without accessing the User Object
+            System.out.println("Log in successful. Welcome " + username);
         }
     }
 
@@ -53,19 +57,17 @@ public class LoginSystem {
         String response = myObj.nextLine();
         String username1 = "";
         if (response.equals("attendee")) {
-                boolean userExists = true;
-                do{
-                    System.out.println("Enter a username");
-                    username1 = myObj.nextLine();
-                    if (exists(g, username1)) {
-                        System.out.println("Username already exists");
-                    }
-                    else {
-                        userExists = false;
-                    }
+            boolean userExists = true;
+            do {
+                System.out.println("Enter a username");
+                username1 = myObj.nextLine();
+                if (exists(g, username1)) {
+                    System.out.println("Username already exists");
+                } else {
+                    userExists = false;
                 }
-                while(userExists);
             }
+            while (userExists);
             System.out.println("Enter a password.");
             String password = myObj.nextLine();
             g.append(username1 + " " + password + " A");
@@ -85,6 +87,7 @@ public class LoginSystem {
             }
             System.out.println("Enter a password.");
             String password = myObj.nextLine();
+            g.append(username1 + " " + password + " O");
         }
     }
 
