@@ -16,6 +16,35 @@ public class LoginSystem {
         welcome();
     }
 
+    public void MainPage() {
+        Scanner myObj = new Scanner(System.in);
+        boolean incorrectOption = false;
+        do {
+            System.out.println("Choose the number of the option" );
+            System.out.println("1. Messages \n " +
+                    "2. Events \n " +
+                    "3. Log Out" );
+            String answer = myObj.nextLine();
+            if (answer.equals("1" )) {
+                //call message system
+                msgSys.messageMenu();
+                incorrectOption = false;
+            } else if (answer.equals("2" )) {
+                incorrectOption = false;
+                eventSys.eventMenu();
+            } else if (answer.equals("3" )) {
+                // log out
+                incorrectOption = false;
+                signOut();
+            } else {
+                incorrectOption = true;
+            }
+        System.out.println("Please enter a valid option.");
+        }while (incorrectOption) ;
+    }
+
+
+
     public void welcome() {
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
         System.out.println("Would you like to sign up or log in?");
@@ -28,7 +57,12 @@ public class LoginSystem {
         }
     }
 
-    //public void signOut(){}
+    public void signOut(){
+        System.out.println("Goodbye.");
+        System.exit(0);
+    }
+
+
 
     public void logIn(){
         Scanner myObj = new Scanner(System.in);
@@ -46,17 +80,17 @@ public class LoginSystem {
         while (invalidUsername);
 
         //check password
-        boolean correctPassword = true;
+        boolean incorrectPassword = true;
         do {
             System.out.println("Enter a password");
             String password = myObj.nextLine();
             if (!exists(g, password)) {
                 System.out.println("Incorrect password.");
             } else {
-                correctPassword = false;
+                incorrectPassword = false;
             }
         }
-        while (correctPassword);
+        while (incorrectPassword);
         UserManager usermanager = new UserManager(username);
         System.out.println("Log in successful. Welcome " + username);
     }
@@ -80,17 +114,17 @@ public class LoginSystem {
     private void signUpOrganizer(){
         Scanner myObj = new Scanner(System.in);
         String username1 = "";
-        boolean correctCode = true;
+        boolean incorrectCode = true;
         do {
             System.out.println("Enter your organizer code.");
             String code = myObj.nextLine();
             if (!code.equals("f9h2q6")) {
                 System.out.println("Invalid code.");
             } else {
-                correctCode = false;
+                incorrectCode = false;
             }
         }
-        while (!correctCode);
+        while (incorrectCode);
 
         boolean userExists = true;
         do {
