@@ -9,14 +9,14 @@ import org.junit.*;
 public class EventManagementSystemTests {
 
     @Test(timeout = 50)
-    public void EventSignUpSuccessful() {
+    public void eventSignUpSuccessful() {
 
         Attendee a = new Attendee("attendee1", "2");
 
     }
 
     @Test(timeout = 50)
-    public void EventSignUpUnsuccessful() {
+    public void eventSignUpUnsuccessful() {
 
         Attendee a = new Attendee("attendee1", "2");
         Event event = new Event("", "",  "",  "", new Speaker("",""), 2);
