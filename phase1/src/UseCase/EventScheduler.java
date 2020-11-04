@@ -2,6 +2,7 @@ package UseCase;
 import Entity.Event;
 import Entity.Attendee;
 import Entity.Organizer;
+import Entity.User;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -101,6 +102,19 @@ public class EventScheduler {
         return null;
     }
 
-
-
+    /**
+     *
+     * Precondition: the given user is a speaker.
+     * @param user
+     * @return
+     */
+    public List<Event> getEventsBySpeaker(User user) {
+        List<Event> eventsWithSpeaker = new ArrayList<>();
+        for(Event event: events) {
+            if (event.getSpeaker().getUsername().equals(user.getUsername())) {
+                eventsWithSpeaker.add(event);
+            }
+        }
+        return eventsWithSpeaker;
+    }
 }
