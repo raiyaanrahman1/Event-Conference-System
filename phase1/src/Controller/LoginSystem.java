@@ -31,64 +31,100 @@ public class LoginSystem {
     //public void signOut(){}
 
     public void logIn(){
-        System.out.println("Enter username");
         Scanner myObj = new Scanner(System.in);
-        String username = myObj.nextLine();  // Read user input
-        while (!UserManager.getSignedUpUsers().contains(username)) { //not sure why this doesnt work
-            System.out.println("Username does not exist.");
-            logIn();
+        boolean invalidUsername = true;
+        String username;
+        do {
+            System.out.println("Enter a username");
+            username = myObj.nextLine();
+            if (!exists(g, username)) {
+                System.out.println("Username does not exists");
+            } else {
+                invalidUsername = false;
+            }
         }
-        System.out.println("Enter a password.");
-        String password = myObj.nextLine();
+        while (invalidUsername);
 
-        //need a way to access the User Object to access all these
-        User userObject = UserManager.getUserByUsername(username);
-
-        if (UserManager.isPasswordCorrect(username, password)){ // not sure why this doesnt work sorry
-//        if (userObject.getPassword().equals(password)) {
-            UserManager usermanager = new UserManager(userObject); // not sure how to do this without accessing the User Object
-            System.out.println("Log in successful. Welcome " + username);
+        //check password
+        boolean correctPassword = true;
+        do {
+            System.out.println("Enter a password");
+            String password = myObj.nextLine();
+            if (!exists(g, password)) {
+                System.out.println("Incorrect password.");
+            } else {
+                correctPassword = false;
+            }
         }
+        while (correctPassword);
+        UserManager usermanager = new UserManager(username);
+        System.out.println("Log in successful. Welcome " + username);
     }
+
 
     public void signUp(){
         System.out.println("Are you an attendee or an organizer?");
         Scanner myObj = new Scanner(System.in);
         String response = myObj.nextLine();
-        String username1 = "";
         if (response.equals("attendee")) {
-            boolean userExists = true;
-            do {
-                System.out.println("Enter a username");
-                username1 = myObj.nextLine();
-                if (exists(g, username1)) {
-                    System.out.println("Username already exists");
-                } else {
-                    userExists = false;
-                }
-            }
-            while (userExists);
-            System.out.println("Enter a password.");
-            String password = myObj.nextLine();
-            g.append(username1 + " " + password + " A");
+            signUpAttendee();
         }
         else if (response.equals("organizer")) {
+            signUpOrganizer();
+        }
+        System.out.println("You have successfully signed up.");
+        System.out.println("Continue to Log In.");
+        logIn();
+    }
+
+    private void signUpOrganizer(){
+        Scanner myObj = new Scanner(System.in);
+        String username1 = "";
+        boolean correctCode = true;
+        do {
             System.out.println("Enter your organizer code.");
             String code = myObj.nextLine();
-            while (!code.equals("f9h2q6")) {
+            if (!code.equals("f9h2q6")) {
                 System.out.println("Invalid code.");
-                signUp();
+            } else {
+                correctCode = false;
             }
-            System.out.println("Enter a username");
-            String username = myObj.nextLine();
-            while (g.read().contains(username)) {
-                System.out.println("Username is already taken.");
-                signUp();
-            }
-            System.out.println("Enter a password.");
-            String password = myObj.nextLine();
-            g.append(username1 + " " + password + " O");
         }
+        while (!correctCode);
+
+        boolean userExists = true;
+        do {
+            System.out.println("Enter a username");
+            username1 = myObj.nextLine();
+            if (exists(g, username1)) {
+                System.out.println("Username already exists");
+            } else {
+                userExists = false;
+            }
+        }
+        while (userExists);
+        System.out.println("Enter a password.");
+        String password = myObj.nextLine();
+        g.append(username1 + " " + password + " O");
+    }
+
+    private void signUpAttendee() {
+        Scanner myObj = new Scanner(System.in);
+        String username1 = "";
+        boolean userExists = true;
+        do {
+            System.out.println("Enter a username");
+            username1 = myObj.nextLine();
+            if (exists(g, username1)) {
+                System.out.println("Username already exists");
+            } else {
+                userExists = false;
+            }
+        }
+        while (userExists);
+        System.out.println("Enter a password.");
+        String password = myObj.nextLine();
+        g.append(username1 + " " + password + " A");
     }
 
     public boolean exists(IGateway gt, String username){
