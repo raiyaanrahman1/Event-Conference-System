@@ -8,6 +8,14 @@ import Controller.LoginSystem;
 // Returns a list of message contents from a specific user and sends it to MessagePresenter
 // Gives option to user to reply to some message.
 
+// TODO
+// How to reply to msgs: DESIGN CHOICE: HOW ARE WE GOING TO SEE THE MESSAGES THAT WERE SENT TO US? (INBOX?)
+// Select a message you want to reply to:
+// Send a message to the person that sent you that message.
+// You can reply to anybody that messaged you.
+// How to add friends (mutual or not) DESIGN CHOICE: MUTUAL
+// Add a method that allows Speakers to DM any Attendee attending their event
+
 public class MessengerSystem {
 
     private UserManager user;
@@ -25,6 +33,9 @@ public class MessengerSystem {
         for (String ppl: user.getContactList()){ //want to show list of ppl the user can message
             System.out.println(ppl);
         }
+
+        // add in the ability to send messages to speakers
+
         String receiver = myObj.nextLine();
         if (!user.getContactList().contains(receiver)) { //still need to keep this in case of user error
             System.out.println("You do not have this user in your contact list.");
@@ -59,11 +70,36 @@ public class MessengerSystem {
 
     }
 
-    public void replyToMsg() {
+    public void broadcast() {
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("What is the id of event would you like to broadcast a message to?");
+        String eventid = myObj.nextLine();
+        user.broadcast(user.username, eventid, );
 
-        // how would we reply to the msg?
-        // we cannot use the message method because then the user would be able to reply to anyone without having
-        // received a message from them
+
+    }
+
+    public void speakerMessage() {
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("What is the event id?");
+        for (Integer eventid : System.out.println(user.getEventsBySpeaker())) {
+            System.out.println(eventid);
+        }
+        String eventid = myObj.nextLine();
+        if (!user.getEventsBySpeaker().contains(eventid)) {
+            System.out.println("Please enter an event id that you will be speaking at.");
+        }
+        System.out.println("What is the username of the person you want to message?");
+        for (String username : user.getUsersInEvent(Integer.parseInt(eventid))) {
+            System.out.println(username);
+        }
+        String username = myObj.nextLine();
+        if (!user.getUsersInEvent(Integer.parseInt(eventid)).contains(username)) {
+            System.out.println("Please enter the username of someone attending your event.");
+        }
+        System.out.println("Enter the content of the message you want to send.");
+        String content =
+
 
     }
 
