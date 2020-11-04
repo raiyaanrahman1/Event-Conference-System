@@ -19,7 +19,7 @@ public class UserManager{
     private List<String> userInfoList;
     /**
      * Creates a UserManager instance with user 'logged-in'.
-     *  Adds the user's username, password and type ("a", "o", "s") in the userInfoList.
+     *  Adds the user's username, password and type ("A", "O", "S") in the userInfoList.
      * @param user The current User that is logged-in
      */
     public UserManager(User user){
@@ -29,13 +29,13 @@ public class UserManager{
         userInfoList.add(this.user.getPassword());
 
         if (this.user instanceof Organizer){
-            userInfoList.add("o");
+            userInfoList.add("O");
         }
         else if (this.user instanceof Attendee){
-            userInfoList.add("a");
+            userInfoList.add("A");
         }
         else{
-            userInfoList.add("s");
+            userInfoList.add("S");
         }
 
     }
