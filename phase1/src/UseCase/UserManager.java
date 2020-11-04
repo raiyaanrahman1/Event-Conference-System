@@ -229,11 +229,11 @@ public class UserManager{
     }
 
     /**
-     *
+     * Precondition: the user has to be a speaker.
      * @param username
      * @return
      */
-    public List<Integer> getEventsByUser(String username) {
+    public List<Integer> getEventsBySpeaker(String username) {
         List<Integer> eventIDs = new ArrayList<>();
         List<Event> talks = eventScheduler.getEventsBySpeaker(getUserByUsername(username));
         for (Event event: talks) {
