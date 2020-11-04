@@ -164,5 +164,85 @@ public class UserManager{
     public List<String> getContactList(){
         return attendeeSignUp.getContactList();
     }
+
+    /**
+     *
+     * @return
+     */
+    public List<String> getSignedUpUsers() {
+        List<String> usernames = new ArrayList<>();
+        for (User user: userList) {
+            usernames.add(user.getUsername());
+        }
+        usernames.sort(null);
+        return usernames;
+    }
+
+    /**
+     *
+     * @param eventID
+     * @return
+     */
+    public List<String> getUsersInEvent(int eventID) {
+        Event event = eventScheduler.getEventByID(eventID);
+
+        List<String> usernames = new ArrayList<>();
+        for (User user: event.getAttendees()) {
+            usernames.add(user.getUsername());
+        }
+
+        return usernames;
+    }
+
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    public boolean isPasswordCorrect(String username, String password) {
+        return getUserByUsername(username).getPassword().equals(password);
+    }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    public List<Integer> getEventsByUser(String username) {
+        List<Integer> eventIDs = new ArrayList<>();
+        List<Event> talks = eventScheduler.getEventsBySpeaker(getUserByUsername(username));
+        for (Event event: talks) {
+            eventIDs.add(event.getEventID());
+        }
+        return eventIDs;
+    }
+
+    /**
+     *
+     * @param eventID
+     * @return
+     */
+    public String getTimeByEventID(int eventID) {
+        return eventScheduler.getEventByID(eventID).getTime();
+    }
+
+    /**
+     *
+     * @param eventID
+     * @return
+     */
+    public String getDateByEventID(int eventID) {
+        return eventScheduler.getEventByID(eventID).getDate();
+    }
+
+    /**
+     *
+     * @param eventID
+     * @return
+     */
+    public String getRoomByEventID(int eventID) {
+        return eventScheduler.getEventByID(eventID).getRoom();
+    }
 }
 
