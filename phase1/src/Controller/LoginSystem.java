@@ -4,6 +4,7 @@ import Gateway.FileGateway;
 import Gateway.IGateway;
 import UseCase.UserManager;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;  // Import the Scanner class
@@ -12,7 +13,7 @@ public class LoginSystem {
 
     MessengerSystem msgSys = new MessengerSystem();
     EventManagementSystem eventSys = new EventManagementSystem();
-    IGateway g = new FileGateway("/Users/oliviawynaparamitha/Desktop/group_0301/phase1/src/Controller/LogInInformation.txt");
+    IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
 
     //LoginSystem Constructor
     public LoginSystem(){
