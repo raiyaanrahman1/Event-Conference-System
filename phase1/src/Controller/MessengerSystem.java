@@ -66,20 +66,20 @@ public class MessengerSystem {
         System.out.println("Enter a username to see the messages you have had with them.");
         String receiver = myObj.nextLine();
 
-        if (LoginSystem.exists(g, receiver)) { // shouldn't I be able to use this exists method from LoginSystem?
-            if (user.getMessages(user.getUserInfoList().get(0), receiver) == null){
-                System.out.println("You have no messages with this user.");
-            }
-            else {
-                for (String msg : user.getMessages(user.getUserInfoList().get(0), receiver)) {
-                    System.out.println(msg);
-                }
-            }
+       // if (LoginSystem.exists(g, receiver)) { // shouldn't I be able to use this exists method from LoginSystem?
+        if (user.getMessages(user.getUserInfoList().get(0), receiver) == null){
+            System.out.println("You have no messages with this user.");
         }
         else {
-            System.out.println("Username does not exist");
+            for (String msg : user.getMessages(user.getUserInfoList().get(0), receiver)) {
+                    System.out.println(msg);
+            }
         }
     }
+//        else {
+//            System.out.println("Username does not exist");
+//        }
+//   }
 
     public void organizerBroadcast() {
 
@@ -93,7 +93,7 @@ public class MessengerSystem {
         Scanner myObj = new Scanner(System.in);
         System.out.println("What is the id of event would you like to broadcast a message to?");
         String eventid = myObj.nextLine();
-        if (!user.getOrganizedEvents.contains(eventid)) {
+        if (!user.getOrganizedEvents().contains(eventid)) {
             System.out.println("This event has not been organized. Please enter a valid event id.");
             return;
         }
