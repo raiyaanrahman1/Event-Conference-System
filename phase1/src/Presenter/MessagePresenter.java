@@ -1,5 +1,6 @@
 package Presenter;
 
+import Controller.MessengerSystem;
 import Gateway.FileGateway;
 import Gateway.IGateway;
 import UseCase.UserManager;
@@ -11,10 +12,12 @@ import java.util.Scanner;
 
 public class MessagePresenter {
     private UserManager user;
+    private MessengerSystem messenger;
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
 
-    public MessagePresenter(UserManager user){
+    public MessagePresenter(UserManager user, MessengerSystem messenger){
         this.user = user;
+        this.messenger = messenger;
     }
     public void mainPage(){
 
@@ -52,13 +55,14 @@ public class MessagePresenter {
     }
 
     private List<String> sortByMostRecent(List<String> messages){
-
+        // Implement a date or message comparator? or do we make messages comparable
+        // should this sorter have its own class and be used on events or whatever as well
     }
 
     public void formatContactList(){
         List<String> contacts = user.getContactList();
-        // List<String> sortedContacts = new ArrayList<>();
         // Alphabetical sort
+        contacts.sort(null);
         int i = 0;
         for (String s : contacts){
             i++;
@@ -104,8 +108,7 @@ public class MessagePresenter {
     }
 
     private void formatMessages(String sender){
-        // Q: How do we get the username of the person logged in? from UserManager or LoginSystem?
-        List <String> messages = user.getMessages(USERNAME, sender);
+        List <String> messages = user.getMessages(user.getUser().getUsername(), sender);
         List <String> sorted = sortByMostRecent(messages);
         for (String msg : sorted){
             System.out.println(msg);
@@ -127,6 +130,7 @@ public class MessagePresenter {
             } else {
                 invalidInput = false;
                 formatMessages(sender);
+                //messenger.getSpecificMessages(); this creates another Scanner though?
             }
 
         } while(invalidInput);
