@@ -63,6 +63,15 @@ public class Attendee extends User {
     }
 
     /**
+     * Remove user to contact list.
+     *
+     * @param user  the user we want to remove from this attendee's contact list
+     */
+    public void removeContact(User user) {
+        this.contacts.remove(user);
+    }
+
+    /**
      * Returns all events this attendee is registered to attend.
      *
      * @return  the list of events where this attendee is signed

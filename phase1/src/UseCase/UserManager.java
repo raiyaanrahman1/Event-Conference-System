@@ -47,7 +47,7 @@ public class UserManager{
     }
 
     /**
-     * Gets the user that is currently logge-in
+     * Gets the user that is currently logged-in
      *
      * @return User that is logged in
      */
@@ -64,7 +64,14 @@ public class UserManager{
         return userInfoList;
     }
 
-    // AttendeeSignUp Functionality
+    public void addUserToContacts(String user){
+        ((Attendee) this.user).addContact(getUserByUsername(user));
+    }
+
+    public void removeUserFromContacts(String user){
+        ((Attendee) this.user).removeContact(getUserByUsername(user));
+    }
+    // ================ AttendeeSignUp Functionality ================
 
     /**
      * Signs up user for an event in AttendeeSignUp
@@ -98,7 +105,16 @@ public class UserManager{
         return attendeeSignUp.createSpeakerAccount(uname, pword);
     }
 
-    // EventScheduler Functionality
+    /**
+     * Gets the list of contacts of user from AttendeeSignUp
+     *
+     * @return list of users
+     */
+    public List<String> getContactList(){
+        return attendeeSignUp.getContactList();
+    }
+
+    // ================ EventScheduler Functionality ================
 
     /**
      * Adds an event to the event list of in EventScheduler
@@ -138,22 +154,8 @@ public class UserManager{
         return eventScheduler.getUserEvents();
     }
 
-    /**
-     * Gets a User by its username
-     *
-     * @param user  username of the user
-     * @return  user iff it is in userList
-     */
-    private User getUserByUsername(String user){
-        for (User u : userList){
-            if (u.getUsername().equals(user)){
-                return u;
-            }
-        }
-        return null;
-    }
 
-    // MessageManager Functionality
+    // ================ MessageManager Functionality ================
 
     /**
      * Sends a message between users in MessageManager
@@ -195,15 +197,8 @@ public class UserManager{
                 getUserByUsername(receiver));
     }
 
-    /**
-     * Gets the list of contacts of user from AttendeeSignUp
-     *
-     * @return list of users
-     */
-    public List<String> getContactList(){
-        return attendeeSignUp.getContactList();
-    }
 
+    // ================ Getters, getters, getters. ================
     /**
      *
      * @return
@@ -215,6 +210,21 @@ public class UserManager{
         }
         usernames.sort(null);
         return usernames;
+    }
+
+    /**
+     * Gets a User by its username
+     *
+     * @param user  username of the user
+     * @return  user iff it is in userList
+     */
+    private User getUserByUsername(String user){
+        for (User u : userList){
+            if (u.getUsername().equals(user)){
+                return u;
+            }
+        }
+        return null;
     }
 
     /**
