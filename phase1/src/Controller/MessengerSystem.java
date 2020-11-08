@@ -25,7 +25,7 @@ public class MessengerSystem {
     private UserManager user;
     IGateway g = new FileGateway("");
 
-    public void MessageUser() {
+    public void messageUser() {
 
         // ask them who they want to send it to
         // check to see if this user is in their contact list
@@ -93,7 +93,7 @@ public class MessengerSystem {
         Scanner myObj = new Scanner(System.in);
         System.out.println("What is the id of event would you like to broadcast a message to?");
         String eventid = myObj.nextLine();
-        if (!user.getOrganizedEvents().contains(eventid)) {
+        if (!user.getOrganizedEvents().contains(Integer.parseInt(eventid))) {
             System.out.println("This event has not been organized. Please enter a valid event id.");
             return;
         }
