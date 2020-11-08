@@ -1,7 +1,6 @@
 package Controller;
 import UseCase.UserManager;
 import java.util.Scanner;
-import Controller.LoginSystem;
 
 public class EventManagementSystem {
 
@@ -10,25 +9,40 @@ public class EventManagementSystem {
     public void eventSignUp() {
 
         Scanner myObj = new Scanner(System.in);
-        System.out.println("What is the id of the event that would you like to sign up for?");
+        System.out.println("Enter the id of the event that would you like to sign up for?");
         showListOfAllowedEvents();
         String response = myObj.nextLine();
         if (user.signUpForEvent(Integer.parseInt(response))) {
              System.out.println("You have successfully signed up for this event.");
+             returnToEventMenu();
         }
-        System.out.println("Sign up failed. Please try signing up for a different event.");
+        System.out.println("Sign up failed.\n Enter (1) to sign up for a different event");
+        String input = myObj.nextLine();
+        int option = Integer.parseInt(input);
+        if (option == 1) {
+            this.eventSignUp();
+        }
+        returnToEventMenu();
     }
 
     public void AttendeeCancelEvent() {
 
         Scanner myObj = new Scanner(System.in);
-        System.out.println("What is the id of the event that would you like to cancel your spot for? The input must be an integer.");
+        System.out.println("Enter the id of the event that would you like to cancel your spot for? " +
+                "The input must be an integer.");
         this.ShowListOfUserEvents();
         String response = myObj.nextLine();
         if (user.cancelSpot(Integer.parseInt(response))) {
             System.out.println("You have successfully canceled your spot for this event.");
+            returnToEventMenu();
         }
-        System.out.println("Cancellation failed. Please try cancelling a different event.");
+        System.out.println("Cancellation failed.\n Enter (1) to cancel a different event");
+        String input = myObj.nextLine();
+        int option = Integer.parseInt(input);
+        if (option == 1) {
+            this.AttendeeCancelEvent();
+        }
+        returnToEventMenu();
     }
 
     public void showListOfAllowedEvents() {
@@ -37,6 +51,7 @@ public class EventManagementSystem {
         for (Integer id : user.getAllowedEvents()) {
             System.out.println(id);
         }
+        returnToEventMenu();
     }
 
     public void ShowListOfUserEvents() {
@@ -44,32 +59,44 @@ public class EventManagementSystem {
         for (Integer id : user.getUserEvents()) {
             System.out.println(id);
         }
+        returnToEventMenu();
     }
 
     public void AddEvent() {
 
-        // if the user puts in a string, the entire program crashes
-
+        // if the user puts in a string, the entire program crashes --> fixed by parsing
         Scanner myObj = new Scanner(System.in);
-        System.out.println("What is the id of the event you would like to add? The input must be an integer.");
-        String eventid = myObj.nextLine();
-        if (user.addEvent(Integer.parseInt(eventid))) {
+        System.out.println("Enter the id of the event you would like to add? The input must be an integer.");
+        String eventId = myObj.nextLine();
+        if (user.addEvent(Integer.parseInt(eventId))) {
             System.out.println("You have successfully added this event.");
-            return;
+            returnToEventMenuOrganizer();
         }
-        System.out.println("You have unsuccessfully added this event.");
+        System.out.println("Failed to add event.\n Enter (1) to add a different event");
+        String input = myObj.nextLine();
+        int option = Integer.parseInt(input);
+        if (option == 1) {
+            this.AddEvent();
+        }
+        returnToEventMenuOrganizer();
     }
 
-    public void CancelEvent() {
+    public void cancelEvent() {
 
         Scanner myObj = new Scanner(System.in);
         System.out.println("What is the id of the event you would like to cancel? The input must be an integer.");
-        String eventid = myObj.nextLine();
-        if (user.removeEvent(Integer.parseInt(eventid))) {
+        String eventId = myObj.nextLine();
+        if (user.removeEvent(Integer.parseInt(eventId))) {
             System.out.println("You have successfully cancelled this event.");
-            return;
+            returnToEventMenuOrganizer();
         }
-        System.out.println("You have unsuccessfully cancelled this event.");
+        System.out.println("Failed to cancel event. \n Enter (1) to cancel a different event");
+        String input = myObj.nextLine();
+        int option = Integer.parseInt(input);
+        if (option == 1) {
+            this.cancelEvent();
+        }
+        returnToEventMenuOrganizer();
     }
 
     public void eventMenu() {
@@ -98,4 +125,34 @@ public class EventManagementSystem {
         }
 
     }
+    public void eventMenuOrganizer(){
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("\t \t \t \t EVENTS \n (1) Add Event \n (2) Cancel Event ");
+        System.out.println("Choose a number for one of the options above.");
+        String input = myObj.nextLine();
+        int option = Integer.parseInt(input);
+        if (option == 1) {
+            this.AddEvent();
+        }
+        else if (option == 2) {
+            this.cancelEvent();
+        }
+        else{
+            System.out.println("Please either options 1 or 2.");
+            this.eventMenuOrganizer();
+        }
+    }
+    private void returnToEventMenu(){
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("Press the Enter key to return to the Event Menu.");
+        myObj.nextLine();
+        this.eventMenu();
+    }
+    private void returnToEventMenuOrganizer(){
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("Press the Enter key to return to the Event Menu.");
+        myObj.nextLine();
+        eventMenuOrganizer();
+    }
+
 }
