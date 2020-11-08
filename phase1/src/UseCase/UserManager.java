@@ -291,6 +291,10 @@ public class UserManager{
         return eventScheduler.getEventByID(eventID).getRoom();
     }
 
+    public String getToStringByEventID(int eventID) {
+        return eventScheduler.getEventByID(eventID).toString();
+    }
+
     public List<Integer> getTalks(){
         List<Integer> eventIDs = new ArrayList<>();
         for (Event event: ((Speaker) user).getTalks()) {
@@ -345,6 +349,20 @@ public class UserManager{
             messageBySenderTable[i][1] = msg.getContent();
         }
         return messageBySenderTable;
+    }
+
+    /**
+     * Returns ids of all events.
+     * @return
+     */
+    public List<Integer> getAllEventIDs() {
+        List<Integer> ids = new ArrayList<>();
+
+        for(Event event: eventScheduler.getAllEvents()) {
+            ids.add(event.getEventID());
+        }
+
+        return ids;
     }
 
 }

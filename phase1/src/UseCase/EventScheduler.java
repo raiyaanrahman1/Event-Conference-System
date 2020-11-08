@@ -117,4 +117,8 @@ public class EventScheduler {
         }
         return eventsWithSpeaker;
     }
+
+    public List<Event> getAllEvents() {
+        return events;
+    }
 }
