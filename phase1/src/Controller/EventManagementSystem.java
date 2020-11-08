@@ -1,21 +1,30 @@
 package Controller;
+
 import UseCase.UserManager;
+import Presenter.EventPresenter;
 import java.util.Scanner;
 
 public class EventManagementSystem {
 
     private UserManager user;
+    private EventPresenter presenter;
 
     public void eventSignUp() {
-
         Scanner myObj = new Scanner(System.in);
+
+        // showListOfAllowedEvents and promptIDEventSignUp
         System.out.println("Enter the id of the event that would you like to sign up for?");
         showListOfAllowedEvents();
         String response = myObj.nextLine();
+
         if (user.signUpForEvent(Integer.parseInt(response))) {
-             System.out.println("You have successfully signed up for this event.");
-             returnToEventMenu();
+            // displaySignUpOutcome
+            System.out.println("You have successfully signed up for this event.");
+            returnToEventMenu();
         }
+
+        //displaySignUpOutcome (this should be an else condition, here)
+        // maybe instead, the failure should state, try again, and loop over.
         System.out.println("Sign up failed.\n Enter (1) to sign up for a different event");
         String input = myObj.nextLine();
         int option = Integer.parseInt(input);
@@ -26,11 +35,13 @@ public class EventManagementSystem {
     }
 
     public void AttendeeCancelEvent() {
-
         Scanner myObj = new Scanner(System.in);
+
+        //maybe use promptForEventIDFromUser or build a method that uses it.
         System.out.println("Enter the id of the event that would you like to cancel your spot for? " +
                 "The input must be an integer.");
         this.ShowListOfUserEvents();
+
         String response = myObj.nextLine();
         if (user.cancelSpot(Integer.parseInt(response))) {
             System.out.println("You have successfully canceled your spot for this event.");
@@ -66,6 +77,13 @@ public class EventManagementSystem {
 
         // if the user puts in a string, the entire program crashes --> fixed by parsing
         Scanner myObj = new Scanner(System.in);
+
+        /* TODO: Wait, isn't add event supposed to create a new event?
+            Since it hasn't been created it has no id.
+            Then user should enter information about time, room, such and such
+                                                     ~~~~~ Eric
+         */
+
         System.out.println("Enter the id of the event you would like to add? The input must be an integer.");
         String eventId = myObj.nextLine();
         if (user.addEvent(Integer.parseInt(eventId))) {
@@ -102,6 +120,8 @@ public class EventManagementSystem {
     public void eventMenu() {
 
         Scanner myObj = new Scanner(System.in);
+
+        // use display event menu here.
         System.out.println("\t \t \t \t EVENTS \n (1) Sign Up \n (2) Cancel Spot \n (3) Show List Of Allowed Events " +
                 "\n (4) Events You Have Signed Up For");
         System.out.println("Choose a number for one of the options above.");
@@ -120,11 +140,13 @@ public class EventManagementSystem {
             this.ShowListOfUserEvents();
         }
         else {
+            // Instead call to display please try again
             System.out.println("Please enter a number between 1-4.");
             this.eventMenu();
         }
 
     }
+
     public void eventMenuOrganizer(){
         Scanner myObj = new Scanner(System.in);
         System.out.println("\t \t \t \t EVENTS \n (1) Add Event \n (2) Cancel Event ");
@@ -138,17 +160,22 @@ public class EventManagementSystem {
             this.cancelEvent();
         }
         else{
+            //maybe print try again or something
             System.out.println("Please either options 1 or 2.");
             this.eventMenuOrganizer();
         }
     }
+
     private void returnToEventMenu(){
+        //is this method needed.
         Scanner myObj = new Scanner(System.in);
         System.out.println("Press the Enter key to return to the Event Menu.");
         myObj.nextLine();
         this.eventMenu();
     }
+
     private void returnToEventMenuOrganizer(){
+        //is this really needed.
         Scanner myObj = new Scanner(System.in);
         System.out.println("Press the Enter key to return to the Event Menu.");
         myObj.nextLine();
