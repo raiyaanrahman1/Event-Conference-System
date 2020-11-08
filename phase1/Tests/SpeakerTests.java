@@ -27,7 +27,7 @@ public class SpeakerTests {
     @Test(timeout = 50)
     public void testSentMessagesList() {
         Speaker s1 = new Speaker("Speaker1", "1");
-        Message m = new Message("Hello", "Speaker2", "Speaker1", "11.01.2020", "13:00");
+        Message m = new Message("Hello", "Speaker2", "Speaker1");
 
         assertTrue("incorrect sentMessages list\n", s1.getSentMessages().isEmpty());
         s1.addSentMessage(m);
@@ -38,7 +38,7 @@ public class SpeakerTests {
     @Test(timeout = 50)
     public void testReceivedMessagesList() {
         Speaker s1 = new Speaker("speaker1", "1");
-        Message m = new Message("Hello", "speaker1", "speaker2", "11.01.2020", "13:00");
+        Message m = new Message("Hello", "speaker1", "speaker2");
 
         assertTrue("incorrect receivedMessages list\n", s1.getReceivedMessages().isEmpty());
         s1.addReceivedMessage(m);

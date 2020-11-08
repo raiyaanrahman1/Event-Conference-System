@@ -39,7 +39,7 @@ public class OrganizerTests {
     @Test(timeout = 50)
     public void testSentMessagesList() {
         Organizer o1 = new Organizer("organizer1", "1");
-        Message m = new Message("Hello", "organizer2", "organizer1", "11.01.2020", "13:00");
+        Message m = new Message("Hello", "organizer2", "organizer1");
 
         assertTrue("incorrect sentMessages list\n", o1.getSentMessages().isEmpty());
         o1.addSentMessage(m);
@@ -50,7 +50,7 @@ public class OrganizerTests {
     @Test(timeout = 50)
     public void testReceivedMessagesList() {
         Organizer o1 = new Organizer("organizer1", "1");
-        Message m = new Message("Hello", "organizer1", "organizer2", "11.01.2020", "13:00");
+        Message m = new Message("Hello", "organizer1", "organizer2");
 
         assertTrue("incorrect receivedMessages list\n", o1.getReceivedMessages().isEmpty());
         o1.addReceivedMessage(m);

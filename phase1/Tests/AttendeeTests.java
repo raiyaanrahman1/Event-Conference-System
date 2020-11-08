@@ -41,7 +41,7 @@ public class AttendeeTests {
     @Test(timeout = 50)
     public void testSentMessagesList() {
         Attendee a1 = new Attendee("attendee1", "1");
-        Message m = new Message("Hello", "attendee2", "attendee1", "11.01.2020", "13:00");
+        Message m = new Message("Hello", "attendee2", "attendee1");
 
         assertTrue("incorrect sentMessages list\n", a1.getSentMessages().isEmpty());
         a1.addSentMessage(m);
@@ -52,7 +52,7 @@ public class AttendeeTests {
     @Test(timeout = 50)
     public void testReceivedMessagesList() {
         Attendee a1 = new Attendee("attendee1", "1");
-        Message m = new Message("Hello", "attendee1", "attendee2", "11.01.2020", "13:00");
+        Message m = new Message("Hello", "attendee1", "attendee2");
 
         assertTrue("incorrect receivedMessages list\n", a1.getReceivedMessages().isEmpty());
         a1.addReceivedMessage(m);

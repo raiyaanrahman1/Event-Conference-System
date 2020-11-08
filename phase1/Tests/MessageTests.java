@@ -6,12 +6,12 @@ public class MessageTests {
 
     @Test(timeout = 50)
     public void testMessage(){
-        Message a = new Message("hi how are u", "uname1", "uname2", "11.01.2020", "13:00");
+        Message a = new Message("hi how are u", "uname1", "uname2");
     }
 
     @Test(timeout = 50)
     public void testMessageGetters(){
-        Message a = new Message("hi how are u", "uname1", "uname2", "11.01.2020", "13:00");
+        Message a = new Message("hi how are u", "uname1", "uname2");
         assertTrue("getContent() does not work :/", "hi how are u", a.getContent());
         assertTrue("getReceiver() does not work :/", "uname1", a.getReceiver());
         assertTrue("getSender() does not work :/", "uname2", a.getSender());
@@ -22,7 +22,7 @@ public class MessageTests {
 
     @Test(timeout = 50)
     public void testMessageSetters(){
-        Message a = new  Message("", "", "", "11.01.2020", "13:00");
+        Message a = new  Message("", "", "");
         String username1 = "uname1";
         String username2 = "uname2";
         String content = "whassssaaaap";

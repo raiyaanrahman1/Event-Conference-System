@@ -2,6 +2,7 @@ package UseCase;
 import Entity.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,10 +16,8 @@ public class UserManager{
     private AttendeeSignUp attendeeSignUp;
     private EventScheduler eventScheduler;
     private MessageManager messageManager;
-
-
-
     private List<String> userInfoList;
+
     /**
      * Creates a UserManager instance with user 'logged-in' with the username of the given user.
      *  Adds the user's username, password and type ("A", "O", "S") in the userInfoList.
@@ -163,13 +162,11 @@ public class UserManager{
      * @param sender  the username of the user that sent the message
      * @param receiver  the username of the user that is to receive the message
      * @param message  the content of the message
-     * @param date the date of the message
-     * @param time the time that the message is sent
      */
     public void message(String sender, String receiver,
-                        String message, String date, String time){
+                        String message){
         messageManager.message(getUserByUsername(sender),
-                getUserByUsername(receiver), message, date, time);
+                getUserByUsername(receiver), message);
     }
 
     /**
@@ -183,7 +180,7 @@ public class UserManager{
      */
     public boolean broadcast(String user, int eventID, String message, String date, String time){
         return messageManager.broadcast(getUserByUsername(user),
-                eventScheduler.getEventByID(eventID), message, date, time);
+                eventScheduler.getEventByID(eventID), message);
     }
 
     /**
@@ -309,5 +306,46 @@ public class UserManager{
         }
         return eventIDs;
     }
+
+    /**
+     * Get a list of the user's received messages sorted by date and time
+     *
+     * @return List of user's received messages
+     */
+    private List<Message> getSortedReceivedMessages(){
+        List<Message> receivedMessagesList = user.getReceivedMessages();
+        int n = receivedMessagesList.size();
+
+        for (int i = 0; i < n-1; i++)
+        {
+            int minimum = i;
+            for (int j = i+1; j < n; j++)
+                if (receivedMessagesList.get(j).getDateTime().isAfter(receivedMessagesList.get(minimum).getDateTime()))
+                    minimum = j;
+
+            Message tempMsg = receivedMessagesList.get(minimum);
+            receivedMessagesList.set(minimum, receivedMessagesList.get(i));
+            receivedMessagesList.set(i, tempMsg);
+        }
+        return receivedMessagesList;
+    }
+
+    /**
+     * Get a table of the user's received messages, where the first column is the username of the sender and
+     * the second column is the content of the message. This table is sorted by date and time.
+     *
+     * @return Table of strings
+     */
+    public String [][] getReceivedMessageListWithSender() {
+        List<Message> receivedMessagesList = getSortedReceivedMessages();
+        String [][] messageBySenderTable = new String [receivedMessagesList.size()][1];
+        int i = 0;
+        for (Message msg: receivedMessagesList){
+            messageBySenderTable[i][0] = msg.getSender();
+            messageBySenderTable[i][1] = msg.getContent();
+        }
+        return messageBySenderTable;
+    }
+
 }
 
