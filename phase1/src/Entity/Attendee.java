@@ -22,29 +22,6 @@ public class Attendee extends User {
     }
 
     /**
-     * Returns the broadcast rights flag for this attendee.
-     * This flag is always false, since an attendee cannot broadcast to events.
-     *
-     * @return  the attendee's broadcast rights
-     */
-    @Override
-    public boolean hasBroadcastRights() {
-        return false;
-    }
-
-    /**
-     * Returns the event creation rights flag for this attendee.
-     * This flag is always false, since only organizers can create events.
-     *
-     * @return  the attendee's event creation rights
-     */
-    @Override
-    public boolean hasEventCreatingRights() {
-        return false;
-    }
-
-
-    /**
      * Returns this attendee's contacts.
      *
      * @return  the attendee's contact list
