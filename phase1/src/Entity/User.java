@@ -23,8 +23,6 @@ public abstract class User {
         this.receivedMessages = new ArrayList<>();
         this.sentMessages = new ArrayList<>();
     }
-    public abstract boolean hasBroadcastRights();
-    public abstract boolean hasEventCreatingRights();
 
     //getter for username
     public String getUsername() {
