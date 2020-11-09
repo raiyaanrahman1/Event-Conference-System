@@ -28,7 +28,6 @@ public class EventManager {
      * @return true iff an event was added.
      */
     public boolean addEvent(String name, String room, Speaker speaker, int roomCap, LocalDate date, LocalTime time){
-        if(!user.hasEventCreatingRights()) return false;
 
         for(Event e : events){
             if(e.getDate().equals(date) && e.getTime().equals(time) &&
@@ -43,16 +42,16 @@ public class EventManager {
 
     /**
      * Remove an event to event list iff this user is an Organiser.
-     * @param event the event that will be removed
+     * @param eventID the event that will be removed
      * @return true iff the event was removed
      */
-    public boolean removeEvent(Event event){
-        if(user.hasEventCreatingRights()){
-            events.remove(event);
-            ((Organizer) user).removeOrganizedEvent(event);
-            return true;
-        }
-        return false;
+    public boolean removeEvent(int eventID){
+        Event event = this.getEventByID(eventID);
+
+        events.remove(event);
+        ((Organizer) user).removeOrganizedEvent(event);
+        return true;
+
     }
 
     /**
