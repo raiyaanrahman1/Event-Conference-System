@@ -20,16 +20,53 @@ public class UserManager{
     private ArrayList<List<String>> rawUserInfo;
 
     /**
-     * Creates a UserManager instance with user 'logged-in' with the username of the given user.
-     *  Adds the user's username, password and type ("A", "O", "S") in the userInfoList.
+     * Creates a UserManager instance with the raw user information on every existing user in the system.
+     * @param userInfo, all the information on every user in the system, obtained from the Gateway
      */
     public UserManager(ArrayList<List<String>> userInfo){
         createUserList(userInfo);
         rawUserInfo = userInfo;
-        //this.user = getUserByUsername(username);
 
     }
+    /**
+     * Gets a User by its username
+     *
+     * @param user  username of the user
+     * @return  user iff it is in userList
+     */
+    private User getUserByUsername(String user){
+        for (User u : userList){
+            if (u.getUsername().equals(user)){
+                return u;
+            }
+        }
+        return null;
+    }
 
+    /**
+     * Instantiates User objects representing the existing users in the system.
+     *
+     * @param userInfo, the raw user information read from the gateway.
+     */
+    private void createUserList(ArrayList<List<String>> userInfo){
+        userList = new ArrayList<>();
+        for (List<String> u : userInfo){
+            String type = u.get(2);
+            if (type.equals("A")){
+                userList.add(new Attendee(u.get(0), u.get(1)));
+            } else if (type.equals("O")){
+                userList.add(new Organizer(u.get(0), u.get(1)));
+            } else {
+                userList.add(new Speaker(u.get(0), u.get(1)));
+            }
+        }
+    }
+
+    /**
+     * Log-in user and updates userInfoList with username, password and type identifier ("A", "O" or "S").
+     *
+     * @param username, the username of the logged-in User
+     */
     public void logInUser(String username){
         this.user = getUserByUsername(username);
         userInfoList = new ArrayList<>();
@@ -39,6 +76,108 @@ public class UserManager{
             }
         }
     }
+
+
+    /**
+     * Gets the user that is currently logged-in
+     *
+     * @return User that is logged in
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * Gets a list containing the username, password and type identifier ("A", "O" or "S") of
+     * the current logged-in user.
+     *
+     * @return a list of Strings containing the user's username, password and type.
+     */
+    public List<String> getUserInfoList() {
+        return userInfoList;
+    }
+
+    /**
+     * Adds a user to the logged-in user's list of contacts.
+     *
+     * @param user, the username of the user to be added.
+     */
+    public void addUserToContacts(String user){
+        ((Attendee) this.user).addContact(getUserByUsername(user));
+    }
+
+    /**
+     * Removes a user to the logged-in user's list of contacts.
+     *
+     * @param user, the username of the user to be removed.
+     */
+    public void removeUserFromContacts(String user){
+        ((Attendee) this.user).removeContact(getUserByUsername(user));
+    }
+
+    /**
+     * Checks if the inputted password corresponds to the logged-in user's password.
+     * @param username, the logged-in user's username.
+     * @param password, the logged-in user's password.
+     *
+     * @return true iff the inputted password matches the logged-in user's password.
+     */
+    public boolean isPasswordCorrect(String username, String password) {
+        return getUserByUsername(username).getPassword().equals(password);
+    }
+
+    /**
+     * Creates a Speaker account iff the logged-in User is an Organiser.
+     *
+     * @param uname username of Speaker
+     * @param pword password of Speaker
+     */
+    public void createSpeakerAccount(String uname,
+                                     String pword){
+        userList.add(new Speaker(uname, pword));
+    }
+
+    /**
+     * Gets the events that this user is already signed up for, iff user is an Attendee.
+     *
+     * @return a list of event IDs corresponding to the events this user is signed up for.
+     */
+    public List<Integer> getUserEvents(){
+        return ((Attendee) user).getEventList();
+    }
+
+    /**
+     * Gets the events that this user is speaking in, iff user is an Speaker.
+     *
+     * @return a list of event IDs corresponding to the talks user is giving.
+     */
+    public List<Integer> getTalks(){
+        return ((Speaker) user).getTalks();
+    }
+
+    /**
+     * Gets the events that this user organised, iff user is an Organizer.
+     *
+     * @return a list of event IDs corresponding to the events this user organised.
+     */
+    public List<Integer> getOrganizedEvents(){
+        return ((Organizer) user).getOrganizedEvents();
+    }
+
+    /**
+     * Gets a list of the usernames of every existing user in the system.
+     *
+     * @return a list of strings representing every user's username.
+     */
+    public List<String> getSignedUpUsers() {
+        List<String> usernames = new ArrayList<>();
+        for (User user: userList) {
+            usernames.add(user.getUsername());
+        }
+        usernames.sort(null);
+        return usernames;
+    }
+
 
 //    private void createUserInfoList(){
 //        userInfoList = new ArrayList<>();
@@ -55,46 +194,6 @@ public class UserManager{
 //            userInfoList.add("S");
 //        }
 //    }
-
-    private void createUserList(ArrayList<List<String>> userInfo){
-        userList = new ArrayList<>();
-        for (List<String> u : userInfo){
-            String type = u.get(2);
-            if (type.equals("A")){
-                userList.add(new Attendee(u.get(0), u.get(1)));
-            } else if (type.equals("O")){
-                userList.add(new Organizer(u.get(0), u.get(1)));
-            } else {
-                userList.add(new Speaker(u.get(0), u.get(1)));
-            }
-        }
-    }
-
-    /**
-     * Gets the user that is currently logged-in
-     *
-     * @return User that is logged in
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * Gets the userInfoList
-     *
-     * @return a list of Strings containing the user's username, password and type.
-     */
-    public List<String> getUserInfoList() {
-        return userInfoList;
-    }
-
-    public void addUserToContacts(String user){
-        ((Attendee) this.user).addContact(getUserByUsername(user));
-    }
-
-    public void removeUserFromContacts(String user){
-        ((Attendee) this.user).removeContact(getUserByUsername(user));
-    }
     // ================ AttendeeSignUp Functionality ================
 //
 //    /**
@@ -117,17 +216,7 @@ public class UserManager{
 //        return attendeeSignUp.cancelSpot(eventScheduler.getEventByID(eventID));
 //    }
 
-    /**
-     * Creates a Speaker instance in AttendeeSignUp
-     *
-     * @param uname username of Speaker
-     * @param pword password of Speaker
-     * @return the Speaker instance
-     */
-    public void createSpeakerAccount(String uname,
-                                        String pword){
-        return null;
-    }
+
 
 //    /**
 //     * Gets the list of contacts of user from AttendeeSignUp
@@ -168,15 +257,6 @@ public class UserManager{
 //    public List<Integer> getAllowedEvents(){
 //        return eventScheduler.getAllowedEvents();
 //    }
-//
-    /**
-     * Gets the events that this user is already signed up for from EventScheduler
-     *
-     * @return a list of event IDs corresponding to the events this user is signed up for.
-     */
-    public List<Integer> getUserEvents(){
-        return null;
-    }
 //
 //
 //    // ================ MessageManager Functionality ================
@@ -221,33 +301,7 @@ public class UserManager{
 
 
     // ================ Getters, getters, getters. ================
-    /**
-     *
-     * @return
-     */
-    public List<String> getSignedUpUsers() {
-        List<String> usernames = new ArrayList<>();
-        for (User user: userList) {
-            usernames.add(user.getUsername());
-        }
-        usernames.sort(null);
-        return usernames;
-    }
 
-    /**
-     * Gets a User by its username
-     *
-     * @param user  username of the user
-     * @return  user iff it is in userList
-     */
-    private User getUserByUsername(String user){
-        for (User u : userList){
-            if (u.getUsername().equals(user)){
-                return u;
-            }
-        }
-        return null;
-    }
 
 //    /**
 //     *
@@ -265,15 +319,6 @@ public class UserManager{
 //        return usernames;
 //    }
 
-    /**
-     *
-     * @param username
-     * @param password
-     * @return
-     */
-    public boolean isPasswordCorrect(String username, String password) {
-        return getUserByUsername(username).getPassword().equals(password);
-    }
 
 //    /**
 //     * Precondition: the user has to be a speaker.
@@ -316,22 +361,6 @@ public class UserManager{
 //        return eventScheduler.getEventByID(eventID).getRoom();
 //    }
 //
-
-    public List<Integer> getTalks(){
-        List<Integer> eventIDs = new ArrayList<>();
-        for (Event event: ((Speaker) user).getTalks()) {
-            eventIDs.add(event.getEventID());
-        }
-        return eventIDs;
-    }
-
-    public List<Integer> getOrganizedEvents(){
-        List<Integer> eventIDs = new ArrayList<>();
-        for (Event event: ((Organizer) user).getOrganizedEvents()) {
-            eventIDs.add(event.getEventID());
-        }
-        return eventIDs;
-    }
 
 //    /**
 //     * Get a list of the user's received messages sorted by date and time
