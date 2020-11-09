@@ -6,8 +6,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-// Make Iterable or at least add method if you can continue reading (need to know where to stop)
-// be able to read line by line, method hasNext() like iterable
 public class FileGateway implements IGateway, Iterator<List<String>> {
 
     private List<String> lines;
@@ -18,10 +16,15 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
         this.fileName = fileName;
     }
 
+    /**
+     * Reads the file
+     * @return an arraylist of lists of strings which represents each line of the file
+     * with the user information.
+     */
     public ArrayList<List<String>> read() {
         try {
             this.lines = Files.readAllLines(Paths.get(this.fileName));
-//            ArrayList<List<String>> UserInfo = new ArrayList<>();
+            ArrayList<List<String>> UserInfo = new ArrayList<>();
             for (String l: lines) {
                 UserInfo.add(Arrays.asList(l.split(" " )));
             }
@@ -33,6 +36,10 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
         return null;
     }
 
+    /**
+     * Returns a boolean if there exists a next element in the iteration.
+     * @return whether there is a next element in the iteration
+     */
     @Override
     public boolean hasNext() {
         return this.lines.iterator().hasNext();
@@ -40,7 +47,6 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
 
     /**
      * Returns the next element in the iteration.
-     *
      * @return the next element in the iteration
      * @throws NoSuchElementException if the iteration has no more elements
      */
@@ -56,7 +62,7 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
     @Override
     public void append(List<String> content) {
         try {
-            String line = new String();
+            String line = "";
             for (String s: content){
                 line += s + " "  ;
             }

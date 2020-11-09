@@ -20,6 +20,9 @@ public class LoginSystem {
         welcome();
     }
 
+    /**
+     * Display of the main page (for now)
+     */
     public void MainPage() {
         Scanner myObj = new Scanner(System.in);
         boolean incorrectOption = false;
@@ -31,7 +34,7 @@ public class LoginSystem {
             String answer = myObj.nextLine();
             if (answer.equals("1" )) {
                 //call message system
-                msgSys.messageMenu();
+                //msgSys.messageMenu(); should be mainPage()
                 incorrectOption = false;
             } else if (answer.equals("2" )) {
                 incorrectOption = false;
@@ -47,28 +50,33 @@ public class LoginSystem {
         }while (incorrectOption) ;
     }
 
-
-
+    /**
+     * The initial page that the user sees
+     */
     public void welcome() {
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
-        System.out.println("Would you like to sign up or log in?");
+        System.out.println("Please choose 1 or 2: \n Would you like to 1. sign up or 2. log in?");
         String answer = myObj.nextLine();
-        if (answer.equals("log in")) {
+        if (answer.equals("1")) {
             logIn();
             MainPage();
         }
-        if (answer.equals("sign up")) {
+        if (answer.equals("2")) {
             signUp();
         }
     }
 
+    /**
+     * Signs out the user
+     */
     public void signOut(){
         System.out.println("Goodbye.");
         System.exit(0);
     }
 
-
-
+    /**
+     * Logs in the user
+     */
     public void logIn(){
         Scanner myObj = new Scanner(System.in);
         boolean invalidUsername = true;
@@ -96,11 +104,13 @@ public class LoginSystem {
             }
         }
         while (incorrectPassword);
-        UserManager usermanager = new UserManager(username);
+        //UserManager usermanager = new UserManager(username);
         System.out.println("Log in successful. Welcome " + username);
     }
 
-
+    /**
+     * Signs up a new user
+     */
     public void signUp(){
         System.out.println("Are you an attendee or an organizer?");
         Scanner myObj = new Scanner(System.in);
@@ -116,6 +126,9 @@ public class LoginSystem {
         logIn();
     }
 
+    /**
+     * Signs up a user with particular type Organizer
+     */
     private void signUpOrganizer(){
         Scanner myObj = new Scanner(System.in);
         String username1;
@@ -151,6 +164,9 @@ public class LoginSystem {
         g.append(userInfo);
     }
 
+    /**
+     * Signs up a user with particular type Attendee
+     */
     private void signUpAttendee() {
         Scanner myObj = new Scanner(System.in);
         String username1;
@@ -174,6 +190,12 @@ public class LoginSystem {
         g.append(userInfo);
     }
 
+    /**
+     * Helper method that checks if username exists in file
+     * @return if username is in the gateway.
+     * @param username the users username
+     * @param gt the gateway interface that stores the users data
+     */
     public boolean exists(IGateway gt, String username){
         g.read();
         while (gt.hasNext()) {
