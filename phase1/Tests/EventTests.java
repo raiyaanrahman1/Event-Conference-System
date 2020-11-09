@@ -1,6 +1,10 @@
 import Entity.Event;
 import Entity.Speaker;
 import org.junit.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import static org.junit.Assert.*;
 
 
@@ -9,33 +13,27 @@ public class EventTests {
     @Test(timeout = 50)
     public void testEvent(){
         String name = "EventA";
-        String time = "09:00";
-        String date = "01/01/20";
         String room = "a";
         Speaker speaker = new Speaker("username1","password");
-        Event event = new Event(name, time, date, room, speaker, 2);
+        Event event = new Event(name, room, speaker, 2);
 
     }
 
     @Test(timeout = 50)
     public void testEventGetters() {
         String name = "EventA";
-        String time = "09:00";
-        String date = "01/01/20";
         String room = "a";
         Speaker speaker = new Speaker("username1","password");
-        Event event = new Event(name, time, date, room, speaker, 2);
-        assertEquals(event.getDate(), date);
-        assertEquals(event.getTime(), time);
+        Event event = new Event(name, room, speaker, 2);
         assertEquals(event.getRoom(), room);
         assertEquals(event.getSpeaker(), speaker);
     }
 
     @Test(timeout = 50)
     public void  testEventSetters()   {
-        Event event = new Event("", "",  "",  "", new Speaker("",""), 2);
-        String time = "10:00";
-        String date = "02/01/20";
+        Event event = new Event("",  "", new Speaker("",""), 2);
+        LocalTime time = LocalTime.now();
+        LocalDate date = LocalDate.now();
         String room = "b";
         Speaker speaker = new Speaker("username","password1");
         event.setDate(date);
