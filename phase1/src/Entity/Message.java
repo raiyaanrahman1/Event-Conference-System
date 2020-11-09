@@ -1,6 +1,5 @@
 package Entity;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -10,8 +9,7 @@ public class Message {
     private String content;
     private String receiver; //username of receiver
     private String sender;  //username of sender
-    private LocalDate date;
-    private LocalTime time;
+    private LocalDateTime dateTime;
 
     /**
      * Creates a new message object.
@@ -24,8 +22,7 @@ public class Message {
         this.content = content;
         this.receiver = receiver;
         this.sender = sender;
-        this.date = LocalDate.now();
-        this.time = LocalTime.now();
+        this.dateTime = LocalDateTime.now();
     }
 
     /**
@@ -76,34 +73,13 @@ public class Message {
         this.sender = sender;
     }
 
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
     /**
-     * Returns the date of this message formatted dd/MM/YYYY.
+     * Gets the LocalDateTime of the message
      *
-     * @return  this message's formatted date
+     * @return the LocalDateTime
      */
-    public String getFormattedDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.
-                ofPattern("dd/MM/yyyy");
-        return getDate().format(formatter);
-    }
-
-    /**
-     * Returns the time of this message formatted hh:MM:ss.
-     *
-     * @return  this message's formatted time
-     */
-    public String getFormattedTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_TIME;
-        return getTime().format(formatter);
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     /**
@@ -115,6 +91,6 @@ public class Message {
     public String getFormattedDateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.
                 ofPattern("yyyy-MM-dd HH:mm:ss");
-        return "";
+        return getDateTime().format(formatter);
     }
 }

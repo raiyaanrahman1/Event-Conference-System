@@ -67,13 +67,12 @@ public class MessageManager {
         List<String> messages = new ArrayList<>();
 
         for (Message message: this.messages.get(receiver)) {
-            String date = message.getFormattedDate();
-            String time = message.getFormattedTime();
+            String dateTime = message.getFormattedDateTime();
             String content = message.getContent();
             String sender = message.getSender();
 
-            String formatted = String.format("%s|%s|%s|%s",
-                    sender, date, time, content);
+            String formatted = String.format("%s|%s|%s",
+                    sender, dateTime, content);
             messages.add(formatted);
         }
 
