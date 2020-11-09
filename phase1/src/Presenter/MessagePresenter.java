@@ -53,10 +53,23 @@ public class MessagePresenter {
             String answer = myObj.nextLine();
             if (answer.equals("1")){
                 incorrectOption = false;
-                ViewReceivedMessages();
+                String[][] messageBySenderTable = messenger.viewReceivedMessages();
+                System.out.println("Would you like to: \n 1. Reply \n 2. Go back to previous menu.");
+                String response = myObj.nextLine();
+                boolean invalidInput = false;
+                do {
+                    if (response.equals("1")){
+                        messenger.replyMessage(messageBySenderTable);
+                    } else if (response.equals("2")){
+                        messenger.messageAttendee();
+                    } else {
+                        invalidInput = true;
+                    }
+                }
+                while (invalidInput);
             } else if (answer.equals("2")){
                 incorrectOption = false;
-                messenger.MessageUser();
+                messenger.messageAttendee();
             } else if (answer.equals("3")){
                 incorrectOption = false;
                 mainPage();
@@ -79,114 +92,21 @@ public class MessagePresenter {
             String answer = myObj.nextLine();
             if (answer.equals("1")){
                 incorrectOption = false;
-                formatContactList();
+                messenger.formatContactList();
             } else if (answer.equals("2")){
                 incorrectOption = false;
-                addUser();
+                messenger.addUser();
             } else if (answer.equals("3")){
                 incorrectOption = false;
-                removeUser();
+                messenger.removeUser();
             } else if (answer.equals("4")){
                 incorrectOption = false;
-                viewMessages();
+                messenger.viewMessages();
             } else {
                 incorrectOption = true;
             }
 
-
         } while (incorrectOption);
     }
 
-    private List<String> sortByMostRecent(List<String> messages){
-        // Implement a date or message comparator? or do we make messages comparable
-        // should this sorter have its own class and be used on events or whatever as well
-        return null;
-    }
-
-    public void formatContactList(){
-        List<String> contacts = user.getContactList();
-        // Alphabetical sort
-        contacts.sort(null);
-        int i = 0;
-        for (String s : contacts){
-            i++;
-            System.out.println(i + ". " + s + "\n");
-        }
-    }
-
-    public void addUser(){
-        Scanner myObj = new Scanner(System.in);
-        System.out.print("Input the username of the user you wish to add:");
-        String user2 = myObj.nextLine();
-        boolean invalidInput = true;
-        do{
-            if (!user.getSignedUpUsers().contains(user2)){
-                System.out.println("This user doesn't exist! Please enter a valid user:");
-                invalidInput = true;
-            } else {
-                user.addUserToContacts(user2);
-                invalidInput = false;
-            }
-
-        } while(invalidInput);
-    }
-
-    public void removeUser(){
-        Scanner myObj = new Scanner(System.in);
-        System.out.print("Input the username of the user you wish to remove:");
-        String user2 = myObj.nextLine();
-        boolean invalidInput = false;
-        do{
-            if (!user.getSignedUpUsers().contains(user2)){
-                invalidInput = true;
-                System.out.println("This user doesn't exist! Please enter a valid user:");
-            } else if (!user.getContactList().contains(user2)){
-                invalidInput = true;
-                System.out.println("This user is not in your contacts! Please enter a valid user:");
-            } else {
-                invalidInput = false;
-                user.removeUserFromContacts(user2);
-            }
-
-        } while(invalidInput);
-    }
-
-    private void formatMessages(String sender){
-        List <String> messages = user.getMessages(user.getUserInfoList().get(0), sender);
-        List <String> sorted = sortByMostRecent(messages);
-        for (String msg : sorted){
-            System.out.println(msg);
-        }
-
-    }
-    public void viewMessages(){
-        Scanner myObj = new Scanner(System.in);
-        System.out.print("Please input the user you wish to view messages from:");
-        String sender = myObj.nextLine();
-        boolean invalidInput = false;
-        do{
-            if (!user.getSignedUpUsers().contains(sender)){
-                invalidInput = true;
-                System.out.println("This user doesn't exist! Please enter a valid user:");
-            } else if (!user.getContactList().contains(sender)){
-                invalidInput = true;
-                System.out.println("This user is not in your contacts! Please enter a valid user:");
-            } else {
-                invalidInput = false;
-                formatMessages(sender);
-                //messenger.getSpecificMessages(); this creates another Scanner though?
-            }
-
-        } while(invalidInput);
-    }
-
-    public void ViewReceivedMessages() {
-        String [][] messageBySenderTable = user.getReceivedMessageListWithSender();
-        System.out.println("Inbox \n");
-        for(int i = 0; i < messageBySenderTable.length; i++){
-            String sender = messageBySenderTable[i][0];
-            String content = messageBySenderTable[i][1];
-            System.out.println("From " + sender + ": " + content);
-        }
-    }
 }
