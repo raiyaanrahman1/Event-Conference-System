@@ -1,8 +1,5 @@
 package UseCase;
-import Entity.Event;
-import Entity.Attendee;
-import Entity.Organizer;
-import Entity.User;
+import Entity.*;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -11,20 +8,20 @@ import java.util.ArrayList;
  * Part of the Scheduling System and is responsible for the scheduling of events.
  * Operates by requests through UserManager.
  */
-public class EventScheduler {
-    private Attendee user;
+public class EventManager {
+    private User user;
     private ArrayList<Event> events;
 
     /**
      * Creates an EventScheduler instance with user 'logged-in'.
      * @param user The current Attendee that is logged-in.
      */
-    public EventScheduler(Attendee user) {
+    public EventManager(Attendee user) {
         this.user = user;
         this.events = new ArrayList<>();
     }
 
-    public void logInUser(Attendee user){
+    public void logInUser(User user){
         this.user = user;
     }
 
@@ -121,4 +118,53 @@ public class EventScheduler {
     public List<Event> getAllEvents() {
         return events;
     }
+
+
+    private boolean conflictingTime(Event event, List<Event> eventList) {
+        for (Event e : eventList){
+            if (e.getTime().equals(event.getTime())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Signs up attendee for event.
+     * @param event The event this Attendee wants to sign up for
+     * @return true iff attendee was signed up for event.
+     */
+    public boolean signUpForEvent(Event event){
+        // check if Attendee is attending a talk scheduled at the same time but in a different room
+        if (!conflictingTime(event, attendee.getEventList()) &&
+                event.getAttendees().size() + 1 <= event.getRoomCap() &&
+                !attendee.getEventList().contains(event)){
+            attendee.addEvent(event);
+            event.addAttendee(attendee);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Cancels attendee's spot in event.
+     * @param event The event this Attendee wants to cancel
+     * @return true iff this attendee's spot in event was cancelled.
+     */
+    public boolean cancelSpot(Event event){
+        if (attendee.getEventList().contains(event)) {
+            attendee.cancelEvent(event);
+            event.removeAttendee(attendee);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public Attendee getCurrentUser() {
+        return attendee;
+    }
+
 }

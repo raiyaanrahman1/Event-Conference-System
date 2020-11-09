@@ -74,8 +74,6 @@ public class AttendeeSignUp {
         if (attendee.hasBroadcastRights() && attendee.hasEventCreatingRights()){
             return new Speaker(uname, pword);
         }
-        // should throw an exception that we haven't coded yet
-        return null;
     }
 
     public Attendee getCurrentUser() {
