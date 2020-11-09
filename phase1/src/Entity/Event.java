@@ -28,10 +28,10 @@ public class Event {
      * @param speaker  the Event's Speaker
      * @param roomCap the Event's maximum capacity of attendees
      */
-    public Event(String name, String room, Speaker speaker, int roomCap) {
+    public Event(String name, String room, Speaker speaker, int roomCap, LocalDate date, LocalTime time) {
         this.name = name;
-        this.time = LocalTime.now();
-        this.date = LocalDate.now();
+        this.time = time;
+        this.date = date;
         this.room = room;
         this.speaker = speaker;
         this.attendees = new ArrayList<>();

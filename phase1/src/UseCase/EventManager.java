@@ -1,6 +1,8 @@
 package UseCase;
 import Entity.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,7 +11,7 @@ import java.util.ArrayList;
  * Operates by requests through UserManager.
  */
 public class EventManager {
-    private User user;
+    private Attendee user;
     private ArrayList<Event> events;
 
     /**
@@ -21,23 +23,19 @@ public class EventManager {
         this.events = new ArrayList<>();
     }
 
-    public void logInUser(User user){
-        this.user = user;
-    }
-
     /**
      * Adds a new event to event list iff this user is an Organiser.
-     * @param event the event that will be added
      * @return true iff an event was added.
      */
-    public boolean addEvent(Event event){
+    public boolean addEvent(String name, String room, Speaker speaker, int roomCap, LocalDate date, LocalTime time){
         if(!user.hasEventCreatingRights()) return false;
 
         for(Event e : events){
-            if(event.getDate().equals(e.getDate()) && event.getTime().equals(e.getTime()) &&
-                    (event.getRoom().equals(e.getRoom()) || event.getSpeaker().equals(e.getSpeaker()))) return false;
+            if(e.getDate().equals(date) && e.getTime().equals(time) &&
+                    (e.getRoom().equals(room) || e.getSpeaker().equals(speaker))) return false;
 
         }
+        Event event = new Event(name, room, speaker, roomCap, date, time);
         events.add(event);
         ((Organizer) user).addOrganizedEvent(event);
         return true;
@@ -89,7 +87,7 @@ public class EventManager {
      * @param ID the ID of the event we want to get
      * @return the Event object corresponding to ID iff the ID corresponds to an existing Event.
      */
-    public Event getEventByID(int ID){
+    private Event getEventByID(int ID){
         for (Event e: events){
             if (e.getEventID() == ID){
                 return e;
@@ -136,11 +134,11 @@ public class EventManager {
      */
     public boolean signUpForEvent(Event event){
         // check if Attendee is attending a talk scheduled at the same time but in a different room
-        if (!conflictingTime(event, attendee.getEventList()) &&
+        if (!conflictingTime(event, user.getEventList()) &&
                 event.getAttendees().size() + 1 <= event.getRoomCap() &&
-                !attendee.getEventList().contains(event)){
-            attendee.addEvent(event);
-            event.addAttendee(attendee);
+                !user.getEventList().contains(event)){
+            user.addEvent(event);
+            event.addAttendee(user);
             return true;
         } else {
             return false;
@@ -153,18 +151,64 @@ public class EventManager {
      * @return true iff this attendee's spot in event was cancelled.
      */
     public boolean cancelSpot(Event event){
-        if (attendee.getEventList().contains(event)) {
-            attendee.cancelEvent(event);
-            event.removeAttendee(attendee);
+         if (user.getEventList().contains(event)) {
+            user.cancelEvent(event);
+            event.removeAttendee(user);
             return true;
         } else {
             return false;
         }
     }
 
+    public List<String> getUsersInEvent(int eventID) {
+        Event event = this.getEventByID(eventID);
 
-    public Attendee getCurrentUser() {
-        return attendee;
+        List<String> usernames = new ArrayList<>();
+        for (User u: event.getAttendees()) {
+            usernames.add(u.getUsername());
+        }
+
+        return usernames;
+    }
+
+    public List<Integer> getEventsBySpeaker(String username) {
+        List<Integer> eventIDs = new ArrayList<>();
+        for(Event e : this.events){
+            if(e.getSpeaker().getUsername().equals(username)) eventIDs.add(e.getEventID());
+        }
+        return eventIDs;
+    }
+
+    /**
+     //     *
+     //     * @param eventID
+     //     * @return
+     //     */
+    public String getTimeByEventID(int eventID) {
+        return this.getEventByID(eventID).getTime().toString();
+    }
+
+    /**
+     *
+     * @param eventID
+     * @return
+     */
+    public String getDateByEventID(int eventID) {
+        return this.getEventByID(eventID).getDate().toString();
+    }
+
+    /**
+     //     *
+     //     * @param eventID
+     //     * @return
+     //     */
+    public String getRoomByEventID(int eventID) {
+        return this.getEventByID(eventID).getRoom();
+    }
+
+
+    public User getCurrentUser() {
+        return user;
     }
 
 }
