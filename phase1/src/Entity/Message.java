@@ -1,5 +1,6 @@
 package Entity;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * The Message class represents a message between two users.
@@ -8,7 +9,8 @@ public class Message {
     private String content;
     private String receiver; //username of receiver
     private String sender;  //username of sender
-    private LocalDateTime dateTime;
+    private LocalDate date;
+    private LocalTime time;
 
     /**
      * Creates a new message object.
@@ -21,7 +23,8 @@ public class Message {
         this.content = content;
         this.receiver = receiver;
         this.sender = sender;
-        this.dateTime = LocalDateTime.now();
+        this.date = LocalDate.now();
+        this.time = LocalTime.now();
     }
 
     /**
@@ -73,7 +76,11 @@ public class Message {
     }
 
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getTime() {
+        return time;
     }
 }
