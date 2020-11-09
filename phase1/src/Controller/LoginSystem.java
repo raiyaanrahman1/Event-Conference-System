@@ -2,8 +2,8 @@ package Controller;
 import Entity.User;
 import Gateway.FileGateway;
 import Gateway.IGateway;
+import Presenter.LogInSignUpPresenter;
 import UseCase.UserManager;
-
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,30 +24,23 @@ public class LoginSystem {
      * Display of the main page (for now)
      */
     public void MainPage() {
-        Scanner myObj = new Scanner(System.in);
-        boolean incorrectOption = false;
+        int answer;
         do {
-            System.out.println("Choose the number of the option" );
-            System.out.println("1. Messages \n" +
-                    "2. Events \n" +
-                    "3. Log Out" );
-            String answer = myObj.nextLine();
-            if (answer.equals("1" )) {
+            LogInSignUpPresenter loginPresenter = new LogInSignUpPresenter();
+
+            answer = loginPresenter.menu();
+            if (answer == 1) {
                 //call message system
-                //msgSys.messageMenu(); should be mainPage()
-                incorrectOption = false;
-            } else if (answer.equals("2" )) {
-                incorrectOption = false;
+                msgSys.messageMenu();
+            } else if (answer == 2) {
                 eventSys.eventMenu();
-            } else if (answer.equals("3" )) {
+            } else if (answer == 3) {
                 // log out
-                incorrectOption = false;
                 signOut();
             } else {
-                incorrectOption = true;
+                answer = loginPresenter.menu();
             }
-        System.out.println("Please enter a valid option.");
-        }while (incorrectOption) ;
+        }while (answer != 1 && answer != 2 && answer != 3) ;
     }
 
     /**

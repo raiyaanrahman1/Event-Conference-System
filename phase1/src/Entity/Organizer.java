@@ -24,25 +24,7 @@ public class Organizer extends Attendee{
         this.eventList = new ArrayList<>();
     }
 
-    /**
-     * Returns true to allow Organizer to mass message the attendees of an event
-     */
-    @Override
-    public boolean hasBroadcastRights() {
-        return true;
-    }
 
-    /**
-     * Returns true to allow Organizer to create events
-     */
-    @Override
-    public boolean hasEventCreatingRights() {
-        return true;
-    }
-
-    /**
-     * Returns a list of events that the organizer created
-     */
     public List<Event> getOrganizedEvents() {
         return organizedEvents;
     }
