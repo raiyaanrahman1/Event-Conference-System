@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;  // Import the Scanner class
 
 public class LoginSystem {
-
+    // UserManager user;
     MessengerSystem msgSys = new MessengerSystem();
     EventManagementSystem eventSys = new EventManagementSystem();
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
