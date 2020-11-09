@@ -1,6 +1,7 @@
 package Entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The Message class represents a message between two users.
@@ -82,5 +83,38 @@ public class Message {
 
     public LocalTime getTime() {
         return time;
+    }
+
+    /**
+     * Returns the date of this message formatted dd/MM/YYYY.
+     *
+     * @return  this message's formatted date
+     */
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.
+                ofPattern("dd/MM/yyyy");
+        return getDate().format(formatter);
+    }
+
+    /**
+     * Returns the time of this message formatted hh:MM:ss.
+     *
+     * @return  this message's formatted time
+     */
+    public String getFormattedTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_TIME;
+        return getTime().format(formatter);
+    }
+
+    /**
+     * Returns the datetime of this message formatted
+     * dd/MM/yyyy HH:MM:ss.
+     *
+     * @return  this message's formatted time
+     */
+    public String getFormattedDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.
+                ofPattern("yyyy-MM-dd HH:mm:ss");
+        return "";
     }
 }
