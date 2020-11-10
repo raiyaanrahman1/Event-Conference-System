@@ -10,6 +10,7 @@ public class Message {
     private String receiver; //username of receiver
     private String sender;  //username of sender
     private LocalDateTime dateTime;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     /**
      * Creates a new message object.
@@ -23,6 +24,20 @@ public class Message {
         this.receiver = receiver;
         this.sender = sender;
         this.dateTime = LocalDateTime.now();
+    }
+
+    /**
+     * Creates a new message object.
+     *
+     * @param content  the Message's content
+     * @param receiver  the username of the user that sends the Message
+     * @param sender  the username of the user that receives the Message
+     */
+    public Message(String content, String receiver, String sender, String dateTime) {
+        this.content = content;
+        this.receiver = receiver;
+        this.sender = sender;
+        this.dateTime = LocalDateTime.parse(dateTime, this.formatter);
     }
 
     /**
@@ -89,8 +104,6 @@ public class Message {
      * @return  this message's formatted time
      */
     public String getFormattedDateTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.
-                ofPattern("yyyy-MM-dd HH:mm:ss");
-        return getDateTime().format(formatter);
+        return getDateTime().format(this.formatter);
     }
 }

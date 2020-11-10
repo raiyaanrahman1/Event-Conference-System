@@ -2,6 +2,8 @@ package UseCase;
 
 import Entity.Message;
 
+import Gateway.IGateway2;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -10,8 +12,7 @@ import java.util.Comparator;
 
 /**
  * The MessageManager class manages communications between users.
- * TODO: Figure out the initialization of this class. Build a constructor that
- *  initializes the message manager from a gateway and a builder class.
+ * TODO: Test this new initializer.
  */
 public class MessageManager {
 
@@ -26,6 +27,32 @@ public class MessageManager {
      */
     public MessageManager() {
         messages = new HashMap<>();
+    }
+
+    /**
+     * Constructs a map from the file.
+     * The file should be formatted like so:
+     *   receiver|sender|dateTime|content
+     */
+    public MessageManager(IGateway2 gateway) {
+        messages = new HashMap<>();
+
+        gateway.openForRead();
+        List<String> formattedMessages = this.getStoredMessages(gateway);
+        gateway.closeForRead();
+
+        for (String formattedMessage: formattedMessages) {
+            String[] tokens = formattedMessage.split("\\|");
+
+            String receiver = tokens[0];
+            String sender = tokens[1];
+            String dateTime = tokens[2];
+            String content = tokens[3];
+
+            Message message = new Message(content, receiver, sender, dateTime);
+
+            this.addMessage(receiver, message);
+        }
     }
 
     /**
@@ -114,6 +141,22 @@ public class MessageManager {
      */
     private void addUser(String receiver) {
         this.messages.put(receiver, new ArrayList<>());
+    }
+
+    /**
+     * Gets the strings that represent each message to the manager.
+     * Each string should be formatted in the manner:
+     *          (receiver)|(sender)|(datetime)|(content)
+     *
+     * @param gateway2  the interface that holds the message data
+     * @return  a list of formatted messages
+     */
+    private List<String> getStoredMessages(IGateway2 gateway2) {
+        List<String> formattedMessageStrings = new ArrayList<>();
+        while (gateway2.hasNext()) {
+            formattedMessageStrings.add(gateway2.next());
+        }
+        return formattedMessageStrings;
     }
 
     /**
