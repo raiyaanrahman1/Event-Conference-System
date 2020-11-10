@@ -128,10 +128,11 @@ public class EventManager {
 
     /**
      * Signs up attendee for event.
-     * @param event The event this Attendee wants to sign up for
+     * @param eventID The event this Attendee wants to sign up for
      * @return true iff attendee was signed up for event.
      */
-    public boolean signUpForEvent(Event event){
+    public boolean signUpForEvent(int eventID){
+        Event event = this.getEventByID(eventID);
         // check if Attendee is attending a talk scheduled at the same time but in a different room
         if (!conflictingTime(event, user.getEventList()) &&
                 event.getAttendees().size() + 1 <= event.getRoomCap() &&
@@ -146,10 +147,11 @@ public class EventManager {
 
     /**
      * Cancels attendee's spot in event.
-     * @param event The event this Attendee wants to cancel
+     * @param eventID The event this Attendee wants to cancel
      * @return true iff this attendee's spot in event was cancelled.
      */
-    public boolean cancelSpot(Event event){
+    public boolean cancelSpot(int eventID){
+        Event event = this.getEventByID(eventID);
          if (user.getEventList().contains(event)) {
             user.cancelEvent(event);
             event.removeAttendee(user);
