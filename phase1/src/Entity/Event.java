@@ -1,18 +1,17 @@
 package Entity;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalTime;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * The Event class represents an event in the conference.
  */
 public class Event {
     private List<Attendee> attendees;
-    private LocalTime time; // 24 hour clock time between 09:00 and 17:00
-
-    private LocalDate date; // mm/dd/yy
+    private LocalDateTime dateTime;
     private String room;
     private Speaker speaker; //perhaps more than one speaker in phase 2
     private int roomCap;
@@ -27,11 +26,11 @@ public class Event {
      * @param room  the Event's room
      * @param speaker  the Event's Speaker
      * @param roomCap the Event's maximum capacity of attendees
+     * @param dateTime the date and time of the event
      */
-    public Event(String name, String room, Speaker speaker, int roomCap, LocalDate date, LocalTime time) {
+    public Event(String name, String room, Speaker speaker, int roomCap, LocalDateTime dateTime) {
         this.name = name;
-        this.time = time;
-        this.date = date;
+        this.dateTime = dateTime;
         this.room = room;
         this.speaker = speaker;
         this.attendees = new ArrayList<>();
@@ -48,7 +47,7 @@ public class Event {
      */
     @Override
     public String toString() {
-        return  name + " at " + time.toString() + " " + date.toString() + " in room " + room + ". Speaker: " + speaker;
+        return  name + " at " + getFormattedDateTime() + " " + " in room " + room + ". Speaker: " + speaker;
     }
 
     /**
@@ -74,41 +73,6 @@ public class Event {
      */
     public void removeAttendee(Attendee attendee){
         this.attendees.remove(attendee);
-    }
-
-    /**
-     * Gets the time of this event
-     * @return the local time
-     */
-    public LocalTime getTime() {
-        return time;
-    }
-
-    /**
-     * Sets the time of this event
-     *
-     * @param time LocalTime.now() of the event
-     */
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
-
-    /**
-     * Gets the date of this event
-     *
-     * @return the Local date
-     */
-    public LocalDate getDate() {
-        return date;
-    }
-
-    /**
-     * Sets the date of the event
-     *
-     * @param date LocalDate.now() of the event
-     */
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
 
@@ -154,5 +118,35 @@ public class Event {
      */
     public int getRoomCap() {
         return roomCap;
+    }
+
+    /**
+     * Gets the LocalDateTime of the message
+     *
+     * @return the LocalDateTime
+     */
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    /**
+     * Sets the LocalDateTime of the message
+     *
+     * @param  dateTime the date and time of the event
+     */
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    /**
+     * Returns the datetime of this message formatted
+     * dd/MM/yyyy HH:MM:ss.
+     *
+     * @return  this message's formatted time
+     */
+    public String getFormattedDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.
+                ofPattern("yyyy-MM-dd HH:mm:ss");
+        return getDateTime().format(formatter);
     }
 }
