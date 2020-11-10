@@ -23,7 +23,7 @@ public class MessageManager {
     /**
      * Constructs default map, an empty one.
      */
-    private MessageManager() {
+    public MessageManager() {
         messages = new HashMap<>();
     }
 
