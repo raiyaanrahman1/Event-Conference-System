@@ -2,6 +2,7 @@ package UseCase;
 import Entity.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
@@ -27,14 +28,14 @@ public class EventManager {
      * Adds a new event to event list iff this user is an Organiser.
      * @return true iff an event was added.
      */
-    public boolean addEvent(String name, String room, Speaker speaker, int roomCap, LocalDate date, LocalTime time){
+    public boolean addEvent(String name, String room, String speaker, int roomCap, LocalDateTime dateTime){
 
         for(Event e : events){
-            if(e.getDate().equals(date) && e.getTime().equals(time) &&
+            if(e.getDateTime().equals(dateTime) &&
                     (e.getRoom().equals(room) || e.getSpeaker().equals(speaker))) return false;
 
         }
-        Event event = new Event(name, room, speaker, roomCap, date, time);
+        Event event = new Event(name, room, speaker, roomCap, dateTime);
         events.add(event);
         ((Organizer) user).addOrganizedEvent(event);
         return true;
@@ -68,18 +69,6 @@ public class EventManager {
         return allowedEvents;
     }
 
-    /**
-     * Gets the events that this user is already signed up for.
-     * @return a list of event IDs corresponding to the events this user is signed up for.
-     */
-    public List<Integer> getUserEvents(){
-        List<Event> eventList = user.getEventList();
-        List<Integer> eventIDList = new ArrayList<>();
-        for (Event e: eventList){
-            eventIDList.add(e.getEventID());
-        }
-        return eventIDList;
-    }
 
     /**
      * Get the event object by its ID.
@@ -104,7 +93,7 @@ public class EventManager {
 
     private boolean conflictingTime(Event event, List<Event> eventList) {
         for (Event e : eventList){
-            if (e.getTime().equals(event.getTime())) {
+            if (e.getDateTime().equals(event.getDateTime())) {
                 return false;
             }
         }
@@ -150,8 +139,8 @@ public class EventManager {
         Event event = this.getEventByID(eventID);
 
         List<String> usernames = new ArrayList<>();
-        for (User u: event.getAttendees()) {
-            usernames.add(u.getUsername());
+        for (String user: event.getAttendees()) {
+            usernames.add(user);
         }
 
         return usernames;
@@ -160,34 +149,18 @@ public class EventManager {
     public List<Integer> getEventsBySpeaker(String username) {
         List<Integer> eventIDs = new ArrayList<>();
         for(Event e : this.events){
-            if(e.getSpeaker().getUsername().equals(username)) eventIDs.add(e.getEventID());
+            if(e.getSpeaker().equals(username)) {
+                eventIDs.add(e.getEventID());
+            }
         }
         return eventIDs;
     }
 
-    /**
-     //     *
-     //     * @param eventID
-     //     * @return
-     //     */
-    public String getTimeByEventID(int eventID) {
-        return this.getEventByID(eventID).getTime().toString();
+    public String getDateTimeByEventID(int eventID) {
+        return this.getEventByID(eventID).getDateTime().toString();
     }
 
-    /**
-     *
-     * @param eventID
-     * @return
-     */
-    public String getDateByEventID(int eventID) {
-        return this.getEventByID(eventID).getDate().toString();
-    }
 
-    /**
-     //     *
-     //     * @param eventID
-     //     * @return
-     //     */
     public String getRoomByEventID(int eventID) {
         return this.getEventByID(eventID).getRoom();
     }
