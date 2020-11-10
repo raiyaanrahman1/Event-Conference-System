@@ -13,9 +13,6 @@ public class UserManager{
 
     private User user;
     private List<User> userList;
-//    private AttendeeSignUp attendeeSignUp;
-//    private EventScheduler eventScheduler;
-//    private MessageManager messageManager;
     private List<String> userInfoList;
     private ArrayList<List<String>> rawUserInfo;
 
@@ -103,7 +100,7 @@ public class UserManager{
      * @param user, the username of the user to be added.
      */
     public void addUserToContacts(String user){
-        ((Attendee) this.user).addContact(getUserByUsername(user));
+        ((Attendee) this.user).addContact(user);
     }
 
     /**
@@ -112,7 +109,7 @@ public class UserManager{
      * @param user, the username of the user to be removed.
      */
     public void removeUserFromContacts(String user){
-        ((Attendee) this.user).removeContact(getUserByUsername(user));
+        ((Attendee) this.user).removeContact(user);
     }
 
     /**
@@ -138,33 +135,6 @@ public class UserManager{
     }
 
     /**
-     * Gets the events that this user is already signed up for, iff user is an Attendee.
-     *
-     * @return a list of event IDs corresponding to the events this user is signed up for.
-     */
-    public List<Integer> getUserEvents(){
-        return ((Attendee) user).getEventList();
-    }
-
-    /**
-     * Gets the events that this user is speaking in, iff user is an Speaker.
-     *
-     * @return a list of event IDs corresponding to the talks user is giving.
-     */
-    public List<Integer> getTalks(){
-        return ((Speaker) user).getTalks();
-    }
-
-    /**
-     * Gets the events that this user organised, iff user is an Organizer.
-     *
-     * @return a list of event IDs corresponding to the events this user organised.
-     */
-    public List<Integer> getOrganizedEvents(){
-        return ((Organizer) user).getOrganizedEvents();
-    }
-
-    /**
      * Gets a list of the usernames of every existing user in the system.
      *
      * @return a list of strings representing every user's username.
@@ -178,248 +148,14 @@ public class UserManager{
         return usernames;
     }
 
-
-//    private void createUserInfoList(){
-//        userInfoList = new ArrayList<>();
-//        userInfoList.add(this.user.getUsername());
-//        userInfoList.add(this.user.getPassword());
-//
-//        if (this.user instanceof Organizer){
-//            userInfoList.add("O");
-//        }
-//        else if (this.user instanceof Attendee){
-//            userInfoList.add("A");
-//        }
-//        else{
-//            userInfoList.add("S");
-//        }
-//    }
-    // ================ AttendeeSignUp Functionality ================
-//
-//    /**
-//     * Signs up user for an event in AttendeeSignUp
-//     *
-//     * @param eventID the ID of the event to sign up for
-//     * @return true iff the user was signed up for the event
-//     */
-//    public boolean signUpForEvent(int eventID){
-//        return attendeeSignUp.signUpForEvent(eventScheduler.getEventByID(eventID));
-//    }
-//
-//    /**
-//     * Cancels spot of user in an event in AttendeeSignUp
-//     *
-//     * @param eventID the ID of the event where we want to cancel the spot of a user
-//     * @return  true iff this user's spot in event was cancelled.
-//     */
-//    public boolean cancelSpot(int eventID){
-//        return attendeeSignUp.cancelSpot(eventScheduler.getEventByID(eventID));
-//    }
-
-
-
-//    /**
-//     * Gets the list of contacts of user from AttendeeSignUp
-//     *
-//     * @return list of users
-//     */
+    /**
+     * Gets user's contact list.
+     *
+     * @return the usernames of the contacts of user
+     */
     public List<String> getContactList(){
-        List<User> users = ((Attendee) user).getContacts();
-        List<String> userList = new ArrayList<>();
-        for (User u : users){
-            userList.add(u.getUsername());
-        }
-        return userList;
+        return user.getContacts();
     }
-
-    // ================ EventScheduler Functionality ================
-//
-//    /**
-//     * Adds an event to the event list of in EventScheduler
-//     *
-//     * @param eventID the ID of the event to add
-//     * @return  true iff the event is added
-//     */
-//    public boolean addEvent(int eventID){
-//        return eventScheduler.addEvent(eventScheduler.getEventByID(eventID));
-//    }
-//
-//    /**
-//     * Removes an event from the event list of EventScheduler
-//     *
-//     * @param eventID  the ID of the event to remove
-//     * @return  true iff the event is removed
-//     */
-//    public boolean removeEvent(int eventID){
-//        return eventScheduler.removeEvent(eventScheduler.getEventByID(eventID));
-//    }
-//
-//    /**
-//     * Gets the allowed events that this user may sign up for from EventScheduler
-//     *
-//     * @return a list of event IDs corresponding to the allowed events that this user may sign up for.
-//     */
-//    public List<Integer> getAllowedEvents(){
-//        return eventScheduler.getAllowedEvents();
-//    }
-//
-//
-//    // ================ MessageManager Functionality ================
-//
-//    /**
-//     * Sends a message between users in MessageManager
-//     *
-//     * @param sender  the username of the user that sent the message
-//     * @param receiver  the username of the user that is to receive the message
-//     * @param message  the content of the message
-//     */
-//    public void message(String sender, String receiver,
-//                        String message){
-//        messageManager.message(getUserByUsername(sender),
-//                getUserByUsername(receiver), message);
-//    }
-//
-//    /**
-//     * Broadcasts a message to an event in Message Manager
-//     *
-//     * @param user  the username of the user that broadcasts the message
-//     * @param eventID  the eventID of the event where the message is broadcast
-//     * @param message  the content of the message
-//     * @param date the date of the message
-//     * @param time the time that the message is sent
-//     */
-//    public boolean broadcast(String user, int eventID, String message, String date, String time){
-//        return messageManager.broadcast(getUserByUsername(user),
-//                eventScheduler.getEventByID(eventID), message);
-//    }
-//
-//    /**
-//     * Gets the messages between given users in MessageManager
-//     *
-//     * @param sender  the username of the sender of the messages
-//     * @param receiver   the username of the receiver of the messages
-//     */
-//    public List<String> getMessages(String sender, String receiver) {
-//        return messageManager.getMessages(getUserByUsername(sender),
-//                getUserByUsername(receiver));
-//    }
-
-
-    // ================ Getters, getters, getters. ================
-
-
-//    /**
-//     *
-//     * @param eventID
-//     * @return
-//     */
-//    public List<String> getUsersInEvent(int eventID) {
-//        Event event = eventScheduler.getEventByID(eventID);
-//
-//        List<String> usernames = new ArrayList<>();
-//        for (User user: event.getAttendees()) {
-//            usernames.add(user.getUsername());
-//        }
-//
-//        return usernames;
-//    }
-
-
-//    /**
-//     * Precondition: the user has to be a speaker.
-//     * @param username
-//     * @return
-//     */
-//    public List<Integer> getEventsBySpeaker(String username) {
-//        List<Integer> eventIDs = new ArrayList<>();
-//        List<Event> talks = eventScheduler.getEventsBySpeaker(getUserByUsername(username));
-//        for (Event event: talks) {
-//            eventIDs.add(event.getEventID());
-//        }
-//        return eventIDs;
-//    }
-//
-//    /**
-//     *
-//     * @param eventID
-//     * @return
-//     */
-//    public String getTimeByEventID(int eventID) {
-//        return eventScheduler.getEventByID(eventID).getTime();
-//    }
-//
-//    /**
-//     *
-//     * @param eventID
-//     * @return
-//     */
-//    public String getDateByEventID(int eventID) {
-//        return eventScheduler.getEventByID(eventID).getDate();
-//    }
-//
-//    /**
-//     *
-//     * @param eventID
-//     * @return
-//     */
-//    public String getRoomByEventID(int eventID) {
-//        return eventScheduler.getEventByID(eventID).getRoom();
-//    }
-//
-
-//    /**
-//     * Get a list of the user's received messages sorted by date and time
-//     * TODO: test order of saved messages (if it maintains chronological order)
-//     * @return List of user's received messages
-//     */
-//    private List<Message> getSortedReceivedMessages(){
-//        List<Message> receivedMessagesList = user.getReceivedMessages();
-//        int n = receivedMessagesList.size();
-//
-//        for (int i = 0; i < n-1; i++)
-//        {
-//            int minimum = i;
-//            for (int j = i+1; j < n; j++)
-//                if (receivedMessagesList.get(j).getDateTime().isAfter(receivedMessagesList.get(minimum).getDateTime()))
-//                    minimum = j;
-//
-//            Message tempMsg = receivedMessagesList.get(minimum);
-//            receivedMessagesList.set(minimum, receivedMessagesList.get(i));
-//            receivedMessagesList.set(i, tempMsg);
-//        }
-//        return receivedMessagesList;
-//    }
-//
-//    /**
-//     * Get a table of the user's received messages, where the first column is the username of the sender and
-//     * the second column is the content of the message. This table is sorted by date and time.
-//     *
-//     * @return Table of strings
-//     */
-//    public String [][] getReceivedMessageListWithSender() {
-//        List<Message> receivedMessagesList = getSortedReceivedMessages();
-//        String [][] messageBySenderTable = new String [receivedMessagesList.size()][1];
-//        int i = 0;
-//        for (Message msg: receivedMessagesList){
-//            messageBySenderTable[i][0] = msg.getSender();
-//            messageBySenderTable[i][1] = msg.getContent();
-//        }
-//        return messageBySenderTable;
-//    }
-//
-//    /**
-//     * Returns ids of all events.
-//     * @return
-//     */
-//    public List<Integer> getAllEventIDs() {
-//        List<Integer> ids = new ArrayList<>();
-//
-//        for(Event event: eventScheduler.getAllEvents()) {
-//            ids.add(event.getEventID());
-//        }
-//
-//        return ids;
-//    }
 
 }
 

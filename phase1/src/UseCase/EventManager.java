@@ -25,6 +25,28 @@ public class EventManager {
     }
 
     /**
+     * Gets the events that this user is already signed up for, iff user is an Attendee.
+     *
+     * @return a list of event IDs corresponding to the events this user is signed up for.
+     */
+    public List<Integer> getEventListByAttendee();
+
+    /**
+     * Gets the events that this user is speaking in, iff user is an Speaker.
+     *
+     * @return a list of event IDs corresponding to the talks user is giving.
+     */
+    public List<Integer> getTalksBySpeaker();
+
+    /**
+     * Gets the events that this user organised, iff user is an Organizer.
+     *
+     * @return a list of event IDs corresponding to the events this user organised.
+     */
+    public List<Integer> getOrganizedEventsByOrganizer();
+
+
+    /**
      * Adds a new event to event list iff this user is an Organiser.
      * @return true iff an event was added.
      */
