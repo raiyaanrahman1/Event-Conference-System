@@ -8,8 +8,6 @@ import java.util.List;
  */
 public class Organizer extends Attendee{
     private List<Event> organizedEvents;
-    private List<User> contacts;
-    private List<Event> eventList;
 
     /**
      * Creates a new organizer object.
@@ -20,8 +18,6 @@ public class Organizer extends Attendee{
     public Organizer(String uname, String pword) {
         super(uname, pword);
         this.organizedEvents = new ArrayList<>();
-        this.contacts = new ArrayList<>();
-        this.eventList = new ArrayList<>();
     }
 
 

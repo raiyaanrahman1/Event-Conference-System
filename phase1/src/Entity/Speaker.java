@@ -20,22 +20,6 @@ public class Speaker extends User {
     }
 
     /**
-     * Returns true to allow Speaker to mass message the attendees of their event
-     */
-    @Override
-    public boolean hasBroadcastRights() {
-        return true;
-    }
-
-    /**
-     * Returns false since Speaker cannot create events
-     */
-    @Override
-    public boolean hasEventCreatingRights() {
-        return false;
-    }
-
-    /**
      * Returns list of events of the speaker
      */
     public List<Event> getTalks() {

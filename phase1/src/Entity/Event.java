@@ -58,20 +58,20 @@ public class Event {
     }
 
     /**
-     * Adds an attendee to the Event's list of attendees
+     * Adds an attendee's username to the Event's list of attendees
      *
-     * @param attendee  new attendee of the Event
+     * @param attendee  new attendee's usename of the Event
      */
-    public void addAttendee(Attendee attendee){
-        this.attendees.add(attendee.getUsername());
+    public void addAttendee(String attendee){
+        this.attendees.add(attendee);
     }
 
     /**
-     * Removes an attendee from this Event's list of attendees
+     * Removes an attendee's username from this Event's list of attendees
      *
-     * @param attendee  attendee to be removed
+     * @param attendee  attendee's username to be removed
      */
-    public void removeAttendee(Attendee attendee){
+    public void removeAttendee(String attendee){
         this.attendees.remove(attendee);
     }
 
