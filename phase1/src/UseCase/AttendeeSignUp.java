@@ -80,12 +80,12 @@ public class AttendeeSignUp {
         return attendee;
     }
 
-    public List<String> getContactList(){
-        List<User> users = attendee.getContacts();
-        List<String> userList = new ArrayList<>();
-        for (User u : users){
-            userList.add(u.getUsername());
-        }
-        return userList;
-    }
+//    public List<String> getContactList(){
+//        List<User> users = attendee.getContacts();
+//        List<String> userList = new ArrayList<>();
+//        for (User u : users){
+//            userList.add(u.getUsername());
+//        }
+//        return userList;
+//    }
 }
