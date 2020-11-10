@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
  * The Event class represents an event in the conference.
  */
 public class Event {
-    private List<Attendee> attendees;
+    private List<String> attendees;
     private LocalDateTime dateTime;
     private String room;
-    private Speaker speaker; //perhaps more than one speaker in phase 2
+    private String speaker; //perhaps more than one speaker in phase 2
     private int roomCap;
     private int eventID;
     private static int idCounter = 0;
@@ -24,11 +24,11 @@ public class Event {
      *
      * @param name  the Event's name
      * @param room  the Event's room
-     * @param speaker  the Event's Speaker
+     * @param speaker  the Event's Speaker's username
      * @param roomCap the Event's maximum capacity of attendees
      * @param dateTime the date and time of the event
      */
-    public Event(String name, String room, Speaker speaker, int roomCap, LocalDateTime dateTime) {
+    public Event(String name, String room, String speaker, int roomCap, LocalDateTime dateTime) {
         this.name = name;
         this.dateTime = dateTime;
         this.room = room;
@@ -53,7 +53,7 @@ public class Event {
     /**
      * Returns the Event's list of attendees
      */
-    public List<Attendee> getAttendees() {
+    public List<String> getAttendees() {
         return attendees;
     }
 
@@ -63,7 +63,7 @@ public class Event {
      * @param attendee  new attendee of the Event
      */
     public void addAttendee(Attendee attendee){
-        this.attendees.add(attendee);
+        this.attendees.add(attendee.getUsername());
     }
 
     /**
@@ -93,16 +93,16 @@ public class Event {
     }
 
     /**
-     * Returns the Event's Speaker
+     * Returns the Event's Speaker's username
      */
-    public Speaker getSpeaker() {
+    public String getSpeaker() {
         return speaker;
     }
 
     /**
-     * Changes the Speaker of the Event
+     * Changes the Speaker's username of the Event
      */
-    public void setSpeaker(Speaker speaker) {
+    public void setSpeaker(String speaker) {
         this.speaker = speaker;
     }
 
