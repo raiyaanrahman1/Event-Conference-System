@@ -14,6 +14,7 @@ public class Event {
     private LocalDateTime dateTime;
     private String room;
     private String speaker; //perhaps more than one speaker in phase 2
+    private String organizer;
     private int roomCap;
     private int eventID;
     private static int idCounter = 0;
@@ -25,14 +26,16 @@ public class Event {
      * @param name  the Event's name
      * @param room  the Event's room
      * @param speaker  the Event's Speaker's username
+     * @param organizer the Event's Organizer's username
      * @param roomCap the Event's maximum capacity of attendees
      * @param dateTime the date and time of the event
      */
-    public Event(String name, String room, String speaker, int roomCap, LocalDateTime dateTime) {
+    public Event(String name, String room, String speaker, String organizer, int roomCap, LocalDateTime dateTime) {
         this.name = name;
         this.dateTime = dateTime;
         this.room = room;
         this.speaker = speaker;
+        this.organizer = organizer;
         this.attendees = new ArrayList<>();
         this.roomCap = roomCap;
         eventID = idCounter;
@@ -104,6 +107,20 @@ public class Event {
      */
     public void setSpeaker(String speaker) {
         this.speaker = speaker;
+    }
+
+    /**
+     * Returns the Event's Organizer's username
+     */
+    public String getOrganizer() {
+        return organizer;
+    }
+
+    /**
+     * Changes the Organizer's username of the Event
+     */
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
     }
 
     /**
