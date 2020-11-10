@@ -96,21 +96,6 @@ public class EventManager {
         return null;
     }
 
-    /**
-     *
-     * Precondition: the given user is a speaker.
-     * @param user
-     * @return
-     */
-    public List<Event> getEventsBySpeaker(User user) {
-        List<Event> eventsWithSpeaker = new ArrayList<>();
-        for(Event event: events) {
-            if (event.getSpeaker().getUsername().equals(user.getUsername())) {
-                eventsWithSpeaker.add(event);
-            }
-        }
-        return eventsWithSpeaker;
-    }
 
     public List<Event> getAllEvents() {
         return events;
