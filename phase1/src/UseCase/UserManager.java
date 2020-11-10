@@ -223,9 +223,14 @@ public class UserManager{
 //     *
 //     * @return list of users
 //     */
-//    public List<String> getContactList(){
-////        return attendeeSignUp.getContactList();
-////    }
+    public List<String> getContactList(){
+        List<User> users = ((Attendee) user).getContacts();
+        List<String> userList = new ArrayList<>();
+        for (User u : users){
+            userList.add(u.getUsername());
+        }
+        return userList;
+    }
 
     // ================ EventScheduler Functionality ================
 //
