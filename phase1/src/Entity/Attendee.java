@@ -6,8 +6,6 @@ import java.util.List;
  * The Attendee class represents an attendee, a user that can attend events.
  */
 public class Attendee extends User {
-    private List<User> contacts;
-    private List<Event> eventList;
 
     /**
      * Creates a new attendee object.
@@ -17,61 +15,6 @@ public class Attendee extends User {
      */
     public Attendee(String uname, String pword){
         super(uname, pword);
-        this.contacts = new ArrayList<>();
-        this.eventList = new ArrayList<>();
-    }
-
-    /**
-     * Returns this attendee's contacts.
-     *
-     * @return  the attendee's contact list
-     */
-    public List<User> getContacts() {
-        return contacts;
-    }
-
-    /**
-     * Adds user to contact list.
-     *
-     * @param user  the new contact for this attendee
-     */
-    public void addContact(User user) {
-        this.contacts.add(user);
-    }
-
-    /**
-     * Remove user to contact list.
-     *
-     * @param user  the user we want to remove from this attendee's contact list
-     */
-    public void removeContact(User user) {
-        this.contacts.remove(user);
-    }
-
-    /**
-     * Returns all events this attendee is registered to attend.
-     *
-     * @return  the list of events where this attendee is signed
-     */
-    public List<Event> getEventList() {
-        return eventList;
-    }
-
-    /**
-     * Adds new event for which this attendee has signed up.
-     *
-     * @param event  the event for which this event signed up
-     */
-    public void addEvent(Event event) {
-        this.eventList.add(event);
-    }
-
-    /**
-     * Cancels this Attendee's spot in event.
-     * @param event the event the Attendee wants to cancel.
-     */
-    public void cancelEvent(Event event) {
-        eventList.remove(event);
     }
 
 }

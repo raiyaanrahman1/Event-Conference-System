@@ -8,8 +8,7 @@ import java.util.List;
 public abstract class User {
     private String username;
     private String password;
-    private List<Message> receivedMessages;
-    private List<Message> sentMessages;
+    private List<String> contacts;
 
     /**
      * Creates a new user object.
@@ -20,8 +19,7 @@ public abstract class User {
     public User(String uname, String pword){
         this.username = uname;
         this.password = pword;
-        this.receivedMessages = new ArrayList<>();
-        this.sentMessages = new ArrayList<>();
+        this.contacts = new ArrayList<>();
     }
 
     //getter for username
@@ -35,41 +33,49 @@ public abstract class User {
     }
 
     /**
-     * Returns the messages received by this user.
+     * Gets this user's contacts.
      *
-     * @return  the list of received messages
+     * @return  the user's contact list
      */
-    public List<Message> getReceivedMessages() { return receivedMessages; }
+    public List<String> getContacts() {
+        return contacts;
+    }
 
     /**
-     * Returns all messages sent by this attendee.
+     * Adds user to contact list.
      *
-     * @return  the list of messages sent by this user
+     * @param username  the username of the new contact for this user
      */
-    public List<Message> getSentMessages() { return sentMessages; }
+    public void addContact(String username) {
+        this.contacts.add(username);
+    }
 
-    //setter for username
+    /**
+     * Remove user to contact list.
+     *
+     * @param username  the username of the contact we want to remove from this user's contact list
+     */
+    public void removeContact(String username) {
+        this.contacts.remove(username);
+    }
+
+    /**
+     * Sets the username of the User
+     *
+     * @param username new username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
-    //setter for password
+    /**
+     * Sets the password of the User
+     *
+     * @param password new password of the user
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    /**
-     * Adds a new message to this attendee's received messages.
-     *
-     * @param receivedMessage  the new message in this user's inbox
-     */
-    public void addReceivedMessage(Message receivedMessage){  this.receivedMessages.add(receivedMessage); }
-
-    /**
-     * Adds new message sent by this attendee.
-     *
-     * @param sentMessage  the new message sent by this user
-     */
-    public void addSentMessage(Message sentMessage){  this.sentMessages.add(sentMessage); }
 }
 
