@@ -130,7 +130,6 @@ public class MessagePresenter {
         }while(incorrectOption);
         return answer;
     }
-    // From: ken, at
 
     public Integer mainAddUserPage(){
         boolean incorrectOption = false;

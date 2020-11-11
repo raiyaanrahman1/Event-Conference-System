@@ -2,7 +2,6 @@ package Controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import Presenter.MessagePresenter;
 import UseCase.MessageManager;
@@ -11,7 +10,7 @@ import UseCase.UserManager;
 public class MessengerSystem {
 
     private UserManager user;
-    private MessageManager msgMan = new MessageManager();
+    private MessageManager msgMan;
     private MessagePresenter msgPres = new MessagePresenter();
 
     public MessengerSystem(UserManager user, MessageManager msgMan) {
@@ -88,16 +87,12 @@ public class MessengerSystem {
         return msgMan.getMessages(user.getUserInfoList().get(0));
     }
 
-    public boolean messageUser(String username, String content) {
-        if (user.getContactList().contains(username) && user.getSignedUpUsers().contains(username)) {
-            msgMan.message(user.getUserInfoList().get(0), username, content);
-            return true;
-        }
-        return false;
+    public void messageUser(String username, String content) {
+        msgMan.message(user.getUserInfoList().get(0), username, content);
     }
     public void replyMessage(int number, String content) {
         String message = viewReceivedMessages().get(number - 1);
-        String sender = message.split("|")[0];
+        String sender = message.split("\\|")[0];
         msgMan.message(user.getUserInfoList().get(0), sender, content);
     }
 
@@ -109,12 +104,8 @@ public class MessengerSystem {
         return false;
     }
 
-    public boolean removeUser(String user2){
-        if (user.getContactList().contains(user2) && user.getSignedUpUsers().contains(user2)) {
-            user.removeUserFromContacts(user2);
-            return true;
-        }
-        return false;
+    public void removeUser(String user2){
+        user.removeUserFromContacts(user2);
     }
 
     public List<String> getContacts() {
