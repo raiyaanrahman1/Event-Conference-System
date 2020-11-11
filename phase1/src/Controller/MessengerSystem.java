@@ -14,7 +14,30 @@ public class MessengerSystem {
     MessageManager msgMan = new MessageManager();
     MessagePresenter msgPres = new MessagePresenter();
 
-    public void run(){
+    public void run() {
+        boolean run = true;
+        do {
+            int option = msgPres.mainPage();
+            if (option == 1) {
+                int inboxOption = msgPres.mainInboxPage();
+                if (inboxOption == 1) msgPres.viewInbox(viewReceivedMessages());
+                else msgPres.mainPage();
+            } else if (option == 2) {
+                mainContactPageRun(msgPres.mainContactPage());
+            } else if (option == 3) {
+                mainAddUserPageRun(msgPres.mainAddUserPage());
+            } else {
+                run = false;
+            }
+        } while (run);
+    }
+
+    private void mainContactPageRun(Integer contactOption){
+
+    }
+    private void mainAddUserPageRun(Integer option){
+
+    }
         // have 3 helper methods (mainPageRun, mainContactPageRun, mainAddUserPageRun)
 
         // call messagepresenter.mainPage()
@@ -34,6 +57,10 @@ public class MessengerSystem {
             // if (mainAddUserPage == 1), call if (!addUser(messagepresenter.addUserPage())) keep calling
             // messagepresenter.addUserPage() with the use of a do while loop
             // if (mainAddUserPage == 2), call messagepresenter.mainPage()
+
+
+    public List<String> viewReceivedMessages() {
+        return msgMan.getMessages(user.getUserInfoList().get(0));
     }
 
     public boolean messageUser(String username, String content) {
@@ -42,42 +69,7 @@ public class MessengerSystem {
             return true;
         }
         return false;
-
-//        Scanner myObj = new Scanner(System.in);
-//        boolean incorrectOption = false;
-//        do {
-//            System.out.println("Enter the username of the person you want to message.");
-//            System.out.print(user.getContactList());
-//            String username = myObj.nextLine();
-//            if (user.getContactList().contains(username)){
-//                incorrectOption = false;
-//                System.out.println("Enter the content of the message.");
-//                String content = myObj.nextLine();
-//                msgMan.message(user.getUserInfoList().get(0), username, content);
-//            }
-//            else {
-//                incorrectOption = true;
-//            }
-//        } while (incorrectOption);
-
     }
-
-//    public void getSpecificMessages(String sender) {
-//         List<String> msgs = user.getMessages(sender)
-//         msgs.reverse()
-//         print msgs
-//    }
-
-    public List<String> viewReceivedMessages() {
-        return msgMan.getMessages(user.getUserInfoList().get(0));
-
-//        int i = 0;
-//        for (String msg : lstofreceivedmsgs) {
-//            String[] msgarray = msg.split("|");
-//            System.out.println(i + ". From " + msgarray[0] + " on " + msgarray[1] + " at " + msgarray[2] + " - " +
-//                    msgarray[3]);
-        }
-
     public void replyMessage(int number, String content) {
         String message = viewReceivedMessages().get(number - 1);
         String sender = message.split("|")[0];
@@ -104,7 +96,7 @@ public class MessengerSystem {
         return user.getContactList();
     }
 
-    public List<String> viewMessages(String username){
+    public List<String> viewMessages(String username) {
         // filter out the messages that were just sent by the sender
         List<String> lstofmessages = viewReceivedMessages();
         List<String> msgsfromsender = new ArrayList<>();
@@ -115,25 +107,8 @@ public class MessengerSystem {
             }
         }
         return msgsfromsender;
-
-//        Scanner myObj = new Scanner(System.in);
-//        System.out.print("Please input the user you wish to view messages from:");
-//        String sender = myObj.nextLine();
-//        boolean invalidInput;
-//        do{
-//            if (!user.getSignedUpUsers().contains(sender)){
-//                invalidInput = true;
-//                System.out.println("This user doesn't exist! Please enter a valid user:");
-//            } else if (!user.getContactList().contains(sender)){
-//                invalidInput = true;
-//                System.out.println("This user is not in your contacts! Please enter a valid user:");
-//            } else {
-//                invalidInput = false;
-//                formatMessages(sender);
-//                getSpecificMessages();
-//            }
-//        } while(invalidInput);
     }
+
 
     public void organizerBroadcast() {
         Scanner myObj = new Scanner(System.in);
@@ -201,5 +176,54 @@ public class MessengerSystem {
         // get a list of all the speakers in the program
         // user.specialBroadcast()
     }
+
+
+//        Scanner myObj = new Scanner(System.in);
+//        boolean incorrectOption = false;
+//        do {
+//            System.out.println("Enter the username of the person you want to message.");
+//            System.out.print(user.getContactList());
+//            String username = myObj.nextLine();
+//            if (user.getContactList().contains(username)){
+//                incorrectOption = false;
+//                System.out.println("Enter the content of the message.");
+//                String content = myObj.nextLine();
+//                msgMan.message(user.getUserInfoList().get(0), username, content);
+//            }
+//            else {
+//                incorrectOption = true;
+//            }
+//        } while (incorrectOption);
+
+
+//    public void getSpecificMessages(String sender) {
+//         List<String> msgs = user.getMessages(sender)
+//         msgs.reverse()
+//         print msgs
+//    }
+
+//        int i = 0;
+//        for (String msg : lstofreceivedmsgs) {
+//            String[] msgarray = msg.split("|");
+//            System.out.println(i + ". From " + msgarray[0] + " on " + msgarray[1] + " at " + msgarray[2] + " - " +
+//                    msgarray[3]);
+
+//        Scanner myObj = new Scanner(System.in);
+//        System.out.print("Please input the user you wish to view messages from:");
+//        String sender = myObj.nextLine();
+//        boolean invalidInput;
+//        do{
+//            if (!user.getSignedUpUsers().contains(sender)){
+//                invalidInput = true;
+//                System.out.println("This user doesn't exist! Please enter a valid user:");
+//            } else if (!user.getContactList().contains(sender)){
+//                invalidInput = true;
+//                System.out.println("This user is not in your contacts! Please enter a valid user:");
+//            } else {
+//                invalidInput = false;
+//                formatMessages(sender);
+//                getSpecificMessages();
+//            }
+//        } while(invalidInput);
 
 }

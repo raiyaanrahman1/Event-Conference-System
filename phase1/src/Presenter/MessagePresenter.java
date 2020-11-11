@@ -14,10 +14,11 @@ public class MessagePresenter {
             System.out.println("========== Messages Menu ========== \n" +
                     "1. Inbox \n" +
                     "2. Contact List \n" +
-                    "3. Add user to Contact List\n");
+                    "3. Add user to Contact List\n" +
+                    "4. Go back to Main Menu");
             System.out.println("Input the number of the option you wish to choose:");
             answer = myObj.nextInt();
-            if (answer != 1 && answer != 2 && answer != 3){
+            if (answer != 1 && answer != 2 && answer != 3 && answer != 4){
                 System.out.println("You have entered an incorrect input. Please enter a valid input.");
                 incorrectOption = true;
             }
