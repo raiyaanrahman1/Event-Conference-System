@@ -63,6 +63,19 @@ public class EventManager {
         return eventListIDs;
     }
 
+    /**
+     * Gets the toString of events that this user organised, iff user is an Organizer.
+     *
+     * @return a list of event IDs corresponding to the events this user organised.
+     */
+    public List<String> getOrganizedEventsString(String username){
+        List<String> eventsString = new ArrayList<>();
+        for(Event e : events){
+            if(e.getOrganizer().equals(username)) eventsString.add(e.toString());
+
+        }
+        return eventsString;
+    }
 
     /**
      * Adds a new event to event list iff this user is an Organiser.
