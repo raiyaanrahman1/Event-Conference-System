@@ -1,7 +1,5 @@
 package Controller;
 
-import Entity.Attendee;
-import Entity.Organizer;
 import Entity.User;
 import Gateway.FileGateway;
 import Gateway.IGateway;
@@ -10,8 +8,6 @@ import UseCase.EventManager;
 import UseCase.MessageManager;
 import UseCase.UserManager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -20,7 +16,7 @@ import java.util.function.Function;
 
 public class LoginSystem {
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
-    UserManager userManager = new UserManager(g.read());
+    UserManager userManager = new UserManager(g);
     EventManager eventMan = new EventManager();
     MessageManager messageMan = new MessageManager();
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
@@ -37,21 +33,20 @@ public class LoginSystem {
     /**
      * Calls the appropriate menus depending on the user input.
      *
-     * @param type represents the tpe of user.
+     * @param userType represents the type of user.
      */
-    public void MainPage(String type) {
+    public void MainPage(String userType) {
         int answer;
         do {
             answer = lp.menu();
             if (answer == 1) {
                 msgSys.run();
             } else if (answer == 2) {
-                if (type.equals("A")) {
+                if (userType.equals("A")) {
                     eventSys.eventMenuAttendee();
-                } else if (type.equals("O")) {
+                } else if (userType.equals("O")) {
                     eventSys.eventMenuOrganizer();
                 }
-
             } else if (answer == 3) {
                 signOut();
             }
@@ -65,10 +60,10 @@ public class LoginSystem {
         int answer = lp.wel();
         if (answer == 1) {
             signUp();
+            answer = 2;
         }
         if (answer == 2) {
-            String type = logIn();
-            MainPage(type);
+            MainPage(LogIn());
         }
     }
 
@@ -85,27 +80,19 @@ public class LoginSystem {
      *
      * @return String representing the type of user.
      */
-    public String logIn() {
-        boolean incorrect = true;
+    public String LogIn() {
         do {
             System.out.println("enter a username");
             String username = lp.readLine();
             System.out.println("enter a password");
             String password = lp.readLine();
-            if (exists(username, password)) {
+            User user = userManager.getUserByUsername(username);
+            if (user != null && userManager.isPasswordCorrect(username, password)) {
                 userManager.logInUser(username);
                 lp.print("Log in successful. Welcome " + username);
-                incorrect = false;
-                return userManager.getUserInfoList().get(2);
+                return user.getUserType();
             }
-//        String username = askUser("Enter a username", "Username does not exist",
-//                userInput -> exists(userInput, null));
-//
-//        //check password
-//        askUser("Enter a password", "Incorrect password",
-//                userInput -> exists(username, userInput));
-        } while (incorrect);
-        return null;
+        } while (true);
     }
 
     //helper method
@@ -158,47 +145,10 @@ public class LoginSystem {
      */
     private void signUpAttendee(String userType) {
         String username = askUser("Enter a username", "Username already exists",
-                userInput -> !exists(userInput, null));
+                userInput -> userManager.getUserByUsername(userInput) == null);
 
         lp.print("Enter a password.");
         String password = lp.readLine();
-        List<String> userInfo = new ArrayList<>();
-        userInfo.add(username);
-        userInfo.add(password);
-        userInfo.add(userType);
-        userInfo.add("\n");
-        g.append(userInfo);
-    }
-
-    //helper method
-    private boolean exists(String username, String password) {
-        ArrayList<List<String>> textFile = g.read();
-        for (List<String> line : textFile) {
-            if (line.get(0).equals(username) && line.get(1).equals(password)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //helper method
-    private User getUser(String username) {
-        g.read();
-        while (g.hasNext()) {
-            List<String> userStrings = g.next();
-            if (userStrings.get(0).equals(username)) {
-                User user;
-                if (userStrings.get(2).equals("O"))
-                {
-                    user = new Organizer(userStrings.get(0), userStrings.get(1));
-                }
-                else
-                {
-                    user = new Attendee(userStrings.get(0), userStrings.get(1));
-                }
-                return user;
-            }
-        }
-        return null;
+        userManager.CreateUser(username, password, userType);
     }
 }

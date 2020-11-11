@@ -26,10 +26,7 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
             List<String> lines = Files.readAllLines(Paths.get(this.fileName));
             userInfo = new ArrayList<>();
             for (String l : lines) {
-                if (!l.equals("\n")) {
-//                    l = l.substring(0, l.length() - 2);
-                    userInfo.add(Arrays.asList(l.split(" ")));
-                }
+                userInfo.add(Arrays.asList(l.split(" ")));
             }
             return userInfo;
 
@@ -68,11 +65,7 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
     @Override
     public void append(List<String> content) {
         try {
-            String line = "";
-            for (String s : content) {
-                line += s + " ";
-            }
-            line += System.lineSeparator();
+            String line = String.join(" ", content).concat(System.lineSeparator());
             Files.write(Paths.get(this.fileName), line.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();

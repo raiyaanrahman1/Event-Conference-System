@@ -1,5 +1,6 @@
 package UseCase;
 import Entity.*;
+import Gateway.IGateway;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,15 +16,18 @@ public class UserManager{
     private List<User> userList;
     private List<String> userInfoList;
     private ArrayList<List<String>> rawUserInfo;
+    private IGateway gateway;
+
 
     /**
      * Creates a UserManager instance with the raw user information on every existing user in the system.
-     * @param userInfo, all the information on every user in the system, obtained from the Gateway
+     * @param gateway, all the information on every user in the system, obtained from the Gateway
      */
-    public UserManager(ArrayList<List<String>> userInfo){
+    public UserManager(IGateway gateway){
+        this.gateway = gateway;
+        ArrayList<List<String>> userInfo = gateway.read();
         createUserList(userInfo);
         rawUserInfo = userInfo;
-
     }
     /**
      * Gets a User by its username
@@ -31,7 +35,7 @@ public class UserManager{
      * @param user  username of the user
      * @return  user iff it is in userList
      */
-    private User getUserByUsername(String user){
+    public User getUserByUsername(String user){
         for (User u : userList){
             if (u.getUsername().equals(user)){
                 return u;
@@ -157,5 +161,16 @@ public class UserManager{
         return user.getContacts();
     }
 
+    public void CreateUser(String username, String password, String userType) {
+        List<String> newUserInfo = new ArrayList<>();
+        newUserInfo.add(username);
+        newUserInfo.add(password);
+        newUserInfo.add(userType);
+        gateway.append(newUserInfo);
+        // Read it back to refresh in memory state
+        ArrayList<List<String>> userInfo = gateway.read();
+        createUserList(userInfo);
+        rawUserInfo = userInfo;
+    }
 }
 

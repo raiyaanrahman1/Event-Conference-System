@@ -32,6 +32,8 @@ public abstract class User {
         return password;
     }
 
+    public abstract String getUserType();
+
     /**
      * Gets this user's contacts.
      *

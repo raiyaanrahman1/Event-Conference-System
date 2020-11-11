@@ -17,4 +17,8 @@ public class Speaker extends User {
         super(uname, pword);
     }
 
+    @Override
+    public String getUserType() {
+        return "S";
+    }
 }

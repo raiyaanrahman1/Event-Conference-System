@@ -18,4 +18,8 @@ public class Organizer extends Attendee{
         super(uname, pword);
     }
 
+    @Override
+    public String getUserType() {
+        return "O";
+    }
 }

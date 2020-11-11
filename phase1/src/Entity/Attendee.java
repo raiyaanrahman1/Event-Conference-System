@@ -17,4 +17,8 @@ public class Attendee extends User {
         super(uname, pword);
     }
 
+    @Override
+    public String getUserType() {
+        return "A";
+    }
 }
