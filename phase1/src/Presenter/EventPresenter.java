@@ -66,6 +66,10 @@ public class EventPresenter {
         }
     }
 
+    public void displayEventsBySpeaker() {
+
+    }
+
     /**
      * Displays whether the user has signed up successfully for an
      * event.
@@ -106,12 +110,31 @@ public class EventPresenter {
      */
     public int displayEventMenuOptionsOrganizer() {
         System.out.println("EVENTS");
-        out.println("(1) Add an event");
-        out.println("(2) Cancel an event");
-        out.println("(3) See the events you organized");
-        System.out.println("Choose a number for one of the options above.");
+        out.println("(1) Sign up for event");
+        out.println("(2) Cancel spot in event");
+        out.println("(3) See your events");
+        out.println("(4) Add an event");
+        out.println("(5) Cancel an event");
+        out.println("(6) See the events you organized");
+        out.println("(7) Broadcast an event.");
+        out.println("Choose a number for one of the options above.");
 
-        return promptForNumberRange(1, 3);
+        return promptForNumberRange(1, 6);
+    }
+
+    /**
+     * Displays the event menu for Organizers and returns the number of the option
+     * the user has chosen.
+     *
+     * @return  the number of the event chosen.
+     */
+    public int displayEventMenuOptionsSpeaker() {
+        System.out.println("EVENTS");
+        out.println("(1) See your events");
+        out.println("(2) Broadcast an event.");
+        out.println("Choose a number for one of the options above.");
+
+        return promptForNumberRange(1, 2);
     }
 
     /**
@@ -159,5 +182,11 @@ public class EventPresenter {
      */
     public void displayCancelEventFailure() {
         out.println("Cancelling event has failed. Has the event been created?");
+    }
+
+    public String promptForMessage() {
+        out.println("Enter the message you want to broadcast.");
+        out.println("Put it all in one single line.");
+        return in.nextLine();
     }
 }
