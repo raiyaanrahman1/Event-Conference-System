@@ -6,42 +6,52 @@ import Entity.User;
 import Gateway.FileGateway;
 import Gateway.IGateway;
 import Presenter.LogInSignUpPresenter;
+import UseCase.EventManager;
+import UseCase.MessageManager;
 import UseCase.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * Class which manages the Logging in and Signing up of a User
+ */
+
 public class LoginSystem {
-    MessengerSystem msgSys = new MessengerSystem();
-    EventManagementSystem eventSys = new EventManagementSystem();
-    LogInSignUpPresenter lp = new LogInSignUpPresenter();
-    //EventPresenter ep = new EventPresenter();
-    //MessagePresenter mp = new MessagePresenter(user, msgSys);
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
     UserManager userManager = new UserManager(g.read());
+    EventManager eventMan = new EventManager();
+    MessageManager messageMan =  new MessageManager();
+    MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
+    EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan);
+    LogInSignUpPresenter lp = new LogInSignUpPresenter();
+
 
     //LoginSystem Constructor
     public LoginSystem() {
         welcome();
     }
 
-//    public void run(){
-//        if()
-//    }
 
     /**
-     * Display of the main page (for now)
+     * Calls the appropriate menus depending on the user input.
+     * @param type represents the tpe of user.
      */
-    public void MainPage() {
+    public void MainPage(String type) {
         int answer;
         do {
-            answer = lp.menu(); //Shouldn't this menu be the options: Message, event, logout instead of events?
+            answer = lp.menu();
             if (answer == 1) {
-                //call message system
-                //msgSys.messageMenu();
+                msgSys.run();
             } else if (answer == 2) {
-                eventSys.eventMenu();
+                if (type.equals("A")){
+                    eventSys.eventMenuAttendee();
+                }
+                else if (type.equals("O")){
+                    eventSys.eventMenuOrganizer();
+                }
+
             } else if (answer == 3) {
                 signOut();
             }
@@ -49,13 +59,13 @@ public class LoginSystem {
     }
 
     /**
-     * The initial page that the user sees
+     * Manages the initial page that the user sees/
      */
     public void welcome() {
         int answer = lp.wel();
         if (answer == 1) {
-            logIn();
-            MainPage();
+            String type = logIn();
+            MainPage(type);
         }
         if (answer == 2) {
             signUp();
@@ -72,8 +82,9 @@ public class LoginSystem {
 
     /**
      * Logs in the user
+     * @return String representing the type of user.
      */
-    public void logIn() {
+    public String logIn() {
         String username = askUser("Enter a username", "Username does not exist",
                 userInput -> exists(userInput, null));
 
@@ -81,13 +92,11 @@ public class LoginSystem {
         askUser("Enter a password", "Incorrect password",
                 userInput -> exists(username, userInput));
 
-        //user = new UserManager(username);
-        //also need to save user info and get user type
-        //userM.getUserInfoList().get(2);
         userManager.logInUser(username);
         lp.print("Log in successful. Welcome " + username);
+        return userManager.getUserInfoList().get(2);
     }
-
+    //helper method
     private String askUser(String prompt, String errorMessage,
                            Function<String, Boolean> validationFunction) {
         boolean keepAsking = true;
@@ -109,9 +118,9 @@ public class LoginSystem {
      * Signs up a new user
      */
     public void signUp() {
-        String response = askUser("Are you an attendee or an organizer?", "Incorrect answer",
-                userInput -> userInput.equals("attendee") || userInput.equals("organizer"));
-        if (response.equals("attendee")) {
+        String response = askUser("Are you an (1) attendee or an (2) organizer?", "Incorrect answer",
+                userInput -> userInput.equals("1") || userInput.equals("2"));
+        if (response.equals("1")) {
             signUpAttendee("A");
         } else {
             signUpOrganizer("O");
@@ -123,6 +132,7 @@ public class LoginSystem {
 
     /**
      * Signs up a user with particular type Organizer
+     * @param userType represents the type of user
      */
     private void signUpOrganizer(String userType) {
         askUser("Enter your organizer code.", "Invalid code.",
@@ -133,6 +143,7 @@ public class LoginSystem {
 
     /**
      * Signs up a user with particular type Attendee
+     * @param userType represents the type of user
      */
     private void signUpAttendee(String userType) {
         String username = askUser("Enter a username", "Username already exists",
@@ -147,12 +158,7 @@ public class LoginSystem {
         g.append(userInfo);
     }
 
-    /**
-     * Helper method that checks if username exists in file
-     *
-     * @param username the users username
-     * @return if username is in the gateway.
-     */
+    //helper method
     private boolean exists(String username, String password) {
         User user = getUser(username);
         g.read();
@@ -168,6 +174,7 @@ public class LoginSystem {
         return false;
     }
 
+    //helper method
     private User getUser(String username) {
         g.read();
         while (g.hasNext()) {

@@ -4,6 +4,7 @@ package Controller;
 
 import UseCase.EventManager;
 import UseCase.UserManager;
+import UseCase.MessageManager;
 import Presenter.EventPresenter;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,9 +15,15 @@ public class EventManagementSystem {
 
     private UserManager user;
     private EventPresenter presenter;
+    private EventManager manager;
+    private MessageManager mess;
 
-    EventManager manager;
-
+    public EventManagementSystem(UserManager user, EventManager event, MessageManager mess) {
+        this.manager = event;
+        this.user = user;
+        this.mess = mess;
+        this.presenter = new EventPresenter();
+    }
 
     public void eventSignUp() {
         // showListOfAllowedEvents and promptIDEventSignUp
@@ -131,7 +138,24 @@ public class EventManagementSystem {
                 this.AttendeeCancelEvent();
                 invalidAnswer = false;
             } else if (option == 3) {
-                this.ListOfAllowedEvents();
+                this.ListOfUserEvents();
+                invalidAnswer = false;
+            } else {
+                presenter.displayTryAgain();
+            }
+        }while(invalidAnswer);
+    }
+
+    public void eventMenuSpeaker() {
+        boolean invalidAnswer = true;
+        // use display event menu here.
+        do{
+            int option =  presenter.displayEventMenuOptions();
+            if (option == 1) {
+
+                invalidAnswer = false;
+            } else if (option == 2) {
+
                 invalidAnswer = false;
             } else {
                 presenter.displayTryAgain();
@@ -145,13 +169,25 @@ public class EventManagementSystem {
             do {
                 int option = presenter.displayEventMenuOptionsOrganizer();
                 if (option == 1) {
-                    this.AddEvent();
+                    this.eventSignUp();
                     invalidAnswer = false;
                 } else if (option == 2) {
-                    this.cancelEvent();
+                    this.AttendeeCancelEvent();
                     invalidAnswer = false;
                 } else if (option == 3) {
+                    this.ListOfUserEvents();
+                    invalidAnswer = false;
+                } else if (option == 4) {
+                    this.AddEvent();
+                    invalidAnswer = false;
+                } else if (option == 5) {
+                    this.cancelEvent();
+                    invalidAnswer = false;
+                } else if (option == 6) {
                     this.showOrganizedEvents();
+                    invalidAnswer = false;
+                } else if (option == 7) {
+                    this.broadcastEvent();
                     invalidAnswer = false;
                 } else {
                     //maybe print try again or something
@@ -164,4 +200,25 @@ public class EventManagementSystem {
     public void MainEventPage(){
         presenter.mainEventPage();
     }
+
+    public void broadcastEvent() {
+        presenter.displayEventsByOrganizer();
+        int eventID = presenter.promptForEventID();
+        String message = presenter.promptForMessage();
+        broadcast(eventID, message);
+    }
+
+    public void broadcastEventSpeaker() {
+
+        int eventID = presenter.promptForEventID();
+        String message = presenter.promptForMessage();
+        broadcast(eventID, message);
+    }
+
+    private void broadcast(int eventID, String message) {
+        List<String> users = manager.getUsersInEvent(eventID);
+        mess.broadcast(user.getUserInfoList().get(0), users, message);
+    }
+
+
 }
