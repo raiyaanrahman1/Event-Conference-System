@@ -1,10 +1,6 @@
 package Presenter;
 
-import Entity.User;
-import sun.awt.geom.AreaOp;
-
 import java.io.PrintStream;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -12,11 +8,11 @@ import java.util.Scanner;
  */
 
 public class LogInSignUpPresenter {
-    private Scanner in = new Scanner(System.in);
-    private PrintStream out = System.out;
+    private final Scanner in = new Scanner(System.in);
+    private final PrintStream out = System.out;
 
     public int menu(){
-        System.out.println("\t\t\t\tEVENTS\n");
+        out.println("\t\t\t\tEVENTS\n");
         out.println("(1) Sign up for event");
         out.println("(2) Cancel spot in event");
         out.println("(3) See your events");
@@ -24,7 +20,20 @@ public class LogInSignUpPresenter {
         return Integer.parseInt(in.nextLine());
     }
 
+    public int wel(){
+        out.println("Please choose 1 or 2: \n Would you like to 1. sign up or 2. log in?");
+        return Integer.parseInt(in.nextLine());
+    }
+
+    public String readLine() {
+        return in.nextLine();
+    }
+
+    public void print(String content){
+        out.println(content);
+    }
 }
+
 
 
 

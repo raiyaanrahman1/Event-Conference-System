@@ -1,24 +1,34 @@
 package Controller;
+
+import Entity.Attendee;
+import Entity.Organizer;
 import Entity.User;
 import Gateway.FileGateway;
 import Gateway.IGateway;
 import Presenter.LogInSignUpPresenter;
 import UseCase.UserManager;
-import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;  // Import the Scanner class
+import java.util.function.Function;
 
 public class LoginSystem {
-    // UserManager user;
     MessengerSystem msgSys = new MessengerSystem();
     EventManagementSystem eventSys = new EventManagementSystem();
+    LogInSignUpPresenter lp = new LogInSignUpPresenter();
+    //EventPresenter ep = new EventPresenter();
+    //MessagePresenter mp = new MessagePresenter(user, msgSys);
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
+    UserManager userManager = new UserManager(g.read());
 
     //LoginSystem Constructor
-    public LoginSystem(){
+    public LoginSystem() {
         welcome();
     }
+
+//    public void run(){
+//        if()
+//    }
 
     /**
      * Display of the main page (for now)
@@ -26,35 +36,28 @@ public class LoginSystem {
     public void MainPage() {
         int answer;
         do {
-            LogInSignUpPresenter loginPresenter = new LogInSignUpPresenter();
-
-            answer = loginPresenter.menu();
+            answer = lp.menu(); //Shouldn't this menu be the options: Message, event, logout instead of events?
             if (answer == 1) {
                 //call message system
-                msgSys.messageMenu();
+                //msgSys.messageMenu();
             } else if (answer == 2) {
                 eventSys.eventMenu();
             } else if (answer == 3) {
-                // log out
                 signOut();
-            } else {
-                answer = loginPresenter.menu();
             }
-        }while (answer != 1 && answer != 2 && answer != 3) ;
+        } while (answer != 3);
     }
 
     /**
      * The initial page that the user sees
      */
     public void welcome() {
-        Scanner myObj = new Scanner(System.in);  // Create a Scanner object
-        System.out.println("Please choose 1 or 2: \n Would you like to 1. sign up or 2. log in?");
-        String answer = myObj.nextLine();
-        if (answer.equals("1")) {
+        int answer = lp.wel();
+        if (answer == 1) {
             logIn();
             MainPage();
         }
-        if (answer.equals("2")) {
+        if (answer == 2) {
             signUp();
         }
     }
@@ -62,141 +65,126 @@ public class LoginSystem {
     /**
      * Signs out the user
      */
-    public void signOut(){
-        System.out.println("Goodbye.");
+    public void signOut() {
+        lp.print("Goodbye.");
         System.exit(0);
     }
 
     /**
      * Logs in the user
      */
-    public void logIn(){
-        Scanner myObj = new Scanner(System.in);
-        boolean invalidUsername = true;
-        String username;
-        do {
-            System.out.println("Enter a username");
-            username = myObj.nextLine();
-            if (!exists(g, username)) {
-                System.out.println("Username does not exists");
-            } else {
-                invalidUsername = false;
-            }
-        }
-        while (invalidUsername);
+    public void logIn() {
+        String username = askUser("Enter a username", "Username does not exist",
+                userInput -> exists(userInput, null));
 
         //check password
-        boolean incorrectPassword = true;
+        askUser("Enter a password", "Incorrect password",
+                userInput -> exists(username, userInput));
+
+        //user = new UserManager(username);
+        //also need to save user info and get user type
+        //userM.getUserInfoList().get(2);
+        userManager.logInUser(username);
+        lp.print("Log in successful. Welcome " + username);
+    }
+
+    private String askUser(String prompt, String errorMessage,
+                           Function<String, Boolean> validationFunction) {
+        boolean keepAsking = true;
+        String userInput;
         do {
-            System.out.println("Enter a password");
-            String password = myObj.nextLine();
-            if (!exists(g, password)) {
-                System.out.println("Incorrect password.");
+            lp.print(prompt);
+            userInput = lp.readLine();
+            if (!validationFunction.apply(userInput)) {
+                lp.print(errorMessage);
             } else {
-                incorrectPassword = false;
+                keepAsking = false;
             }
         }
-        while (incorrectPassword);
-        //UserManager usermanager = new UserManager(username);
-        System.out.println("Log in successful. Welcome " + username);
+        while (keepAsking);
+        return userInput;
     }
 
     /**
      * Signs up a new user
      */
-    public void signUp(){
-        System.out.println("Are you an attendee or an organizer?");
-        Scanner myObj = new Scanner(System.in);
-        String response = myObj.nextLine();
+    public void signUp() {
+        String response = askUser("Are you an attendee or an organizer?", "Incorrect answer",
+                userInput -> userInput.equals("attendee") || userInput.equals("organizer"));
         if (response.equals("attendee")) {
-            signUpAttendee();
+            signUpAttendee("A");
+        } else {
+            signUpOrganizer("O");
         }
-        else if (response.equals("organizer")) {
-            signUpOrganizer();
-        }
-        System.out.println("You have successfully signed up.");
-        System.out.println("Continue to Log In.");
+        lp.print("You have successfully signed up.");
+        lp.print("Continue to Log In.");
         logIn();
     }
 
     /**
      * Signs up a user with particular type Organizer
      */
-    private void signUpOrganizer(){
-        Scanner myObj = new Scanner(System.in);
-        String username1;
-        boolean incorrectCode = true;
-        do {
-            System.out.println("Enter your organizer code.");
-            String code = myObj.nextLine();
-            if (!code.equals("f9h2q6")) {
-                System.out.println("Invalid code.");
-            } else {
-                incorrectCode = false;
-            }
-        }
-        while (incorrectCode);
+    private void signUpOrganizer(String userType) {
+        askUser("Enter your organizer code.", "Invalid code.",
+                userInput -> userInput.equals("f9h2q6"));
 
-        boolean userExists = true;
-        do {
-            System.out.println("Enter a username");
-            username1 = myObj.nextLine();
-            if (exists(g, username1)) {
-                System.out.println("Username already exists");
-            } else {
-                userExists = false;
-            }
-        }
-        while (userExists);
-        System.out.println("Enter a password.");
-        String password = myObj.nextLine();
-        List<String> userInfo = new ArrayList<>();
-        userInfo.add(username1);
-        userInfo.add(password);
-        userInfo.add("O");
-        g.append(userInfo);
+        signUpAttendee(userType);
     }
 
     /**
      * Signs up a user with particular type Attendee
      */
-    private void signUpAttendee() {
-        Scanner myObj = new Scanner(System.in);
-        String username1;
-        boolean userExists = true;
-        do {
-            System.out.println("Enter a username");
-            username1 = myObj.nextLine();
-            if (exists(g, username1)) {
-                System.out.println("Username already exists");
-            } else {
-                userExists = false;
-            }
-        }
-        while (userExists);
-        System.out.println("Enter a password.");
-        String password = myObj.nextLine();
+    private void signUpAttendee(String userType) {
+        String username = askUser("Enter a username", "Username already exists",
+                userInput -> !exists(userInput, null));
+
+        lp.print("Enter a password.");
+        String password = lp.readLine();
         List<String> userInfo = new ArrayList<>();
-        userInfo.add(username1);
+        userInfo.add(username);
         userInfo.add(password);
-        userInfo.add("A");
+        userInfo.add(userType);
         g.append(userInfo);
     }
 
     /**
      * Helper method that checks if username exists in file
-     * @return if username is in the gateway.
+     *
      * @param username the users username
-     * @param gt the gateway interface that stores the users data
+     * @return if username is in the gateway.
      */
-    public boolean exists(IGateway gt, String username){
+    private boolean exists(String username, String password) {
+        User user = getUser(username);
         g.read();
-        while (gt.hasNext()) {
-            List<String> actual = gt.next();
-            if(actual.contains(username)){
+        while (g.hasNext()) {
+            List<String> users = g.next();
+            if (users.get(0).equals(username)) {
+                if (password != null ) {
+                    return users.get(1).equals(password);
+                }
                 return true;
             }
         }
         return false;
+    }
+
+    private User getUser(String username) {
+        g.read();
+        while (g.hasNext()) {
+            List<String> userStrings = g.next();
+            if (userStrings.get(0).equals(username)) {
+                User user;
+                if (userStrings.get(2).equals("O"))
+                {
+                    user = new Organizer(userStrings.get(0), userStrings.get(1));
+                }
+                else
+                {
+                    user = new Attendee(userStrings.get(0), userStrings.get(1));
+                }
+                return user;
+            }
+        }
+        return null;
     }
 }
