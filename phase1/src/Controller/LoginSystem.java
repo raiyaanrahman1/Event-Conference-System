@@ -26,22 +26,24 @@ public class LoginSystem {
         welcome();
     }
 
-//    public void run(){
-//        if()
-//    }
 
     /**
      * Display of the main page (for now)
      */
-    public void MainPage() {
+    public void MainPage(String type) {
         int answer;
         do {
-            answer = lp.menu(); //Shouldn't this menu be the options: Message, event, logout instead of events?
+            answer = lp.menu();
             if (answer == 1) {
-                //call message system
-                //msgSys.messageMenu();
+                msgSys.run();
             } else if (answer == 2) {
-                eventSys.eventMenu();
+                if (type.equals("A")){
+                    eventSys.AttendeeRun();
+                }
+                else if (type.equals("O")){
+                    eventSys.OrganizerRun();
+                }
+
             } else if (answer == 3) {
                 signOut();
             }
@@ -54,8 +56,8 @@ public class LoginSystem {
     public void welcome() {
         int answer = lp.wel();
         if (answer == 1) {
-            logIn();
-            MainPage();
+            String type = logIn();
+            MainPage(type);
         }
         if (answer == 2) {
             signUp();
@@ -73,7 +75,7 @@ public class LoginSystem {
     /**
      * Logs in the user
      */
-    public void logIn() {
+    public String logIn() {
         String username = askUser("Enter a username", "Username does not exist",
                 userInput -> exists(userInput, null));
 
@@ -81,11 +83,9 @@ public class LoginSystem {
         askUser("Enter a password", "Incorrect password",
                 userInput -> exists(username, userInput));
 
-        //user = new UserManager(username);
-        //also need to save user info and get user type
-        //userM.getUserInfoList().get(2);
         userManager.logInUser(username);
         lp.print("Log in successful. Welcome " + username);
+        return userManager.getUserInfoList().get(2);
     }
 
     private String askUser(String prompt, String errorMessage,
@@ -109,9 +109,9 @@ public class LoginSystem {
      * Signs up a new user
      */
     public void signUp() {
-        String response = askUser("Are you an attendee or an organizer?", "Incorrect answer",
-                userInput -> userInput.equals("attendee") || userInput.equals("organizer"));
-        if (response.equals("attendee")) {
+        String response = askUser("Are you an (1) attendee or an (2) organizer?", "Incorrect answer",
+                userInput -> userInput.equals("1") || userInput.equals("2"));
+        if (response.equals("1")) {
             signUpAttendee("A");
         } else {
             signUpOrganizer("O");

@@ -17,12 +17,12 @@ public class LogInSignUpPresenter {
         out.println("(2) Events");
         out.println("(3) Log out");
         out.println("Choose a number for one of the options above. \t\t\t\t(Must be 1 2 or 3)");
-        return Integer.parseInt(in.nextLine());
+        return in.nextInt();//Integer.parseInt(in.nextLine());
     }
 
     public int wel(){
         out.println("Please choose 1 or 2: \n Would you like to 1. sign up or 2. log in?");
-        return Integer.parseInt(in.nextLine());
+        return in.nextInt();
     }
 
     public String readLine() {
