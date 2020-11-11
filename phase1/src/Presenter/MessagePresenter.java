@@ -26,34 +26,20 @@ public class MessagePresenter {
         return answer;
     }
 
-
-    public Integer mainInboxPage(){
-        boolean incorrectOption = false;
-        int answer;
-        do {
-            System.out.println("========== Inbox ========== \n" +
-                    "1. View Received Messages \n" +
-                    "2. Return to Previous Menu");
-            System.out.println("Input the number of the option you wish to choose:");
-            answer = myObj.nextInt();
-            if (answer != 1 && answer != 2){
-                System.out.println("You have entered an incorrect input. Please enter a valid input.");
-                incorrectOption = true;
-            }
-        } while (incorrectOption);
-        return answer;
-    }
-
-
-    public Integer viewInbox(List<String> inboxMessagesList){
+    public void formatMessages(List<String> lstofmessages){
         int i = 1;
-        for(String msg: inboxMessagesList){
+        for(String msg: lstofmessages){
             String[] msgarray = msg.split("\\|");
             System.out.println(i + ". From " + msgarray[0] + " at " + msgarray[1] + " - " + msgarray[2]);
             i++;
         }
+    }
+
+    public Integer mainInboxPage(List<String> lstofmessages){
         boolean invalidInput = false;
         int response;
+        System.out.println("========== Inbox ========== \n");
+        formatMessages(lstofmessages);
         do {
             System.out.println("Would you like to: \n " +
                                "1. Reply to a Message\n " +
@@ -107,8 +93,9 @@ public class MessagePresenter {
         return answer;
     }
 
-
-    public Integer selectFromContactList(List<String> contacts){
+    // [user1, user2, user3]
+    //
+    public String selectFromContactList(List<String> contacts){
         boolean validContact = false;
         int contactNumber;
         do {
@@ -116,12 +103,12 @@ public class MessagePresenter {
             contactNumber = myObj.nextInt();
 
             if (contactNumber > contacts.size() || contactNumber == 0){
-                System.out.println("Please entre a valid number.");
+                System.out.println("Please enter a valid number.");
                 validContact = true;
             }
 
         }while(validContact);
-        return contactNumber;
+        return contacts.get(contactNumber - 1);
     }
 
 
@@ -143,7 +130,7 @@ public class MessagePresenter {
         }while(incorrectOption);
         return answer;
     }
-
+    // From: ken, at
 
     public Integer mainAddUserPage(){
         boolean incorrectOption = false;

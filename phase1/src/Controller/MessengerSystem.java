@@ -10,17 +10,24 @@ import UseCase.UserManager;
 
 public class MessengerSystem {
 
-    UserManager user;
-    MessageManager msgMan = new MessageManager();
-    MessagePresenter msgPres = new MessagePresenter();
+    private UserManager user;
+    private MessageManager msgMan = new MessageManager();
+    private MessagePresenter msgPres = new MessagePresenter();
+
+    public MessengerSystem(UserManager user, MessageManager msgMan) {
+        this.user = user;
+        this.msgMan = msgMan;
+    }
 
     public void run() {
         boolean run = true;
         do {
             int option = msgPres.mainPage();
             if (option == 1) {
-                int inboxOption = msgPres.mainInboxPage();
-                if (inboxOption == 1) msgPres.viewInbox(viewReceivedMessages());
+                int inboxOption = msgPres.mainInboxPage(viewReceivedMessages());
+                if (inboxOption == 1) {
+                    replyMessage(msgPres.getSelectedMessageNumber(), msgPres.getContent());
+                }
                 else msgPres.mainPage();
             } else if (option == 2) {
                 mainContactPageRun(msgPres.mainContactPage());
@@ -33,31 +40,49 @@ public class MessengerSystem {
     }
 
     private void mainContactPageRun(Integer contactOption){
-
+        msgPres.formatContactList(getContacts());
+        boolean run = true;
+        do {
+            if (contactOption == 1) {
+                String selectedUser = msgPres.selectFromContactList(getContacts());
+                mainSelectedContactPageRun(selectedUser, msgPres.selectedContactPage());
+            } else {
+                msgPres.mainPage();
+                run = false;
+            }
+        } while (run);
     }
+
+    private void mainSelectedContactPageRun(String selectedUser, Integer option) {
+        boolean run = true;
+        do {
+            if (option == 1) {
+                messageUser(selectedUser, msgPres.getContent());
+            } else if (option == 2) {
+                removeUser(selectedUser);
+            } else if (option == 3) {
+                msgPres.formatMessages(viewMessages(selectedUser));
+            } else {
+                msgPres.mainContactPage();
+                run = false;
+            }
+        } while (run);
+    }
+
     private void mainAddUserPageRun(Integer option){
+        boolean run = true;
+        do {
+            if (option == 1) {
+                while (!addUser(msgPres.addUserPage())) {
+                    msgPres.addUserPage();
+                }
+            } else {
+                msgPres.mainPage();
+                run = false;
+            }
+        } while (run);
 
     }
-        // have 3 helper methods (mainPageRun, mainContactPageRun, mainAddUserPageRun)
-
-        // call messagepresenter.mainPage()
-        // if (mainPage == 1), call messagepresenter.mainInboxPage()
-            // if (mainInboxPage == 1), call messagepresenter.viewInbox(viewReceivedMessages())
-            // else, call messagepresenter.mainPage()
-        // if (mainPage == 2), call messagepresenter.formatContactList(getContacts),
-        //                     call messagepresenter.mainContactPage()
-            // if (mainContactPage == 1), call messengerpresenter.selectedContactPage(user.getContactList().get(contactNumber - 1);)
-                // selectedContact = user.getContactList().get(contactNumber - 1);
-                // if (selectedContactPage == 1), call messageUser(selectedContact, messagepresenter.getContent)
-                // if (selectedContactPage == 2), call removeUser(selectedContact)
-                // if (selectedContactPage == 3), call messagepresenter.formatMessages(viewMessages(selectedContact))
-                // if (selectedContactPage == 4), call messagepresenter.mainContactPage()
-            // if (mainContactPage == 2), call messagepresenter.mainPage()
-        // if (mainPage == 3),
-            // if (mainAddUserPage == 1), call if (!addUser(messagepresenter.addUserPage())) keep calling
-            // messagepresenter.addUserPage() with the use of a do while loop
-            // if (mainAddUserPage == 2), call messagepresenter.mainPage()
-
 
     public List<String> viewReceivedMessages() {
         return msgMan.getMessages(user.getUserInfoList().get(0));
@@ -101,7 +126,7 @@ public class MessengerSystem {
         List<String> lstofmessages = viewReceivedMessages();
         List<String> msgsfromsender = new ArrayList<>();
         for (String msg : lstofmessages) {
-            String[] msgarray = msg.split("|");
+            String[] msgarray = msg.split("\\|");
             if (msgarray[0].equals(username)) {
                 msgsfromsender.add(msg);
             }
@@ -110,72 +135,72 @@ public class MessengerSystem {
     }
 
 
-    public void organizerBroadcast() {
-        Scanner myObj = new Scanner(System.in);
-        System.out.println("What is the id of event would you like to broadcast a message to?");
-        String eventid = myObj.nextLine();
-        boolean invalidInput = false;
-        do{
-            if (!user.getOrganizedEvents().contains(Integer.parseInt(eventid))) {
-                invalidInput = true;
-                System.out.println("This event has not yet been organized. Please enter a valid event id!");
-            }
-            else {
-                invalidInput = false;
-                System.out.println("What is the content of your message?");
-                String content = myObj.nextLine();
-                if (msgMan.broadcast(user.getUserInfoList().get(0), Integer.parseInt(eventid), content)) {
-                    System.out.println("You have successfully broadcasted your message.");
-                }
-            }
-        }
-        while (invalidInput);
-    }
-
-    public void speakerBroadcast() {
-        Scanner myObj = new Scanner(System.in);
-        List<Integer> listofeventids = new ArrayList<>();
-        boolean addevents = true;
-        while (addevents) {
-            boolean valideventid = false;
-            while(!valideventid) {
-                System.out.println("What is the id of the event you would like to broadcast your message to?");
-                int eventid = myObj.nextInt();
-                if(user.getTalks().contains(eventid)) {
-                    listofeventids.add(eventid);
-                    valideventid = true;
-                }
-                else {
-                    System.out.println("Please input a valid event id.");
-                }
-            }
-            boolean validinput = false;
-            while(!validinput) {
-                System.out.println("Would you like to broadcast your message to another event? Enter 0 for No or 1 for Yes");
-                int response = myObj.nextInt();
-                if (response == 0) {
-                    addevents = false;
-                    validinput = true;
-                }
-                else if (response != 1) {
-                    System.out.println("Please enter a valid number.");
-                }
-                else {
-                    validinput = true;
-                }
-            }
-        }
-        System.out.println("What is the content of the message you would like to broadcast?");
-        String content = myObj.nextLine();
-        for(int eventid : listofeventids) {
-            msgMan.broadcast(user.getUserInfoList().get(0), eventid, content);
-        }
-    }
-
-    public void organizerToSpeakersBroadcast() {
-        // get a list of all the speakers in the program
-        // user.specialBroadcast()
-    }
+//    public void organizerBroadcast() {
+//        Scanner myObj = new Scanner(System.in);
+//        System.out.println("What is the id of event would you like to broadcast a message to?");
+//        String eventid = myObj.nextLine();
+//        boolean invalidInput = false;
+//        do{
+//            if (!user.getOrganizedEvents().contains(Integer.parseInt(eventid))) {
+//                invalidInput = true;
+//                System.out.println("This event has not yet been organized. Please enter a valid event id!");
+//            }
+//            else {
+//                invalidInput = false;
+//                System.out.println("What is the content of your message?");
+//                String content = myObj.nextLine();
+//                if (msgMan.broadcast(user.getUserInfoList().get(0), Integer.parseInt(eventid), content)) {
+//                    System.out.println("You have successfully broadcasted your message.");
+//                }
+//            }
+//        }
+//        while (invalidInput);
+//    }
+//
+//    public void speakerBroadcast() {
+//        Scanner myObj = new Scanner(System.in);
+//        List<Integer> listofeventids = new ArrayList<>();
+//        boolean addevents = true;
+//        while (addevents) {
+//            boolean valideventid = false;
+//            while(!valideventid) {
+//                System.out.println("What is the id of the event you would like to broadcast your message to?");
+//                int eventid = myObj.nextInt();
+//                if(user.getTalks().contains(eventid)) {
+//                    listofeventids.add(eventid);
+//                    valideventid = true;
+//                }
+//                else {
+//                    System.out.println("Please input a valid event id.");
+//                }
+//            }
+//            boolean validinput = false;
+//            while(!validinput) {
+//                System.out.println("Would you like to broadcast your message to another event? Enter 0 for No or 1 for Yes");
+//                int response = myObj.nextInt();
+//                if (response == 0) {
+//                    addevents = false;
+//                    validinput = true;
+//                }
+//                else if (response != 1) {
+//                    System.out.println("Please enter a valid number.");
+//                }
+//                else {
+//                    validinput = true;
+//                }
+//            }
+//        }
+//        System.out.println("What is the content of the message you would like to broadcast?");
+//        String content = myObj.nextLine();
+//        for(int eventid : listofeventids) {
+//            msgMan.broadcast(user.getUserInfoList().get(0), eventid, content);
+//        }
+//    }
+//
+//    public void organizerToSpeakersBroadcast() {
+//        // get a list of all the speakers in the program
+//        // user.specialBroadcast()
+//    }
 
 
 //        Scanner myObj = new Scanner(System.in);
