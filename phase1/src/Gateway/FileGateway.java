@@ -26,7 +26,10 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
             List<String> lines = Files.readAllLines(Paths.get(this.fileName));
             userInfo = new ArrayList<>();
             for (String l : lines) {
-                userInfo.add(Arrays.asList(l.split(" ")));
+                if (!l.equals("\n")) {
+//                    l = l.substring(0, l.length() - 2);
+                    userInfo.add(Arrays.asList(l.split(" ")));
+                }
             }
             return userInfo;
 

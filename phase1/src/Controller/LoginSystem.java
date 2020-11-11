@@ -139,7 +139,6 @@ public class LoginSystem {
         }
         lp.print("You have successfully signed up.");
         lp.print("Continue to Log In.");
-        logIn();
     }
 
     /**
@@ -167,19 +166,15 @@ public class LoginSystem {
         userInfo.add(username);
         userInfo.add(password);
         userInfo.add(userType);
+        userInfo.add("\n");
         g.append(userInfo);
     }
 
     //helper method
     private boolean exists(String username, String password) {
-        User user = getUser(username);
-        g.read();
-        while (g.hasNext()) {
-            List<String> users = g.next();
-            if (users.get(0).equals(username)) {
-                if (password != null ) {
-                    return users.get(1).equals(password);
-                }
+        ArrayList<List<String>> textFile = g.read();
+        for (List<String> line : textFile) {
+            if (line.get(0).equals(username) && line.get(1).equals(password)) {
                 return true;
             }
         }

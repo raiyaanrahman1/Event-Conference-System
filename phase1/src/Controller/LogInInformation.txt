@@ -1,2 +1,1 @@
-username1 p4ssword A
-username2 password O
+username1 password A
