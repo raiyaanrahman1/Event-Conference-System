@@ -22,9 +22,9 @@ public class LoginSystem {
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
     UserManager userManager = new UserManager(g.read());
     EventManager eventMan = new EventManager();
-    MessageManager messageMan =  new MessageManager();
+    MessageManager messageMan = new MessageManager();
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
-    EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan);
+    EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan);
     LogInSignUpPresenter lp = new LogInSignUpPresenter();
 
 
@@ -36,6 +36,7 @@ public class LoginSystem {
 
     /**
      * Calls the appropriate menus depending on the user input.
+     *
      * @param type represents the tpe of user.
      */
     public void MainPage(String type) {
@@ -45,10 +46,9 @@ public class LoginSystem {
             if (answer == 1) {
                 msgSys.run();
             } else if (answer == 2) {
-                if (type.equals("A")){
+                if (type.equals("A")) {
                     eventSys.eventMenuAttendee();
-                }
-                else if (type.equals("O")){
+                } else if (type.equals("O")) {
                     eventSys.eventMenuOrganizer();
                 }
 
@@ -64,11 +64,11 @@ public class LoginSystem {
     public void welcome() {
         int answer = lp.wel();
         if (answer == 1) {
-            String type = logIn();
-            MainPage(type);
+            signUp();
         }
         if (answer == 2) {
-            signUp();
+            String type = logIn();
+            MainPage(type);
         }
     }
 
@@ -82,20 +82,32 @@ public class LoginSystem {
 
     /**
      * Logs in the user
+     *
      * @return String representing the type of user.
      */
     public String logIn() {
-        String username = askUser("Enter a username", "Username does not exist",
-                userInput -> exists(userInput, null));
-
-        //check password
-        askUser("Enter a password", "Incorrect password",
-                userInput -> exists(username, userInput));
-
-        userManager.logInUser(username);
-        lp.print("Log in successful. Welcome " + username);
-        return userManager.getUserInfoList().get(2);
+        boolean incorrect = true;
+        do {
+            System.out.println("enter a username");
+            String username = lp.readLine();
+            System.out.println("enter a password");
+            String password = lp.readLine();
+            if (exists(username, password)) {
+                userManager.logInUser(username);
+                lp.print("Log in successful. Welcome " + username);
+                incorrect = false;
+                return userManager.getUserInfoList().get(2);
+            }
+//        String username = askUser("Enter a username", "Username does not exist",
+//                userInput -> exists(userInput, null));
+//
+//        //check password
+//        askUser("Enter a password", "Incorrect password",
+//                userInput -> exists(username, userInput));
+        } while (incorrect);
+        return null;
     }
+
     //helper method
     private String askUser(String prompt, String errorMessage,
                            Function<String, Boolean> validationFunction) {

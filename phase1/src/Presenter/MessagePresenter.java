@@ -62,7 +62,7 @@ public class MessagePresenter {
 
     public String getContent(){
         System.out.print("Enter the content of your message.");
-        return myObj.nextLine();
+        return myObj.next();
     }
 
 
@@ -150,7 +150,7 @@ public class MessagePresenter {
 
     public String addUserPage(){
         System.out.print("Please input the username of the user you wish to add:");
-        return myObj.nextLine();
+        return myObj.next();
     }
 
 }

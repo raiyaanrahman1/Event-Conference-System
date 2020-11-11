@@ -36,7 +36,7 @@ public class LogInSignUpPresenter {
      * @return String representing the user input.
      */
     public String readLine() {
-        return in.nextLine();
+        return in.next();
     }
     /**
      * Returns a message

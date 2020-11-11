@@ -79,19 +79,19 @@ public class EventManagementSystem {
             boolean failedAdding = true;
             do {
                 System.out.println("Enter the name of the event.");
-                String eventName = myObj.nextLine();
+                String eventName = myObj.next();
                 System.out.println("Enter the room where the event will be held.");
-                String room = myObj.nextLine();
+                String room = myObj.next();
                 System.out.println("Enter the Speaker of the event.");
-                String speaker = myObj.nextLine();
+                String speaker = myObj.next();
                 System.out.println("Enter the Organizer of the event.");
-                String org = myObj.nextLine();
+                String org = myObj.next();
                 System.out.println("Enter the capacity of the event.");
-                int cap = Integer.parseInt(myObj.nextLine());
+                int cap = Integer.parseInt(myObj.next());
                 System.out.println("Enter the date of the event in the format yyyy-MM-dd.");
-                String date = myObj.nextLine();
+                String date = myObj.next();
                 System.out.println("Enter the date of the event as HH in the 24 hour clock format.");
-                LocalTime time = LocalTime.parse(myObj.nextLine());
+                LocalTime time = LocalTime.parse(myObj.next());
                 int before9 = time.compareTo(LocalTime.parse("09:00:00"));
                 int after5 = time.compareTo(LocalTime.parse("17:00:00"));
                 LocalDateTime datetime = LocalDateTime.parse(date + time);

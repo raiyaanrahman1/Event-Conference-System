@@ -18,7 +18,7 @@ public class CreateSpeakerController {
         boolean incorrectCode = true;
         do {
             System.out.println("Enter your organizer code." );
-            String code = myObj.nextLine();
+            String code = myObj.next();
             if (!code.equals("f9h2q6" )) {
                 System.out.println("Invalid code." );
             } else {
@@ -30,7 +30,7 @@ public class CreateSpeakerController {
         boolean userExists = true;
         do {
             System.out.println("Enter a username" );
-            username1 = myObj.nextLine();
+            username1 = myObj.next();
             if (exists(g, username1)) {
                 System.out.println("Username already exists" );
             } else {
@@ -39,7 +39,7 @@ public class CreateSpeakerController {
         }
         while (userExists);
         System.out.println("Enter a password." );
-        String password = myObj.nextLine();
+        String password = myObj.next();
         List<String> userInfo = new ArrayList<>();
         userInfo.add(username1);
         userInfo.add(password);

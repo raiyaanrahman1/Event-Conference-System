@@ -45,7 +45,7 @@ public class EventPresenter {
         out.println("Type the ID of the event that you want to choose.");
         out.println("The ID must be an integer.");
 
-        return Integer.parseInt(in.nextLine());
+        return Integer.parseInt(in.next());
     }
 
     /**
@@ -153,7 +153,7 @@ public class EventPresenter {
      */
     private int promptForNumberRange(int start, int end) {
         out.printf("Input a number from %d to %d", start, end);
-        return Integer.parseInt(in.nextLine());
+        return Integer.parseInt(in.next());
     }
 
     /**
@@ -187,6 +187,6 @@ public class EventPresenter {
     public String promptForMessage() {
         out.println("Enter the message you want to broadcast.");
         out.println("Put it all in one single line.");
-        return in.nextLine();
+        return in.next();
     }
 }
