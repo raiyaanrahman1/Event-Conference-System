@@ -7,9 +7,6 @@ import java.util.List;
  * Organizers can also take on the role of an Attendee
  */
 public class Organizer extends Attendee{
-    private List<Event> organizedEvents;
-    private List<User> contacts;
-    private List<Event> eventList;
 
     /**
      * Creates a new organizer object.
@@ -19,28 +16,6 @@ public class Organizer extends Attendee{
      */
     public Organizer(String uname, String pword) {
         super(uname, pword);
-        this.organizedEvents = new ArrayList<>();
-        this.contacts = new ArrayList<>();
-        this.eventList = new ArrayList<>();
     }
-
-
-    public List<Event> getOrganizedEvents() {
-        return organizedEvents;
-    }
-
-    /**
-     * Adds an event to the list of organized events of this organizer
-     *
-     * @param event  the event that this organizer created
-     */
-    public void addOrganizedEvent(Event event){ this.organizedEvents.add(event); }
-
-    /**
-     * Removes an event from the list of organized events of this organizer
-     *
-     * @param event  the event that this organizer created
-     */
-    public void removeOrganizedEvent(Event event){ this.organizedEvents.remove(event); }
 
 }

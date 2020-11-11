@@ -2,15 +2,17 @@ package UseCase;
 
 import Entity.Message;
 
+import Gateway.IGateway2;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Comparator;
 
 /**
  * The MessageManager class manages communications between users.
- * TODO: Figure out the initialization of this class. Build a constructor that
- *  initializes the message manager from a gateway and a builder class.
+ * TODO: Test this new initializer.
  */
 public class MessageManager {
 
@@ -25,6 +27,32 @@ public class MessageManager {
      */
     public MessageManager() {
         messages = new HashMap<>();
+    }
+
+    /**
+     * Constructs a map from the file.
+     * The file should be formatted like so:
+     *   receiver|sender|dateTime|content
+     */
+    public MessageManager(IGateway2 gateway) {
+        messages = new HashMap<>();
+
+        gateway.openForRead();
+        List<String> formattedMessages = this.getStoredMessages(gateway);
+        gateway.closeForRead();
+
+        for (String formattedMessage: formattedMessages) {
+            String[] tokens = formattedMessage.split("\\|");
+
+            String receiver = tokens[0];
+            String sender = tokens[1];
+            String dateTime = tokens[2];
+            String content = tokens[3];
+
+            Message message = new Message(content, receiver, sender, dateTime);
+
+            this.addMessage(receiver, message);
+        }
     }
 
     /**
@@ -90,7 +118,7 @@ public class MessageManager {
             this.addUser(receiver);
         }
 
-        List<Message> messageList = messages.get(receiver);
+        List<Message> messageList = this.messages.get(receiver);
         messageList.add(message);
     }
 
@@ -101,7 +129,7 @@ public class MessageManager {
      * @return  the boolean flag representing the condition.
      */
     private boolean hasMessages(String receiver) {
-        return messages.containsKey(receiver);
+        return this.messages.containsKey(receiver);
     }
 
     /**
@@ -112,7 +140,61 @@ public class MessageManager {
      * @param receiver  the username of the user.
      */
     private void addUser(String receiver) {
-        messages.put(receiver, new ArrayList<>());
+        this.messages.put(receiver, new ArrayList<>());
     }
 
+    /**
+     * Gets the strings that represent each message to the manager.
+     * Each string should be formatted in the manner:
+     *          (receiver)|(sender)|(datetime)|(content)
+     *
+     * @param gateway2  the interface that holds the message data
+     * @return  a list of formatted messages
+     */
+    private List<String> getStoredMessages(IGateway2 gateway2) {
+        List<String> formattedMessageStrings = new ArrayList<>();
+        while (gateway2.hasNext()) {
+            formattedMessageStrings.add(gateway2.next());
+        }
+        return formattedMessageStrings;
+    }
+
+    /**
+     * Sorts a list of messages by their
+     * @param messages  the list of messages to be sorted
+     */
+    private void sortMessages(List<Message> messages) {
+        messages.sort(new ComparatorByDateTime());
+    }
+
+    /**
+     * A comparator class used to compare messages by their datetime.
+     */
+    private class ComparatorByDateTime implements Comparator<Message> {
+
+        /**
+         * Compares two messages by their datetime.
+         *
+         * Between two messages, the most recent one is the greater one.
+         * The oldest one is the smallest one. If they occurred at the
+         * same time, they are the same.
+         *
+         * This comparator is not consistent with the equals method.
+         *
+         * @param mess1  the one message being compared
+         * @param mess2  the other message being compared
+         * @return 1 iff mess1 message is greater than mess2
+         *         -1 iff mess1 message is smaller than mess2
+         *         0 otherwise
+         */
+        public int compare(Message mess1, Message mess2) {
+            if (mess1.getDateTime().isAfter(mess2.getDateTime())) {
+                return 1;
+            } else if (mess1.getDateTime().isBefore(mess2.getDateTime())) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
 }
