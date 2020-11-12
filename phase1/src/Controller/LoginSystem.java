@@ -92,6 +92,9 @@ public class LoginSystem {
                 lp.print("Log in successful. Welcome " + username);
                 return user.getUserType();
             }
+            else {
+                lp.print("Invalid user name or password. Please try again.");
+            }
         } while (true);
     }
 
