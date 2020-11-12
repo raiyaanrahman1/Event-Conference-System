@@ -25,16 +25,6 @@ public class EventPresenter {
     }
 
 
-
-//    /**
-//     * Displays the allowed events that a user is allowed to sign up for.
-//     */
-//    private void displayEventsToSignUp() {
-//        for (Integer id: events.showListOfAllowedEvents()) {
-//            out.printf("%d:  %s\n", id, user.getToStringByEventID(id));
-//        }
-//    }
-
     /**
      * Prompts user for the id of event they want to sign up for.
      * TODO: catch errors for wrong input (i.e String rather than
@@ -64,10 +54,6 @@ public class EventPresenter {
         for (String event: events.showOrganizedEvents()) {
             out.print(event);
         }
-    }
-
-    public void displayEventsBySpeaker() {
-
     }
 
     /**

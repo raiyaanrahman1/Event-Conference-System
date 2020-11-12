@@ -18,31 +18,37 @@ public class EventManagementSystem {
     private EventManager manager;
     private MessageManager mess;
 
+    /**
+     * Creates an EventManagementSystem and initializes its UserManager, EventManager and MessageManager.
+     *
+     */
     public EventManagementSystem(UserManager user, EventManager event, MessageManager mess) {
         this.manager = event;
         this.user = user;
         this.mess = mess;
         this.presenter = new EventPresenter();
     }
-
+    /**
+     * Signs a user up for an event.
+     */
     public void eventSignUp() {
-        // showListOfAllowedEvents and promptIDEventSignUp
         boolean failedSignUp = true;
         do {
             int eventId = presenter.promptForEventID();
             ListOfAllowedEvents();
-            if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0))) { // signUpForEvent should take in ID
-                // displaySignUpOutcome
+            if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0))) {
                 presenter.displaySignUpSuccess();
                 failedSignUp = false;
             } else {
                 presenter.displaySignUpFailure();
                 presenter.displayTryAgain();
             }
-            // maybe instead, the failure should state, try again, and loop over.
         } while (failedSignUp);
     }
 
+    /**
+     * Cancels a spot at the event of a user that is already signed up to the event.
+     */
     public void AttendeeCancelEvent() {
         boolean invalidCancellation = true;
         do{
@@ -59,14 +65,27 @@ public class EventManagementSystem {
 
     }
 
+    /**
+     * Shows a list of events a user is allowed to sign up for. A user is allowed to sign up iff they have not already
+     * done so and the event capacity is not reached.
+     * @return a list of IDs of the events.
+     */
     public List<Integer> ListOfAllowedEvents() {
         return manager.getAllowedEvents(user.getUserInfoList().get(0));
     }
 
+    /**
+     * Gets the list of events a user is signed up for.
+     * @return a list of event IDs corresponding to the events that this user has signed up for.
+     */
     public List<Integer> ListOfUserEvents() {
         return manager.getEventListByAttendee(user.getUserInfoList().get(0));
     }
 
+    /**
+     * Gets the list of events an organizer has created.
+     * @return a list of event IDs corresponding to the events this user organised.
+     */
     public List<String> showOrganizedEvents() {
         return manager.getOrganizedEventsString(user.getUserInfoList().get(0));
     }
@@ -128,7 +147,6 @@ public class EventManagementSystem {
 
     public void eventMenuAttendee() {
         boolean invalidAnswer = true;
-        // use display event menu here.
         do{
             int option =  presenter.displayEventMenuOptions();
             if (option == 1) {
@@ -150,12 +168,12 @@ public class EventManagementSystem {
         boolean invalidAnswer = true;
         // use display event menu here.
         do{
-            int option =  presenter.displayEventMenuOptions();
+            int option =  presenter.displayEventMenuOptionsSpeaker();
             if (option == 1) {
-
+                this.ListOfSpeakerEvents();
                 invalidAnswer = false;
             } else if (option == 2) {
-
+                this.broadcastEventSpeaker();
                 invalidAnswer = false;
             } else {
                 presenter.displayTryAgain();
@@ -190,7 +208,6 @@ public class EventManagementSystem {
                     this.broadcastEvent();
                     invalidAnswer = false;
                 } else {
-                    //maybe print try again or something
                     presenter.displayTryAgain();
                 }
             } while (invalidAnswer);
@@ -220,5 +237,10 @@ public class EventManagementSystem {
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }
 
+    public List<Integer> ListOfSpeakerEvents() {
+        if (user.getUserInfoList().get(2).equals("S")) {
+            return manager.getTalksBySpeaker(user.getUserInfoList().get(0));
+        }return null;
+    }
 
 }
