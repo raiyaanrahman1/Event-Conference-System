@@ -94,14 +94,17 @@ public class MessageManager {
     public List<String> getMessages(String receiver) {
         List<String> messages = new ArrayList<>();
 
-        for (Message message: this.messages.get(receiver)) {
-            String dateTime = message.getFormattedDateTime();
-            String content = message.getContent();
-            String sender = message.getSender();
+        if (this.hasMessages(receiver)) {
+            for (Message message: this.messages.get(receiver)) {
+                String dateTime = message.getFormattedDateTime();
+                String content = message.getContent();
+                String sender = message.getSender();
 
-            String formatted = String.format("%s|%s|%s",
-                    sender, dateTime, content);
-            messages.add(formatted);
+                String formatted = String.format("%s|%s|%s",
+                        sender, dateTime, content);
+
+                messages.add(formatted);
+            }
         }
 
         return messages;
@@ -123,7 +126,7 @@ public class MessageManager {
     }
 
     /**
-     * Returns true iff the user has been introduced into the map.
+     * Returns true iff the user has been any messages.
      *
      * @param receiver  the username of the user
      * @return  the boolean flag representing the condition.
