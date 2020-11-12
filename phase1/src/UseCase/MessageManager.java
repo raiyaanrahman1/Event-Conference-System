@@ -1,7 +1,6 @@
 package UseCase;
 
 import Entity.Message;
-
 import Gateway.IGateway2;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Comparator;
 
 /**
  * The MessageManager class manages communications between users.
- * TODO: Test this new initializer.
  */
 public class MessageManager {
 
@@ -83,28 +81,43 @@ public class MessageManager {
     }
 
     /**
-     * Gets the messages received by the given user. Each message
-     * is represented by a string with the following format:
-     *      (sender's username)|(date)|(time)|(content)
+     * Gets the messages received by the given user. Each message is
+     * represented by a string with the following format:
+     *         (sender's username)|(date)|(time)|(content)
+     *
      * For example,
-     *  ken|09/08/1969|11:37:45|Ritchie, check this out, i call it ed.
+     *  ken|09/08/1969 11:37:45|Ritchie, check this out, i call it ed.
      *
      * @param receiver  the receiver of the messages
      */
     public List<String> getMessages(String receiver) {
         List<String> messages = new ArrayList<>();
 
-        for (Message message: this.messages.get(receiver)) {
-            String dateTime = message.getFormattedDateTime();
-            String content = message.getContent();
-            String sender = message.getSender();
-
-            String formatted = String.format("%s|%s|%s",
-                    sender, dateTime, content);
-            messages.add(formatted);
+        if (this.hasMessages(receiver)) {
+            for (Message message: this.messages.get(receiver)) {
+                messages.add(this.getFormattedMessage(message));
+            }
         }
 
         return messages;
+    }
+
+    /**
+     * Stores the messages through a gateway.
+     * Precondition: the gateway must not be open for write/read.
+     *
+     * @param gateway  the gateway through which we save our messages
+     */
+    public void storeMessages(IGateway2 gateway) {
+        if (gateway.openForWrite()) {
+            for (List<Message> messages: this.messages.values()) {
+                for (Message message: messages) {
+                    gateway.write(this.convertToString(message));
+                }
+            }
+
+            gateway.closeForWrite();
+        }
     }
 
     /**
@@ -123,7 +136,7 @@ public class MessageManager {
     }
 
     /**
-     * Returns true iff the user has been introduced into the map.
+     * Returns true iff the user has been any messages.
      *
      * @param receiver  the username of the user
      * @return  the boolean flag representing the condition.
@@ -157,6 +170,38 @@ public class MessageManager {
             formattedMessageStrings.add(gateway2.next());
         }
         return formattedMessageStrings;
+    }
+
+    /**
+     * Returns the formatted form of a given message.
+     *
+     * For example,
+     *  ken|09/08/1969 11:37:45|Ritchie, check this out, i call it ed.
+     *
+     * @param message  the message
+     * @return  the formatted string that represents the message.
+     */
+    private String getFormattedMessage(Message message) {
+        String dateTime = message.getFormattedDateTime();
+        String content = message.getContent();
+        String sender = message.getSender();
+
+        return String.format("%s|%s|%s", sender, dateTime, content);
+    }
+
+    /**
+     * Returns the string representation of a given message.
+     *
+     * @param message  the message
+     * @return  the string representation of this message
+     */
+    private String convertToString(Message message) {
+        String dateTime = message.getFormattedDateTime();
+        String content = message.getContent();
+        String sender = message.getSender();
+        String receiver = message.getReceiver();
+
+        return String.format("%s|%s|%s|%s", receiver, sender, dateTime, content);
     }
 
     /**

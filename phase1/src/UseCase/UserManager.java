@@ -52,14 +52,18 @@ public class UserManager{
     private void createUserList(ArrayList<List<String>> userInfo){
         userList = new ArrayList<>();
         for (List<String> u : userInfo){
-            String type = u.get(2);
-            if (type.equals("A")){
-                userList.add(new Attendee(u.get(0), u.get(1)));
-            } else if (type.equals("O")){
-                userList.add(new Organizer(u.get(0), u.get(1)));
-            } else {
-                userList.add(new Speaker(u.get(0), u.get(1)));
-            }
+            addUserToList(u);
+        }
+    }
+
+    private void addUserToList(List<String> userInfo) {
+        String type = userInfo.get(2);
+        if (type.equals("A")){
+            userList.add(new Attendee(userInfo.get(0), userInfo.get(1)));
+        } else if (type.equals("O")){
+            userList.add(new Organizer(userInfo.get(0), userInfo.get(1)));
+        } else {
+            userList.add(new Speaker(userInfo.get(0), userInfo.get(1)));
         }
     }
 
@@ -159,6 +163,7 @@ public class UserManager{
      */
     public List<String> getContactList(){
         return user.getContacts();
+
     }
 
     public void CreateUser(String username, String password, String userType) {
@@ -167,10 +172,9 @@ public class UserManager{
         newUserInfo.add(password);
         newUserInfo.add(userType);
         gateway.append(newUserInfo);
-        // Read it back to refresh in memory state
-        ArrayList<List<String>> userInfo = gateway.read();
-        createUserList(userInfo);
-        rawUserInfo = userInfo;
+        // Add to lists
+        addUserToList(newUserInfo);
+        rawUserInfo.add(newUserInfo);
     }
 }
 
