@@ -65,7 +65,7 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
     @Override
     public void append(List<String> content) {
         try {
-            String line = String.join(" ", content).concat(System.lineSeparator());
+            String line = String.join(" ", content).concat("\n");
             Files.write(Paths.get(this.fileName), line.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
