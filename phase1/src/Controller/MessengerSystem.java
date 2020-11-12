@@ -71,9 +71,9 @@ public class MessengerSystem {
         boolean run = true;
         do {
             if (option == 1) {
-                while (!addUser(msgPres.addUserPage())) {
+                if (!addUser(msgPres.addUserPage())) {
                     msgPres.addUserPage();
-                }
+                } else {run = false;}
             } else {
                 msgPres.mainPage();
                 run = false;
