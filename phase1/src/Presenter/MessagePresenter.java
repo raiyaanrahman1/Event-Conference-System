@@ -26,31 +26,37 @@ public class MessagePresenter {
         return answer;
     }
 
-    public void formatMessages(List<String> lstofmessages){
+    public void formatMessages(List<String> messageList){
         int i = 1;
-        for(String msg: lstofmessages){
+        for(String msg: messageList){
             String[] msgarray = msg.split("\\|");
             System.out.println(i + ". From " + msgarray[0] + " at " + msgarray[1] + " - " + msgarray[2]);
             i++;
         }
     }
 
-    public Integer mainInboxPage(List<String> lstofmessages){
+    public Integer mainInboxPage(List<String> messageList){
         boolean invalidInput = false;
         int response;
         System.out.println("========== Inbox ========== \n");
-        formatMessages(lstofmessages);
-        do {
-            System.out.println("Would you like to: \n " +
-                               "1. Reply to a Message\n " +
-                               "2. Go back to previous menu. \n");
-            response = myObj.nextInt();
-            if(response != 1 && response != 2){
-                System.out.println("You have entered an incorrect input. Please enter a valid input.");
-                invalidInput = true;
-            }
-        } while (invalidInput);
-        return response;
+        if (messageList.size() == 0) {
+            System.out.println("You have no messages yet!");
+            return -1;
+        }
+        else{
+            formatMessages(messageList);
+            do {
+                System.out.println("Would you like to: \n " +
+                        "1. Reply to a Message\n " +
+                        "2. Go back to previous menu. \n");
+                response = myObj.nextInt();
+                if (response != 1 && response != 2) {
+                    System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                    invalidInput = true;
+                }
+            } while (invalidInput);
+            return response;
+        }
     }
 
 
@@ -77,20 +83,29 @@ public class MessagePresenter {
     }
 
 
-    public Integer mainContactPage(){
+
+
+    public Integer mainContactPage(List<String> contacts){
         boolean incorrectOption = false;
         int answer;
-        do {
-            System.out.println("========== CONTACT LIST ========== \n" +
-                                "1. Select a Contact \n" +
-                                "2. Return to Previous Menu");
-            answer = myObj.nextInt();
-            if (answer != 1 && answer != 2){
-                System.out.println("You have entered an incorrect input. Please enter a valid input.");
-                incorrectOption = true;
-            }
-        } while (incorrectOption);
-        return answer;
+        System.out.println("========== CONTACT LIST ========== \n");
+        if (contacts.size() == 0){
+            System.out.println("You have no contacts yet!");
+            return -1;
+        }
+        else {
+            formatContactList(contacts);
+            do {
+                System.out.println("1. Select a Contact \n" +
+                        "2. Return to Previous Menu");
+                answer = myObj.nextInt();
+                if (answer != 1 && answer != 2) {
+                    System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                    incorrectOption = true;
+                }
+            } while (incorrectOption);
+            return answer;
+        }
     }
 
     // [user1, user2, user3]

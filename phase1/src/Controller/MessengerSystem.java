@@ -29,7 +29,7 @@ public class MessengerSystem {
                 }
                 else msgPres.mainPage();
             } else if (option == 2) {
-                mainContactPageRun(msgPres.mainContactPage());
+                mainContactPageRun(msgPres.mainContactPage(getContacts()));
             } else if (option == 3) {
                 mainAddUserPageRun(msgPres.mainAddUserPage());
             } else {
@@ -39,7 +39,6 @@ public class MessengerSystem {
     }
 
     private void mainContactPageRun(Integer contactOption){
-        msgPres.formatContactList(getContacts());
         boolean run = true;
         do {
             if (contactOption == 1) {
@@ -62,7 +61,7 @@ public class MessengerSystem {
             } else if (option == 3) {
                 msgPres.formatMessages(viewMessages(selectedUser));
             } else {
-                msgPres.mainContactPage();
+                msgPres.mainContactPage(getContacts());
                 run = false;
             }
         } while (run);

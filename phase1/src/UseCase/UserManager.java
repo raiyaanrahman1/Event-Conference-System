@@ -159,6 +159,7 @@ public class UserManager{
      */
     public List<String> getContactList(){
         return user.getContacts();
+
     }
 
     public void CreateUser(String username, String password, String userType) {
