@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 public class LoginSystem {
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
-    IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/contactListInfo.txt");
+    IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/MessageListInformation.txt");
     UserManager userManager = new UserManager(g);
     EventManager eventMan = new EventManager();
     MessageManager messageMan = new MessageManager(g2);
@@ -75,8 +75,8 @@ public class LoginSystem {
      */
     public void signOut() {
         lp.print("Goodbye.");
-        welcome();
-      //  System.exit(0);
+        messageMan.storeMessages(g2);
+        System.exit(0);
     }
 
     /**

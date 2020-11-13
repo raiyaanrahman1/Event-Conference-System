@@ -96,7 +96,7 @@ public class MessageFileGateway implements IGateway2 {
     @Override
     public String next() throws NoSuchElementException, IllegalStateException {
         if (readable) {
-            return reader.next();
+            return reader.nextLine();
         } else {
             throw new IllegalStateException();
         }
