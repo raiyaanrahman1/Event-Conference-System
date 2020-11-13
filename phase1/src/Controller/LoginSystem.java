@@ -72,7 +72,8 @@ public class LoginSystem {
      */
     public void signOut() {
         lp.print("Goodbye.");
-        System.exit(0);
+        welcome();
+      //  System.exit(0);
     }
 
     /**

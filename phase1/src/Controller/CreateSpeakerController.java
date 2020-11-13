@@ -50,12 +50,16 @@ public class CreateSpeakerController {
     }
 
     public boolean exists(IGateway gt, String username){
-        g.read();
-        while (gt.hasNext()) {
-            List<String> actual = gt.next();
+        ArrayList<List<String>> list = gt.read();
+//        while (!list.isEmpty()) {
+//            List<String> actual = gt.next();
+//            if(actual.contains(username)){
+//                return true;
+//            }
+        for(List<String> actual: list){
             if(actual.contains(username)){
                 return true;
-            }
+        }
         }
         return false;
     }
