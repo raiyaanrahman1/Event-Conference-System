@@ -21,9 +21,11 @@ public class EventPresenter {
         events.eventMenuAttendee();
         if (user.getUserInfoList().get(2).equals("O")) {
             events.eventMenuOrganizer();
+        }else if (user.getUserInfoList().get(2).equals("S")){
+            events.eventMenuSpeaker();
         }
-    }
 
+    }
 
     /**
      * Prompts user for the id of event they want to sign up for.
@@ -42,17 +44,38 @@ public class EventPresenter {
      * Displays the events that the user has signed up for.
      */
     public void displayEventsByUser() {
-        for (Integer id: events.ListOfUserEvents()) {
-            out.printf("%d:  %s\n", id, user.getUserInfoList().get(0));
+        if (events.ListOfUserEvents() != null) {
+            for (Integer id : events.ListOfUserEvents()) {
+                out.printf("%d:  %s\n", id, user.getUserInfoList().get(0));
+            }
+        }else{
+            out.println("You have not signed up for any events.");
         }
     }
 
     /**
-     * Prompts user for the id of one of all events.
+     * Shows the list of events an Organizer.
      */
     public void displayEventsByOrganizer() {
-        for (String event: events.showOrganizedEvents()) {
-            out.print(event);
+        if (events.showOrganizedEvents() != null) {
+            for (String event : events.showOrganizedEvents()) {
+                out.println(event);
+            }
+        } else{
+            out.println("You have not created any events.");
+        }
+    }
+
+    /**
+     * Shows the list of events a Speaker is speaking at.
+     */
+    public void displayEventsBySpeaker() {
+        if (events.ListOfSpeakerEvents() != null) {
+            for (int event : events.ListOfSpeakerEvents()) {
+                out.print(event);
+            }
+        } else {
+            System.out.println("You have not created any events.");
         }
     }
 
@@ -79,7 +102,7 @@ public class EventPresenter {
      * @return  the number of the event chosen.
      */
     public int displayEventMenuOptions() {
-        System.out.println("EVENTS");
+        System.out.println("========== Events Menu ==========");
         out.println("(1) Sign up for event");
         out.println("(2) Cancel spot in event");
         out.println("(3) See your events");
@@ -95,7 +118,7 @@ public class EventPresenter {
      * @return  the number of the event chosen.
      */
     public int displayEventMenuOptionsOrganizer() {
-        System.out.println("EVENTS");
+        System.out.println("========== Events Menu ==========");
         out.println("(1) Sign up for event");
         out.println("(2) Cancel spot in event");
         out.println("(3) See your events");
@@ -103,9 +126,10 @@ public class EventPresenter {
         out.println("(5) Cancel an event");
         out.println("(6) See the events you organized");
         out.println("(7) Broadcast an event.");
+        out.println("(8) Create a Speaker account.");
         out.println("Choose a number for one of the options above.");
 
-        return promptForNumberRange(1, 6);
+        return promptForNumberRange(1, 8);
     }
 
     /**
@@ -115,7 +139,7 @@ public class EventPresenter {
      * @return  the number of the event chosen.
      */
     public int displayEventMenuOptionsSpeaker() {
-        System.out.println("EVENTS");
+        System.out.println("========== Events Menu ==========");
         out.println("(1) See your events");
         out.println("(2) Broadcast an event.");
         out.println("Choose a number for one of the options above.");
@@ -170,9 +194,40 @@ public class EventPresenter {
         out.println("Cancelling event has failed. Has the event been created?");
     }
 
+    /**
+     * Display to organizer user that adding event has succeeded.
+     */
+    public void displayAddEventSuccess() {
+        out.println("You have successfully added this event.");
+    }
+
+    /**
+     * Display to organizer user that adding event has failed.
+     */
+    public void displayAddEventFailure() {
+        out.println("You have failed adding this event.");
+    }
+
     public String promptForMessage() {
         out.println("Enter the message you want to broadcast.");
         out.println("Put it all in one single line.");
         return in.next();
+    }
+    /**
+     * Takes in the content to be printed to the UI and returns the String response
+     * @param content which representing the content to be returned.
+     * @return the user's response as a String.
+     */
+    public String takeString(String content){
+        out.println(content);
+        return in.next();
+    }
+
+    /**
+     * Returns a message
+     * @param content which representing the content to be returned.
+     */
+    public void print(String content){
+        out.println(content);
     }
 }

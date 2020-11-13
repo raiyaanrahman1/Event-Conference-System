@@ -2,52 +2,52 @@ package Controller;
 
 import Gateway.FileGateway;
 import Gateway.IGateway;
+import UseCase.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class CreateSpeakerController {
 
     IGateway g = new FileGateway("");
+    UserManager userManager = new UserManager(g);
 
+    /**
+     * Creates a Speaker account iff the user is an Organizer
+     */
     public void CreateSpeaker() {
 
         Scanner myObj = new Scanner(System.in);
-        String username1;
-        boolean incorrectCode = true;
-        do {
-            System.out.println("Enter your organizer code." );
-            String code = myObj.next();
-            if (!code.equals("f9h2q6" )) {
-                System.out.println("Invalid code." );
-            } else {
-                incorrectCode = false;
-            }
-        }
-        while (incorrectCode);
+        askUser("Enter your organizer code.", "Invalid code.",
+                userInput -> userInput.equals("f9h2q6"));
+            String username = askUser("Enter a username", "Username already exists",
+                    userInput -> userManager.getUserByUsername(userInput) == null);
 
-        boolean userExists = true;
-        do {
-            System.out.println("Enter a username" );
-            username1 = myObj.next();
-            if (exists(g, username1)) {
-                System.out.println("Username already exists" );
-            } else {
-                userExists = false;
-            }
-        }
-        while (userExists);
-        System.out.println("Enter a password." );
-        String password = myObj.next();
-        List<String> userInfo = new ArrayList<>();
-        userInfo.add(username1);
-        userInfo.add(password);
-        userInfo.add("S");
-        g.append(userInfo);
-
+            System.out.println("Enter a password.");
+            String password = myObj.next();
+            userManager.CreateUser(username, password, "S");
     }
 
+    //helper method
+    private String askUser(String prompt, String errorMessage,
+                           Function<String, Boolean> validationFunction) {
+        Scanner myObj = new Scanner(System.in);
+        boolean keepAsking = true;
+        String userInput;
+        do {
+            System.out.println();
+            userInput = myObj.next();
+            if (!validationFunction.apply(userInput)) {
+                System.out.println(errorMessage);
+            } else {
+                keepAsking = false;
+            }
+        }
+        while (keepAsking);
+        return userInput;
+    }
 
     public boolean exists(IGateway gt, String username){
         g.read();

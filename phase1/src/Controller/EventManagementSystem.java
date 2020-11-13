@@ -6,6 +6,7 @@ import UseCase.EventManager;
 import UseCase.UserManager;
 import UseCase.MessageManager;
 import Presenter.EventPresenter;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -28,6 +29,15 @@ public class EventManagementSystem {
         this.mess = mess;
         this.presenter = new EventPresenter();
     }
+
+//    public void run(){
+//        boolean run = true;
+//        do{
+//            presenter.mainEventPage();
+//        }while(run);
+//
+//    }
+
     /**
      * Signs a user up for an event.
      */
@@ -90,6 +100,9 @@ public class EventManagementSystem {
         return manager.getOrganizedEventsString(user.getUserInfoList().get(0));
     }
 
+    /**
+     * Adds a new event to event list iff this user is an Organiser.
+     */
     public void AddEvent() {
 
         // if the user puts in a string, the entire program crashes --> fixed by parsing
@@ -97,37 +110,37 @@ public class EventManagementSystem {
         if (user.getUserInfoList().get(2).equals("O")) {
             boolean failedAdding = true;
             do {
-                System.out.println("Enter the name of the event.");
-                String eventName = myObj.next();
-                System.out.println("Enter the room where the event will be held.");
-                String room = myObj.next();
-                System.out.println("Enter the Speaker of the event.");
-                String speaker = myObj.next();
-                System.out.println("Enter the Organizer of the event.");
-                String org = myObj.next();
-                System.out.println("Enter the capacity of the event.");
-                int cap = Integer.parseInt(myObj.next());
-                System.out.println("Enter the date of the event in the format yyyy-MM-dd.");
-                String date = myObj.next();
-                System.out.println("Enter the date of the event as HH in the 24 hour clock format.");
-                LocalTime time = LocalTime.parse(myObj.next());
+                String eventName = presenter.takeString("Enter the name of the event.");
+                String room = presenter.takeString("Enter the room where the event will be held.");
+                String speaker = presenter.takeString("Enter the Speaker of the event.");
+                String org = user.getUserInfoList().get(0);
+                int cap = Integer.parseInt(presenter.takeString("Enter the capacity of the event."));
+                String date = presenter.takeString("Enter the date of the event in the format yyyy-MM-dd.");
+                LocalTime time = LocalTime.parse(presenter.takeString("Enter the date of the event as " +
+                        "HH in the 24 hour clock format."));
                 int before9 = time.compareTo(LocalTime.parse("09:00:00"));
                 int after5 = time.compareTo(LocalTime.parse("17:00:00"));
                 LocalDateTime datetime = LocalDateTime.parse(date + time);
                 if ((before9 >= 0 && !(after5 >= 0))){
-                if (manager.addEvent(eventName, room, speaker, org, cap, datetime)) {
-                    System.out.println("You have successfully added this event.");
-                    failedAdding = false;
-                }
+                    if (manager.addEvent(eventName, room, speaker, org, cap, datetime)) {
+                        presenter.displayAddEventSuccess();
+                        failedAdding = false;
+                    }else {
+                        presenter.displayAddEventFailure();
+                        presenter.displayTryAgain();
+                    }
                 } else {
-                    System.out.println("Failed to add event.");
-                    System.out.println("Please make sure the event is between 9AM and 5PM.");
+                    presenter.displayAddEventFailure();
+                    presenter.print("Please make sure the event is between 9AM and 5PM.");
                     presenter.displayTryAgain();
                 }
             } while (failedAdding);
         }
     }
 
+    /**
+     * Cancels event if the user is an organizer.
+     */
     public void cancelEvent() {
         if (user.getUserInfoList().get(2).equals("O")) {
             boolean failedCancel = true;
@@ -145,6 +158,9 @@ public class EventManagementSystem {
         }
     }
 
+    /**
+     * The event menu for an Attendee to choose from.
+     */
     public void eventMenuAttendee() {
         boolean invalidAnswer = true;
         do{
@@ -156,7 +172,7 @@ public class EventManagementSystem {
                 this.AttendeeCancelEvent();
                 invalidAnswer = false;
             } else if (option == 3) {
-                this.ListOfUserEvents();
+                presenter.displayEventsByUser();
                 invalidAnswer = false;
             } else {
                 presenter.displayTryAgain();
@@ -164,9 +180,11 @@ public class EventManagementSystem {
         }while(invalidAnswer);
     }
 
+    /**
+     * The event menu for an Speaker to choose from.
+     */
     public void eventMenuSpeaker() {
         boolean invalidAnswer = true;
-        // use display event menu here.
         do{
             int option =  presenter.displayEventMenuOptionsSpeaker();
             if (option == 1) {
@@ -181,6 +199,9 @@ public class EventManagementSystem {
         }while(invalidAnswer);
     }
 
+    /**
+     * The event menu for an Organizer to choose from.
+     */
     public void eventMenuOrganizer() {
         if (user.getUserInfoList().get(2).equals("O")) {
             boolean invalidAnswer = true;
@@ -193,7 +214,7 @@ public class EventManagementSystem {
                     this.AttendeeCancelEvent();
                     invalidAnswer = false;
                 } else if (option == 3) {
-                    this.ListOfUserEvents();
+                    presenter.displayEventsByUser();
                     invalidAnswer = false;
                 } else if (option == 4) {
                     this.AddEvent();
@@ -202,10 +223,13 @@ public class EventManagementSystem {
                     this.cancelEvent();
                     invalidAnswer = false;
                 } else if (option == 6) {
-                    this.showOrganizedEvents();
+                    presenter.displayEventsByOrganizer();
                     invalidAnswer = false;
                 } else if (option == 7) {
-                    this.broadcastEvent();
+                    this.broadcastEventOrganizer();
+                    invalidAnswer = false;
+                } else if (option == 8) {
+                    new CreateSpeakerController().CreateSpeaker();
                     invalidAnswer = false;
                 } else {
                     presenter.displayTryAgain();
@@ -214,29 +238,38 @@ public class EventManagementSystem {
         }
     }
 
-    public void MainEventPage(){
-        presenter.mainEventPage();
-    }
-
-    public void broadcastEvent() {
+    /**
+     * Allows an Organizer to broadcast a message to all Attendees of a specific event they organized.
+     */
+    public void broadcastEventOrganizer() {
         presenter.displayEventsByOrganizer();
         int eventID = presenter.promptForEventID();
         String message = presenter.promptForMessage();
         broadcast(eventID, message);
     }
 
+    /**
+     * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
+     */
     public void broadcastEventSpeaker() {
-
+        presenter.displayEventsBySpeaker();
         int eventID = presenter.promptForEventID();
         String message = presenter.promptForMessage();
         broadcast(eventID, message);
     }
 
+    /**
+     * Broadcasts a message to the users in
+     */
     private void broadcast(int eventID, String message) {
         List<String> users = manager.getUsersInEvent(eventID);
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }
 
+    /**
+     * Gets a list of events a Speaker is talking at.
+     * @return a list of IDs
+     */
     public List<Integer> ListOfSpeakerEvents() {
         if (user.getUserInfoList().get(2).equals("S")) {
             return manager.getTalksBySpeaker(user.getUserInfoList().get(0));
