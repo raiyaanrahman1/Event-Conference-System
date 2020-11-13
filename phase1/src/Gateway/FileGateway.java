@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-public class FileGateway implements IGateway, Iterator<List<String>> {
+public class FileGateway implements IGateway {
 
     private final String fileName;
     private ArrayList<List<String>> userInfo;
@@ -40,27 +40,6 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
     }
 
     /**
-     * Returns a boolean if there exists a next element in the iteration.
-     *
-     * @return whether there is a next element in the iteration
-     */
-    @Override
-    public boolean hasNext() {
-        return this.userInfo.iterator().hasNext();
-    }
-
-    /**
-     * Returns the next element in the iteration.
-     *
-     * @return the next element in the iteration
-     * @throws NoSuchElementException if the iteration has no more elements
-     */
-    @Override
-    public List<String> next() {
-        return this.userInfo.iterator().next();
-    }
-
-    /**
      * Appends to a text file.
      *
      * @param content The content that will get written to text file
@@ -69,7 +48,8 @@ public class FileGateway implements IGateway, Iterator<List<String>> {
     public void append(List<String> content) {
         try {
             String line = String.join(" ", content).concat(System.lineSeparator());
-            Files.write(Paths.get(this.fileName), line.getBytes(), StandardOpenOption.APPEND);
+            Files.write(Paths.get(this.fileName), line.getBytes(),
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
         }
