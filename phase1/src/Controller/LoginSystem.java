@@ -3,6 +3,8 @@ package Controller;
 import Entity.User;
 import Gateway.FileGateway;
 import Gateway.IGateway;
+import Gateway.IGateway2;
+import Gateway.MessageFileGateway;
 import Presenter.LogInSignUpPresenter;
 import UseCase.EventManager;
 import UseCase.MessageManager;
@@ -16,9 +18,10 @@ import java.util.function.Function;
 
 public class LoginSystem {
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
+    IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/contactListInfo.txt");
     UserManager userManager = new UserManager(g);
     EventManager eventMan = new EventManager();
-    MessageManager messageMan = new MessageManager();
+    MessageManager messageMan = new MessageManager(g2);
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
     EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan);
     LogInSignUpPresenter lp = new LogInSignUpPresenter();
@@ -138,7 +141,7 @@ public class LoginSystem {
      */
     private void signUpOrganizer(String userType) {
         askUser("Enter your organizer code.", "Invalid code.",
-                userInput -> userInput.equals("f9h2q6"));
+                userInput -> userInput.equals("amongUs"));
 
         signUpAttendee(userType);
     }
