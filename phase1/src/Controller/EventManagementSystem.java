@@ -1,7 +1,5 @@
 package Controller;
 
-//import Entity.Attendee;
-
 import UseCase.EventManager;
 import UseCase.UserManager;
 import UseCase.MessageManager;
@@ -10,7 +8,6 @@ import Presenter.EventPresenter;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Scanner;
 
 public class EventManagementSystem {
 
@@ -27,77 +24,52 @@ public class EventManagementSystem {
         this.manager = event;
         this.user = user;
         this.mess = mess;
-        this.presenter = new EventPresenter();
+        this.presenter = new EventPresenter(this, this.user, this.manager);
     }
 
-//    public void run(){
-//        boolean run = true;
-//        do{
-//            presenter.mainEventPage();
-//        }while(run);
-//
-//    }
 
     /**
      * Signs a user up for an event.
      */
     public void eventSignUp() {
-        boolean failedSignUp = true;
-        do {
-            int eventId = presenter.promptForEventID();
-            ListOfAllowedEvents();
-            if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0))) {
-                presenter.displaySignUpSuccess();
-                failedSignUp = false;
-            } else {
-                presenter.displaySignUpFailure();
-                presenter.displayTryAgain();
-            }
-        } while (failedSignUp);
+        if (manager.getAllowedEvents(user.getUserInfoList().get(0)).size()>0) {
+            boolean failedSignUp = true;
+            do {
+                presenter.displayAllowedEvents();
+                int eventId = presenter.promptForEventID();
+                if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0))) {
+                    presenter.displaySignUpSuccess();
+                    failedSignUp = false;
+                } else {
+                    presenter.displaySignUpFailure();
+                    presenter.displayTryAgain();
+                }
+            } while (failedSignUp);
+        }
+        presenter.print("There are no events for you to sign up for.");
+        presenter.mainEventPage();
     }
 
     /**
      * Cancels a spot at the event of a user that is already signed up to the event.
      */
     public void AttendeeCancelEvent() {
-        boolean invalidCancellation = true;
-        do{
-            int eventId = presenter.promptForEventID();
-            presenter.displayEventsByUser();
-            if (manager.cancelSpot(eventId, user.getUserInfoList().get(0))) { //cancelSpot should take in ID
-                presenter.displayCancelSuccess();
-                invalidCancellation = false;
-            }else{
-                presenter.displayCancelFailure();
-                presenter.displayTryAgain();
+        if(manager.getEventListByAttendee(user.getUserInfoList().get(0)).size() > 0) {
+            boolean invalidCancellation = true;
+            do {
+                presenter.displayEventsByUser();
+                int eventId = presenter.promptForEventID();
+                if (manager.cancelSpot(eventId, user.getUserInfoList().get(0))) {
+                    presenter.displayCancelSuccess();
+                    invalidCancellation = false;
+                } else {
+                    presenter.displayCancelFailure();
+                    presenter.displayTryAgain();
+                }
+            } while (invalidCancellation);
         }
-        } while (invalidCancellation);
-
-    }
-
-    /**
-     * Shows a list of events a user is allowed to sign up for. A user is allowed to sign up iff they have not already
-     * done so and the event capacity is not reached.
-     * @return a list of IDs of the events.
-     */
-    public List<Integer> ListOfAllowedEvents() {
-        return manager.getAllowedEvents(user.getUserInfoList().get(0));
-    }
-
-    /**
-     * Gets the list of events a user is signed up for.
-     * @return a list of event IDs corresponding to the events that this user has signed up for.
-     */
-    public List<Integer> ListOfUserEvents() {
-        return manager.getEventListByAttendee(user.getUserInfoList().get(0));
-    }
-
-    /**
-     * Gets the list of events an organizer has created.
-     * @return a list of event IDs corresponding to the events this user organised.
-     */
-    public List<String> showOrganizedEvents() {
-        return manager.getOrganizedEventsString(user.getUserInfoList().get(0));
+        presenter.print("You have not signed up for any events.");
+        presenter.mainEventPage();
     }
 
     /**
@@ -105,14 +77,13 @@ public class EventManagementSystem {
      */
     public void AddEvent() {
 
-        // if the user puts in a string, the entire program crashes --> fixed by parsing
-        Scanner myObj = new Scanner(System.in);
         if (user.getUserInfoList().get(2).equals("O")) {
             boolean failedAdding = true;
             do {
                 String eventName = presenter.takeString("Enter the name of the event.");
                 String room = presenter.takeString("Enter the room where the event will be held.");
                 String speaker = presenter.takeString("Enter the Speaker of the event.");
+                // want to prompt user to choose from available rooms
                 String org = user.getUserInfoList().get(0);
                 int cap = Integer.parseInt(presenter.takeString("Enter the capacity of the event."));
                 String date = presenter.takeString("Enter the date of the event in the format yyyy-MM-dd.");
@@ -143,18 +114,22 @@ public class EventManagementSystem {
      */
     public void cancelEvent() {
         if (user.getUserInfoList().get(2).equals("O")) {
-            boolean failedCancel = true;
-            do {
-                int eventId = presenter.promptForEventID();
-                presenter.displayEventsByOrganizer();
-                if (manager.removeEvent(eventId)) {
-                    presenter.displayCancelEventSuccess();
-                    failedCancel = false;
-                } else {
-                    presenter.displayCancelEventFailure();
-                    presenter.displayTryAgain();
-                }
-            } while (failedCancel);
+            if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
+                boolean failedCancel = true;
+                do {
+                    int eventId = presenter.promptForEventID();
+                    presenter.displayEventsByOrganizer();
+                    if (manager.removeEvent(eventId)) {
+                        presenter.displayCancelEventSuccess();
+                        failedCancel = false;
+                    } else {
+                        presenter.displayCancelEventFailure();
+                        presenter.displayTryAgain();
+                    }
+                } while (failedCancel);
+            }
+            presenter.print("You have not organized any events.");
+            presenter.mainEventPage();
         }
     }
 
@@ -184,19 +159,21 @@ public class EventManagementSystem {
      * The event menu for an Speaker to choose from.
      */
     public void eventMenuSpeaker() {
-        boolean invalidAnswer = true;
-        do{
-            int option =  presenter.displayEventMenuOptionsSpeaker();
-            if (option == 1) {
-                this.ListOfSpeakerEvents();
-                invalidAnswer = false;
-            } else if (option == 2) {
-                this.broadcastEventSpeaker();
-                invalidAnswer = false;
-            } else {
-                presenter.displayTryAgain();
-            }
-        }while(invalidAnswer);
+        if (user.getUserInfoList().get(2).equals("S")) {
+            boolean invalidAnswer = true;
+            do {
+                int option = presenter.displayEventMenuOptionsSpeaker();
+                if (option == 1) {
+                    presenter.displayEventsBySpeaker();
+                    invalidAnswer = false;
+                } else if (option == 2) {
+                    this.broadcastEventSpeaker();
+                    invalidAnswer = false;
+                } else {
+                    presenter.displayTryAgain();
+                }
+            } while (invalidAnswer);
+        }
     }
 
     /**
@@ -241,39 +218,62 @@ public class EventManagementSystem {
     /**
      * Allows an Organizer to broadcast a message to all Attendees of a specific event they organized.
      */
-    public void broadcastEventOrganizer() {
-        presenter.displayEventsByOrganizer();
-        int eventID = presenter.promptForEventID();
-        String message = presenter.promptForMessage();
-        broadcast(eventID, message);
+    public void broadcastEventOrganizer(){
+        if(manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size()>0) {
+            presenter.displayEventsByOrganizer();
+            int eventID = presenter.promptForEventID();
+            String message = presenter.promptForMessage();
+            broadcast(eventID, message);
+            presenter.displayBroadcastSuccess();
+        }else {
+            presenter.print("No events to broadcast to.");
+        }
     }
+//    /**
+//     * Allows an Organizer to broadcast a message to all Attendees of a specific event they organized.
+//     */
+//    public void broadcastOrganizerToSpeaker() {
+//
+//        presenter.displayEventsByOrganizer();
+//        int eventID = presenter.promptForEventID();
+//        String message = presenter.promptForMessage();
+//        broadcast(eventID, message);
+//    }
 
     /**
      * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
      */
     public void broadcastEventSpeaker() {
-        presenter.displayEventsBySpeaker();
-        int eventID = presenter.promptForEventID();
-        String message = presenter.promptForMessage();
-        broadcast(eventID, message);
+        if (manager.getTalksBySpeaker(user.getUserInfoList().get(0)).size() > 0) {
+            presenter.displayEventsBySpeaker();
+            int eventID = presenter.promptForEventID();
+            String message = presenter.promptForMessage();
+            broadcast(eventID, message);
+            presenter.displayBroadcastSuccess();
+        }else{
+            presenter.print("You are not speaking any events.");
+        }
     }
 
     /**
-     * Broadcasts a message to the users in
+     * Broadcasts a message to the users of a specific event.
      */
     private void broadcast(int eventID, String message) {
         List<String> users = manager.getUsersInEvent(eventID);
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }
 
-    /**
-     * Gets a list of events a Speaker is talking at.
-     * @return a list of IDs
-     */
-    public List<Integer> ListOfSpeakerEvents() {
-        if (user.getUserInfoList().get(2).equals("S")) {
-            return manager.getTalksBySpeaker(user.getUserInfoList().get(0));
-        }return null;
-    }
+//    /**
+//     * Broadcasts a message to the Speakers of all the events an Organizer organized.
+//     */
+//    private void broadcastToSpeakers(int eventID, String message) {
+//        //for all events in organizer's events
+//        //get and add speakers into speaker list
+//        //mess.broadcast
+//        List<Integer> organizedEvents = manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0));
+//        List<String> speakerList;
+//        }
+
+
 
 }

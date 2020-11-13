@@ -1,9 +1,11 @@
 package Presenter;
 
 import Controller.EventManagementSystem;
+import UseCase.EventManager;
 import UseCase.UserManager;
 
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -13,18 +15,27 @@ public class EventPresenter {
     private UserManager user;
     private Scanner in = new Scanner(System.in);
     private PrintStream out = System.out;
-
-//    // is this really needed here? we call the presenter from the controller.
     private EventManagementSystem events;
+    private EventManager manager;
+
+
+
+    public EventPresenter(EventManagementSystem event, UserManager user, EventManager manager){
+        this.events = event;
+        this.user = user;
+        this.manager = manager;
+
+    }
+
 
     public void mainEventPage(){ //to be displayed for the overall menu page
-        events.eventMenuAttendee();
         if (user.getUserInfoList().get(2).equals("O")) {
             events.eventMenuOrganizer();
         }else if (user.getUserInfoList().get(2).equals("S")){
             events.eventMenuSpeaker();
+        }else{
+            events.eventMenuAttendee();
         }
-
     }
 
     /**
@@ -44,40 +55,46 @@ public class EventPresenter {
      * Displays the events that the user has signed up for.
      */
     public void displayEventsByUser() {
-        if (events.ListOfUserEvents() != null) {
-            for (Integer id : events.ListOfUserEvents()) {
-                out.printf("%d:  %s\n", id, user.getUserInfoList().get(0));
-            }
-        }else{
-            out.println("You have not signed up for any events.");
+        List<Integer> userEvents = manager.getEventListByAttendee(user.getUserInfoList().get(0));
+        if (userEvents.size() ==0){
+            print("You have not signed up for any events.");
         }
+        formatEventString(userEvents);
     }
 
     /**
      * Shows the list of events an Organizer.
      */
     public void displayEventsByOrganizer() {
-        if (events.showOrganizedEvents() != null) {
-            for (String event : events.showOrganizedEvents()) {
-                out.println(event);
-            }
-        } else{
-            out.println("You have not created any events.");
+        List<Integer> organizerEvents = manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0));
+        if (organizerEvents.size() ==0){
+            print("You have not organized any events.");
         }
+        formatEventString(organizerEvents);
     }
 
     /**
      * Shows the list of events a Speaker is speaking at.
      */
     public void displayEventsBySpeaker() {
-        if (events.ListOfSpeakerEvents() != null) {
-            for (int event : events.ListOfSpeakerEvents()) {
-                out.print(event);
-            }
-        } else {
-            System.out.println("You have not created any events.");
+        List<Integer> speakerEvents = manager.getTalksBySpeaker(user.getUserInfoList().get(0));
+        if (speakerEvents.size()==0) {
+            print("You are not speaking any events.");
         }
+        formatEventString(speakerEvents);
     }
+
+    /**
+     * Shows the list of events a user is allowed to sign up for.
+     */
+    public void displayAllowedEvents() {
+        List<Integer> allowedEvents = manager.getAllowedEvents(user.getUserInfoList().get(0));
+        if (allowedEvents.size() == 0){
+            print("There are no events for you to sign up for.");
+        }
+        formatEventString(allowedEvents);
+    }
+
 
     /**
      * Displays whether the user has signed up successfully for an
@@ -106,7 +123,7 @@ public class EventPresenter {
         out.println("(1) Sign up for event");
         out.println("(2) Cancel spot in event");
         out.println("(3) See your events");
-        System.out.println("Choose a number for one of the options above.");
+        System.out.println("Choose a number for one of the options above." + "\n");
 
         return promptForNumberRange(1, 3);
     }
@@ -151,7 +168,7 @@ public class EventPresenter {
      * Displays user to try again. (Useful for many things).
      */
     public void displayTryAgain() {
-        out.println("Your input is wrong. Please try again.");
+        out.println("Your input is wrong. Please try a different event.");
     }
 
     /**
@@ -208,6 +225,14 @@ public class EventPresenter {
         out.println("You have failed adding this event.");
     }
 
+    /**
+     * Displays whether the user has signed up successfully for an
+     * event.
+     */
+    public void displayBroadcastSuccess() {
+        out.println("You have successfully broadcast your message.");
+    }
+
     public String promptForMessage() {
         out.println("Enter the message you want to broadcast.");
         out.println("Put it all in one single line.");
@@ -225,9 +250,26 @@ public class EventPresenter {
 
     /**
      * Returns a message
-     * @param content which representing the content to be returned.
+     * @param content represents the content to be printed.
      */
     public void print(String content){
         out.println(content);
     }
+
+
+    /**
+     * Takes in
+     * @param eventList , a list of ID of events,
+     * and prints the corresponding toStrings of the events. If the list is empty, the error message is printed
+     */
+    public void formatEventString(List<Integer> eventList){
+        if (eventList.size()> 0) {
+            int i = 1;
+            for (Integer eventID : eventList) {
+                System.out.println("(" + i + ") : " + eventID); //use the method that converts the ID to toString
+                i++;
+            }
+        }
+    }
 }
+
