@@ -40,6 +40,7 @@ public class MessengerSystem {
                 if (inboxOption == 1) {
                     replyMessage(msgPres.getSelectedMessageNumber(), msgPres.getContent());
                 }
+                else msgPres.mainPage();
             } else if (option == 2) {
                 mainContactPageRun(msgPres.mainContactPage(getContacts()));
             } else if (option == 3) {
@@ -59,8 +60,8 @@ public class MessengerSystem {
             if (contactOption == 1) {
                 String selectedUser = msgPres.selectFromContactList(getContacts());
                 mainSelectedContactPageRun(selectedUser, msgPres.selectedContactPage());
-                contactOption = msgPres.mainContactPage(getContacts());
             } else {
+                msgPres.mainPage();
                 run = false;
             }
         } while (run);
@@ -74,14 +75,12 @@ public class MessengerSystem {
         do {
             if (option == 1) {
                 messageUser(selectedUser, msgPres.getContent());
-                option = msgPres.selectedContactPage();
             } else if (option == 2) {
                 removeUser(selectedUser);
-                run = false;
             } else if (option == 3) {
                 msgPres.formatMessages(viewMessages(selectedUser));
-                option = msgPres.selectedContactPage();
             } else {
+                msgPres.mainContactPage(getContacts());
                 run = false;
             }
         } while (run);
@@ -89,19 +88,16 @@ public class MessengerSystem {
 
     /**
      * The run method for the mainAddUserPageRun.
-     *
-     * @param option the number entered by the user
      */
     private void mainAddUserPageRun(Integer option){
         boolean run = true;
         do {
             if (option == 1) {
                 if (!addUser(msgPres.addUserPage())) {
-                    msgPres.addUserError();
-                } else {
-                    run = false;
-                }
+                    msgPres.addUserPage();
+                } else {run = false;}
             } else {
+                msgPres.mainPage();
                 run = false;
             }
         } while (run);

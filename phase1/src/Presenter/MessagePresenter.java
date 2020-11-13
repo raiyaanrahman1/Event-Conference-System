@@ -27,9 +27,6 @@ public class MessagePresenter {
     }
 
     public void formatMessages(List<String> messageList){
-        if (messageList.size() == 0){
-            System.out.println("You have no messages yet!");
-        }
         int i = 1;
         for(String msg: messageList){
             String[] msgarray = msg.split("\\|");
@@ -64,13 +61,13 @@ public class MessagePresenter {
 
 
     public Integer getSelectedMessageNumber(){
-        System.out.println("Select the message you want to reply to by entering its corresponding number.");
+        System.out.print("Select the message you want to reply to by entering its corresponding number.");
         return myObj.nextInt();
     }
 
 
     public String getContent(){
-        System.out.println("Enter the content of your message.");
+        System.out.print("Enter the content of your message.");
         return myObj.next();
     }
 
@@ -81,7 +78,7 @@ public class MessagePresenter {
         int i = 0;
         for (String s : contacts){
             i++;
-            System.out.println(i + ". " + s);
+            System.out.println(i + ". " + s + "\n");
         }
     }
 
@@ -167,12 +164,8 @@ public class MessagePresenter {
 
 
     public String addUserPage(){
-        System.out.println("Please input the username of the user you wish to add:");
+        System.out.print("Please input the username of the user you wish to add:");
         return myObj.next();
-    }
-
-    public void addUserError(){
-        System.out.println("The username you entered either does not exist or is already on your contact list.");
     }
 
 }
