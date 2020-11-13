@@ -144,7 +144,7 @@ public class MessengerSystem {
      * @param user2 the username of the user that will be added to the contact list.
      */
     public boolean addUser(String user2){
-        if (!user.getContactList().contains(user2) && user.getSignedUpUsers().contains(user2)) {
+        if (!user.getUserInfoList().get(0).equals(user2) && !user.getContactList().contains(user2) && user.getSignedUpUsers().contains(user2)) {
             user.addUserToContacts(user2);
             return true;
         }

@@ -173,7 +173,7 @@ public class MessagePresenter {
     }
 
     public void addUserError(){
-        System.out.println("The username you entered either does not exist or is already on your contact list.");
+        System.out.println("Invalid input. Please enter a valid username.");
     }
 
 }
