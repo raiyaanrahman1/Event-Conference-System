@@ -70,8 +70,9 @@ public class MessagePresenter {
 
 
     public String getContent(){
+        Scanner sc = new Scanner(System.in);
         System.out.println("Enter the content of your message.");
-        return myObj.next();
+        return sc.nextLine();
     }
 
 
