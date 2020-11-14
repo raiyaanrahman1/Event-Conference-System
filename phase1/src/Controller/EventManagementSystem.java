@@ -87,11 +87,12 @@ public class EventManagementSystem {
                 String org = user.getUserInfoList().get(0);
                 int cap = Integer.parseInt(presenter.takeString("Enter the capacity of the event."));
                 String date = presenter.takeString("Enter the date of the event in the format yyyy-MM-dd.");
-                LocalTime time = LocalTime.parse(presenter.takeString("Enter the date of the event as " +
+                String timeInput = (presenter.takeString("Enter the date of the event as " +
                         "HH in the 24 hour clock format."));
+                LocalTime time = LocalTime.parse(timeInput + ":00:00");
                 int before9 = time.compareTo(LocalTime.parse("09:00:00"));
                 int after5 = time.compareTo(LocalTime.parse("17:00:00"));
-                LocalDateTime datetime = LocalDateTime.parse(date + time);
+                LocalDateTime datetime = LocalDateTime.parse(date + "T" + time);
                 if ((before9 >= 0 && !(after5 >= 0))){
                     if (manager.addEvent(eventName, room, speaker, org, cap, datetime)) {
                         presenter.displayAddEventSuccess();
