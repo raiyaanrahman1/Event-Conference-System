@@ -44,6 +44,15 @@ public abstract class User {
     }
 
     /**
+     * Sets this user's contacts.
+     *
+     * @param   contacts list of this user's contacts
+     */
+    public void setContacts(List<String> contacts) {
+        this.contacts = contacts;
+    }
+
+    /**
      * Adds user to contact list.
      *
      * @param username  the username of the new contact for this user

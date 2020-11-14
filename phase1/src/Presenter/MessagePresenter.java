@@ -26,6 +26,25 @@ public class MessagePresenter {
         return answer;
     }
 
+
+    public Integer mainSpeakerPage(){
+        boolean incorrectOption = false;
+        int answer;
+        do {
+            System.out.println("========== Messages Menu ========== \n" +
+                    "1. Inbox \n" +
+                    "2. Go back to Main Menu");
+            System.out.println("Input the number of the option you wish to choose:");
+            answer = myObj.nextInt();
+            if (answer != 1 && answer != 2){
+                System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                incorrectOption = true;
+            }
+        } while (incorrectOption);
+        return answer;
+    }
+
+
     public void formatMessages(List<String> messageList){
         if (messageList.size() == 0){
             System.out.println("You have no messages yet!");

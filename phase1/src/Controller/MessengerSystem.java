@@ -28,6 +28,15 @@ public class MessengerSystem {
         this.msgMan = msgMan;
     }
 
+    public void menus() {
+        if(user.getUserInfoList().get(2).equals("S")){
+            runSpeaker();
+        }
+        else{
+            run();
+        }
+    }
+
     /**
      * The main run method
      */
@@ -44,6 +53,24 @@ public class MessengerSystem {
                 mainContactPageRun(msgPres.mainContactPage(getContacts()));
             } else if (option == 3) {
                 mainAddUserPageRun(msgPres.mainAddUserPage());
+            } else {
+                run = false;
+            }
+        } while (run);
+    }
+
+    /**
+     * The main run method for a Speaker user
+     */
+    public void runSpeaker() {
+        boolean run = true;
+        do {
+            int option = msgPres.mainSpeakerPage();
+            if (option == 1) {
+                int inboxOption = msgPres.mainInboxPage(viewReceivedMessages());
+                if (inboxOption == 1) {
+                    replyMessage(msgPres.getSelectedMessageNumber(), msgPres.getContent());
+                }
             } else {
                 run = false;
             }
@@ -146,6 +173,7 @@ public class MessengerSystem {
     public boolean addUser(String user2){
         if (!user.getUserInfoList().get(0).equals(user2) && !user.getContactList().contains(user2) && user.getSignedUpUsers().contains(user2)) {
             user.addUserToContacts(user2);
+
             return true;
         }
         return false;
