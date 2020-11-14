@@ -112,8 +112,15 @@ public class EventManager {
      */
     public List<Integer> getAllowedEvents(String username){
         List<Integer> allowedEvents = new ArrayList<>();
+        List<LocalDateTime> userEventTimes = new ArrayList<>();
         for(Event e : events){
-            if(!e.getAttendees().contains(username)){
+            if(e.getAttendees().contains(username)) userEventTimes.add(e.getDateTime());
+        }
+
+
+        for(Event e : events){
+            if(!e.getAttendees().contains(username) && !userEventTimes.contains(e.getDateTime()) &&
+                    e.getAttendees().size() < e.getRoomCap()){
                 allowedEvents.add(e.getEventID());
             }
         }
@@ -136,22 +143,6 @@ public class EventManager {
         return null;
     }
 
-
-
-    private boolean conflictingTime(Event event, List<Integer> eventIDs) {
-        List<Event> eventList = new ArrayList<>();
-        for(int i : eventIDs){
-            eventList.add(this.getEventByID(i));
-        }
-
-        for (Event e : eventList){
-            if (e.getDateTime().equals(event.getDateTime())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * Signs up attendee for event.
      * @param eventID The event this Attendee wants to sign up for
@@ -160,10 +151,7 @@ public class EventManager {
     public boolean signUpForEvent(int eventID, String username){
         Event event = this.getEventByID(eventID);
         // check if Attendee is attending a talk scheduled at the same time but in a different room
-        if (!conflictingTime(event, this.getEventListByAttendee(username)) &&
-                event.getAttendees().size() + 1 <= event.getRoomCap() &&
-                this.getAllowedEvents(username).contains(eventID)){
-
+        if (this.getAllowedEvents(username).contains(eventID)){
             event.addAttendee(username);
             return true;
         } else {
@@ -197,15 +185,6 @@ public class EventManager {
         return usernames;
     }
 
-    public List<Integer> getEventsBySpeaker(String username) {
-        List<Integer> eventIDs = new ArrayList<>();
-        for(Event e : this.events){
-            if(e.getSpeaker().equals(username)) {
-                eventIDs.add(e.getEventID());
-            }
-        }
-        return eventIDs;
-    }
 
     public String getDateTimeByEventID(int eventID) {
         return this.getEventByID(eventID).getDateTime().toString();
