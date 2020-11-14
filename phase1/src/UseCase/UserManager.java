@@ -56,6 +56,7 @@ public class UserManager{
         }
     }
 
+    //helper method
     private void addUserToList(List<String> userInfo) {
         String type = userInfo.get(2);
         if (type.equals("A")){
@@ -166,6 +167,13 @@ public class UserManager{
 
     }
 
+    /**
+     * Creates the user and adds it to gateway.
+     *
+     * @param username is a String representation of the users username
+     * @param password is a String representation of the users password
+     * @param userType is a String representation of the users type
+     */
     public void CreateUser(String username, String password, String userType) {
         List<String> newUserInfo = new ArrayList<>();
         newUserInfo.add(username);

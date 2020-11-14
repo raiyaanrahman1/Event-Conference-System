@@ -5,6 +5,7 @@ import Gateway.FileGateway;
 import Gateway.IGateway;
 import Gateway.IGateway2;
 import Gateway.MessageFileGateway;
+import Presenter.EventPresenter;
 import Presenter.LogInSignUpPresenter;
 import UseCase.EventManager;
 import UseCase.MessageManager;
@@ -25,6 +26,7 @@ public class LoginSystem {
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
     EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan);
     LogInSignUpPresenter lp = new LogInSignUpPresenter();
+    EventPresenter ep = new EventPresenter(eventSys, userManager, eventMan);
 
 
     //LoginSystem Constructor
@@ -45,11 +47,8 @@ public class LoginSystem {
             if (answer == 1) {
                 msgSys.run();
             } else if (answer == 2) {
-                if (userType.equals("A")) {
-                    eventSys.eventMenuAttendee();
-                } else if (userType.equals("O")) {
-                    eventSys.eventMenuOrganizer();
-                }
+                //this is changed
+                ep.mainEventPage();
             } else if (answer == 3) {
                 signOut();
             }
