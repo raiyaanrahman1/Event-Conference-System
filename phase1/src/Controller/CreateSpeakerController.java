@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 public class CreateSpeakerController {
 
-    IGateway g = new FileGateway("");
+    IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
     UserManager userManager = new UserManager(g);
 
     /**
@@ -20,8 +20,8 @@ public class CreateSpeakerController {
     public void CreateSpeaker() {
 
         Scanner myObj = new Scanner(System.in);
-        askUser("Enter your organizer code.", "Invalid code.",
-                userInput -> userInput.equals("f9h2q6"));
+//        askUser("Enter your organizer code.", "Invalid code.",
+//                userInput -> userInput.equals("f9h2q6"));
             String username = askUser("Enter a username", "Username already exists",
                     userInput -> userManager.getUserByUsername(userInput) == null);
 
@@ -37,7 +37,7 @@ public class CreateSpeakerController {
         boolean keepAsking = true;
         String userInput;
         do {
-            System.out.println();
+            System.out.println(prompt);
             userInput = myObj.next();
             if (!validationFunction.apply(userInput)) {
                 System.out.println(errorMessage);
