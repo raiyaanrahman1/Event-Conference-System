@@ -3,6 +3,7 @@ package Entity;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.time.LocalDateTime;
 
@@ -19,6 +20,7 @@ public class Event {
     private int eventID;
     private static int idCounter = 0;
     private String name;
+    private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     /**
      * Creates a new event object.
@@ -44,6 +46,27 @@ public class Event {
     }
 
     /**
+     * Creates a new event object using data from the store event info file.
+     * @param eventID the id associated with this event
+     * @param name  the Event's name
+     * @param room  the Event's room
+     * @param speaker  the Event's Speaker's username
+     * @param organizer the Event's Organizer's username
+     * @param roomCap the Event's maximum capacity of attendees
+     * @param dateTime the date and time of the event
+     */
+    public Event(String eventID, String name, String room, String speaker,
+                 String organizer, String roomCap, String dateTime){
+        this.eventID = Integer.parseInt(eventID);
+        this.name = name;
+        this.dateTime = LocalDateTime.parse(dateTime, this.formatter);
+        this.room = room;
+        this.speaker = speaker;
+        this.organizer = organizer;
+        this.roomCap = Integer.parseInt(roomCap);
+    }
+
+    /**
      * Returns the toString of the Event
      *
      * Ex: Tech Conference Opening at 10:00 2020-11-02 in room BA100. Speaker: Bill Gates
@@ -54,12 +77,45 @@ public class Event {
     }
 
     /**
+     * Gets this Event's information in a saveable format (i.e in a String)
+     * @return this Event's info as a String
+     */
+    public String getSaveableInfo(){
+        return this.eventID + "|" + this.name + "|" +
+                this.room + "|" + this.speaker + "|" + this.organizer +
+                "|" + this.roomCap + "|" + getFormattedDateTime() +
+                "|" + getSaveableAttendees();
+
+    }
+
+    /**
+     * Converts this Event's attendee list into a one String in this format:
+     *      attendee1,attendee2,attendee3...
+     * @return a string representing the attendee list
+     */
+    private String getSaveableAttendees(){
+        String attendees = "";
+        for (String a: this.attendees){
+            attendees += a +',';
+        }
+        return attendees;
+    }
+
+    /**
      * Returns the Event's list of attendees
      */
     public List<String> getAttendees() {
         return attendees;
     }
 
+    /**
+     * Sets this Event's attendee lit using information saved in the text file
+     * @param attendees a string representing the attendee list
+     */
+    public void setAttendees(String attendees){
+        String[] attendeeList = attendees.split(",");
+        this.attendees.addAll(Arrays.asList(attendeeList));
+    }
     /**
      * Adds an attendee's username to the Event's list of attendees
      *
@@ -157,13 +213,11 @@ public class Event {
 
     /**
      * Returns the datetime of this message formatted
-     * dd/MM/yyyy HH:MM:ss.
+     * dd-MM-yyyy HH:MM:ss.
      *
      * @return  this message's formatted time
      */
     public String getFormattedDateTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.
-                ofPattern("yyyy-MM-dd HH:mm:ss");
         return getDateTime().format(formatter);
     }
 }

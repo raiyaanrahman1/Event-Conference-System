@@ -276,6 +276,7 @@ public class EventManagementSystem {
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }
 
+
 //    /**
 //     * Broadcasts a message to the Speakers of all the events an Organizer organized.
 //     */

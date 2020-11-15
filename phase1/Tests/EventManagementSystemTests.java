@@ -1,5 +1,3 @@
-import static org.junit.Assert.*;
-
 import Entity.Attendee;
 import Entity.Event;
 import Entity.Speaker;
