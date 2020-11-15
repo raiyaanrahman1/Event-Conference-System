@@ -42,11 +42,11 @@ public class EventManagementSystem {
                     failedSignUp = false;
                 } else {
                     presenter.displaySignUpFailure();
-//                    presenter.displayTryAgain();
                 }
             } while (failedSignUp);
-        }
+        }else{
         presenter.print("There are no events for you to sign up for.");
+        }
         presenter.mainEventPage();
     }
 
@@ -67,8 +67,9 @@ public class EventManagementSystem {
                     presenter.displayTryAgain();
                 }
             } while (invalidCancellation);
+        }else {
+            presenter.print("You have not signed up for any events.");
         }
-        presenter.print("You have not signed up for any events.");
         presenter.mainEventPage();
     }
 
@@ -78,35 +79,32 @@ public class EventManagementSystem {
     public void AddEvent() {
 
         if (user.getUserInfoList().get(2).equals("O")) {
-            boolean failedAdding = true;
-            do {
-                String eventName = presenter.takeString("Enter the name of the event.");
-                String room = presenter.takeString("Enter the room where the event will be held.");
-                String speaker = presenter.takeString("Enter the Speaker of the event.");
-                // want to prompt user to choose from available rooms
-                String org = user.getUserInfoList().get(0);
-                int cap = Integer.parseInt(presenter.takeString("Enter the capacity of the event."));
-                String date = presenter.takeString("Enter the date of the event in the format YYYY-MM-DD.");
-                String timeInput = (presenter.takeString("Enter the date of the event as " +
-                        "HH in the 24 hour clock format."));
-                LocalTime time = LocalTime.parse(timeInput + ":00:00");
-                int before9 = time.compareTo(LocalTime.parse("09:00:00"));
-                int after5 = time.compareTo(LocalTime.parse("17:00:00"));
-                LocalDateTime datetime = LocalDateTime.parse(date + "T" + time);
-                if ((before9 >= 0 && !(after5 >= 0))){
-                    if (manager.addEvent(eventName, room, speaker, org, cap, datetime)) {
-                        presenter.displayAddEventSuccess();
-                        failedAdding = false;
-                    }else {
-                        presenter.displayAddEventFailure();
-                        presenter.displayTryAgain();
-                    }
-                } else {
+            String eventName = presenter.takeString("Enter the name of the event.");
+            String room = presenter.takeString("Enter the room where the event will be held.");
+            String speaker = presenter.takeString("Enter the Speaker of the event. " +
+                    "Enter 'TBA' if the speaker is undecided.");
+            String org = user.getUserInfoList().get(0);
+            int cap = Integer.parseInt(presenter.takeString("Enter the capacity of the event."));
+            String date = presenter.takeString("Enter the date of the event in the format YYYY-MM-DD.");
+            String timeInput = (presenter.takeString("Enter the time of the event as " +
+                    "HH in the 24 hour clock format."));
+            LocalTime time = LocalTime.parse(timeInput + ":00:00");
+            int before9 = time.compareTo(LocalTime.parse("09:00:00"));
+            int after5 = time.compareTo(LocalTime.parse("17:00:00"));
+            LocalDateTime datetime = LocalDateTime.parse(date + "T" + time);
+            if ((before9 >= 0 && !(after5 >= 0))){
+                if (manager.addEvent(eventName, room, speaker, org, cap, datetime)) {
+                    presenter.displayAddEventSuccess();
+                }else {
                     presenter.displayAddEventFailure();
-                    presenter.print("Please make sure the event is between 9AM and 5PM.");
                     presenter.displayTryAgain();
+                    presenter.mainEventPage();
                 }
-            } while (failedAdding);
+            } else {
+                presenter.displayAddEventFailure();
+                presenter.print("Please make sure the event is between 9AM and 5PM.");
+                presenter.mainEventPage();
+            }
         }
     }
 
@@ -140,8 +138,9 @@ public class EventManagementSystem {
                         presenter.displayTryAgain();
                     }
                 } while (failedCancel);
+            }else {
+                presenter.print("You have not organized any events.");
             }
-            presenter.print("You have not organized any events.");
             presenter.mainEventPage();
         }
     }
@@ -235,12 +234,17 @@ public class EventManagementSystem {
         if(manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size()>0) {
             presenter.displayEventsByOrganizer();
             int eventID = presenter.promptForEventID();
-            String message = presenter.promptForMessage();
-            broadcast(eventID, message);
-            presenter.displayBroadcastSuccess();
+            if (manager.getUsersInEvent(eventID).size() == 0){
+                presenter.print("There are no attendees for this event.");
+            }else {
+                String message = presenter.promptForMessage();
+                broadcast(eventID, message);
+                presenter.displayBroadcastSuccess();
+            }
         }else {
             presenter.print("No events to broadcast to.");
         }
+        presenter.mainEventPage();
     }
 //    /**
 //     * Allows an Organizer to broadcast a message to all Attendees of a specific event they organized.
@@ -266,6 +270,7 @@ public class EventManagementSystem {
         }else{
             presenter.print("You are not speaking any events.");
         }
+        presenter.mainEventPage();
     }
 
     /**

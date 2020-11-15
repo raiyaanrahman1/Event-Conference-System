@@ -74,7 +74,8 @@ public class Event {
      */
     @Override
     public String toString() {
-        return  name + " at " + getFormattedDateTime() + " " + " in room " + room + ". Speaker: " + speaker;
+        return  "(" + eventID + ")" + name + " at " + getFormattedDateTime() + " " + " in room " + room +
+                ". Speaker: " + speaker;
     }
 
     /**

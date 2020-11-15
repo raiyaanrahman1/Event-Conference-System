@@ -56,7 +56,7 @@ public class EventPresenter {
      */
     public void displayEventsByUser() {
         List<Integer> userEvents = manager.getEventListByAttendee(user.getUserInfoList().get(0));
-        if (userEvents.size() ==0){
+        if (userEvents.size() == 0){
             print("You have not signed up for any events.");
         }
         formatEventString(userEvents);
@@ -78,7 +78,7 @@ public class EventPresenter {
      */
     public void displayEventsBySpeaker() {
         List<Integer> speakerEvents = manager.getTalksBySpeaker(user.getUserInfoList().get(0));
-        if (speakerEvents.size()==0) {
+        if (speakerEvents.size()== 0) {
             print("You are not speaking any events.");
         }
         formatEventString(speakerEvents);
@@ -109,7 +109,7 @@ public class EventPresenter {
      * event.
      */
     public void displaySignUpFailure() {
-        out.println("You have failed to signed up for this event. Is this event available?");
+        out.println("You have failed to signed up for this event.");
     }
 
     /**
@@ -123,6 +123,7 @@ public class EventPresenter {
         out.println("1. Sign up for event");
         out.println("2. Cancel spot in event");
         out.println("3. See your events");
+//        out.println("4. Return to Main Menu");
         System.out.println("Input the number of the option you wish to choose:" + "\n");
 
         return promptForNumberRange(1, 3);
@@ -144,6 +145,7 @@ public class EventPresenter {
         out.println("6. See the events you organized");
         out.println("7. Broadcast an event.");
         out.println("8. Create a Speaker account.");
+//        out.println("9. Return to Main Menu");
 //        out.println("Input the number of the option you wish to choose:\n");
 
         return promptForNumberRange(1, 8);
@@ -159,6 +161,7 @@ public class EventPresenter {
         System.out.println("========== EVENTS MENU ==========");
         out.println("1. See your events");
         out.println("2. Broadcast an event.");
+//        out.println("3. Return to Main Menu");
         out.println("Input the number of the option you wish to choose:\n");
 
         return promptForNumberRange(1, 2);
@@ -265,9 +268,10 @@ public class EventPresenter {
     public void formatEventString(List<Integer> eventList){
         if (eventList.size()> 0) {
             for (Integer eventID : eventList) {
-                System.out.println("(" + eventID + ") : " + manager. getEventString(eventID));
+                System.out.println(manager. getEventString(eventID));
             }
         }
     }
+
 }
 

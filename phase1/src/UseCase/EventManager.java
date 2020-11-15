@@ -145,7 +145,8 @@ public class EventManager {
 
         for(Event e : events){
             if(e.getDateTime().equals(dateTime) &&
-                    (e.getRoom().equals(room) || e.getSpeaker().equals(speaker))) return false;
+                    (e.getRoom().equals(room) || e.getSpeaker().equals(speaker))) {
+                return false;}
 
         }
         Event event = new Event(eventName, room, speaker, organizer, roomCap, dateTime);
@@ -208,17 +209,15 @@ public class EventManager {
      * @return true iff attendee was signed up for event.
      */
     public boolean signUpForEvent(int eventID, String username){
+        Event event = this.getEventByID(eventID);
         // check if Attendee is attending a talk scheduled at the same time but in a different room
-        for (Event e: events) {
-            if (e.getEventID() == eventID) {
-                if (this.getAllowedEvents(username).contains(eventID)) {
-                    e.addAttendee(username);
-                    return true;
-                    }
-                }
-            }
-        return false;
+        if (this.getAllowedEvents(username).contains(eventID) && !event.getAttendees().contains(username)){
+            event.addAttendee(username);
+            return true;
+        } else {
+            return false;
         }
+    }
 
     /**
      * Cancels attendee's spot in event.
@@ -226,14 +225,13 @@ public class EventManager {
      * @return true iff this attendee's spot in event was cancelled.
      */
     public boolean cancelSpot(int eventID, String username){
-        for (Event e: events) {
-            if (e.getEventID() == eventID) {
-                if (this.getEventListByAttendee(username).contains(eventID)) {
-                    e.removeAttendee(username);
-                    return true;
-                }
-            }
-        }   return false;
+        Event event = this.getEventByID(eventID);
+         if (this.getEventListByAttendee(username).contains(eventID)) {
+            event.removeAttendee(username);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<String> getUsersInEvent(int eventID) {
