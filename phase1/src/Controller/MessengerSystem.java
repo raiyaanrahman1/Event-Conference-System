@@ -52,7 +52,7 @@ public class MessengerSystem {
             } else if (option == 2) {
                 mainContactPageRun(msgPres.mainContactPage(getContacts()));
             } else if (option == 3) {
-                mainAddUserPageRun(msgPres.mainAddUserPage());
+                mainAddUserPageRun();
             } else {
                 run = false;
             }
@@ -117,11 +117,11 @@ public class MessengerSystem {
     /**
      * The run method for the mainAddUserPageRun.
      *
-     * @param option the number entered by the user
      */
-    private void mainAddUserPageRun(Integer option){
+    private void mainAddUserPageRun(){
         boolean run = true;
         do {
+            Integer option = msgPres.mainAddUserPage();
             if (option == 1) {
                 if (!addUser(msgPres.addUserPage())) {
                     msgPres.addUserError();

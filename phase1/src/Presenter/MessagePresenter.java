@@ -111,13 +111,15 @@ public class MessagePresenter {
     public Integer mainContactPage(List<String> contacts){
         boolean incorrectOption = false;
         int answer;
-        System.out.println("========== CONTACT LIST ========== \n");
+        System.out.print("========== CONTACT LIST ========== \n");
         if (contacts.size() == 0){
             System.out.println("You have no contacts yet!");
             return -1;
         }
         else {
             formatContactList(contacts);
+            System.out.print("================================== \n");
+
             do {
                 System.out.println("1. Select a Contact \n" +
                         "2. Return to Previous Menu");
