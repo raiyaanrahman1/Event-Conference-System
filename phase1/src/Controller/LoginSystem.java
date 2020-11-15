@@ -20,7 +20,7 @@ import java.util.function.Function;
 public class LoginSystem {
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
     IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/MessageListInformation.txt");
-    UserManager userManager = new UserManager(g);
+    UserManager userManager = new UserManager(g, g2);
     EventManager eventMan = new EventManager();
     MessageManager messageMan = new MessageManager(g2);
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
@@ -45,7 +45,7 @@ public class LoginSystem {
         do {
             answer = lp.menu();
             if (answer == 1) {
-                msgSys.run();
+                msgSys.menus();
             } else if (answer == 2) {
                 //this is changed
                 ep.mainEventPage();
@@ -75,6 +75,7 @@ public class LoginSystem {
     public void signOut() {
         lp.print("Goodbye.");
         messageMan.storeMessages(g2);
+        userManager.storeContacts(g2);
         System.exit(0);
     }
 
