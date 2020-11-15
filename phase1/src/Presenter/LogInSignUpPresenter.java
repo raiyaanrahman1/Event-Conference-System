@@ -32,7 +32,7 @@ public class LogInSignUpPresenter {
         boolean incorrectOption = false;
         int answer;
         do {
-            System.out.println("========== INSERT NAME OF PROGRAM HERE ==========");
+            out.println("========== INSERT NAME OF PROGRAM HERE ==========");
             out.println("1. Sign Up");
             out.println("2. Log In");
             out.println("Input the number of the option you wish to choose:");
@@ -41,6 +41,7 @@ public class LogInSignUpPresenter {
                 System.out.println("You have entered an incorrect input. Please enter a valid input.");
                 incorrectOption = true;
             }
+            else{incorrectOption = false;}
         } while (incorrectOption);
         return answer;
     }
