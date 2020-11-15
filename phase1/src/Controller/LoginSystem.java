@@ -20,7 +20,8 @@ import java.util.function.Function;
 public class LoginSystem {
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
     IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/MessageListInformation.txt");
-    UserManager userManager = new UserManager(g, g2);
+    IGateway2 g3 = new MessageFileGateway("phase1/src/Controller/contactListInfo.txt");
+    UserManager userManager = new UserManager(g, g3);
     EventManager eventMan = new EventManager();
     MessageManager messageMan = new MessageManager(g2);
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
@@ -75,7 +76,7 @@ public class LoginSystem {
     public void signOut() {
         lp.print("Goodbye.");
         messageMan.storeMessages(g2);
-        userManager.storeContacts(g2);
+        userManager.storeContacts(g3);
         System.exit(0);
     }
 
@@ -86,9 +87,9 @@ public class LoginSystem {
      */
     public String LogIn() {
         do {
-            System.out.println("enter a username");
+            System.out.println("Enter a username.");
             String username = lp.readLine();
-            System.out.println("enter a password");
+            System.out.println("Enter a password.");
             String password = lp.readLine();
             User user = userManager.getUserByUsername(username);
             if (user != null && userManager.isPasswordCorrect(username, password)) {
@@ -124,7 +125,7 @@ public class LoginSystem {
      * Signs up a new user
      */
     public void signUp() {
-        String response = askUser("Are you an (1) attendee or an (2) organizer?", "Incorrect answer",
+        String response = askUser("Are you an \n1. Attendee \n2. Organizer", "Incorrect answer",
                 userInput -> userInput.equals("1") || userInput.equals("2"));
         if (response.equals("1")) {
             signUpAttendee("A");
