@@ -1,5 +1,6 @@
 package UseCase;
 import Entity.*;
+import Gateway.IGateway2;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,8 +20,67 @@ public class EventManager {
      * Creates an EventManager and initializes its list of events.
      *
      */
-    public EventManager() {
+    public EventManager(IGateway2 gateway) {
         this.events = new ArrayList<>();
+        gateway.openForRead();
+        List<String> formattedEvents = getStoredEvents(gateway);
+        gateway.closeForRead();
+
+        for (String e: formattedEvents) {
+            String[] tokens = e.split("\\|");
+
+            String eventID = tokens[0];
+            String name = tokens[1];
+            String room = tokens[2];
+            String speaker = tokens[3];
+            String organizer = tokens[4];
+            String roomCap = tokens[5];
+            String dateTime = tokens[6];
+
+            Event event = new Event(eventID, name, room, speaker,
+                    organizer, roomCap, dateTime);
+
+            if (tokens.length > 7) {
+                String attendees = tokens[7];
+                event.setAttendees(attendees);
+            }
+
+            this.events.add(event);
+        }
+    }
+
+    /**
+     *
+     * Stores each event through a gateway.
+     *      * Precondition: the gateway must not be open for write/read.
+     *      *
+     *      * @param gateway  the gateway through which we save our events
+     */
+    public void storeEvents(IGateway2 gateway) {
+        if (gateway.openForWrite()) {
+            for (Event e: this.events){
+                gateway.write(e.getSaveableInfo());
+            }
+            gateway.closeForWrite();
+        }
+    }
+
+    /**
+     *
+     * Gets the strings that represent the information needed to instantiate an existing
+     * event. Each string should be formatted in the manner:
+     *      (eventID)|(name)|(room)|(speaker)|(organizer)|(roomCap)|(datetime)|(attendees)
+     *
+     * Each variable will be parsed back to its original form in Event (if needed).
+     * @param gateway2 the interface needed to read the data
+     * @return a list of strings represented each stored event in the text file
+     */
+    private List<String> getStoredEvents(IGateway2 gateway2) {
+        List<String> formattedEvents = new ArrayList<>();
+        while (gateway2.hasNext()) {
+            formattedEvents.add(gateway2.next());
+        }
+        return formattedEvents;
     }
 
     /**

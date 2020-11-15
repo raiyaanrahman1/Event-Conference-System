@@ -21,8 +21,9 @@ public class LoginSystem {
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
     IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/MessageListInformation.txt");
     IGateway2 g3 = new MessageFileGateway("phase1/src/Controller/contactListInfo.txt");
+    IGateway2 g4 = new MessageFileGateway("phase1/src/Controller/eventListInfo.txt");
     UserManager userManager = new UserManager(g, g3);
-    EventManager eventMan = new EventManager();
+    EventManager eventMan = new EventManager(g4);
     MessageManager messageMan = new MessageManager(g2);
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
     EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan);
@@ -77,6 +78,7 @@ public class LoginSystem {
         lp.print("Goodbye.");
         messageMan.storeMessages(g2);
         userManager.storeContacts(g3);
+        eventMan.storeEvents(g4);
         System.exit(0);
     }
 

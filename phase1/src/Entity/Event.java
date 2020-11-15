@@ -3,6 +3,7 @@ package Entity;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.time.LocalDateTime;
 
@@ -42,6 +43,10 @@ public class Event {
         idCounter ++;
 
     }
+    public Event(String eventID, String name, String room, String speaker,
+                 String organizer, String roomCap, String dateTime){
+
+    }
 
     /**
      * Returns the toString of the Event
@@ -53,6 +58,21 @@ public class Event {
         return  name + " at " + getFormattedDateTime() + " " + " in room " + room + ". Speaker: " + speaker;
     }
 
+    public String getSaveableInfo(){
+        return Integer.toString(this.eventID) + "|" + this.name + "|" +
+                this.room + "|" + this.speaker + "|" + this.organizer +
+                "|" + Integer.toString(this.roomCap) + "|" + getFormattedDateTime() +
+                "|" + getSaveableAttendees();
+
+    }
+
+    private String getSaveableAttendees(){
+        String attendees = "";
+        for (String a: this.attendees){
+            attendees += a +',';
+        }
+        return attendees;
+    }
     /**
      * Returns the Event's list of attendees
      */
@@ -60,6 +80,10 @@ public class Event {
         return attendees;
     }
 
+    public void setAttendees(String attendees){
+        String[] attendeeList = attendees.split(",");
+        this.attendees.addAll(Arrays.asList(attendeeList));
+    }
     /**
      * Adds an attendee's username to the Event's list of attendees
      *
