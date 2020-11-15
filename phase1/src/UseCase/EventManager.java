@@ -195,4 +195,8 @@ public class EventManager {
         return this.getEventByID(eventID).getRoom();
     }
 
+    public String getEventString(int eventId) {
+        return getEventByID(eventId).toString();
+    }
+
 }

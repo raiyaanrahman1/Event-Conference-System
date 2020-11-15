@@ -3,6 +3,7 @@ package Presenter;
 import Controller.EventManagementSystem;
 import UseCase.EventManager;
 import UseCase.UserManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -260,13 +261,13 @@ public class EventPresenter {
     /**
      * Takes in
      * @param eventList , a list of ID of events,
-     * and prints the corresponding toStrings of the events. If the list is empty, the error message is printed
+     * and prints the corresponding toStrings of the events.
      */
-    public void formatEventString(List<Integer> eventList){
+    public void formatEventString(@NotNull List<Integer> eventList){
         if (eventList.size()> 0) {
             int i = 1;
             for (Integer eventID : eventList) {
-                System.out.println("(" + i + ") : " + eventID); //use the method that converts the ID to toString
+                System.out.println("(" + i + ") : " + manager. getEventString(eventID));
                 i++;
             }
         }
