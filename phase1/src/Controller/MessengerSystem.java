@@ -101,9 +101,11 @@ public class MessengerSystem {
         do {
             if (option == 1) {
                 messageUser(selectedUser, msgPres.getContent());
+                msgPres.successfulMessage();
                 option = msgPres.selectedContactPage();
             } else if (option == 2) {
                 removeUser(selectedUser);
+                msgPres.removeUserSuccessful();
                 run = false;
             } else if (option == 3) {
                 msgPres.formatMessages(viewMessages(selectedUser));
@@ -126,6 +128,7 @@ public class MessengerSystem {
                 if (!addUser(msgPres.addUserPage())) {
                     msgPres.addUserError();
                 } else {
+                    msgPres.addUserSuccessful();
                     run = false;
                 }
             } else {
@@ -163,6 +166,7 @@ public class MessengerSystem {
         String message = viewReceivedMessages().get(number - 1);
         String sender = message.split("\\|")[0];
         msgMan.message(user.getUserInfoList().get(0), sender, content);
+        msgPres.successfulMessage();
     }
 
     /**

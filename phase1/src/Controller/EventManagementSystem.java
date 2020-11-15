@@ -42,7 +42,7 @@ public class EventManagementSystem {
                     failedSignUp = false;
                 } else {
                     presenter.displaySignUpFailure();
-                    presenter.displayTryAgain();
+//                    presenter.displayTryAgain();
                 }
             } while (failedSignUp);
         }
@@ -86,7 +86,7 @@ public class EventManagementSystem {
                 // want to prompt user to choose from available rooms
                 String org = user.getUserInfoList().get(0);
                 int cap = Integer.parseInt(presenter.takeString("Enter the capacity of the event."));
-                String date = presenter.takeString("Enter the date of the event in the format yyyy-MM-dd.");
+                String date = presenter.takeString("Enter the date of the event in the format YYYY-MM-DD.");
                 String timeInput = (presenter.takeString("Enter the date of the event as " +
                         "HH in the 24 hour clock format."));
                 LocalTime time = LocalTime.parse(timeInput + ":00:00");
@@ -109,6 +109,18 @@ public class EventManagementSystem {
             } while (failedAdding);
         }
     }
+
+//    private int validateDate(String date) {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        try
+//        {
+//            formatter.parse(date);
+//        }
+//        catch (Exception e) {
+//            return 1;
+//        }
+//        return 0;
+//    }
 
     /**
      * Cancels event if the user is an organizer.

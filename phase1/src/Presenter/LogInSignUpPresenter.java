@@ -16,11 +16,12 @@ public class LogInSignUpPresenter {
      * @return integer representing whether the user chose Messages, Events or Log out
      */
     public int menu(){
-        System.out.println("\t\t\t\tWHERE SHOULD I TAKE YOU?\n");
-        out.println("(1) Messages");
-        out.println("(2) Events");
-        out.println("(3) Log out");
-        out.println("Choose a number for one of the options above. \t\t\t\t(Must be 1 2 or 3)");
+        System.out.println("========== MAIN MENU ==========");
+        out.println("1. Messages");
+        out.println("2. Events");
+        out.println("3. Log out");
+        out.println("Input the number of the option you wish to choose:");
+
         return in.nextInt();
     }
     /**
@@ -28,8 +29,20 @@ public class LogInSignUpPresenter {
      * @return integer representing the option that was chosen.
      */
     public int wel(){
-        out.println("Please choose 1 or 2: \n Would you like to 1. sign up or 2. log in?");
-        return in.nextInt();
+        boolean incorrectOption = false;
+        int answer;
+        do {
+            System.out.println("========== INSERT NAME OF PROGRAM HERE ==========");
+            out.println("1. Sign Up");
+            out.println("2. Log In");
+            out.println("Input the number of the option you wish to choose:");
+            answer = in.nextInt();
+            if (answer != 1 && answer != 2){
+                System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                incorrectOption = true;
+            }
+        } while (incorrectOption);
+        return answer;
     }
     /**
      * Reads the user input

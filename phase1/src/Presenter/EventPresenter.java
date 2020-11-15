@@ -120,10 +120,10 @@ public class EventPresenter {
      */
     public int displayEventMenuOptions() {
         System.out.println("========== Events Menu ==========");
-        out.println("(1) Sign up for event");
-        out.println("(2) Cancel spot in event");
-        out.println("(3) See your events");
-        System.out.println("Choose a number for one of the options above." + "\n");
+        out.println("1. Sign up for event");
+        out.println("2. Cancel spot in event");
+        out.println("3. See your events");
+        System.out.println("Input the number of the option you wish to choose:" + "\n");
 
         return promptForNumberRange(1, 3);
     }
@@ -135,16 +135,16 @@ public class EventPresenter {
      * @return  the number of the event chosen.
      */
     public int displayEventMenuOptionsOrganizer() {
-        System.out.println("========== Events Menu ==========");
-        out.println("(1) Sign up for event");
-        out.println("(2) Cancel spot in event");
-        out.println("(3) See your events");
-        out.println("(4) Add an event");
-        out.println("(5) Cancel an event");
-        out.println("(6) See the events you organized");
-        out.println("(7) Broadcast an event.");
-        out.println("(8) Create a Speaker account.");
-        out.println("Choose a number for one of the options above.");
+        System.out.println("========== EVENTS MENU ==========");
+        out.println("1. Sign up for event");
+        out.println("2. Cancel spot in event");
+        out.println("3. See your events");
+        out.println("4. Add an event");
+        out.println("5. Cancel an event");
+        out.println("6. See the events you organized");
+        out.println("7. Broadcast an event.");
+        out.println("8. Create a Speaker account.");
+//        out.println("Input the number of the option you wish to choose:\n");
 
         return promptForNumberRange(1, 8);
     }
@@ -156,10 +156,10 @@ public class EventPresenter {
      * @return  the number of the event chosen.
      */
     public int displayEventMenuOptionsSpeaker() {
-        System.out.println("========== Events Menu ==========");
-        out.println("(1) See your events");
-        out.println("(2) Broadcast an event.");
-        out.println("Choose a number for one of the options above.");
+        System.out.println("========== EVENTS MENU ==========");
+        out.println("1. See your events");
+        out.println("2. Broadcast an event.");
+        out.println("Input the number of the option you wish to choose:\n");
 
         return promptForNumberRange(1, 2);
     }
@@ -179,7 +179,7 @@ public class EventPresenter {
      * @param end the maximum value of the valid range
      */
     private int promptForNumberRange(int start, int end) {
-        out.printf("Input a number from %d to %d", start, end);
+        out.printf("Input a number from %d to %d\n", start, end);
         return Integer.parseInt(in.next());
     }
 
@@ -230,7 +230,7 @@ public class EventPresenter {
      * event.
      */
     public void displayBroadcastSuccess() {
-        out.println("You have successfully broadcast your message.");
+        out.println("You have successfully broadcasted your message.");
     }
 
     public String promptForMessage() {
