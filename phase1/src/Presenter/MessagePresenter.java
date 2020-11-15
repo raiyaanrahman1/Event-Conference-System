@@ -11,7 +11,7 @@ public class MessagePresenter {
         boolean incorrectOption = false;
         int answer;
         do {
-            System.out.println("========== Messages Menu ========== \n" +
+            System.out.println("========== MESSAGES MENU ========== \n" +
                     "1. Inbox \n" +
                     "2. Contact List \n" +
                     "3. Add user to Contact List\n" +
@@ -31,7 +31,7 @@ public class MessagePresenter {
         boolean incorrectOption = false;
         int answer;
         do {
-            System.out.println("========== Messages Menu ========== \n" +
+            System.out.println("========== MESSAGES MENU ========== \n" +
                     "1. Inbox \n" +
                     "2. Go back to Main Menu");
             System.out.println("Input the number of the option you wish to choose:");
@@ -55,12 +55,13 @@ public class MessagePresenter {
             System.out.println(i + ". From " + msgarray[0] + " at " + msgarray[1] + " - " + msgarray[2]);
             i++;
         }
+        System.out.println("==================================");
     }
 
     public Integer mainInboxPage(List<String> messageList){
         boolean invalidInput = false;
         int response;
-        System.out.println("========== Inbox ========== \n");
+        System.out.println("========== INBOX ==========");
         if (messageList.size() == 0) {
             System.out.println("You have no messages yet!");
             return -1;
@@ -70,7 +71,7 @@ public class MessagePresenter {
             do {
                 System.out.println("Would you like to: \n " +
                         "1. Reply to a Message\n " +
-                        "2. Go back to previous menu. \n");
+                        "2. Go back to previous menu.");
                 response = myObj.nextInt();
                 if (response != 1 && response != 2) {
                     System.out.println("You have entered an incorrect input. Please enter a valid input.");
@@ -81,6 +82,9 @@ public class MessagePresenter {
         }
     }
 
+    public void successfulMessage() {
+        System.out.println("You have successfuly sent your message.");
+    }
 
     public Integer getSelectedMessageNumber(){
         System.out.println("Select the message you want to reply to by entering its corresponding number.");
@@ -104,9 +108,6 @@ public class MessagePresenter {
             System.out.println(i + ". " + s);
         }
     }
-
-
-
 
     public Integer mainContactPage(List<String> contacts){
         boolean incorrectOption = false;
@@ -133,8 +134,6 @@ public class MessagePresenter {
         }
     }
 
-    // [user1, user2, user3]
-    //
     public String selectFromContactList(List<String> contacts){
         boolean validContact = false;
         int contactNumber;
@@ -193,8 +192,16 @@ public class MessagePresenter {
         return myObj.next();
     }
 
+    public void addUserSuccessful(){
+        System.out.println("You have successfully added this user to your contact list.");
+    }
+
     public void addUserError(){
         System.out.println("Invalid input. Please enter a valid username.");
+    }
+
+    public void removeUserSuccessful(){
+        System.out.println("You have successfully removed this user from your contact list.");
     }
 
 }

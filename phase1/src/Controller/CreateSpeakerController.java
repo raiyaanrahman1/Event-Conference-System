@@ -25,11 +25,12 @@ public class CreateSpeakerController {
         Scanner myObj = new Scanner(System.in);
 //        askUser("Enter your organizer code.", "Invalid code.",
 //                userInput -> userInput.equals("f9h2q6"));
-            String username = askUser("Enter a username", "Username already exists",
+            String username = askUser("Enter a username.", "Username already exists.",
                     userInput -> userManager.getUserByUsername(userInput) == null);
 
             System.out.println("Enter a password.");
             String password = myObj.next();
+            System.out.println("You have successfully created a speaker account.");
             userManager.CreateUser(username, password, "S");
     }
 
