@@ -64,6 +64,7 @@ public class Event {
         this.speaker = speaker;
         this.organizer = organizer;
         this.roomCap = Integer.parseInt(roomCap);
+        this.attendees = new ArrayList<>();
     }
 
     /**

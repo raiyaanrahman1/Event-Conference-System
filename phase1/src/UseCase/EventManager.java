@@ -173,16 +173,15 @@ public class EventManager {
     public List<Integer> getAllowedEvents(String username){
         List<Integer> allowedEvents = new ArrayList<>();
         List<LocalDateTime> userEventTimes = new ArrayList<>();
-        for(Event e : events){
-            if(e.getAttendees().contains(username)) userEventTimes.add(e.getDateTime());
-        }
 
 
         for(Event e : events){
-            if(!e.getAttendees().contains(username) && !userEventTimes.contains(e.getDateTime()) &&
-                    e.getAttendees().size() < e.getRoomCap()){
+            if (!e.getAttendees().contains(username) && !userEventTimes.contains(e.getDateTime()) &&
+                    e.getAttendees().size() < e.getRoomCap()) {
                 allowedEvents.add(e.getEventID());
             }
+
+            if (e.getAttendees().contains(username)) userEventTimes.add(e.getDateTime());
         }
         return allowedEvents;
     }
@@ -209,15 +208,17 @@ public class EventManager {
      * @return true iff attendee was signed up for event.
      */
     public boolean signUpForEvent(int eventID, String username){
-        Event event = this.getEventByID(eventID);
         // check if Attendee is attending a talk scheduled at the same time but in a different room
-        if (this.getAllowedEvents(username).contains(eventID)){
-            event.addAttendee(username);
-            return true;
-        } else {
-            return false;
+        for (Event e: events) {
+            if (e.getEventID() == eventID) {
+                if (this.getAllowedEvents(username).contains(eventID)) {
+                    e.addAttendee(username);
+                    return true;
+                    }
+                }
+            }
+        return false;
         }
-    }
 
     /**
      * Cancels attendee's spot in event.
@@ -225,13 +226,14 @@ public class EventManager {
      * @return true iff this attendee's spot in event was cancelled.
      */
     public boolean cancelSpot(int eventID, String username){
-        Event event = this.getEventByID(eventID);
-         if (this.getEventListByAttendee(username).contains(eventID)) {
-            event.removeAttendee(username);
-            return true;
-        } else {
-            return false;
-        }
+        for (Event e: events) {
+            if (e.getEventID() == eventID) {
+                if (this.getEventListByAttendee(username).contains(eventID)) {
+                    e.removeAttendee(username);
+                    return true;
+                }
+            }
+        }   return false;
     }
 
     public List<String> getUsersInEvent(int eventID) {
