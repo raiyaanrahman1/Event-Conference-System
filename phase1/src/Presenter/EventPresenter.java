@@ -18,8 +18,6 @@ public class EventPresenter {
     private EventManagementSystem events;
     private EventManager manager;
 
-
-
     public EventPresenter(EventManagementSystem event, UserManager user, EventManager manager){
         this.events = event;
         this.user = user;
@@ -28,7 +26,7 @@ public class EventPresenter {
     }
 
 
-    public void mainEventPage(){ //to be displayed for the overall menu page
+    public void mainEventPage(){
         if (user.getUserInfoList().get(2).equals("O")) {
             events.eventMenuOrganizer();
         }else if (user.getUserInfoList().get(2).equals("S")){
@@ -40,8 +38,6 @@ public class EventPresenter {
 
     /**
      * Prompts user for the id of event they want to sign up for.
-     * TODO: catch errors for wrong input (i.e String rather than
-     *
      * @return  the id of the event
      */
     public int promptForEventID() {
@@ -67,7 +63,7 @@ public class EventPresenter {
      */
     public void displayEventsByOrganizer() {
         List<Integer> organizerEvents = manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0));
-        if (organizerEvents.size() ==0){
+        if (organizerEvents.size() == 0){
             print("You have not organized any events.");
         }
         formatEventString(organizerEvents);
@@ -78,7 +74,7 @@ public class EventPresenter {
      */
     public void displayEventsBySpeaker() {
         List<Integer> speakerEvents = manager.getTalksBySpeaker(user.getUserInfoList().get(0));
-        if (speakerEvents.size()== 0) {
+        if (speakerEvents.size() == 0) {
             print("You are not speaking any events.");
         }
         formatEventString(speakerEvents);
@@ -148,7 +144,6 @@ public class EventPresenter {
         out.println("8. Create a Speaker account");
         out.println("9. Return to Main Menu");
         out.println("==================================");
-//        out.println("Input the number of the option you wish to choose:\n");
 
         return promptForNumberRange(1, 9);
     }
@@ -159,6 +154,8 @@ public class EventPresenter {
      *
      * @return  the number of the event chosen.
      */
+
+
     public int displayEventMenuOptionsSpeaker() {
         System.out.println("========== EVENTS MENU ==========");
         out.println("1. See your events");
@@ -244,6 +241,7 @@ public class EventPresenter {
         out.println("Put it all in one single line.");
         return sc.nextLine();
     }
+
     /**
      * Takes in the content to be printed to the UI and returns the String response
      * @param content which representing the content to be returned.

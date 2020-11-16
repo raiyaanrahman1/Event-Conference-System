@@ -3,7 +3,6 @@ import Entity.*;
 import Gateway.IGateway;
 import Gateway.IGateway2;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -17,7 +16,6 @@ public class UserManager{
     private List<String> userInfoList;
     private ArrayList<List<String>> rawUserInfo;
     private IGateway gateway;
-    private IGateway2 gateway2;
     private List<String> formattedContacts;
 
 
@@ -27,7 +25,6 @@ public class UserManager{
      */
     public UserManager(IGateway gateway, IGateway2 gateway2){
         this.gateway = gateway;
-        this.gateway2 = gateway2;
         ArrayList<List<String>> userInfo = gateway.read();
         gateway2.openForRead();
         formattedContacts = this.getStoredContacts(gateway2);
@@ -50,11 +47,6 @@ public class UserManager{
         return null;
     }
 
-    /**
-     * Instantiates User objects representing the existing users in the system.
-     *
-     * @param userInfo, the raw user information read from the gateway.
-     */
     private void createUserList(ArrayList<List<String>> userInfo){
         userList = new ArrayList<>();
         for (List<String> u : userInfo){
@@ -62,7 +54,7 @@ public class UserManager{
         }
     }
 
-    //helper method
+
     private void addUserToList(List<String> userInfo) {
         String type = userInfo.get(2);
         if (type.equals("A")){
@@ -96,7 +88,6 @@ public class UserManager{
     }
 
 
-     //helper method
     private void readContacts(String username){
         List<String> contactsList = new ArrayList<>();
         for(String contacts: formattedContacts){
@@ -161,16 +152,6 @@ public class UserManager{
         return getUserByUsername(username).getPassword().equals(password);
     }
 
-    /**
-     * Creates a Speaker account iff the logged-in User is an Organiser.
-     *
-     * @param uname username of Speaker
-     * @param pword password of Speaker
-     */
-    public void createSpeakerAccount(String uname,
-                                     String pword){
-        userList.add(new Speaker(uname, pword));
-    }
 
     /**
      * Gets a list of the usernames of every existing user in the system.
@@ -224,11 +205,11 @@ public class UserManager{
         if (gateway2.openForWrite()) {
 
             for (User u: userList){
-                String contactList = u.getUsername();
+                StringBuilder contactList = new StringBuilder(u.getUsername());
                 for (String contact: u.getContacts()) {
-                    contactList += "|" + contact;
+                    contactList.append("|").append(contact);
                 }
-                gateway2.write(contactList);
+                gateway2.write(contactList.toString());
             }
 
             gateway2.closeForWrite();

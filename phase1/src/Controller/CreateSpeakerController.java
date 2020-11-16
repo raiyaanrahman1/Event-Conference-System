@@ -15,7 +15,6 @@ public class CreateSpeakerController {
 
     IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
     IGateway2 g1 = new MessageFileGateway("phase1/src/Controller/contactListInfo.txt");
-    IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/MessageListInformation.txt");
     UserManager userManager = new UserManager(g, g1);
 
     /**
@@ -24,8 +23,6 @@ public class CreateSpeakerController {
     public void CreateSpeaker() {
 
         Scanner myObj = new Scanner(System.in);
-//        askUser("Enter your organizer code.", "Invalid code.",
-//                userInput -> userInput.equals("f9h2q6"));
             String username = askUser("Enter a username.", "Username already exists.",
                     userInput -> userManager.getUserByUsername(userInput) == null);
 
@@ -35,7 +32,6 @@ public class CreateSpeakerController {
             userManager.CreateUser(username, password, "S");
     }
 
-    //helper method
     private String askUser(String prompt, String errorMessage,
                            Function<String, Boolean> validationFunction) {
         Scanner myObj = new Scanner(System.in);
@@ -56,11 +52,6 @@ public class CreateSpeakerController {
 
     public boolean exists(IGateway gt, String username){
         ArrayList<List<String>> list = gt.read();
-//        while (!list.isEmpty()) {
-//            List<String> actual = gt.next();
-//            if(actual.contains(username)){
-//                return true;
-//            }
         for(List<String> actual: list){
             if(actual.contains(username)){
                 return true;

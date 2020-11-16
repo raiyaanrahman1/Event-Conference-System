@@ -1,6 +1,5 @@
 package Entity;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,11 +92,11 @@ public class Event {
      * @return a string representing the attendee list
      */
     private String getSaveableAttendees(){
-        String attendees = "";
+        StringBuilder attendees = new StringBuilder();
         for (String a: this.attendees){
-            attendees += a +',';
+            attendees.append(a).append(',');
         }
-        return attendees;
+        return attendees.toString();
     }
 
     /**

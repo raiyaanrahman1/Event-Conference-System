@@ -2,11 +2,10 @@ package UseCase;
 import Entity.*;
 import Gateway.IGateway2;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Part of the Scheduling System and is responsible for the scheduling of events.
@@ -124,20 +123,6 @@ public class EventManager {
     }
 
     /**
-     * Gets the toString of events that this user organised, iff user is an Organizer.
-     *
-     * @return a list of event IDs corresponding to the events this user organised.
-     */
-    public List<String> getOrganizedEventsString(String username){
-        List<String> eventsString = new ArrayList<>();
-        for(Event e : events){
-            if(e.getOrganizer().equals(username)) eventsString.add(e.toString());
-
-        }
-        return eventsString;
-    }
-
-    /**
      * Adds a new event to event list iff this user is an Organiser.
      * @return true iff an event was added.
      */
@@ -200,7 +185,6 @@ public class EventManager {
                 return e;
             }
         }
-        // throws an exception that we haven't coded yet
         return null;
     }
 
@@ -211,8 +195,8 @@ public class EventManager {
      */
     public boolean signUpForEvent(int eventID, String username){
         Event event = this.getEventByID(eventID);
-        // check if Attendee is attending a talk scheduled at the same time but in a different room
-        if (this.getAllowedEvents(username).contains(eventID) && !event.getAttendees().contains(username)){
+        if (this.getAllowedEvents(username).contains(eventID) &&
+                !Objects.requireNonNull(event).getAttendees().contains(username)){
             event.addAttendee(username);
             return true;
         } else {
@@ -228,7 +212,8 @@ public class EventManager {
     public boolean cancelSpot(int eventID, String username){
         Event event = this.getEventByID(eventID);
          if (this.getEventListByAttendee(username).contains(eventID)) {
-            event.removeAttendee(username);
+             assert event != null;
+             event.removeAttendee(username);
             return true;
         } else {
             return false;
@@ -238,26 +223,21 @@ public class EventManager {
     public List<String> getUsersInEvent(int eventID) {
         Event event = this.getEventByID(eventID);
 
-        List<String> usernames = new ArrayList<>();
-        for (String user: event.getAttendees()) {
-            usernames.add(user);
-        }
+        assert event != null;
 
-        return usernames;
+        return new ArrayList<>(event.getAttendees());
     }
-
 
     public String getDateTimeByEventID(int eventID) {
-        return this.getEventByID(eventID).getDateTime().toString();
+        return Objects.requireNonNull(this.getEventByID(eventID)).getDateTime().toString();
     }
 
-
     public String getRoomByEventID(int eventID) {
-        return this.getEventByID(eventID).getRoom();
+        return Objects.requireNonNull(this.getEventByID(eventID)).getRoom();
     }
 
     public String getEventString(int eventId) {
-        return getEventByID(eventId).toString();
+        return Objects.requireNonNull(getEventByID(eventId)).toString();
     }
 
 }

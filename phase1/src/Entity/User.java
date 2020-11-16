@@ -22,12 +22,10 @@ public abstract class User {
         this.contacts = new ArrayList<>();
     }
 
-    //getter for username
     public String getUsername() {
         return username;
     }
 
-    //getter for password
     public String getPassword() {
         return password;
     }
@@ -79,14 +77,6 @@ public abstract class User {
         this.username = username;
     }
 
-    /**
-     * Sets the password of the User
-     *
-     * @param password new password of the user
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
 }
 

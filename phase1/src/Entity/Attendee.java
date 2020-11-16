@@ -1,6 +1,4 @@
 package Entity;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Attendee class represents an attendee, a user that can attend events.

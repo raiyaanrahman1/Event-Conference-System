@@ -6,7 +6,6 @@ import UseCase.UserManager;
 import UseCase.MessageManager;
 import Presenter.EventPresenter;
 
-import javax.swing.text.DateFormatter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,7 +22,6 @@ public class EventManagementSystem {
 
     /**
      * Creates an EventManagementSystem and initializes its UserManager, EventManager and MessageManager.
-     *
      */
     public EventManagementSystem(UserManager user, EventManager event, MessageManager mess) {
         this.manager = event;
@@ -37,7 +35,7 @@ public class EventManagementSystem {
      * Signs a user up for an event.
      */
     public void eventSignUp() {
-        if (manager.getAllowedEvents(user.getUserInfoList().get(0)).size()>0) {
+        if (manager.getAllowedEvents(user.getUserInfoList().get(0)).size() > 0) {
             boolean failedSignUp = true;
             do {
                 presenter.displayAllowedEvents();
@@ -49,8 +47,8 @@ public class EventManagementSystem {
                     presenter.displaySignUpFailure();
                 }
             } while (failedSignUp);
-        }else{
-        presenter.print("There are no events for you to sign up for.");
+        } else {
+            presenter.print("There are no events for you to sign up for.");
         }
     }
 
@@ -58,7 +56,7 @@ public class EventManagementSystem {
      * Cancels a spot at the event of a user that is already signed up to the event.
      */
     public void AttendeeCancelEvent() {
-        if(manager.getEventListByAttendee(user.getUserInfoList().get(0)).size() > 0) {
+        if (manager.getEventListByAttendee(user.getUserInfoList().get(0)).size() > 0) {
             boolean invalidCancellation = true;
             do {
                 presenter.displayEventsByUser();
@@ -71,7 +69,7 @@ public class EventManagementSystem {
                     presenter.displayTryAgain();
                 }
             } while (invalidCancellation);
-        }else {
+        } else {
             presenter.print("You have not signed up for any events.");
         }
     }
@@ -86,29 +84,42 @@ public class EventManagementSystem {
         }
 
     }
+
     /**
      * Adds a new event to event list iff this user is an Organiser.
      */
-    public void AddEvent(){
+    public void AddEvent() {
 
         if (user.getUserInfoList().get(2).equals("O")) {
             String eventName = presenter.takeString("Enter the name of the event.");
             String room = presenter.takeString("Enter the room where the event will be held.");
-            String speaker = presenter.takeString("Enter the Speaker of the event. " +
-                    "Enter 'TBA' if the speaker is undecided.");
+
+            String speaker;
+            boolean invalidSpeaker = true;
+            do {
+                speaker = presenter.takeString("Enter the Speaker of the event. " +
+                        "Enter 'TBA' if the speaker is undecided.");
+
+                if (checkSpeaker(speaker)) {
+                    invalidSpeaker = false;
+                } else {
+                    presenter.print("Please input a valid speaker or TBA.");
+                }
+            }while (invalidSpeaker);
+
+
             String org = user.getUserInfoList().get(0);
             int cap = Integer.parseInt(presenter.takeString("Enter the capacity of the event."));
             boolean correct = false;
             String date = "";
             do {
-                try{
+                try {
                     date = presenter.takeString("Enter the date of the event in the format YYYY-MM-DD.");
                     if (checkDateValid(date)) {
                         correct = true;
                     }
-                } catch (InvalidDateException | DateTimeParseException d){
+                } catch (InvalidDateException | DateTimeParseException d) {
                     presenter.print("Please enter a current date that is in the correct format!");
-                    //correct = false;
                 }
             } while (!correct);
 
@@ -118,10 +129,10 @@ public class EventManagementSystem {
             int before9 = time.compareTo(LocalTime.parse("09:00:00"));
             int after5 = time.compareTo(LocalTime.parse("17:00:00"));
             LocalDateTime datetime = LocalDateTime.parse(date + "T" + time);
-            if ((before9 >= 0 && !(after5 >= 0))){
+            if ((before9 >= 0 && !(after5 >= 0))) {
                 if (manager.addEvent(eventName, room, speaker, org, cap, datetime)) {
                     presenter.displayAddEventSuccess();
-                }else {
+                } else {
                     presenter.displayAddEventFailure();
                     presenter.displayTryAgain();
                 }
@@ -131,18 +142,6 @@ public class EventManagementSystem {
             }
         }
     }
-
-//    private int validateDate(String date) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//        try
-//        {
-//            formatter.parse(date);
-//        }
-//        catch (Exception e) {
-//            return 1;
-//        }
-//        return 0;
-//    }
 
     /**
      * Cancels event if the user is an organizer.
@@ -162,7 +161,7 @@ public class EventManagementSystem {
                         presenter.displayTryAgain();
                     }
                 } while (failedCancel);
-            }else {
+            } else {
                 presenter.print("You have not organized any events.");
             }
         }
@@ -173,20 +172,20 @@ public class EventManagementSystem {
      */
     public void eventMenuAttendee() {
         boolean invalidAnswer = true;
-        do{
-            int option =  presenter.displayEventMenuOptions();
+        do {
+            int option = presenter.displayEventMenuOptions();
             if (option == 1) {
                 this.eventSignUp();
             } else if (option == 2) {
                 this.AttendeeCancelEvent();
             } else if (option == 3) {
                 presenter.displayEventsByUser();
-            }  else if (option == 4){
+            } else if (option == 4) {
                 invalidAnswer = false;
             } else {
                 presenter.displayTryAgain();
             }
-        }while(invalidAnswer);
+        } while (invalidAnswer);
     }
 
     /**
@@ -201,7 +200,7 @@ public class EventManagementSystem {
                     presenter.displayEventsBySpeaker();
                 } else if (option == 2) {
                     this.broadcastEventSpeaker();
-                } else if (option == 3){
+                } else if (option == 3) {
                     invalidAnswer = false;
                 } else {
                     presenter.displayTryAgain();
@@ -236,8 +235,7 @@ public class EventManagementSystem {
                     new CreateSpeakerController().CreateSpeaker();
                 } else if (option == 9) {
                     invalidAnswer = false;
-                }
-                else {
+                } else {
                     presenter.displayTryAgain();
                 }
             } while (invalidAnswer);
@@ -247,31 +245,21 @@ public class EventManagementSystem {
     /**
      * Allows an Organizer to broadcast a message to all Attendees of a specific event they organized.
      */
-    public void broadcastEventOrganizer(){
-        if(manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size()>0) {
+    public void broadcastEventOrganizer() {
+        if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
             presenter.displayEventsByOrganizer();
             int eventID = presenter.promptForEventID();
-            if (manager.getUsersInEvent(eventID).size() == 0){
+            if (manager.getUsersInEvent(eventID).size() == 0) {
                 presenter.print("There are no attendees for this event.");
-            }else {
+            } else {
                 String message = presenter.promptForMessage();
                 broadcast(eventID, message);
                 presenter.displayBroadcastSuccess();
             }
-        }else {
+        } else {
             presenter.print("No events to broadcast to.");
         }
     }
-//    /**
-//     * Allows an Organizer to broadcast a message to all Attendees of a specific event they organized.
-//     */
-//    public void broadcastOrganizerToSpeaker() {
-//
-//        presenter.displayEventsByOrganizer();
-//        int eventID = presenter.promptForEventID();
-//        String message = presenter.promptForMessage();
-//        broadcast(eventID, message);
-//    }
 
     /**
      * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
@@ -283,31 +271,25 @@ public class EventManagementSystem {
             String message = presenter.promptForMessage();
             broadcast(eventID, message);
             presenter.displayBroadcastSuccess();
-        }else{
+        } else {
             presenter.print("You are not speaking any events.");
         }
     }
 
-    /**
-     * Broadcasts a message to the users of a specific event.
-     */
     private void broadcast(int eventID, String message) {
         List<String> users = manager.getUsersInEvent(eventID);
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }
 
 
-//    /**
-//     * Broadcasts a message to the Speakers of all the events an Organizer organized.
-//     */
-//    private void broadcastToSpeakers(int eventID, String message) {
-//        //for all events in organizer's events
-//        //get and add speakers into speaker list
-//        //mess.broadcast
-//        List<Integer> organizedEvents = manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0));
-//        List<String> speakerList;
-//        }
-
-
-
+    private boolean checkSpeaker(String input) {
+        if (input.equals("TBA")) {
+            return true;
+        } else {
+            if (user.getUserByUsername(input) != null) {
+                return user.getUserByUsername(input).getUserType().equals("S");
+            }
+        }
+        return false;
+    }
 }

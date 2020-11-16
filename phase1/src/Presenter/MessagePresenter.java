@@ -8,7 +8,7 @@ public class MessagePresenter {
 
 
     public Integer mainPage(){
-        boolean incorrectOption = false;
+        boolean incorrectOption;
         int answer = 0;
         do {
             System.out.println("========== MESSAGES MENU ========== \n" +
@@ -36,7 +36,7 @@ public class MessagePresenter {
 
 
     public Integer mainSpeakerPage(){
-        boolean incorrectOption = false;
+        boolean incorrectOption;
         int answer = 0;
         do {
             System.out.println("========== MESSAGES MENU ========== \n" +
@@ -74,7 +74,7 @@ public class MessagePresenter {
     }
 
     public Integer mainInboxPage(List<String> messageList){
-        boolean invalidInput = false;
+        boolean invalidInput;
         int response = 0;
         System.out.println("========== INBOX ==========");
         if (messageList.size() == 0) {
@@ -132,7 +132,7 @@ public class MessagePresenter {
     }
 
     public Integer mainContactPage(List<String> contacts){
-        boolean incorrectOption = false;
+        boolean incorrectOption;
         int answer = 0;
         System.out.print("========== CONTACT LIST ========== \n");
         if (contacts.size() == 0){
@@ -164,7 +164,7 @@ public class MessagePresenter {
     }
 
     public String selectFromContactList(List<String> contacts){
-        boolean validContact = false;
+        boolean validContact;
         int contactNumber = 0;
         do {
             System.out.println("Enter the number of the contact you would like to select.");
@@ -187,7 +187,7 @@ public class MessagePresenter {
 
 
     public Integer selectedContactPage(){
-        boolean incorrectOption = false;
+        boolean incorrectOption;
         int answer = 0;
         do{
             System.out.println("Would you like to: \n" +
@@ -214,7 +214,7 @@ public class MessagePresenter {
     }
 
     public Integer mainAddUserPage(){
-        boolean incorrectOption = false;
+        boolean incorrectOption;
         int answer = 0;
         do {
             System.out.println("========== ADD USER ========== \n" +

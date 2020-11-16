@@ -49,7 +49,6 @@ public class LoginSystem {
             if (answer == 1) {
                 msgSys.menus();
             } else if (answer == 2) {
-                //this is changed
                 ep.mainEventPage();
             } else if (answer == 3) {
                 signOut();
@@ -105,7 +104,6 @@ public class LoginSystem {
         } while (true);
     }
 
-    //helper method
     private String askUser(String prompt, String errorMessage,
                            Function<String, Boolean> validationFunction) {
         boolean keepAsking = true;

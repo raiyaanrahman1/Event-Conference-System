@@ -7,8 +7,8 @@ import java.time.format.DateTimeFormatter;
  */
 public class Message {
     private String content;
-    private String receiver; //username of receiver
-    private String sender;  //username of sender
+    private String receiver;
+    private String sender;
     private LocalDateTime dateTime;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 

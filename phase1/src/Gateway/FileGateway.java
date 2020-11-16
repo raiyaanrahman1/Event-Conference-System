@@ -27,7 +27,7 @@ public class FileGateway implements IGateway {
             userInfo = new ArrayList<>();
             for (String l : lines) {
                 String[] line = l.split(" ");
-                if (line.length == 3) { //Ignore wrong lines
+                if (line.length == 3) {
                     userInfo.add(Arrays.asList(line));
                 }
             }

@@ -20,12 +20,12 @@ public class MessageManager {
      */
     private final Map<String, List<Message>> messages;
 
-    /**
-     * Constructs default map, an empty one.
-     */
-    public MessageManager() {
-        messages = new HashMap<>();
-    }
+//    /**
+//     * Constructs default map, an empty one.
+//     */
+//    public MessageManager() {
+//        messages = new HashMap<>();
+//    }
 
     /**
      * Constructs a map from the file.
@@ -204,13 +204,13 @@ public class MessageManager {
         return String.format("%s|%s|%s|%s", receiver, sender, dateTime, content);
     }
 
-    /**
-     * Sorts a list of messages by their
-     * @param messages  the list of messages to be sorted
-     */
-    private void sortMessages(List<Message> messages) {
-        messages.sort(new ComparatorByDateTime());
-    }
+//    /**
+//     * Sorts a list of messages by their
+//     * @param messages  the list of messages to be sorted
+//     */
+//    private void sortMessages(List<Message> messages) {
+//        messages.sort(new ComparatorByDateTime());
+//    }
 
     /**
      * A comparator class used to compare messages by their datetime.
