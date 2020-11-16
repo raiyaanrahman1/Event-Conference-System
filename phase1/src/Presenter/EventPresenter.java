@@ -127,7 +127,7 @@ public class EventPresenter {
         out.println("==================================");
         System.out.println("Input the number of the option you wish to choose:" + "\n");
 
-        return promptForNumberRange(1, 3);
+        return promptForNumberRange(1, 4);
     }
 
     /**
@@ -144,13 +144,13 @@ public class EventPresenter {
         out.println("4. Add an event");
         out.println("5. Cancel an event");
         out.println("6. See the events you organized");
-        out.println("7. Broadcast an event.");
-        out.println("8. Create a Speaker account.");
+        out.println("7. Broadcast an event");
+        out.println("8. Create a Speaker account");
         out.println("9. Return to Main Menu");
         out.println("==================================");
 //        out.println("Input the number of the option you wish to choose:\n");
 
-        return promptForNumberRange(1, 8);
+        return promptForNumberRange(1, 9);
     }
 
     /**
@@ -162,12 +162,12 @@ public class EventPresenter {
     public int displayEventMenuOptionsSpeaker() {
         System.out.println("========== EVENTS MENU ==========");
         out.println("1. See your events");
-        out.println("2. Broadcast an event.");
+        out.println("2. Broadcast an event");
         out.println("3. Return to Main Menu");
         out.println("==================================");
         out.println("Input the number of the option you wish to choose:\n");
 
-        return promptForNumberRange(1, 2);
+        return promptForNumberRange(1, 3);
     }
 
     /**
