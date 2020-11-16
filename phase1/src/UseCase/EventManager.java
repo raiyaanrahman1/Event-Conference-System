@@ -150,6 +150,7 @@ public class EventManager {
 
         }
         Event event = new Event(eventName, room, speaker, organizer, roomCap, dateTime);
+        event.setEventID(events.size());
         events.add(event);
         return true;
     }

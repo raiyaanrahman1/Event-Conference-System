@@ -9,7 +9,7 @@ public class MessagePresenter {
 
     public Integer mainPage(){
         boolean incorrectOption = false;
-        int answer;
+        int answer = 0;
         do {
             System.out.println("========== MESSAGES MENU ========== \n" +
                     "1. Inbox \n" +
@@ -17,11 +17,19 @@ public class MessagePresenter {
                     "3. Add user to Contact List\n" +
                     "4. Go back to Main Menu");
             System.out.println("Input the number of the option you wish to choose:");
-            answer = myObj.nextInt();
-            if (answer != 1 && answer != 2 && answer != 3 && answer != 4){
+            String input = myObj.next();
+            if(input.matches("[0-9]")){
+                answer = Integer.parseInt(input);
+                incorrectOption = false;
+                if (answer != 1 && answer != 2 && answer != 3 && answer != 4){
+                    System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                    incorrectOption = true;
+                }
+            } else{
                 System.out.println("You have entered an incorrect input. Please enter a valid input.");
                 incorrectOption = true;
             }
+
         } while (incorrectOption);
         return answer;
     }
@@ -29,14 +37,21 @@ public class MessagePresenter {
 
     public Integer mainSpeakerPage(){
         boolean incorrectOption = false;
-        int answer;
+        int answer = 0;
         do {
             System.out.println("========== MESSAGES MENU ========== \n" +
                     "1. Inbox \n" +
                     "2. Go back to Main Menu");
             System.out.println("Input the number of the option you wish to choose:");
-            answer = myObj.nextInt();
-            if (answer != 1 && answer != 2){
+            String input = myObj.next();
+            if(input.matches("[0-9]")){
+                answer = Integer.parseInt(input);
+                incorrectOption = false;
+                if (answer != 1 && answer != 2){
+                    System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                    incorrectOption = true;
+                }
+            } else {
                 System.out.println("You have entered an incorrect input. Please enter a valid input.");
                 incorrectOption = true;
             }
@@ -60,7 +75,7 @@ public class MessagePresenter {
 
     public Integer mainInboxPage(List<String> messageList){
         boolean invalidInput = false;
-        int response;
+        int response = 0;
         System.out.println("========== INBOX ==========");
         if (messageList.size() == 0) {
             System.out.println("You have no messages yet!");
@@ -72,8 +87,15 @@ public class MessagePresenter {
                 System.out.println("Would you like to: \n " +
                         "1. Reply to a Message\n " +
                         "2. Go back to previous menu.");
-                response = myObj.nextInt();
-                if (response != 1 && response != 2) {
+                String input = myObj.next();
+                if(input.matches("[0-9]")){
+                    response = Integer.parseInt(input);
+                    invalidInput = false;
+                    if (response != 1 && response != 2) {
+                        System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                        invalidInput = true;
+                    }
+                } else {
                     System.out.println("You have entered an incorrect input. Please enter a valid input.");
                     invalidInput = true;
                 }
@@ -111,7 +133,7 @@ public class MessagePresenter {
 
     public Integer mainContactPage(List<String> contacts){
         boolean incorrectOption = false;
-        int answer;
+        int answer = 0;
         System.out.print("========== CONTACT LIST ========== \n");
         if (contacts.size() == 0){
             System.out.println("You have no contacts yet!");
@@ -124,8 +146,15 @@ public class MessagePresenter {
             do {
                 System.out.println("1. Select a Contact \n" +
                         "2. Return to Previous Menu");
-                answer = myObj.nextInt();
-                if (answer != 1 && answer != 2) {
+                String input = myObj.next();
+                if(input.matches("[0-9]")){
+                    answer = Integer.parseInt(input);
+                    incorrectOption = false;
+                    if (answer != 1 && answer != 2) {
+                        System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                        incorrectOption = true;
+                    }
+                } else {
                     System.out.println("You have entered an incorrect input. Please enter a valid input.");
                     incorrectOption = true;
                 }
@@ -136,13 +165,19 @@ public class MessagePresenter {
 
     public String selectFromContactList(List<String> contacts){
         boolean validContact = false;
-        int contactNumber;
+        int contactNumber = 0;
         do {
             System.out.println("Enter the number of the contact you would like to select.");
-            contactNumber = myObj.nextInt();
-
-            if (contactNumber > contacts.size() || contactNumber == 0){
-                System.out.println("Please enter a valid number.");
+            String input = myObj.next();
+            if(input.matches("[0-9]")){
+                contactNumber = Integer.parseInt(input);
+                validContact = false;
+                if (contactNumber > contacts.size() || contactNumber == 0){
+                    System.out.println("Please enter a valid number.");
+                    validContact = true;
+                }
+            } else {
+                System.out.println("You have entered an incorrect input. Please enter a valid input.");
                 validContact = true;
             }
 
@@ -153,7 +188,7 @@ public class MessagePresenter {
 
     public Integer selectedContactPage(){
         boolean incorrectOption = false;
-        int answer;
+        int answer = 0;
         do{
             System.out.println("Would you like to: \n" +
                     "1. Send Message to Selected Contact\n" +
@@ -161,24 +196,39 @@ public class MessagePresenter {
                     "3. View Messages from a Selected Contact \n" +
                     "4. Return to Previous Menu");
             System.out.println("Input the number of the option you wish to choose:");
-            answer = myObj.nextInt();
-            if (answer != 1 && answer != 2 && answer != 3 && answer != 4) {
+            String input = myObj.next();
+            if(input.matches("[0-9]")){
+                answer = Integer.parseInt(input);
+                incorrectOption = false;
+                if (answer != 1 && answer != 2 && answer != 3 && answer != 4) {
+                    System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                    incorrectOption = true;
+                }
+            } else {
                 System.out.println("You have entered an incorrect input. Please enter a valid input.");
                 incorrectOption = true;
             }
+
         }while(incorrectOption);
         return answer;
     }
 
     public Integer mainAddUserPage(){
         boolean incorrectOption = false;
-        int answer;
+        int answer = 0;
         do {
             System.out.println("========== ADD USER ========== \n" +
                     "1. Add a user \n" +
                     "2. Return to Previous Menu");
-            answer = myObj.nextInt();
-            if (answer != 1 && answer != 2){
+            String input = myObj.next();
+            if(input.matches("[0-9]")){
+                answer = Integer.parseInt(input);
+                incorrectOption = false;
+                if (answer != 1 && answer != 2) {
+                    System.out.println("You have entered an incorrect input. Please enter a valid input.");
+                    incorrectOption = true;
+                }
+            } else {
                 System.out.println("You have entered an incorrect input. Please enter a valid input.");
                 incorrectOption = true;
             }

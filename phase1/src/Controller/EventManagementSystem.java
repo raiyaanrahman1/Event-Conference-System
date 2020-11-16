@@ -47,7 +47,6 @@ public class EventManagementSystem {
         }else{
         presenter.print("There are no events for you to sign up for.");
         }
-        presenter.mainEventPage();
     }
 
     /**
@@ -70,7 +69,6 @@ public class EventManagementSystem {
         }else {
             presenter.print("You have not signed up for any events.");
         }
-        presenter.mainEventPage();
     }
 
     /**
@@ -98,12 +96,10 @@ public class EventManagementSystem {
                 }else {
                     presenter.displayAddEventFailure();
                     presenter.displayTryAgain();
-                    presenter.mainEventPage();
                 }
             } else {
                 presenter.displayAddEventFailure();
                 presenter.print("Please make sure the event is between 9AM and 5PM.");
-                presenter.mainEventPage();
             }
         }
     }
@@ -128,8 +124,8 @@ public class EventManagementSystem {
             if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
                 boolean failedCancel = true;
                 do {
-                    int eventId = presenter.promptForEventID();
                     presenter.displayEventsByOrganizer();
+                    int eventId = presenter.promptForEventID();
                     if (manager.removeEvent(eventId)) {
                         presenter.displayCancelEventSuccess();
                         failedCancel = false;
@@ -141,7 +137,6 @@ public class EventManagementSystem {
             }else {
                 presenter.print("You have not organized any events.");
             }
-            presenter.mainEventPage();
         }
     }
 
@@ -154,12 +149,11 @@ public class EventManagementSystem {
             int option =  presenter.displayEventMenuOptions();
             if (option == 1) {
                 this.eventSignUp();
-                invalidAnswer = false;
             } else if (option == 2) {
                 this.AttendeeCancelEvent();
-                invalidAnswer = false;
             } else if (option == 3) {
                 presenter.displayEventsByUser();
+            }  else if (option == 4){
                 invalidAnswer = false;
             } else {
                 presenter.displayTryAgain();
@@ -177,9 +171,9 @@ public class EventManagementSystem {
                 int option = presenter.displayEventMenuOptionsSpeaker();
                 if (option == 1) {
                     presenter.displayEventsBySpeaker();
-                    invalidAnswer = false;
                 } else if (option == 2) {
                     this.broadcastEventSpeaker();
+                } else if (option == 3){
                     invalidAnswer = false;
                 } else {
                     presenter.displayTryAgain();
@@ -198,29 +192,24 @@ public class EventManagementSystem {
                 int option = presenter.displayEventMenuOptionsOrganizer();
                 if (option == 1) {
                     this.eventSignUp();
-                    invalidAnswer = false;
                 } else if (option == 2) {
                     this.AttendeeCancelEvent();
-                    invalidAnswer = false;
                 } else if (option == 3) {
                     presenter.displayEventsByUser();
-                    invalidAnswer = false;
                 } else if (option == 4) {
                     this.AddEvent();
-                    invalidAnswer = false;
                 } else if (option == 5) {
                     this.cancelEvent();
-                    invalidAnswer = false;
                 } else if (option == 6) {
                     presenter.displayEventsByOrganizer();
-                    invalidAnswer = false;
                 } else if (option == 7) {
                     this.broadcastEventOrganizer();
-                    invalidAnswer = false;
                 } else if (option == 8) {
                     new CreateSpeakerController().CreateSpeaker();
+                } else if (option == 9) {
                     invalidAnswer = false;
-                } else {
+                }
+                else {
                     presenter.displayTryAgain();
                 }
             } while (invalidAnswer);
@@ -244,7 +233,6 @@ public class EventManagementSystem {
         }else {
             presenter.print("No events to broadcast to.");
         }
-        presenter.mainEventPage();
     }
 //    /**
 //     * Allows an Organizer to broadcast a message to all Attendees of a specific event they organized.
@@ -270,7 +258,6 @@ public class EventManagementSystem {
         }else{
             presenter.print("You are not speaking any events.");
         }
-        presenter.mainEventPage();
     }
 
     /**

@@ -13,8 +13,9 @@ import java.util.function.Function;
 
 public class CreateSpeakerController {
 
-    IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");    IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/MessageListInformation.txt");
-    IGateway2 g1 = new MessageFileGateway("phase1/src/Controller/MessageListInformation.txt");
+    IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
+    IGateway2 g1 = new MessageFileGateway("phase1/src/Controller/contactListInfo.txt");
+    IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/MessageListInformation.txt");
     UserManager userManager = new UserManager(g, g1);
 
     /**

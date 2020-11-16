@@ -18,7 +18,6 @@ public class Event {
     private String organizer;
     private int roomCap;
     private int eventID;
-    private static int idCounter = 0;
     private String name;
     private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -40,9 +39,6 @@ public class Event {
         this.organizer = organizer;
         this.attendees = new ArrayList<>();
         this.roomCap = roomCap;
-        eventID = idCounter;
-        idCounter ++;
-
     }
 
     /**
@@ -74,7 +70,7 @@ public class Event {
      */
     @Override
     public String toString() {
-        return  "(" + eventID + ")" + name + " at " + getFormattedDateTime() + " " + " in room " + room +
+        return  eventID + ". " + name + " at " + getFormattedDateTime() + " " + " in room " + room +
                 ". Speaker: " + speaker;
     }
 
@@ -144,14 +140,6 @@ public class Event {
         return room;
     }
 
-    /**
-     * Changes the Event's room
-     *
-     * @param room new room of the Event
-     */
-    public void setRoom(String room) {
-        this.room = room;
-    }
 
     /**
      * Returns the Event's Speaker's username
@@ -222,4 +210,14 @@ public class Event {
     public String getFormattedDateTime() {
         return getDateTime().format(formatter);
     }
+
+    /**
+     * Sets the id of the event according to the number of events already created
+     *
+     * @param id the id of this event
+     */
+    public void setEventID(int id) {
+        this.eventID = id;
+    }
 }
+

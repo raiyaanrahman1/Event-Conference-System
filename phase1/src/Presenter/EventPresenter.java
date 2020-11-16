@@ -123,7 +123,8 @@ public class EventPresenter {
         out.println("1. Sign up for event");
         out.println("2. Cancel spot in event");
         out.println("3. See your events");
-//        out.println("4. Return to Main Menu");
+        out.println("4. Return to Main Menu");
+        out.println("==================================");
         System.out.println("Input the number of the option you wish to choose:" + "\n");
 
         return promptForNumberRange(1, 3);
@@ -145,7 +146,8 @@ public class EventPresenter {
         out.println("6. See the events you organized");
         out.println("7. Broadcast an event.");
         out.println("8. Create a Speaker account.");
-//        out.println("9. Return to Main Menu");
+        out.println("9. Return to Main Menu");
+        out.println("==================================");
 //        out.println("Input the number of the option you wish to choose:\n");
 
         return promptForNumberRange(1, 8);
@@ -161,7 +163,8 @@ public class EventPresenter {
         System.out.println("========== EVENTS MENU ==========");
         out.println("1. See your events");
         out.println("2. Broadcast an event.");
-//        out.println("3. Return to Main Menu");
+        out.println("3. Return to Main Menu");
+        out.println("==================================");
         out.println("Input the number of the option you wish to choose:\n");
 
         return promptForNumberRange(1, 2);
@@ -237,9 +240,10 @@ public class EventPresenter {
     }
 
     public String promptForMessage() {
+        Scanner sc = new Scanner(System.in);
         out.println("Enter the message you want to broadcast.");
         out.println("Put it all in one single line.");
-        return in.next();
+        return sc.nextLine();
     }
     /**
      * Takes in the content to be printed to the UI and returns the String response
@@ -247,8 +251,9 @@ public class EventPresenter {
      * @return the user's response as a String.
      */
     public String takeString(String content){
+        Scanner sc = new Scanner(System.in);
         out.println(content);
-        return in.next();
+        return sc.next();
     }
 
     /**
