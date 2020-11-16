@@ -6,6 +6,8 @@ import UseCase.UserManager;
 import UseCase.MessageManager;
 import Presenter.EventPresenter;
 
+import javax.swing.text.DateFormatter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -75,13 +77,14 @@ public class EventManagementSystem {
     }
 
     private boolean checkDateValid(String date) throws InvalidDateException {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-        LocalDateTime localDate = LocalDateTime.from(formatter.parse(date));
-        if (localDate.isAfter(LocalDateTime.now())) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        LocalDate localDate = LocalDate.from(formatter.parse(date));
+        if (localDate.isAfter(LocalDate.now())) {
             return true;
         } else {
             throw new InvalidDateException();
         }
+
     }
     /**
      * Adds a new event to event list iff this user is an Organiser.
@@ -98,11 +101,14 @@ public class EventManagementSystem {
             boolean correct = false;
             String date = "";
             do {
-                date = presenter.takeString("Enter the date of the event in the format YYYY-MM-DD.");
                 try{
-                    if (checkDateValid(date)) correct = true;
+                    date = presenter.takeString("Enter the date of the event in the format YYYY-MM-DD.");
+                    if (checkDateValid(date)) {
+                        correct = true;
+                    }
                 } catch (InvalidDateException | DateTimeParseException d){
                     presenter.print("Please enter a current date that is in the correct format!");
+                    //correct = false;
                 }
             } while (!correct);
 
