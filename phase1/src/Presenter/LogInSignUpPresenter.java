@@ -29,10 +29,10 @@ public class LogInSignUpPresenter {
      * @return integer representing the option that was chosen.
      */
     public int wel(){
-        boolean incorrectOption = false;
+        boolean incorrectOption;
         int answer;
         do {
-            out.println("========== INSERT NAME OF PROGRAM HERE ==========");
+            out.println("========== THE AMONGUS SUMMIT ==========");
             out.println("1. Sign Up");
             out.println("2. Log In");
             out.println("Input the number of the option you wish to choose:");
