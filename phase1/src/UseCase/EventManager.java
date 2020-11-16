@@ -150,7 +150,7 @@ public class EventManager {
 
         }
         Event event = new Event(eventName, room, speaker, organizer, roomCap, dateTime);
-        event.setEventID(events.size());
+        event.setEventID(events.size()+1);
         events.add(event);
         return true;
     }
@@ -179,7 +179,7 @@ public class EventManager {
 
         for(Event e : events){
             if (!e.getAttendees().contains(username) && !userEventTimes.contains(e.getDateTime()) &&
-                    e.getAttendees().size() < e.getRoomCap()) {
+                    e.getAttendees().size() < e.getRoomCap() && e.getDateTime().isAfter(LocalDateTime.now())) {
                 allowedEvents.add(e.getEventID());
             }
 

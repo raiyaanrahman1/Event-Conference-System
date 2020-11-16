@@ -1,5 +1,6 @@
 package Controller;
 
+import Exceptions.InvalidDateException;
 import UseCase.EventManager;
 import UseCase.UserManager;
 import UseCase.MessageManager;
@@ -7,6 +8,8 @@ import Presenter.EventPresenter;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class EventManagementSystem {
@@ -71,10 +74,19 @@ public class EventManagementSystem {
         }
     }
 
+    private boolean checkDateValid(String date) throws InvalidDateException {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        LocalDateTime localDate = LocalDateTime.from(formatter.parse(date));
+        if (localDate.isAfter(LocalDateTime.now())) {
+            return true;
+        } else {
+            throw new InvalidDateException();
+        }
+    }
     /**
      * Adds a new event to event list iff this user is an Organiser.
      */
-    public void AddEvent() {
+    public void AddEvent(){
 
         if (user.getUserInfoList().get(2).equals("O")) {
             String eventName = presenter.takeString("Enter the name of the event.");
@@ -83,7 +95,17 @@ public class EventManagementSystem {
                     "Enter 'TBA' if the speaker is undecided.");
             String org = user.getUserInfoList().get(0);
             int cap = Integer.parseInt(presenter.takeString("Enter the capacity of the event."));
-            String date = presenter.takeString("Enter the date of the event in the format YYYY-MM-DD.");
+            boolean correct = false;
+            String date = "";
+            do {
+                date = presenter.takeString("Enter the date of the event in the format YYYY-MM-DD.");
+                try{
+                    if (checkDateValid(date)) correct = true;
+                } catch (InvalidDateException | DateTimeParseException d){
+                    presenter.print("Please enter a current date that is in the correct format!");
+                }
+            } while (!correct);
+
             String timeInput = (presenter.takeString("Enter the time of the event as " +
                     "HH in the 24 hour clock format."));
             LocalTime time = LocalTime.parse(timeInput + ":00:00");

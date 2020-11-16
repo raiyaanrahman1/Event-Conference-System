@@ -253,7 +253,7 @@ public class EventPresenter {
     public String takeString(String content){
         Scanner sc = new Scanner(System.in);
         out.println(content);
-        return sc.next();
+        return sc.nextLine();
     }
 
     /**
@@ -273,8 +273,9 @@ public class EventPresenter {
     public void formatEventString(List<Integer> eventList){
         if (eventList.size()> 0) {
             for (Integer eventID : eventList) {
-                System.out.println(manager. getEventString(eventID));
+                System.out.println(manager.getEventString(eventID));
             }
+
         }
     }
 

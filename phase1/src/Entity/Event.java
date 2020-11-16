@@ -70,7 +70,8 @@ public class Event {
      */
     @Override
     public String toString() {
-        return  eventID + ". " + name + " at " + getFormattedDateTime() + " " + " in room " + room +
+        String[] formatted = getFormattedDateTime().split("T");
+        return  eventID + ". " + name + " at " + formatted[0] + " " + formatted[1] + " " + " in room " + room +
                 ". Speaker: " + speaker;
     }
 
@@ -203,7 +204,7 @@ public class Event {
 
     /**
      * Returns the datetime of this message formatted
-     * dd-MM-yyyy HH:MM:ss.
+     * DD-MM-YYYYTHH:MM:SS.
      *
      * @return  this message's formatted time
      */
