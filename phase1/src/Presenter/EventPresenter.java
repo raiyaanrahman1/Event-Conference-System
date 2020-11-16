@@ -125,7 +125,7 @@ public class EventPresenter {
         out.println("3. See your events");
         out.println("4. Return to Main Menu");
         out.println("==================================");
-        System.out.println("Input the number of the option you wish to choose:" + "\n");
+        System.out.println("Input the number of the option you wish to choose:");
 
         return promptForNumberRange(1, 4);
     }
@@ -165,7 +165,7 @@ public class EventPresenter {
         out.println("2. Broadcast an event");
         out.println("3. Return to Main Menu");
         out.println("==================================");
-        out.println("Input the number of the option you wish to choose:\n");
+        out.println("Input the number of the option you wish to choose:");
 
         return promptForNumberRange(1, 3);
     }
@@ -179,7 +179,6 @@ public class EventPresenter {
 
     /**
      * Prompts user for a number in a range.
-     * TODO: catch errors if input is string
      *
      * @param start the minimum value of the valid range
      * @param end the maximum value of the valid range
