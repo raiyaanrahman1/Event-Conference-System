@@ -1,3 +1,3 @@
 1|Conference 1 |BA220|TBA|Organizer|20|2021-03-02T13:00:00|Attendee1,
-2|haha11's Funeral|Our Hearts|TBA|Organizer1|8|2020-11-20T15:00:00|Olivia,
+2|haha11's Funeral|Our Hearts|TBA|Organizer1|8|2020-11-20T15:00:00|Olivia,nitin,
 3|CSC207 FINAL EXAM|Quercus|TBA|Organizer1|20|2020-12-18T15:00:00|Olivia,
