@@ -7,14 +7,14 @@ import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class MessageFileGateway implements IGateway2 {
+public class InfoFileGateway implements IGateway2 {
     private File file;
     private Scanner reader;
     private PrintWriter writer;
     private boolean readable;
     private boolean writeable;
 
-    public MessageFileGateway (String fileName) {
+    public InfoFileGateway(String fileName) {
         this.file = new File(fileName);
         this.readable = false;
         this.writeable = false;

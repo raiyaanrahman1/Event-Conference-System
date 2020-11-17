@@ -15,6 +15,10 @@ public class Attendee extends User {
         super(uname, pword);
     }
 
+    /**
+     * Gets the user type of this User
+     * @return "A" since this user is an Attendee
+     */
     @Override
     public String getUserType() {
         return "A";

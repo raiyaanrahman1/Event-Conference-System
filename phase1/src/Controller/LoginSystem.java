@@ -1,10 +1,10 @@
 package Controller;
 
 import Entity.User;
-import Gateway.FileGateway;
+import Gateway.LoginFileGateway;
 import Gateway.IGateway;
 import Gateway.IGateway2;
-import Gateway.MessageFileGateway;
+import Gateway.InfoFileGateway;
 import Presenter.EventPresenter;
 import Presenter.LogInSignUpPresenter;
 import UseCase.EventManager;
@@ -18,20 +18,23 @@ import java.util.function.Function;
  */
 
 public class LoginSystem {
-    IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
-    IGateway2 g2 = new MessageFileGateway("phase1/src/Controller/MessageListInformation.txt");
-    IGateway2 g3 = new MessageFileGateway("phase1/src/Controller/contactListInfo.txt");
-    IGateway2 g4 = new MessageFileGateway("phase1/src/Controller/eventListInfo.txt");
+    IGateway g = new LoginFileGateway("phase1/src/Controller/LogInInformation.txt");
+    IGateway2 g2 = new InfoFileGateway("phase1/src/Controller/MessageListInformation.txt");
+    IGateway2 g3 = new InfoFileGateway("phase1/src/Controller/contactListInfo.txt");
+    IGateway2 g4 = new InfoFileGateway("phase1/src/Controller/eventListInfo.txt");
     UserManager userManager = new UserManager(g, g3);
     EventManager eventMan = new EventManager(g4);
     MessageManager messageMan = new MessageManager(g2);
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
-    EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan);
+    CreateSpeakerController speakerController = new CreateSpeakerController(userManager, g, g3);
+    EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, speakerController);
     LogInSignUpPresenter lp = new LogInSignUpPresenter();
     EventPresenter ep = new EventPresenter(eventSys, userManager, eventMan);
 
 
-    //LoginSystem Constructor
+    /**
+     * Creates a new LoginSystem instance.
+     */
     public LoginSystem() {
         welcome();
     }
@@ -42,7 +45,7 @@ public class LoginSystem {
      *
      * @param userType represents the type of user.
      */
-    public void MainPage(String userType) {
+    public void mainPage(String userType) {
         int answer;
         do {
             answer = lp.menu();
@@ -66,7 +69,7 @@ public class LoginSystem {
             answer = 2;
         }
         if (answer == 2) {
-            MainPage(LogIn());
+            mainPage(logIn());
         }
     }
 
@@ -86,7 +89,7 @@ public class LoginSystem {
      *
      * @return String representing the type of user.
      */
-    public String LogIn() {
+    public String logIn() {
         do {
             System.out.println("Enter a username.");
             String username = lp.readLine();
@@ -136,10 +139,7 @@ public class LoginSystem {
         lp.print("Continue to Log In.");
     }
 
-    /**
-     * Signs up a user with particular type Organizer
-     * @param userType represents the type of user
-     */
+
     private void signUpOrganizer(String userType) {
         askUser("Enter your organizer code.", "Invalid code.",
                 userInput -> userInput.equals("amongUs"));
@@ -147,10 +147,7 @@ public class LoginSystem {
         signUpAttendee(userType);
     }
 
-    /**
-     * Signs up a user with particular type Attendee
-     * @param userType represents the type of user
-     */
+
     private void signUpAttendee(String userType) {
         String username = askUser("Enter a username", "Username already exists",
                 userInput -> userManager.getUserByUsername(userInput) == null);

@@ -1,6 +1,6 @@
 import static org.junit.Assert.*;
 
-import Gateway.FileGateway;
+import Gateway.LoginFileGateway;
 import Gateway.IGateway;
 import org.junit.*;
 
@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FileGatewayTests {
+public class LoginFileGatewayTests {
 
     @Test()
     public void testNext() throws IOException {
         Files.deleteIfExists(Paths.get("phase1/src/Controller/test.txt"));
-        IGateway g = new FileGateway("phase1/src/Controller/test.txt");
+        IGateway g = new LoginFileGateway("phase1/src/Controller/test.txt");
         List<String> expected1 = Arrays.asList("n1", "p1", "A");
         List<String> expected2 = Arrays.asList("n2", "p2", "O");
         ArrayList<List<String>> expectedRead = new ArrayList<>();

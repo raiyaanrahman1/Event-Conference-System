@@ -13,7 +13,7 @@ public class Event {
     private List<String> attendees;
     private LocalDateTime dateTime;
     private String room;
-    private String speaker; //perhaps more than one speaker in phase 2
+    private String speaker; // perhaps more than one speaker in phase 2
     private String organizer;
     private int roomCap;
     private int eventID;
@@ -192,6 +192,7 @@ public class Event {
         return dateTime;
     }
 
+    // Phase 2 Functionality
     /**
      * Sets the LocalDateTime of the message
      *

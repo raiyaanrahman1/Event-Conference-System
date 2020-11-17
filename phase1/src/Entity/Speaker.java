@@ -16,6 +16,10 @@ public class Speaker extends User {
         super(uname, password);
     }
 
+    /**
+     * Gets the user type of this User
+     * @return "S" since this user is a Speaker
+     */
     @Override
     public String getUserType() {
         return "S";

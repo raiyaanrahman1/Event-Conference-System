@@ -32,6 +32,7 @@ public class UserManager{
         createUserList(userInfo);
         rawUserInfo = userInfo;
     }
+
     /**
      * Gets a User by its username
      *
@@ -53,7 +54,6 @@ public class UserManager{
             addUserToList(u);
         }
     }
-
 
     private void addUserToList(List<String> userInfo) {
         String type = userInfo.get(2);
@@ -86,7 +86,6 @@ public class UserManager{
         }
         readContacts(username);
     }
-
 
     private void readContacts(String username){
         List<String> contactsList = new ArrayList<>();
@@ -216,14 +215,9 @@ public class UserManager{
         }
     }
 
-    /**
-     * Gets the strings that represent each contact list to the manager.
-     *      * Each string should be formatted in the manner:
-     *      *          (Logged in user's username)|(contact1's username)|(contact2's username)|...
-     *      *
-     *      * @param gateway2  the interface that holds the contact data
-     *      * @return  a list of formatted contacts
-     */
+
+    // Each string should be formatted in the manner:
+    // (Logged in user's username)|(contact1's username)|(contact2's username)|...
     private List<String> getStoredContacts(IGateway2 gateway2) {
         List<String> formattedContacts = new ArrayList<>();
         while (gateway2.hasNext()) {

@@ -22,14 +22,25 @@ public abstract class User {
         this.contacts = new ArrayList<>();
     }
 
+    /**
+     * Gets the username of this User
+     * @return the username of this User
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Gets the password of this User
+     * @return the password of this User
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Gets the user type of this User
+     */
     public abstract String getUserType();
 
     /**

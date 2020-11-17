@@ -9,8 +9,8 @@ public class Message {
     private String content;
     private String receiver;
     private String sender;
-    private LocalDateTime dateTime;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private final LocalDateTime dateTime;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     /**
      * Creates a new message object.

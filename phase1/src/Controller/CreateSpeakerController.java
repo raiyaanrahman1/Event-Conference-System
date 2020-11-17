@@ -1,9 +1,7 @@
 package Controller;
 
-import Gateway.FileGateway;
 import Gateway.IGateway;
 import Gateway.IGateway2;
-import Gateway.MessageFileGateway;
 import UseCase.UserManager;
 
 import java.util.ArrayList;
@@ -13,10 +11,21 @@ import java.util.function.Function;
 
 public class CreateSpeakerController {
 
-    IGateway g = new FileGateway("phase1/src/Controller/LogInInformation.txt");
-    IGateway2 g1 = new MessageFileGateway("phase1/src/Controller/contactListInfo.txt");
-    UserManager userManager = new UserManager(g, g1);
+    IGateway g;
+    IGateway2 g1;
+    UserManager userManager;
 
+    /**
+     * Creates a new CreateSpeakerController instance.
+     * @param user the UserManager instance instantiated in LoginSystem
+     * @param g the LoginFileGateway instance instantiated in LoginSystem
+     * @param g1 the MessageLoginFileGateway instance instantiated in LoginSystem
+     */
+    public CreateSpeakerController(UserManager user, IGateway g, IGateway2 g1){
+        userManager = user;
+        this.g = g;
+        this.g1 = g1;
+    }
     /**
      * Creates a Speaker account iff the user is an Organizer
      */
@@ -50,6 +59,12 @@ public class CreateSpeakerController {
         return userInput;
     }
 
+    /**
+     * Checks if username already exists in the database.
+     * @param gt the IGateway used to read LogInInformation
+     * @param username the username to be checked against LogInInformation
+     * @return true iff the database contains username
+     */
     public boolean exists(IGateway gt, String username){
         ArrayList<List<String>> list = gt.read();
         for(List<String> actual: list){

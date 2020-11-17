@@ -18,6 +18,12 @@ public class EventPresenter {
     private EventManagementSystem events;
     private EventManager manager;
 
+    /**
+     * Creates an EventPresenter instance.
+     * @param event the EventManagementSystem instance instantiated in LoginSystem
+     * @param user the UserManager instance instantiated in LoginSystem
+     * @param manager the EventManager instance instantiated in LoginSystem
+     */
     public EventPresenter(EventManagementSystem event, UserManager user, EventManager manager){
         this.events = event;
         this.user = user;
@@ -25,7 +31,9 @@ public class EventPresenter {
 
     }
 
-
+    /**
+     * Displays the appropriate event menu based on the type of logged-in user.
+     */
     public void mainEventPage(){
         if (user.getUserInfoList().get(2).equals("O")) {
             events.eventMenuOrganizer();
@@ -91,7 +99,6 @@ public class EventPresenter {
         formatEventString(allowedEvents);
     }
 
-
     /**
      * Displays whether the user has signed up successfully for an
      * event.
@@ -154,8 +161,6 @@ public class EventPresenter {
      *
      * @return  the number of the event chosen.
      */
-
-
     public int displayEventMenuOptionsSpeaker() {
         System.out.println("========== EVENTS MENU ==========");
         out.println("1. See your events");
@@ -174,12 +179,6 @@ public class EventPresenter {
         out.println("Your input is wrong. Please try a different event.");
     }
 
-    /**
-     * Prompts user for a number in a range.
-     *
-     * @param start the minimum value of the valid range
-     * @param end the maximum value of the valid range
-     */
     private int promptForNumberRange(int start, int end) {
         out.printf("Input a number from %d to %d\n", start, end);
         return Integer.parseInt(in.next());

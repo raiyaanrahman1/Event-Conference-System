@@ -19,15 +19,19 @@ public class EventManagementSystem {
     private EventPresenter presenter;
     private EventManager manager;
     private MessageManager mess;
+    private CreateSpeakerController speakerController;
 
     /**
-     * Creates an EventManagementSystem and initializes its UserManager, EventManager and MessageManager.
+     * Creates an EventManagementSystem and initializes its UserManager, EventManager,
+     * CreateSpeakerController and MessageManager.
      */
-    public EventManagementSystem(UserManager user, EventManager event, MessageManager mess) {
+    public EventManagementSystem(UserManager user, EventManager event, MessageManager mess,
+                                 CreateSpeakerController speakerController) {
         this.manager = event;
         this.user = user;
         this.mess = mess;
         this.presenter = new EventPresenter(this, this.user, this.manager);
+        this.speakerController = speakerController;
     }
 
 
@@ -55,7 +59,7 @@ public class EventManagementSystem {
     /**
      * Cancels a spot at the event of a user that is already signed up to the event.
      */
-    public void AttendeeCancelEvent() {
+    public void attendeeCancelEvent() {
         if (manager.getEventListByAttendee(user.getUserInfoList().get(0)).size() > 0) {
             boolean invalidCancellation = true;
             do {
@@ -88,7 +92,7 @@ public class EventManagementSystem {
     /**
      * Adds a new event to event list iff this user is an Organiser.
      */
-    public void AddEvent() {
+    public void addEvent() {
 
         if (user.getUserInfoList().get(2).equals("O")) {
             String eventName = presenter.takeString("Enter the name of the event.");
@@ -177,7 +181,7 @@ public class EventManagementSystem {
             if (option == 1) {
                 this.eventSignUp();
             } else if (option == 2) {
-                this.AttendeeCancelEvent();
+                this.attendeeCancelEvent();
             } else if (option == 3) {
                 presenter.displayEventsByUser();
             } else if (option == 4) {
@@ -220,11 +224,11 @@ public class EventManagementSystem {
                 if (option == 1) {
                     this.eventSignUp();
                 } else if (option == 2) {
-                    this.AttendeeCancelEvent();
+                    this.attendeeCancelEvent();
                 } else if (option == 3) {
                     presenter.displayEventsByUser();
                 } else if (option == 4) {
-                    this.AddEvent();
+                    this.addEvent();
                 } else if (option == 5) {
                     this.cancelEvent();
                 } else if (option == 6) {
@@ -232,7 +236,7 @@ public class EventManagementSystem {
                 } else if (option == 7) {
                     this.broadcastEventOrganizer();
                 } else if (option == 8) {
-                    new CreateSpeakerController().CreateSpeaker();
+                    speakerController.CreateSpeaker();
                 } else if (option == 9) {
                     invalidAnswer = false;
                 } else {
@@ -249,7 +253,7 @@ public class EventManagementSystem {
         if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
             presenter.displayEventsByOrganizer();
             int eventID = presenter.promptForEventID();
-            if (manager.getUsersInEvent(eventID).size() == 0) {
+            if (manager.getAttendeesInEvent(eventID).size() == 0) {
                 presenter.print("There are no attendees for this event.");
             } else {
                 String message = presenter.promptForMessage();
@@ -277,7 +281,7 @@ public class EventManagementSystem {
     }
 
     private void broadcast(int eventID, String message) {
-        List<String> users = manager.getUsersInEvent(eventID);
+        List<String> users = manager.getAttendeesInEvent(eventID);
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }
 

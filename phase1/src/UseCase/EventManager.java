@@ -126,7 +126,8 @@ public class EventManager {
      * Adds a new event to event list iff this user is an Organiser.
      * @return true iff an event was added.
      */
-    public boolean addEvent(String eventName, String room, String speaker, String organizer, int roomCap, LocalDateTime dateTime){
+    public boolean addEvent(String eventName, String room, String speaker, String organizer, int roomCap,
+                            LocalDateTime dateTime){
 
         for(Event e : events){
             if(e.getDateTime().equals(dateTime) &&
@@ -220,24 +221,43 @@ public class EventManager {
         }
     }
 
-    public List<String> getUsersInEvent(int eventID) {
+    /**
+     * Gets all the attendees of an event.
+     * @param eventID the ID of the event we want to get the attendees of
+     * @return an ArrayList of all the attendees attending this event
+     */
+    public List<String> getAttendeesInEvent(int eventID) {
         Event event = this.getEventByID(eventID);
-
         assert event != null;
-
-        return new ArrayList<>(event.getAttendees());
+        return event.getAttendees();
     }
 
+    /**
+     * Gets the dateTime of an event by its eventID.
+     * @param eventID the ID of the event we want to get the datetime of
+     * @return a string representing the formatted dateTime of this event
+     */
     public String getDateTimeByEventID(int eventID) {
         return Objects.requireNonNull(this.getEventByID(eventID)).getDateTime().toString();
     }
 
-    public String getRoomByEventID(int eventID) {
-        return Objects.requireNonNull(this.getEventByID(eventID)).getRoom();
+    /**
+     * Gets the string format of this event.
+     * @param eventID the ID of the event we want to get the string format of
+     * @return a formatted string representing this event
+     */
+    public String getEventString(int eventID) {
+        return Objects.requireNonNull(getEventByID(eventID)).toString();
     }
 
-    public String getEventString(int eventId) {
-        return Objects.requireNonNull(getEventByID(eventId)).toString();
+    // Phase 2 Functionality
+    /**
+     * Gets the room of an event by its eventID.
+     * @param eventID the ID of the event we want to get the room of
+     * @return a string representing the room of this event
+     */
+    public String getRoomByEventID(int eventID) {
+        return Objects.requireNonNull(this.getEventByID(eventID)).getRoom();
     }
 
 }

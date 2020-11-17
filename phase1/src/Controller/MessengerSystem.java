@@ -28,6 +28,9 @@ public class MessengerSystem {
         this.msgMan = msgMan;
     }
 
+    /**
+     * Display the appropriate message menu depending on the type of logged-in user
+     */
     public void menus() {
         if (user.getUserInfoList().get(2).equals("S")) {
             runSpeaker();
@@ -76,9 +79,6 @@ public class MessengerSystem {
         } while (run);
     }
 
-    /**
-     * The run method for the mainContactPage.
-     */
     private void mainContactPageRun(Integer contactOption) {
         boolean run = true;
         do {
@@ -92,9 +92,6 @@ public class MessengerSystem {
         } while (run);
     }
 
-    /**
-     * The run method for the mainSelectedContactPageRun.
-     */
     private void mainSelectedContactPageRun(String selectedUser, Integer option) {
         boolean run = true;
         do {
@@ -115,9 +112,6 @@ public class MessengerSystem {
         } while (run);
     }
 
-    /**
-     * The run method for the mainAddUserPageRun.
-     */
     private void mainAddUserPageRun() {
         boolean run = true;
         do {

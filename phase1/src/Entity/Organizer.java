@@ -17,6 +17,10 @@ public class Organizer extends Attendee{
         super(uname, password);
     }
 
+    /**
+     * Gets the user type of this User
+     * @return "O" since this user is an Organizer
+     */
     @Override
     public String getUserType() {
         return "O";

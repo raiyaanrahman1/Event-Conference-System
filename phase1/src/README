@@ -1,11 +1,11 @@
 # *The AmongUs Summit* (Phase 1)
 
 ## Usage
-To use _____, you first run the mainConferenceSystem class.
+To use The AmongUs Summit, you first run the mainConferenceSystem class.
 Follow the instructions on the screen to complete your desired actions.
 
 To sign up as an Organizer, use this code: amongUs
-In order too make a Speaker account, an Organizer must sign up the speaker.
+In order to make a Speaker account, an Organizer must sign up the speaker.
 Organizers can sign up for events they have created.
 Do not enter a non-numeric input when the program asks for a number.
 When entering the time for an event, please enter a two digit number between 09 and 17.

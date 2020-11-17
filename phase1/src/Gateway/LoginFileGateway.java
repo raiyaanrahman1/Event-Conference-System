@@ -6,12 +6,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-public class FileGateway implements IGateway {
+public class LoginFileGateway implements IGateway {
 
     private final String fileName;
     private ArrayList<List<String>> userInfo;
 
-    public FileGateway(String fileName) {
+    public LoginFileGateway(String fileName) {
         this.fileName = fileName;
     }
 
