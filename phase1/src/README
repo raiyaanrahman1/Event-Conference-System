@@ -5,12 +5,14 @@ To use The AmongUs Summit, you first run the mainConferenceSystem class.
 Follow the instructions on the screen to complete your desired actions.
 
 To sign up as an Organizer, use this code: amongUs
-In order to make a Speaker account, an Organizer must sign up the speaker.
+In order to make a Speaker account, an Organizer must sign up the speaker in the Events menu.
 Organizers can sign up for events they have created.
+Organizers can use the same account to access Attendee functionality.
+Speakers need to create a non-Speaker account in order to access Attendee/Organizer functionality.
 Do not enter a non-numeric input when the program asks for a number.
 When entering the time for an event, please enter a two digit number between 09 and 17.
 
 ## Contributors
-Hala, Eric, Nitin, Raiyaan, Ayah, Olivia, Alex and Tariq.
+Alex, Ayah, Eric, Hala, Nitin, Olivia, Raiyaan and Tariq (Group 0301).
 
 ## Design Choice Questions?
