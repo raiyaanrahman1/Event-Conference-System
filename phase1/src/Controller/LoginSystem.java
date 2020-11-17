@@ -43,9 +43,8 @@ public class LoginSystem {
     /**
      * Calls the appropriate menus depending on the user input.
      *
-     * @param userType represents the type of user.
      */
-    public void mainPage(String userType) {
+    public void mainPage() {
         int answer;
         do {
             answer = lp.menu();
@@ -63,14 +62,19 @@ public class LoginSystem {
      * Manages the initial page that the user sees/
      */
     public void welcome() {
-        int answer = lp.wel();
-        if (answer == 1) {
-            signUp();
-            answer = 2;
-        }
-        if (answer == 2) {
-            mainPage(logIn());
-        }
+        int answer;
+        do {
+            answer = lp.wel();
+            if (answer == 1) {
+                signUp();
+                answer = 2;
+            }
+            if (answer == 2) {
+                 if (logIn()) {
+                     mainPage();
+                 }
+            }
+        } while(answer != 3);
     }
 
     /**
@@ -89,21 +93,26 @@ public class LoginSystem {
      *
      * @return String representing the type of user.
      */
-    public String logIn() {
+    public boolean logIn() {
         do {
-            System.out.println("Enter a username.");
+            lp.print("Enter a username.");
             String username = lp.readLine();
-            System.out.println("Enter a password.");
+            lp.print("Enter a password.");
             String password = lp.readLine();
             User user = userManager.getUserByUsername(username);
             if (user != null && userManager.isPasswordCorrect(username, password)) {
                 userManager.logInUser(username);
                 lp.print("Log in successful. Welcome " + username);
-                return user.getUserType();
+                return true;
             }
             else {
                 lp.print("Invalid user name or password. Please try again.");
+                lp.print("Or type 'm' to go back to main menu or any other key to try again");
+                if (lp.readLine().equals("m")) {
+                    return false;
+                }
             }
+
         } while (true);
     }
 
