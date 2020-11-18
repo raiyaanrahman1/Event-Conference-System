@@ -16,3 +16,16 @@ When entering the time for an event, please enter a two digit number between 09 
 Alex, Ayah, Eric, Hala, Nitin, Olivia, Raiyaan and Tariq (Group 0301).
 
 ## Design Choice Questions?
+
+We decided to remove the Facade pattern we were using to a Dependency Injection
+pattern. Does this decrease coupling between classes in general? For example in
+the Controller package, we instantiated all instances in the Login System and
+passed it to the relevant classes in the package.
+
+We also decided to remove the hasBroadcastingRights and hasEventCreatingRights
+methods and instead used their type identifiers from the text file. Is this a
+better implementation?
+
+We removed all the entities stored in our User entities and now they all store
+the same variables, and are only distinguished by their types. Should we get
+rid of them and have one single User class with a type identifier method?
