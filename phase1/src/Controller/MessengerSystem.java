@@ -13,9 +13,9 @@ import UseCase.UserManager;
  */
 public class MessengerSystem {
 
-    private UserManager user;
-    private MessageManager msgMan;
-    private MessagePresenter msgPres = new MessagePresenter();
+    private final UserManager user;
+    private final MessageManager msgMan;
+    private final MessagePresenter msgPres = new MessagePresenter();
 
     /**
      * Creates a MessengerSystem and initializes its UserManager and MessageManager.
@@ -40,7 +40,7 @@ public class MessengerSystem {
     }
 
     /**
-     * The main run method
+     * The main run method of the Message Menu for Attendees and Organizers
      */
     public void run() {
         boolean run = true;
@@ -62,7 +62,7 @@ public class MessengerSystem {
     }
 
     /**
-     * The main run method for a Speaker user
+     * The main run method of the Message Menu for Speakers
      */
     public void runSpeaker() {
         boolean run = true;
@@ -165,6 +165,7 @@ public class MessengerSystem {
      * Add the user inputted to the logged on user's contact list.
      *
      * @param user2 the username of the user that will be added to the contact list.
+     * @return return true iff the user was successfully added to user2's contact list and vice versa.
      */
     public boolean addUser(String user2) {
         if (!user.getUserInfoList().get(0).equals(user2) && !user.getContactList().contains(user2) && user.getSignedUpUsers().contains(user2)) {
@@ -197,6 +198,7 @@ public class MessengerSystem {
      * Gets the list of messages that the user had with the user inputted.
      *
      * @param username the username of the sender of the messages
+     * @return a list of messages between the logged on user and the user inputted
      */
     public List<String> viewMessages(String username) {
         List<String> lstofmessages = viewReceivedMessages();
