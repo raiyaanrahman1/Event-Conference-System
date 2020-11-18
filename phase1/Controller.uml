@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Controller</OriginalElement>
+  <nodes>
+    <node x="0.0" y="541.0">Controller.MessengerSystem</node>
+    <node x="786.0" y="541.0">Controller.mainConferenceSystem</node>
+    <node x="370.0" y="541.0">Controller.CreateSpeakerController</node>
+    <node x="0.0" y="0.0">Controller.LoginSystem</node>
+    <node x="393.0" y="0.0">Controller.EventManagementSystem</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.5432989690721649" x="497.0" y="475.00000000000006" />
+  <SelectedNodes>
+    <node>Controller.MessengerSystem</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

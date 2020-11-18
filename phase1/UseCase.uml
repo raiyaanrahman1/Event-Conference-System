@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>UseCase</OriginalElement>
+  <nodes>
+    <node x="32.5" y="911.0">UseCase.MessageManager.ComparatorByDateTime</node>
+    <node x="0.0" y="0.0">UseCase.UserManager</node>
+    <node x="326.0" y="0.0">UseCase.EventManager</node>
+    <node x="0.0" y="563.0">UseCase.MessageManager</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="UseCase.MessageManager.ComparatorByDateTime" target="UseCase.MessageManager">
+      <point x="0.0" y="-27.0" />
+      <point x="0.0" y="149.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.5350253807106599" x="362.0" y="482.50000000000006" />
+  <SelectedNodes>
+    <node>UseCase.UserManager</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

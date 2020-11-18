@@ -6,6 +6,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
+/**
+ *  Class that deals with the file for Log in.
+ */
 public class LoginFileGateway implements IGateway {
 
     private final String fileName;

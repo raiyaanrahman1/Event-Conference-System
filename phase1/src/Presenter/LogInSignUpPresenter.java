@@ -35,9 +35,10 @@ public class LogInSignUpPresenter {
             out.println("========== THE AMONGUS SUMMIT ==========");
             out.println("1. Sign Up");
             out.println("2. Log In");
+            out.println("3. Exit");
             out.println("Input the number of the option you wish to choose:");
             answer = in.nextInt();
-            if (answer != 1 && answer != 2){
+            if (answer < 1 || answer > 3){
                 System.out.println("You have entered an incorrect input. Please enter a valid input.");
                 incorrectOption = true;
             }

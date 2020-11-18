@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Presenter</OriginalElement>
+  <nodes>
+    <node x="0.0" y="739.0">Presenter.LogInSignUpPresenter</node>
+    <node x="476.0" y="0.0">Presenter.MessagePresenter</node>
+    <node x="0.0" y="0.0">Presenter.EventPresenter</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.5703463203463204" x="373.5" y="452.0" />
+  <SelectedNodes>
+    <node>Presenter.LogInSignUpPresenter</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
