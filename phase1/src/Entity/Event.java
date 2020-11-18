@@ -70,7 +70,7 @@ public class Event {
     @Override
     public String toString() {
         String[] formatted = getFormattedDateTime().split("T");
-        return  eventID + ". " + name + " at " + formatted[0] + " " + formatted[1] + " " + " in room " + room +
+        return  eventID + ". " + name + " at " + formatted[0] + " " + formatted[1] + " " + "in room " + room +
                 ". Speaker: " + speaker;
     }
 
