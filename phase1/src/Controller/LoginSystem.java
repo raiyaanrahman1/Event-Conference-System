@@ -149,7 +149,7 @@ public class LoginSystem {
 
 
     private void signUpAttendee(String userType) {
-        String username = askUser("Enter a username", "Username already exists",
+        String username = askUser("Enter a username.", "Username already exists",
                 userInput -> userManager.getUserByUsername(userInput) == null);
 
         lp.print("Enter a password.");
