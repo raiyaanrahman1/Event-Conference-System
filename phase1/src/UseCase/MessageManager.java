@@ -20,13 +20,6 @@ public class MessageManager {
      */
     private final Map<String, List<Message>> messages;
 
-//    /**
-//     * Constructs default map, an empty one.
-//     */
-//    public MessageManager() {
-//        messages = new HashMap<>();
-//    }
-
     /**
      * Constructs a map from the file.
      * The file should be formatted like so:
@@ -120,7 +113,7 @@ public class MessageManager {
         }
     }
 
-    /**
+    /*
      * Adds new message the given receiver to his list of messages.
      *
      * @param receiver  the user that receives the message
@@ -135,7 +128,7 @@ public class MessageManager {
         messageList.add(message);
     }
 
-    /**
+    /*
      * Returns true iff the user has been any messages.
      *
      * @param receiver  the username of the user
@@ -145,7 +138,7 @@ public class MessageManager {
         return this.messages.containsKey(receiver);
     }
 
-    /**
+    /*
      * Adds username to map and constructs empty list of messages.
      * This is only to be used if the user does not yer exist in the
      * map, i.e has not received any messages.
@@ -156,7 +149,7 @@ public class MessageManager {
         this.messages.put(receiver, new ArrayList<>());
     }
 
-    /**
+    /*
      * Gets the strings that represent each message to the manager.
      * Each string should be formatted in the manner:
      *          (receiver)|(sender)|(datetime)|(content)
@@ -172,7 +165,7 @@ public class MessageManager {
         return formattedMessageStrings;
     }
 
-    /**
+    /*
      * Returns the formatted form of a given message.
      *
      * For example,
@@ -189,7 +182,7 @@ public class MessageManager {
         return String.format("%s|%s|%s", sender, dateTime, content);
     }
 
-    /**
+    /*
      * Returns the string representation of a given message.
      *
      * @param message  the message
@@ -212,12 +205,12 @@ public class MessageManager {
 //        messages.sort(new ComparatorByDateTime());
 //    }
 
-    /**
+    /*
      * A comparator class used to compare messages by their datetime.
      */
     private class ComparatorByDateTime implements Comparator<Message> {
 
-        /**
+        /*
          * Compares two messages by their datetime.
          *
          * Between two messages, the most recent one is the greater one.

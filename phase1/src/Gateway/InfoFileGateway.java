@@ -11,7 +11,7 @@ import java.util.Scanner;
  * A file gateway for data files.
  */
 public class InfoFileGateway implements IGateway2 {
-    private File file;
+    private final File file;
     private Scanner reader;
     private PrintWriter writer;
     private boolean readable;

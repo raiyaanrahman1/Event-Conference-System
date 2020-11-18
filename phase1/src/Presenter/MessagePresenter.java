@@ -6,7 +6,10 @@ import java.util.Scanner;
 public class MessagePresenter {
     Scanner myObj = new Scanner(System.in);
 
-
+    /**
+     * Displays main page for Messenger System if user is attendee/organizer.
+     * @return  the integer representing the user's choice
+     */
     public Integer mainPage(){
         boolean incorrectOption;
         int answer = 0;
@@ -34,7 +37,10 @@ public class MessagePresenter {
         return answer;
     }
 
-
+    /**
+     * Displays main page for Messenger System if user is speaker.
+     * @return  the integer representing the user's choice
+     */
     public Integer mainSpeakerPage(){
         boolean incorrectOption;
         int answer = 0;
@@ -59,7 +65,10 @@ public class MessagePresenter {
         return answer;
     }
 
-
+    /**
+     * Formats this user's message list.
+     * @param messageList  the message list
+     */
     public void formatMessages(List<String> messageList){
         if (messageList.size() == 0){
             System.out.println("You have no messages yet!");
@@ -73,6 +82,10 @@ public class MessagePresenter {
         System.out.println("==================================");
     }
 
+    /**
+     * Displays inbox page for the user.
+     * @return  the integer representing the user's choice
+     */
     public Integer mainInboxPage(List<String> messageList){
         boolean invalidInput;
         int response = 0;
@@ -104,24 +117,33 @@ public class MessagePresenter {
         }
     }
 
+    /**
+     * Prints a message stating the user's message was successfully sent.
+     */
     public void successfulMessage() {
-        System.out.println("You have successfuly sent your message.");
+        System.out.println("You have successfully sent your message.");
     }
 
+    /**
+     * Prompts user to choose a message from their inbox.
+     * @return  the integer representing the user's choice
+     */
     public Integer getSelectedMessageNumber(){
         System.out.println("Select the message you want to reply to by entering its corresponding number.");
         return myObj.nextInt();
     }
 
-
+    /**
+     * Prompts user to enter content of the message
+     * @return  the message in string form
+     */
     public String getContent(){
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the content of your message.");
         return sc.nextLine();
     }
 
-
-    public void formatContactList(List<String> contacts){
+    private void formatContactList(List<String> contacts){
         // Alphabetical sort
         contacts.sort(null);
         int i = 0;
@@ -131,6 +153,11 @@ public class MessagePresenter {
         }
     }
 
+    /**
+     * Display contact list and prompts user to choose one.
+     * @param contacts  the user's contacts
+     * @return  the user's choice as an integer
+     */
     public Integer mainContactPage(List<String> contacts){
         boolean incorrectOption;
         int answer = 0;
@@ -163,6 +190,11 @@ public class MessagePresenter {
         }
     }
 
+    /**
+     * Prompts the user to select a contact.
+     * @param contacts  the user's contacts
+     * @return  the string representing the chosen contact.
+     */
     public String selectFromContactList(List<String> contacts){
         boolean validContact;
         int contactNumber = 0;
@@ -185,7 +217,10 @@ public class MessagePresenter {
         return contacts.get(contactNumber - 1);
     }
 
-
+    /**
+     * Displays the selected contact page menu.
+     * @return  the user's choice as an integer
+     */
     public Integer selectedContactPage(){
         boolean incorrectOption;
         int answer = 0;
@@ -213,6 +248,10 @@ public class MessagePresenter {
         return answer;
     }
 
+    /**
+     * Displays the main add user page.
+     * @return  the user's choice as an integer
+     */
     public Integer mainAddUserPage(){
         boolean incorrectOption;
         int answer = 0;
@@ -236,20 +275,35 @@ public class MessagePresenter {
         return answer;
     }
 
-
+    /**
+     * Prompts user to enter the user they want to add.
+     * @return  the username of the user they want to add
+     */
     public String addUserPage(){
         System.out.println("Please input the username of the user you wish to add:");
         return myObj.next();
     }
 
+    /**
+     * Prints a message stating the user has successfully added another
+     * user to their contact list.
+     */
     public void addUserSuccessful(){
         System.out.println("You have successfully added this user to your contact list.");
     }
 
+    /**
+     * Prints a message stating the user has unsuccessfully added another
+     * user to their contact list.
+     */
     public void addUserError(){
         System.out.println("Invalid input. Please enter a valid username.");
     }
 
+    /**
+     * Prints a message stating the user has successfully removed another
+     * user from their contact list.
+     */
     public void removeUserSuccessful(){
         System.out.println("You have successfully removed this user from your contact list.");
     }

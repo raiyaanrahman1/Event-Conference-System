@@ -40,7 +40,7 @@ public class MessengerSystem {
     }
 
     /**
-     * The main run method
+     * Runs the main message menu.
      */
     public void run() {
         boolean run = true;
