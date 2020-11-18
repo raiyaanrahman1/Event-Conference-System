@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * A file gateway for data files.
+ */
 public class InfoFileGateway implements IGateway2 {
     private File file;
     private Scanner reader;
@@ -14,12 +17,22 @@ public class InfoFileGateway implements IGateway2 {
     private boolean readable;
     private boolean writeable;
 
+    /**
+     * Constructs a new file gateway.
+     * @param fileName  the path of the file we want to access
+     */
     public InfoFileGateway(String fileName) {
         this.file = new File(fileName);
         this.readable = false;
         this.writeable = false;
     }
 
+    /**
+     * Returns true only if this file opens for reading successfully.
+     * If it is already open, it cannot open again, so it returns false.
+     *
+     * @return  true only if this file opens for reading successfully
+     */
     @Override
     public boolean openForRead() {
         if (!file.exists()) {
@@ -39,6 +52,12 @@ public class InfoFileGateway implements IGateway2 {
         }
     }
 
+    /**
+     * Returns true only if this file closes for reading successfully.
+     * If it is already closed, it cannot be closed again, so it returns false.
+     *
+     * @return  true only if this file closes for reading successfully
+     */
     @Override
     public boolean closeForRead() {
         if (readable) {
@@ -50,6 +69,12 @@ public class InfoFileGateway implements IGateway2 {
         }
     }
 
+    /**
+     * Returns true only if this file opens for writing successfully.
+     * If it is already open, it cannot open again, so it returns false.
+     *
+     * @return  true only if this file opens for writing successfully
+     */
     @Override
     public boolean openForWrite() {
         if (!readable && !writeable) {
@@ -66,6 +91,13 @@ public class InfoFileGateway implements IGateway2 {
         }
     }
 
+    /**
+     * Returns true only if this file closes for writing successfully.
+     * If it is already closed, it cannot be closed again, so it returns false.
+     * It saves all the data in the buffer into the file.
+     *
+     * @return  true only if this file closes for writing successfully
+     */
     @Override
     public boolean closeForWrite() {
         if (writeable) {
@@ -77,6 +109,10 @@ public class InfoFileGateway implements IGateway2 {
         }
     }
 
+    /**
+     * Writes a string to the file buffer iff the buffer is open.
+     * @param str  the string to be sent to gateway
+     */
     @Override
     public void write(String str) {
         if (writeable) {
@@ -84,6 +120,10 @@ public class InfoFileGateway implements IGateway2 {
         }
     }
 
+    /**
+     * Returns true iff the reading buffer has more strings to read from.
+     * @return  true iff the reading buffer has more strings to read from
+     */
     @Override
     public boolean hasNext() {
         if (readable) {
@@ -93,6 +133,12 @@ public class InfoFileGateway implements IGateway2 {
         }
     }
 
+    /**
+     * Returns the next string contained in the reading buffer.
+     * @return  the next string contained in the reading buffer.
+     * @throws NoSuchElementException  iff the buffer is empty
+     * @throws IllegalStateException  iff the buffer is closed.
+     */
     @Override
     public String next() throws NoSuchElementException, IllegalStateException {
         if (readable) {
