@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Entity</OriginalElement>
+  <nodes>
+    <node x="3.5000000000001137" y="135.99999999999991">Entity.Speaker</node>
+    <node x="218.5000000000001" y="-102.00000000000009">Entity.Event</node>
+    <node x="-193.9999999999999" y="385.0">Entity.Message</node>
+    <node x="-192.4999999999999" y="135.99999999999991">Entity.Attendee</node>
+    <node x="-105.49999999999989" y="-102.00000000000009">Entity.User</node>
+    <node x="-193.9999999999999" y="262.9999999999999">Entity.Organizer</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Entity.Speaker" target="Entity.User">
+      <point x="0.0" y="-38.5" />
+      <point x="88.50000000000011" y="110.99999999999991" />
+      <point x="40.750000000000114" y="110.99999999999991" />
+      <point x="48.75" y="94.0" />
+    </edge>
+    <edge source="Entity.Organizer" target="Entity.Attendee">
+      <point x="0.0" y="-38.5" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="Entity.Attendee" target="Entity.User">
+      <point x="0.0" y="-38.5" />
+      <point x="-104.49999999999989" y="110.99999999999991" />
+      <point x="-56.749999999999886" y="110.99999999999991" />
+      <point x="-48.75" y="94.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.733983286908078" x="184.0" y="246.0" />
+  <SelectedNodes>
+    <node>Entity.Speaker</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
