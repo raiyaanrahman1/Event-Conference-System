@@ -2,7 +2,9 @@ package UseCase;
 
 import Entity.Message;
 import Gateway.IGateway2;
+import Exceptions.NonExistentMessageException;
 
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -74,6 +76,36 @@ public class MessageManager {
     }
 
     /**
+     * Removes the message that matches the given string representation.
+     * Returns true iff the message was removed correctly, otherwise
+     * @param formattedMessage  the string representation of the message
+     *                          to remove
+     * @return  true iff the message has been removed correctly
+     */
+    public boolean delete(String formattedMessage) {
+        String[] tokens = formattedMessage.split("\\|");
+
+        if (tokens.length != 4) {
+            return false;
+        }
+
+        String receiver = tokens[0];
+        String sender = tokens[1];
+        String content = tokens[3];
+        String formattedDateTime = tokens[2];
+
+        Message message;
+
+        try {
+            message = new Message(receiver, sender, content, formattedDateTime);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+
+        return this.removeMessage(message);
+    }
+
+    /**
      * Gets the messages received by the given user. Each message is
      * represented by a string with the following format:
      *         (sender's username)|(date)|(time)|(content)
@@ -129,6 +161,29 @@ public class MessageManager {
     }
 
     /*
+     * Removes a message from the given receiver's list of messages.
+     *
+     * @param receiver  the user that receives the message
+     * @param message  the message
+     */
+    private boolean removeMessage(Message message) {
+        if (!this.hasMessages(message.getReceiver())) {
+            this.addUser(message.getReceiver());
+            return false;
+        } else {
+            List<Message> messageList = this.messages.get(message.getReceiver());
+
+            try {
+                messageList.remove(this.getStoredEquivalent(message));
+            } catch (NonExistentMessageException ex) {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    /*
      * Returns true iff the user has been any messages.
      *
      * @param receiver  the username of the user
@@ -136,6 +191,29 @@ public class MessageManager {
      */
     private boolean hasMessages(String receiver) {
         return this.messages.containsKey(receiver);
+    }
+
+    /*
+     * Returns the message stored in this manager that is equivalent to
+     * the given message.
+     *
+     * @param message  the given message
+     * @return  the equivalent stored message iff it exists
+     * @throws  NonExistentMessageException iff no such message exists
+     */
+    private Message getStoredEquivalent(Message message)
+            throws NonExistentMessageException {
+        List<Message> messageList = this.messages.get(message.getReceiver());
+
+        Comparator<Message> comparator = new ComparatorByData();
+
+        for (Message other: messageList) {
+            if (comparator.compare(message, other) == 0) {
+                return other;
+            }
+        }
+
+        throw new NonExistentMessageException();
     }
 
     /*
@@ -232,6 +310,37 @@ public class MessageManager {
                 return -1;
             } else {
                 return 0;
+            }
+        }
+    }
+
+    /*
+     * A comparator class used to compare messages by all their data.
+     */
+    private class ComparatorByData implements Comparator<Message> {
+
+        /*
+         * Compares two messages by their inner data.
+         *
+         * If two messages have the same content, the same content, sender,
+         * receiver, and datetime.
+         *
+         * This comparator is consistent with the equals method. But it is
+         * inconsistent with total ordering (i.e. useless for sorting).
+         *
+         * @param mess1  the one message being compared
+         * @param mess2  the other message being compared
+         * @return 0 iff mess1 is equal to mess2
+         *         -1 otherwise
+         */
+        public int compare(Message mess1, Message mess2) {
+            if (mess1.getContent().equals(mess2.getContent())
+                    && mess1.getReceiver().equals(mess2.getReceiver())
+                    && mess1.getSender().equals(mess2.getSender())
+                    && mess1.getDateTime().equals(mess2.getDateTime())) {
+                return 0;
+            } else {
+                return -1;
             }
         }
     }
