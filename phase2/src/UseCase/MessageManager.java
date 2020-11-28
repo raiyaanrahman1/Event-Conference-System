@@ -2,13 +2,10 @@ package UseCase;
 
 import Entity.Message;
 import Gateway.IGateway2;
-import Exceptions.NonExistentMessageException;
 
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Comparator;
 
 /**
@@ -16,11 +13,10 @@ import java.util.Comparator;
  */
 public class MessageManager {
 
-    /**
-     * The message key-value map. Each key is an user's username which
-     * points to a list of all messages received by that user.
+    /*
+     * A message collection for all active messages.
      */
-    private final Map<String, List<Message>> messages;
+    private final MessageMap messages;
 
     /**
      * Constructs a map from the file.
@@ -28,7 +24,7 @@ public class MessageManager {
      *   receiver|sender|dateTime|content
      */
     public MessageManager(IGateway2 gateway) {
-        messages = new HashMap<>();
+        messages = new MessageMap();
 
         gateway.openForRead();
         List<String> formattedMessages = this.getStoredMessages(gateway);
@@ -44,7 +40,7 @@ public class MessageManager {
 
             Message message = new Message(content, receiver, sender, dateTime);
 
-            this.addMessage(receiver, message);
+            this.messages.add(message);
         }
     }
 
@@ -58,7 +54,7 @@ public class MessageManager {
     public void message(String sender, String receiver,
                         String message) {
         Message newMessage = new Message(message, receiver, sender);
-        this.addMessage(receiver, newMessage);
+        this.messages.add(newMessage);
     }
 
     /**
@@ -82,27 +78,26 @@ public class MessageManager {
      *                          to remove
      * @return  true iff the message has been removed correctly
      */
-    public boolean delete(String formattedMessage) {
+    public boolean delete(String receiver, String formattedMessage) {
         String[] tokens = formattedMessage.split("\\|");
 
-        if (tokens.length != 4) {
+        if (tokens.length != 3) {
             return false;
         }
 
-        String receiver = tokens[0];
-        String sender = tokens[1];
-        String content = tokens[3];
-        String formattedDateTime = tokens[2];
+        String sender = tokens[0];
+        String content = tokens[2];
+        String formattedDateTime = tokens[1];
 
         Message message;
 
         try {
-            message = new Message(receiver, sender, content, formattedDateTime);
+            message = new Message(content, receiver, sender, formattedDateTime);
         } catch (DateTimeParseException e) {
             return false;
         }
 
-        return this.removeMessage(message);
+        return this.messages.remove(message);
     }
 
     /**
@@ -116,15 +111,15 @@ public class MessageManager {
      * @param receiver  the receiver of the messages
      */
     public List<String> getMessages(String receiver) {
-        List<String> messages = new ArrayList<>();
+        List<String> userMessages = new ArrayList<>();
 
-        if (this.hasMessages(receiver)) {
+        if (this.messages.contains(receiver)) {
             for (Message message: this.messages.get(receiver)) {
-                messages.add(this.getFormattedMessage(message));
+                userMessages.add(this.getFormattedMessage(message));
             }
         }
 
-        return messages;
+        return userMessages;
     }
 
     /**
@@ -135,96 +130,12 @@ public class MessageManager {
      */
     public void storeMessages(IGateway2 gateway) {
         if (gateway.openForWrite()) {
-            for (List<Message> messages: this.messages.values()) {
-                for (Message message: messages) {
-                    gateway.write(this.convertToString(message));
-                }
+            for (Message message: this.messages.getAll()) {
+                gateway.write(this.convertToString(message));
             }
 
             gateway.closeForWrite();
         }
-    }
-
-    /*
-     * Adds new message the given receiver to his list of messages.
-     *
-     * @param receiver  the user that receives the message
-     * @param message  the message
-     */
-    private void addMessage(String receiver, Message message) {
-        if (!this.hasMessages(receiver)) {
-            this.addUser(receiver);
-        }
-
-        List<Message> messageList = this.messages.get(receiver);
-        messageList.add(message);
-    }
-
-    /*
-     * Removes a message from the given receiver's list of messages.
-     *
-     * @param receiver  the user that receives the message
-     * @param message  the message
-     */
-    private boolean removeMessage(Message message) {
-        if (!this.hasMessages(message.getReceiver())) {
-            this.addUser(message.getReceiver());
-            return false;
-        } else {
-            List<Message> messageList = this.messages.get(message.getReceiver());
-
-            try {
-                messageList.remove(this.getStoredEquivalent(message));
-            } catch (NonExistentMessageException ex) {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
-    /*
-     * Returns true iff the user has been any messages.
-     *
-     * @param receiver  the username of the user
-     * @return  the boolean flag representing the condition.
-     */
-    private boolean hasMessages(String receiver) {
-        return this.messages.containsKey(receiver);
-    }
-
-    /*
-     * Returns the message stored in this manager that is equivalent to
-     * the given message.
-     *
-     * @param message  the given message
-     * @return  the equivalent stored message iff it exists
-     * @throws  NonExistentMessageException iff no such message exists
-     */
-    private Message getStoredEquivalent(Message message)
-            throws NonExistentMessageException {
-        List<Message> messageList = this.messages.get(message.getReceiver());
-
-        Comparator<Message> comparator = new ComparatorByData();
-
-        for (Message other: messageList) {
-            if (comparator.compare(message, other) == 0) {
-                return other;
-            }
-        }
-
-        throw new NonExistentMessageException();
-    }
-
-    /*
-     * Adds username to map and constructs empty list of messages.
-     * This is only to be used if the user does not yer exist in the
-     * map, i.e has not received any messages.
-     *
-     * @param receiver  the username of the user.
-     */
-    private void addUser(String receiver) {
-        this.messages.put(receiver, new ArrayList<>());
     }
 
     /*
@@ -275,13 +186,13 @@ public class MessageManager {
         return String.format("%s|%s|%s|%s", receiver, sender, dateTime, content);
     }
 
-//    /**
-//     * Sorts a list of messages by their
-//     * @param messages  the list of messages to be sorted
-//     */
-//    private void sortMessages(List<Message> messages) {
-//        messages.sort(new ComparatorByDateTime());
-//    }
+    /*
+     * Sorts a list of messages by their
+     * @param messages  the list of messages to be sorted
+     */
+    private void sortMessages(List<Message> messages) {
+        messages.sort(new ComparatorByDateTime());
+    }
 
     /*
      * A comparator class used to compare messages by their datetime.

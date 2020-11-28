@@ -106,4 +106,17 @@ public class Message {
     public String getFormattedDateTime() {
         return getDateTime().format(this.formatter);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Message)) {
+            return false;
+        } else {
+            Message other = (Message) o;
+            return this.receiver.equals(other.receiver)
+                    && this.sender.equals(other.sender)
+                    && this.dateTime.equals(other.dateTime)
+                    && this.content.equals(other.content);
+        }
+    }
 }

@@ -1,11 +1,11 @@
 package Exceptions;
 
-public class NonExistentMessageException extends Exception {
+public class NoSuchMessageException extends Exception {
 
     /**
      * Creates an instance of NonExistentMessageException.
      */
-    public NonExistentMessageException(){
+    public NoSuchMessageException(){
         super();
     }
 }
