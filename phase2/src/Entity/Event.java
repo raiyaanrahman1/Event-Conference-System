@@ -13,7 +13,7 @@ public class Event {
     private List<String> attendees;
     private LocalDateTime dateTime;
     private String room;
-    private String speaker; // perhaps more than one speaker in phase 2
+    private List<String> speakers; // perhaps more than one speaker in phase 2
     private String organizer;
     private int roomCap;
     private int eventID;
@@ -25,7 +25,25 @@ public class Event {
      *
      * @param name  the Event's name
      * @param room  the Event's room
-     * @param speaker  the Event's Speaker's username
+     * @param organizer the Event's Organizer's username
+     * @param roomCap the Event's maximum capacity of attendees
+     * @param dateTime the date and time of the event
+     */
+    public Event(String name, String room, String organizer, int roomCap, LocalDateTime dateTime) {
+        this.name = name;
+        this.dateTime = dateTime;
+        this.room = room;
+        this.speakers = new ArrayList<>();
+        this.organizer = organizer;
+        this.attendees = new ArrayList<>();
+        this.roomCap = roomCap;
+    }
+    /**
+     * Creates a new event object.
+     *
+     * @param name  the Event's name
+     * @param room  the Event's room
+     * @param speaker the Event's speaker
      * @param organizer the Event's Organizer's username
      * @param roomCap the Event's maximum capacity of attendees
      * @param dateTime the date and time of the event
@@ -34,7 +52,8 @@ public class Event {
         this.name = name;
         this.dateTime = dateTime;
         this.room = room;
-        this.speaker = speaker;
+        this.speakers = new ArrayList<>();
+        this.speakers.add(speaker);
         this.organizer = organizer;
         this.attendees = new ArrayList<>();
         this.roomCap = roomCap;
@@ -56,11 +75,33 @@ public class Event {
         this.name = name;
         this.dateTime = LocalDateTime.parse(dateTime, this.formatter);
         this.room = room;
-        this.speaker = speaker;
+        this.speakers = new ArrayList<>();
+        this.speakers.add(speaker);
         this.organizer = organizer;
         this.roomCap = Integer.parseInt(roomCap);
         this.attendees = new ArrayList<>();
     }
+    /**
+     * Creates a new event object using data from the store event info file.
+     * @param eventID the id associated with this event
+     * @param name  the Event's name
+     * @param room  the Event's room
+     * @param organizer the Event's Organizer's username
+     * @param roomCap the Event's maximum capacity of attendees
+     * @param dateTime the date and time of the event
+     */
+    public Event(String eventID, String name, String room,
+                 String organizer, String roomCap, String dateTime){
+        this.eventID = Integer.parseInt(eventID);
+        this.name = name;
+        this.dateTime = LocalDateTime.parse(dateTime, this.formatter);
+        this.room = room;
+        this.speakers = new ArrayList<>();
+        this.organizer = organizer;
+        this.roomCap = Integer.parseInt(roomCap);
+        this.attendees = new ArrayList<>();
+    }
+
 
     /**
      * Returns the toString of the Event
@@ -71,7 +112,7 @@ public class Event {
     public String toString() {
         String[] formatted = getFormattedDateTime().split("T");
         return  eventID + ". " + name + " at " + formatted[0] + " " + formatted[1] + " " + "in room " + room +
-                ". Speaker: " + speaker;
+                ". Speaker/s: " + speakers;
     }
 
     /**
@@ -80,7 +121,7 @@ public class Event {
      */
     public String getSaveableInfo(){
         return this.eventID + "|" + this.name + "|" +
-                this.room + "|" + this.speaker + "|" + this.organizer +
+                this.room + "|" + this.speakers + "|" + this.organizer +
                 "|" + this.roomCap + "|" + getFormattedDateTime() +
                 "|" + getSaveableAttendees();
 
@@ -144,16 +185,21 @@ public class Event {
     /**
      * Returns the Event's Speaker's username
      */
-    public String getSpeaker() {
-        return speaker;
+    public List<String> getSpeaker() {
+        return speakers;
     }
 
     /**
-     * Changes the Speaker's username of the Event
+     * Adds the Speaker's username of the Event
      */
-    public void setSpeaker(String speaker) {
-        this.speaker = speaker;
+    public void addSpeaker(String speaker) {
+        this.speakers.add(speaker);
     }
+
+    /**
+     * Removes the Speaker's username of the Event
+     */
+    public void removeSpeaker(String speaker){ this.speakers.remove(speaker); }
 
     /**
      * Returns the Event's Organizer's username
