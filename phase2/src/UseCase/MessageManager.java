@@ -1,6 +1,8 @@
 package UseCase;
 
 import Entity.Message;
+import Exceptions.InvalidMessageFormatException;
+import Exceptions.NoSuchMessageException;
 import Gateway.IGateway2;
 
 import java.time.format.DateTimeParseException;
@@ -16,7 +18,12 @@ public class MessageManager {
     /*
      * A message collection for all active messages.
      */
-    private final MessageMap messages;
+    private final MessageCollection messages;
+
+    /*
+     * A message collection for all archived messages.
+     */
+    private final MessageCollection archive;
 
     /**
      * Constructs a map from the file.
@@ -25,6 +32,7 @@ public class MessageManager {
      */
     public MessageManager(IGateway2 gateway) {
         messages = new MessageMap();
+        archive = new MessageMap();
 
         gateway.openForRead();
         List<String> formattedMessages = this.getStoredMessages(gateway);
@@ -42,6 +50,11 @@ public class MessageManager {
 
             this.messages.add(message);
         }
+    }
+
+    public MessageManager(MessageCollection messages, MessageCollection archive) {
+        this.messages = messages;
+        this.archive = archive;
     }
 
     /**
@@ -79,25 +92,69 @@ public class MessageManager {
      * @return  true iff the message has been removed correctly
      */
     public boolean delete(String receiver, String formattedMessage) {
-        String[] tokens = formattedMessage.split("\\|");
-
-        if (tokens.length != 3) {
-            return false;
-        }
-
-        String sender = tokens[0];
-        String content = tokens[2];
-        String formattedDateTime = tokens[1];
-
         Message message;
 
         try {
-            message = new Message(content, receiver, sender, formattedDateTime);
-        } catch (DateTimeParseException e) {
+            message = this.parseMessage(receiver, formattedMessage);
+        } catch (InvalidMessageFormatException | DateTimeParseException ex) {
             return false;
         }
 
         return this.messages.remove(message);
+    }
+
+    /**
+     * Archives the message that matches the given string representation.
+     * Returns true iff the message was archived correctly.
+     *
+     * @param formattedMessage  the string representation of the message
+     * @return  true iff the message has been archived correctly
+     */
+    public boolean archive(String receiver, String formattedMessage) {
+        Message message;
+
+        try {
+            message = this.parseMessage(receiver, formattedMessage);
+        } catch (InvalidMessageFormatException | DateTimeParseException ex) {
+            return false;
+        }
+
+        try {
+            message = this.messages.find(message);
+        } catch (NoSuchMessageException ex) {
+            return false;
+        }
+
+        this.archive.add(message);
+        this.messages.remove(message);
+
+        return true;
+    }
+
+    /**
+     * Marks the message that matches the given string representation
+     * as read or unread. Returns true iff the message was marked
+     * correctly, otherwise it returns false.
+     *
+     * @param formattedMessage  the string representation of the message
+     * @return  true iff the message has been marks correctly
+     */
+    public boolean mark(String receiver, String formattedMessage, boolean read) {
+        Message message;
+
+        try {
+            message = this.parseMessage(receiver, formattedMessage);
+        } catch (InvalidMessageFormatException | DateTimeParseException e) {
+            return false;
+        }
+
+        try {
+            this.messages.find(message).setRead(read);
+        } catch (NoSuchMessageException e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -114,6 +171,25 @@ public class MessageManager {
         List<String> userMessages = new ArrayList<>();
 
         if (this.messages.contains(receiver)) {
+            for (Message message: this.messages.get(receiver)) {
+                userMessages.add(this.getFormattedMessage(message));
+            }
+        }
+
+        return userMessages;
+    }
+
+    /**
+     * Gets the messages archived by the given user in the usual
+     * string representation.
+     *
+     * @param receiver  the receiver of this message
+     * @return  the list of archived messages
+     */
+    public List<String> getArchivedMessages(String receiver) {
+        List<String> userMessages = new ArrayList<>();
+
+        if (this.archive.contains(receiver)) {
             for (Message message: this.messages.get(receiver)) {
                 userMessages.add(this.getFormattedMessage(message));
             }
@@ -169,6 +245,29 @@ public class MessageManager {
         String sender = message.getSender();
 
         return String.format("%s|%s|%s", sender, dateTime, content);
+    }
+
+    /*
+     * Splits a formatted message into its necessary string components.
+     *
+     * @param formattedMessage  the formatted message
+     * @return  an array containing the components of the message
+     * @throws InvalidMessageFormatException iff formatted message is invalid
+     */
+    private Message parseMessage(String receiver, String formattedMessage)
+            throws InvalidMessageFormatException {
+        String[] tokens = formattedMessage.split("\\|");
+
+        if (tokens.length != 4) {
+            throw new InvalidMessageFormatException();
+        }
+
+        String sender = tokens[0];
+        String formattedDateTime = tokens[1];
+        String content = tokens[2];
+        boolean isRead = Boolean.parseBoolean(tokens[3]);
+
+        return new Message(content, receiver, sender, formattedDateTime, isRead);
     }
 
     /*
