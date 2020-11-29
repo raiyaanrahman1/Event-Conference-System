@@ -123,7 +123,7 @@ public class Event {
     public String toString() {
         String[] formatted = getFormattedDateTime().split("T");
         return  eventID + ". " + name + " at " + formatted[0] + " " + formatted[1] + " " + "in room " + room +
-                ". Speaker/s: " + speakers;
+                ". Speaker/s: " + getSavableSpeakers();
     }
 
     /**
@@ -132,7 +132,7 @@ public class Event {
      */
     public String getSaveableInfo(){
         return this.eventID + "|" + this.name + "|" +
-                this.room + "|" + this.speakers + "|" + this.organizer +
+                this.room + "|" + getSavableSpeakers() + "|" + this.organizer +
                 "|" + this.roomCap + "|" + getFormattedDateTime() +
                 "|" + getSaveableAttendees();
 
@@ -150,7 +150,16 @@ public class Event {
         }
         return attendees.toString();
     }
-
+    private String getSavableSpeakers() {
+        if (this.speakers.size() > 0) {
+            StringBuilder speakers = new StringBuilder();
+            for (String s : this.speakers) {
+                speakers.append(s).append(',');
+            }
+            return speakers.toString();
+        }
+        return "";
+    }
     /**
      * Returns the Event's list of attendees
      */
@@ -250,6 +259,7 @@ public class Event {
     }
 
     // Phase 2 Functionality
+
     /**
      * Sets the LocalDateTime of the event
      *
