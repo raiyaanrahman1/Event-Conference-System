@@ -284,7 +284,7 @@ public class Event {
      * @return  this message's formatted time
      */
     public String getFormattedDateTime() {
-        return getStartTime().format(formatter) + " to " + getEndTime().format(formatter);
+        return getStartTime().format(formatter) + " | " + getEndTime().format(formatter);
     }
 
     /**
