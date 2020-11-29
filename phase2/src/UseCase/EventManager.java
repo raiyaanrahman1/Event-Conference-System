@@ -127,15 +127,15 @@ public class EventManager {
      * @return true iff an event was added.
      */
     public boolean addEvent(String eventName, String room, String speaker, String organizer, int roomCap,
-                            LocalDateTime dateTime){
+                            LocalDateTime startTime, LocalDateTime endTime){
 
         for(Event e : events){
-            if(e.getDateTime().equals(dateTime) &&
+            if(e.getStartTime().equals(startTime) &&
                     (e.getRoom().equals(room) || e.getSpeaker().equals(speaker))) {
                 return false;}
 
         }
-        Event event = new Event(eventName, room, speaker, organizer, roomCap, dateTime);
+        Event event = new Event(eventName, room, speaker, organizer, roomCap, startTime, endTime);
         event.setEventID(events.size()+1);
         events.add(event);
         return true;
@@ -164,12 +164,12 @@ public class EventManager {
 
 
         for(Event e : events){
-            if (!e.getAttendees().contains(username) && !userEventTimes.contains(e.getDateTime()) &&
-                    e.getAttendees().size() < e.getRoomCap() && e.getDateTime().isAfter(LocalDateTime.now())) {
+            if (!e.getAttendees().contains(username) && !userEventTimes.contains(e.getStartTime()) &&
+                    e.getAttendees().size() < e.getRoomCap() && e.getStartTime().isAfter(LocalDateTime.now())) {
                 allowedEvents.add(e.getEventID());
             }
 
-            if (e.getAttendees().contains(username)) userEventTimes.add(e.getDateTime());
+            if (e.getAttendees().contains(username)) userEventTimes.add(e.getStartTime());
         }
         return allowedEvents;
     }
@@ -238,7 +238,7 @@ public class EventManager {
      * @return a string representing the formatted dateTime of this event
      */
     public String getDateTimeByEventID(int eventID) {
-        return Objects.requireNonNull(this.getEventByID(eventID)).getDateTime().toString();
+        return Objects.requireNonNull(this.getEventByID(eventID)).getStartTime().toString();
     }
 
     /**

@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
  */
 public class Event {
     private List<String> attendees;
-    private LocalDateTime dateTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String room;
     private List<String> speakers; // perhaps more than one speaker in phase 2
     private String organizer;
@@ -27,11 +28,14 @@ public class Event {
      * @param room  the Event's room
      * @param organizer the Event's Organizer's username
      * @param roomCap the Event's maximum capacity of attendees
-     * @param dateTime the date and time of the event
+     * @param startTime the date and time of the event
+     * @param endTime when the event ends
      */
-    public Event(String name, String room, String organizer, int roomCap, LocalDateTime dateTime) {
+    public Event(String name, String room, String organizer, int roomCap, LocalDateTime startTime,
+                 LocalDateTime endTime) {
         this.name = name;
-        this.dateTime = dateTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.room = room;
         this.speakers = new ArrayList<>();
         this.organizer = organizer;
@@ -46,11 +50,14 @@ public class Event {
      * @param speaker the Event's speaker
      * @param organizer the Event's Organizer's username
      * @param roomCap the Event's maximum capacity of attendees
-     * @param dateTime the date and time of the event
+     * @param startTime the date and time of the event
+     * @param endTime when the event ends
      */
-    public Event(String name, String room, String speaker, String organizer, int roomCap, LocalDateTime dateTime) {
+    public Event(String name, String room, String speaker, String organizer, int roomCap, LocalDateTime startTime,
+                 LocalDateTime endTime) {
         this.name = name;
-        this.dateTime = dateTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.room = room;
         this.speakers = new ArrayList<>();
         this.speakers.add(speaker);
@@ -67,13 +74,15 @@ public class Event {
      * @param speaker  the Event's Speaker's username
      * @param organizer the Event's Organizer's username
      * @param roomCap the Event's maximum capacity of attendees
-     * @param dateTime the date and time of the event
+     * @param startTime the date and time of the event
+     * @param endTime when the event ends
      */
     public Event(String eventID, String name, String room, String speaker,
-                 String organizer, String roomCap, String dateTime){
+                 String organizer, String roomCap, String startTime, String endTime){
         this.eventID = Integer.parseInt(eventID);
         this.name = name;
-        this.dateTime = LocalDateTime.parse(dateTime, this.formatter);
+        this.startTime = LocalDateTime.parse(startTime, this.formatter);
+        this.endTime = LocalDateTime.parse(endTime, this.formatter);
         this.room = room;
         this.speakers = new ArrayList<>();
         this.speakers.add(speaker);
@@ -88,13 +97,15 @@ public class Event {
      * @param room  the Event's room
      * @param organizer the Event's Organizer's username
      * @param roomCap the Event's maximum capacity of attendees
-     * @param dateTime the date and time of the event
+     * @param startTime the date and time of the event
+     * @param endTime when the event ends
      */
     public Event(String eventID, String name, String room,
-                 String organizer, String roomCap, String dateTime){
+                 String organizer, String roomCap, String startTime, String endTime){
         this.eventID = Integer.parseInt(eventID);
         this.name = name;
-        this.dateTime = LocalDateTime.parse(dateTime, this.formatter);
+        this.startTime = LocalDateTime.parse(startTime, this.formatter);
+        this.endTime = LocalDateTime.parse(endTime, this.formatter);
         this.room = room;
         this.speakers = new ArrayList<>();
         this.organizer = organizer;
@@ -230,22 +241,40 @@ public class Event {
     }
 
     /**
-     * Gets the LocalDateTime of the message
+     * Gets the LocalDateTime of the event
      *
      * @return the LocalDateTime
      */
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
     // Phase 2 Functionality
     /**
-     * Sets the LocalDateTime of the message
+     * Sets the LocalDateTime of the event
      *
-     * @param  dateTime the date and time of the event
+     * @param  startTime the date and time of the event
      */
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+    /**
+     * Gets the LocalDateTime of the end of the event
+     *
+     * @return the LocalDateTime
+     */
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    // Phase 2 Functionality
+    /**
+     * Sets the LocalDateTime of the end of the event
+     *
+     * @param  endTime the date and time of the end of the event
+     */
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     /**
@@ -255,7 +284,7 @@ public class Event {
      * @return  this message's formatted time
      */
     public String getFormattedDateTime() {
-        return getDateTime().format(formatter);
+        return getStartTime().format(formatter) + " to " + getEndTime().format(formatter);
     }
 
     /**
