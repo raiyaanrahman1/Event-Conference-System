@@ -1,29 +1,36 @@
 package UseCase;
-import Entity.*;
+
+import Entity.Attendee;
+import Entity.Organizer;
+import Entity.Speaker;
+import Entity.User;
 import Gateway.IGateway;
 import Gateway.IGateway2;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Creates and contains a list of all Attendees, and has one Attendee logged in.
  * Communicates with the controllers.
  */
-public class UserManager{
+public class UserManager implements UserStorer {
 
     private User user;
     private List<User> userList;
     private List<String> userInfoList;
-    private ArrayList<List<String>> rawUserInfo;
-    private IGateway gateway;
-    private List<String> formattedContacts;
+    private final ArrayList<List<String>> rawUserInfo;
+    private final IGateway gateway;
+    private final List<String> formattedContacts;
 
 
     /**
      * Creates a UserManager instance with the raw user information on every existing user in the system.
+     *
      * @param gateway, all the information on every user in the system, obtained from the Gateway
      */
-    public UserManager(IGateway gateway, IGateway2 gateway2){
+    public UserManager(IGateway gateway, IGateway2 gateway2) {
         this.gateway = gateway;
         ArrayList<List<String>> userInfo = gateway.read();
         gateway2.openForRead();
@@ -36,39 +43,40 @@ public class UserManager{
     /**
      * Gets a User by its username
      *
-     * @param user  username of the user
-     * @return  user iff it is in userList
+     * @param user username of the user
+     * @return user iff it is in userList
      */
-    public User getUserByUsername(String user){
-        for (User u : userList){
-            if (u.getUsername().equals(user)){
+    public User getUserByUsername(String user) {
+        for (User u : userList) {
+            if (u.getUsername().equals(user)) {
                 return u;
             }
         }
         return null;
     }
 
-    private void createUserList(ArrayList<List<String>> userInfo){
+    private void createUserList(ArrayList<List<String>> userInfo) {
         userList = new ArrayList<>();
-        for (List<String> u : userInfo){
+        for (List<String> u : userInfo) {
             addUserToList(u);
         }
     }
 
     private void addUserToList(List<String> userInfo) {
         String type = userInfo.get(2);
-        if (type.equals("A")){
+        if (type.equals("A")) {
             User u = new Attendee(userInfo.get(0), userInfo.get(1));
             userList.add(u);
             readContacts(u.getUsername());
-        } else if (type.equals("O")){
+        } else if (type.equals("O")) {
             User u = new Organizer(userInfo.get(0), userInfo.get(1));
             userList.add(u);
             readContacts(u.getUsername());
         } else {
             User u = new Speaker(userInfo.get(0), userInfo.get(1));
             userList.add(u);
-            readContacts(u.getUsername());        }
+            readContacts(u.getUsername());
+        }
     }
 
     /**
@@ -76,23 +84,23 @@ public class UserManager{
      *
      * @param username, the username of the logged-in User
      */
-    public void logInUser(String username){
+    public void logInUser(String username) {
         this.user = getUserByUsername(username);
         userInfoList = new ArrayList<>();
-        for (List<String> u : rawUserInfo){
-            if (u.get(0).equals(username)){
+        for (List<String> u : rawUserInfo) {
+            if (u.get(0).equals(username)) {
                 userInfoList = u;
             }
         }
         readContacts(username);
     }
 
-    private void readContacts(String username){
+    private void readContacts(String username) {
         List<String> contactsList = new ArrayList<>();
-        for(String contacts: formattedContacts){
+        for (String contacts : formattedContacts) {
             String[] tokens = contacts.split("\\|");
 
-            if(username.equals(tokens[0])){
+            if (username.equals(tokens[0])) {
                 contactsList.addAll(Arrays.asList(tokens).subList(1, tokens.length));
             }
         }
@@ -123,7 +131,7 @@ public class UserManager{
      *
      * @param user, the username of the user to be added.
      */
-    public void addUserToContacts(String user){
+    public void addUserToContacts(String user) {
         this.user.addContact(user);
         User user2 = getUserByUsername(user);
         user2.addContact(this.user.getUsername());
@@ -134,7 +142,7 @@ public class UserManager{
      *
      * @param user, the username of the user to be removed.
      */
-    public void removeUserFromContacts(String user){
+    public void removeUserFromContacts(String user) {
         this.user.removeContact(user);
         User user2 = getUserByUsername(user);
         user2.removeContact(this.user.getUsername());
@@ -142,9 +150,9 @@ public class UserManager{
 
     /**
      * Checks if the inputted password corresponds to the logged-in user's password.
+     *
      * @param username, the logged-in user's username.
      * @param password, the logged-in user's password.
-     *
      * @return true iff the inputted password matches the logged-in user's password.
      */
     public boolean isPasswordCorrect(String username, String password) {
@@ -159,7 +167,7 @@ public class UserManager{
      */
     public List<String> getSignedUpUsers() {
         List<String> usernames = new ArrayList<>();
-        for (User user: userList) {
+        for (User user : userList) {
             usernames.add(user.getUsername());
         }
         usernames.sort(null);
@@ -171,7 +179,7 @@ public class UserManager{
      *
      * @return the usernames of the contacts of user
      */
-    public List<String> getContactList(){
+    public List<String> getContactList() {
         return user.getContacts();
 
     }
@@ -196,16 +204,16 @@ public class UserManager{
 
     /**
      * Stores the contacts of each user through a gateway.
-     *      * Precondition: the gateway must not be open for write/read.
-     *      *
-     *      * @param gateway  the gateway through which we save our contacts
+     * * Precondition: the gateway must not be open for write/read.
+     * *
+     * * @param gateway  the gateway through which we save our contacts
      */
     public void storeContacts(IGateway2 gateway2) {
         if (gateway2.openForWrite()) {
 
-            for (User u: userList){
+            for (User u : userList) {
                 StringBuilder contactList = new StringBuilder(u.getUsername());
-                for (String contact: u.getContacts()) {
+                for (String contact : u.getContacts()) {
                     contactList.append("|").append(contact);
                 }
                 gateway2.write(contactList.toString());
@@ -225,7 +233,6 @@ public class UserManager{
         }
         return formattedContacts;
     }
-
 
 
 }
