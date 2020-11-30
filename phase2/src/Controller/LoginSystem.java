@@ -18,18 +18,18 @@ import java.util.function.Function;
  */
 
 public class LoginSystem {
-    IGateway g = new LoginFileGateway("phase1/src/Controller/LogInInformation.txt");
-    IGateway2 g2 = new InfoFileGateway("phase1/src/Controller/MessageListInformation.txt");
-    IGateway2 g3 = new InfoFileGateway("phase1/src/Controller/contactListInfo.txt");
-    IGateway2 g4 = new InfoFileGateway("phase1/src/Controller/eventListInfo.txt");
-    UserManager userManager = new UserManager(g, g3);
-    EventManager eventMan = new EventManager(g4);
-    MessageManager messageMan = new MessageManager(g2);
+    IGateway loginFileGateway = new LoginFileGateway("phase2/src/Controller/LogInInformation.txt");
+    IGateway2 messageListInformationGateway = new InfoFileGateway("phase2/src/Controller/MessageListInformation.txt");
+    IGateway2 contactListGateway = new InfoFileGateway("phase2/src/Controller/contactListInfo.txt");
+    IGateway2 eventListGateway = new InfoFileGateway("phase2/src/Controller/eventListInfo.txt");
+    UserManager userManager = new UserManager(loginFileGateway, contactListGateway);
+    EventManager eventMan = new EventManager(eventListGateway);
+    MessageManager messageMan = new MessageManager(messageListInformationGateway);
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
-    CreateSpeakerController speakerController = new CreateSpeakerController(userManager, g, g3);
+    CreateSpeakerController speakerController = new CreateSpeakerController(userManager, loginFileGateway, contactListGateway);
     EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, speakerController);
-    LogInSignUpPresenter lp = new LogInSignUpPresenter();
-    EventPresenter ep = new EventPresenter(eventSys, userManager, eventMan);
+    LogInSignUpPresenter logInSignUpPresenter = new LogInSignUpPresenter();
+    EventPresenter eventPresenter = new EventPresenter(eventSys, userManager, eventMan);
 
 
     /**
@@ -47,11 +47,11 @@ public class LoginSystem {
     public void mainPage() {
         int answer;
         do {
-            answer = lp.menu();
+            answer = logInSignUpPresenter.menu();
             if (answer == 1) {
                 msgSys.menus();
             } else if (answer == 2) {
-                ep.mainEventPage();
+                eventPresenter.mainEventPage();
             } else if (answer == 3) {
                 signOut();
             }
@@ -64,7 +64,7 @@ public class LoginSystem {
     public void welcome() {
         int answer;
         do {
-            answer = lp.wel();
+            answer = logInSignUpPresenter.wel();
             if (answer == 1) {
                 signUp();
                 answer = 2;
@@ -81,10 +81,10 @@ public class LoginSystem {
      * Signs out the user
      */
     public void signOut() {
-        lp.print("Goodbye.");
-        messageMan.storeMessages(g2);
-        userManager.storeContacts(g3);
-        eventMan.storeEvents(g4);
+        logInSignUpPresenter.print("Goodbye.");
+        messageMan.storeMessages(messageListInformationGateway);
+        userManager.storeContacts();
+        eventMan.storeEvents(eventListGateway);
         System.exit(0);
     }
 
@@ -95,20 +95,18 @@ public class LoginSystem {
      */
     public boolean logIn() {
         do {
-            lp.print("Enter a username.");
-            String username = lp.readLine();
-            lp.print("Enter a password.");
-            String password = lp.readLine();
-            User user = userManager.getUserByUsername(username);
-            if (user != null && userManager.isPasswordCorrect(username, password)) {
-                userManager.logInUser(username);
-                lp.print("Log in successful. Welcome " + username);
+            logInSignUpPresenter.print("Enter a username.");
+            String username = logInSignUpPresenter.readLine();
+            logInSignUpPresenter.print("Enter a password.");
+            String password = logInSignUpPresenter.readLine();
+            if (userManager.logInUser(username, password)) {
+                logInSignUpPresenter.print("Log in successful. Welcome " + username);
                 return true;
             }
             else {
-                lp.print("Invalid user name or password. Please try again.");
-                lp.print("Or type 'm' to go back to main menu or any other key to try again");
-                if (lp.readLine().equals("m")) {
+                logInSignUpPresenter.print("Invalid user name or password. Please try again.");
+                logInSignUpPresenter.print("Or type 'm' to go back to main menu or any other key to try again");
+                if (logInSignUpPresenter.readLine().equals("m")) {
                     return false;
                 }
             }
@@ -121,10 +119,10 @@ public class LoginSystem {
         boolean keepAsking = true;
         String userInput;
         do {
-            lp.print(prompt);
-            userInput = lp.readLine();
+            logInSignUpPresenter.print(prompt);
+            userInput = logInSignUpPresenter.readLine();
             if (!validationFunction.apply(userInput)) {
-                lp.print(errorMessage);
+                logInSignUpPresenter.print(errorMessage);
             } else {
                 keepAsking = false;
             }
@@ -144,8 +142,8 @@ public class LoginSystem {
         } else {
             signUpOrganizer("O");
         }
-        lp.print("You have successfully signed up.");
-        lp.print("Continue to Log In.");
+        logInSignUpPresenter.print("You have successfully signed up.");
+        logInSignUpPresenter.print("Continue to Log In.");
     }
 
 
@@ -161,8 +159,8 @@ public class LoginSystem {
         String username = askUser("Enter a username.", "Username already exists",
                 userInput -> userManager.getUserByUsername(userInput) == null);
 
-        lp.print("Enter a password.");
-        String password = lp.readLine();
+        logInSignUpPresenter.print("Enter a password.");
+        String password = logInSignUpPresenter.readLine();
         userManager.CreateUser(username, password, userType);
     }
 }

@@ -1,29 +1,23 @@
 package UseCase;
 
-import Entity.Attendee;
-import Entity.Organizer;
-import Entity.Speaker;
+
 import Entity.User;
 import Gateway.IGateway;
 import Gateway.IGateway2;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Creates and contains a list of all Attendees, and has one Attendee logged in.
  * Communicates with the controllers.
  */
-public class UserManager implements UserStorer {
+public class UserManager {
 
     private User user;
-    private List<User> userList;
+    private UserStore userStore;
     private List<String> userInfoList;
     private final ArrayList<List<String>> rawUserInfo;
     private final IGateway gateway;
-    private final List<String> formattedContacts;
-
 
     /**
      * Creates a UserManager instance with the raw user information on every existing user in the system.
@@ -31,12 +25,10 @@ public class UserManager implements UserStorer {
      * @param gateway, all the information on every user in the system, obtained from the Gateway
      */
     public UserManager(IGateway gateway, IGateway2 gateway2) {
+        userStore = new UserStore(gateway2);
         this.gateway = gateway;
         ArrayList<List<String>> userInfo = gateway.read();
-        gateway2.openForRead();
-        formattedContacts = this.getStoredContacts(gateway2);
-        gateway2.closeForRead();
-        createUserList(userInfo);
+        userStore.createUserList(userInfo);
         rawUserInfo = userInfo;
     }
 
@@ -47,7 +39,7 @@ public class UserManager implements UserStorer {
      * @return user iff it is in userList
      */
     public User getUserByUsername(String user) {
-        for (User u : userList) {
+        for (User u : userStore.userList) {
             if (u.getUsername().equals(user)) {
                 return u;
             }
@@ -55,56 +47,24 @@ public class UserManager implements UserStorer {
         return null;
     }
 
-    private void createUserList(ArrayList<List<String>> userInfo) {
-        userList = new ArrayList<>();
-        for (List<String> u : userInfo) {
-            addUserToList(u);
-        }
-    }
-
-    private void addUserToList(List<String> userInfo) {
-        String type = userInfo.get(2);
-        if (type.equals("A")) {
-            User u = new Attendee(userInfo.get(0), userInfo.get(1));
-            userList.add(u);
-            readContacts(u.getUsername());
-        } else if (type.equals("O")) {
-            User u = new Organizer(userInfo.get(0), userInfo.get(1));
-            userList.add(u);
-            readContacts(u.getUsername());
-        } else {
-            User u = new Speaker(userInfo.get(0), userInfo.get(1));
-            userList.add(u);
-            readContacts(u.getUsername());
-        }
-    }
-
     /**
      * Log-in user and updates userInfoList with username, password and type identifier ("A", "O" or "S").
      *
      * @param username, the username of the logged-in User
      */
-    public void logInUser(String username) {
+    public boolean logInUser(String username, String password) {
         this.user = getUserByUsername(username);
-        userInfoList = new ArrayList<>();
-        for (List<String> u : rawUserInfo) {
-            if (u.get(0).equals(username)) {
-                userInfoList = u;
+        if (this.user != null && this.user.getPassword().equals(password)) {
+            userInfoList = new ArrayList<>();
+            for (List<String> u : rawUserInfo) {
+                if (u.get(0).equals(username)) {
+                    userInfoList = u;
+                    break;
+                }
             }
+            return true;
         }
-        readContacts(username);
-    }
-
-    private void readContacts(String username) {
-        List<String> contactsList = new ArrayList<>();
-        for (String contacts : formattedContacts) {
-            String[] tokens = contacts.split("\\|");
-
-            if (username.equals(tokens[0])) {
-                contactsList.addAll(Arrays.asList(tokens).subList(1, tokens.length));
-            }
-        }
-        getUserByUsername(username).setContacts(contactsList);
+        return false;
     }
 
     /**
@@ -113,7 +73,7 @@ public class UserManager implements UserStorer {
      * @return User that is logged in
      */
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     /**
@@ -149,25 +109,13 @@ public class UserManager implements UserStorer {
     }
 
     /**
-     * Checks if the inputted password corresponds to the logged-in user's password.
-     *
-     * @param username, the logged-in user's username.
-     * @param password, the logged-in user's password.
-     * @return true iff the inputted password matches the logged-in user's password.
-     */
-    public boolean isPasswordCorrect(String username, String password) {
-        return getUserByUsername(username).getPassword().equals(password);
-    }
-
-
-    /**
      * Gets a list of the usernames of every existing user in the system.
      *
      * @return a list of strings representing every user's username.
      */
     public List<String> getSignedUpUsers() {
         List<String> usernames = new ArrayList<>();
-        for (User user : userList) {
+        for (User user : userStore.userList) {
             usernames.add(user.getUsername());
         }
         usernames.sort(null);
@@ -181,7 +129,6 @@ public class UserManager implements UserStorer {
      */
     public List<String> getContactList() {
         return user.getContacts();
-
     }
 
     /**
@@ -198,7 +145,7 @@ public class UserManager implements UserStorer {
         newUserInfo.add(userType);
         gateway.append(newUserInfo);
         // Add to lists
-        addUserToList(newUserInfo);
+        userStore.addUserToList(newUserInfo);
         rawUserInfo.add(newUserInfo);
     }
 
@@ -208,33 +155,9 @@ public class UserManager implements UserStorer {
      * *
      * * @param gateway  the gateway through which we save our contacts
      */
-    public void storeContacts(IGateway2 gateway2) {
-        if (gateway2.openForWrite()) {
-
-            for (User u : userList) {
-                StringBuilder contactList = new StringBuilder(u.getUsername());
-                for (String contact : u.getContacts()) {
-                    contactList.append("|").append(contact);
-                }
-                gateway2.write(contactList.toString());
-            }
-
-            gateway2.closeForWrite();
-        }
+    public void storeContacts() {
+        userStore.storeContacts();
     }
-
-
-    // Each string should be formatted in the manner:
-    // (Logged in user's username)|(contact1's username)|(contact2's username)|...
-    private List<String> getStoredContacts(IGateway2 gateway2) {
-        List<String> formattedContacts = new ArrayList<>();
-        while (gateway2.hasNext()) {
-            formattedContacts.add(gateway2.next());
-        }
-        return formattedContacts;
-    }
-
-
 }
 
 

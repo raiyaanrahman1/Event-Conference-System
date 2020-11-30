@@ -1,4 +1,4 @@
-package GUI;
+package GUI.EventMenus;
 
 public interface IEventView {
 }
