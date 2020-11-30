@@ -1,4 +1,4 @@
-package GUI.LoginMenu;
+package GUI.Main;
 
 public interface ILoginView {
 }
