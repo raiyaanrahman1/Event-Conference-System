@@ -131,7 +131,7 @@ public class Event {
      * @return this Event's info as a String
      */
     public String getSaveableInfo(){
-        return this.eventID + "|" + this.name + "|" +
+        return "E|" + this.eventID + "|" + this.name + "|" +
                 this.room + "|" + getSavableSpeakers() + "|" + this.organizer +
                 "|" + this.roomCap + "|" + getFormattedDateTime() +
                 "|" + getSaveableAttendees();
@@ -294,7 +294,7 @@ public class Event {
      * @return  this message's formatted time
      */
     public String getFormattedDateTime() {
-        return getStartTime().format(formatter) + " | " + getEndTime().format(formatter);
+        return getStartTime().format(formatter) + "|" + getEndTime().format(formatter);
     }
 
     /**
