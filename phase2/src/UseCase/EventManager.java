@@ -28,19 +28,26 @@ public class EventManager {
         for (String e: formattedEvents) {
             String[] tokens = e.split("\\|");
 
-            String eventID = tokens[0];
-            String name = tokens[1];
-            String room = tokens[2];
-            String speaker = tokens[3];
-            String organizer = tokens[4];
-            String roomCap = tokens[5];
-            String dateTime = tokens[6];
+            String eventType = tokens[0];
+            String eventID = tokens[1];
+            String name = tokens[2];
+            String room = tokens[3];
+            String speaker = tokens[4];
+            String organizer = tokens[5];
+            String roomCap = tokens[6];
+            String startTime = tokens[7];
+            String endTime = tokens[8];
 
-            Event event = new Event(eventID, name, room, speaker,
-                    organizer, roomCap, dateTime);
+            Event event;
+            if(eventType.equals("V")) {
+                event = new VIPEvent(eventID, name, room, speaker, organizer, roomCap, startTime, endTime);
+            }
+            else{
+                event = new Event(eventID, name, room, speaker, organizer, roomCap, startTime, endTime);
+            }
 
-            if (tokens.length > 7) {
-                String attendees = tokens[7];
+            if (tokens.length > 9) {
+                String attendees = tokens[9];
                 event.setAttendees(attendees);
             }
 
@@ -104,7 +111,7 @@ public class EventManager {
     public List<Integer> getTalksBySpeaker(String username){
         List<Integer> eventListIDs = new ArrayList<>();
         for(Event e : events){
-            if(e.getSpeaker().equals(username)) eventListIDs.add(e.getEventID());
+            if(e.getSpeaker().contains(username)) eventListIDs.add(e.getEventID());
         }
         return eventListIDs;
     }
@@ -122,20 +129,38 @@ public class EventManager {
         return eventListIDs;
     }
 
+    private boolean eventsOverlap(LocalDateTime start1, LocalDateTime end1, LocalDateTime start2, LocalDateTime end2){
+        return  start1.compareTo(start2) < 0 && end1.compareTo(start2) > 0 ||
+                start1.compareTo(start2) > 0 && start1.compareTo(end2) < 0 ||
+                start1.equals(start2);
+    }
+
+    private boolean hasCommonSpeaker(List<String> speakers1, List<String> speakers2){
+        for(String s : speakers2){
+            if(speakers1.contains(s)) return true;
+        }
+        return false;
+    }
+
+
     /**
-     * Adds a new event to event list iff this user is an Organiser.
+     * Adds a new event to event list if the event is valid.
      * @return true iff an event was added.
      */
-    public boolean addEvent(String eventName, String room, String speaker, String organizer, int roomCap,
+    public boolean addEvent(String eventName, String room, List<String> speakers, String organizer, int roomCap,
                             LocalDateTime startTime, LocalDateTime endTime){
 
+
         for(Event e : events){
-            if(e.getStartTime().equals(startTime) &&
-                    (e.getRoom().equals(room) || e.getSpeaker().equals(speaker))) {
+            if(eventsOverlap(e.getStartTime(), e.getEndTime(), startTime, endTime) &&
+                    (e.getRoom().equals(room) || hasCommonSpeaker(e.getSpeaker(), speakers))) {
                 return false;}
 
         }
-        Event event = new Event(eventName, room, speaker, organizer, roomCap, startTime, endTime);
+        Event event = new Event(eventName, room, organizer, roomCap, startTime, endTime);
+        for(String s : speakers){
+            event.addSpeaker(s);
+        }
         event.setEventID(events.size()+1);
         events.add(event);
         return true;
@@ -154,22 +179,41 @@ public class EventManager {
 
     }
 
+    private boolean validEventTimeForUser(List<List<LocalDateTime>> userEventTimes,
+                                          LocalDateTime start, LocalDateTime end){
+        for(List<LocalDateTime> l : userEventTimes){
+            if(eventsOverlap(l.get(0), l.get(1), start, end)) return false;
+        }
+
+        return true;
+    }
+
     /**
      * Gets the allowed events that this user may sign up for.
      * @return a list of event IDs corresponding to the allowed events that this user may sign up for.
      */
     public List<Integer> getAllowedEvents(String username){
         List<Integer> allowedEvents = new ArrayList<>();
-        List<LocalDateTime> userEventTimes = new ArrayList<>();
+        List<List<LocalDateTime>> userEventTimes = new ArrayList<>();
 
+        for (Event e : events){
+            if (e.getAttendees().contains(username)){
+                ArrayList<LocalDateTime> times = new ArrayList<>();
+                times.add(e.getStartTime());
+                times.add(e.getEndTime());
+                userEventTimes.add(times);
+            }
+        }
 
         for(Event e : events){
-            if (!e.getAttendees().contains(username) && !userEventTimes.contains(e.getStartTime()) &&
+
+            if (!e.getAttendees().contains(username) &&
+                    validEventTimeForUser(userEventTimes, e.getStartTime(), e.getEndTime()) &&
                     e.getAttendees().size() < e.getRoomCap() && e.getStartTime().isAfter(LocalDateTime.now())) {
                 allowedEvents.add(e.getEventID());
             }
 
-            if (e.getAttendees().contains(username)) userEventTimes.add(e.getStartTime());
+
         }
         return allowedEvents;
     }
@@ -237,8 +281,17 @@ public class EventManager {
      * @param eventID the ID of the event we want to get the datetime of
      * @return a string representing the formatted dateTime of this event
      */
-    public String getDateTimeByEventID(int eventID) {
+    public String getStartTimeByEventID(int eventID) {
         return Objects.requireNonNull(this.getEventByID(eventID)).getStartTime().toString();
+    }
+
+    /**
+     * Gets the dateTime of an event by its eventID.
+     * @param eventID the ID of the event we want to get the datetime of
+     * @return a string representing the formatted dateTime of this event
+     */
+    public String getEndTimeByEventID(int eventID) {
+        return Objects.requireNonNull(this.getEventByID(eventID)).getEndTime().toString();
     }
 
     /**
