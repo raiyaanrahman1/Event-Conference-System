@@ -1,6 +1,7 @@
 package Controller;
 
-import Entity.User;
+import Entity.Attendee;
+import Entity.Organizer;
 import Gateway.LoginFileGateway;
 import Gateway.IGateway;
 import Gateway.IGateway2;
@@ -11,7 +12,10 @@ import UseCase.EventManager;
 import UseCase.MessageManager;
 import UseCase.UserManager;
 
+import java.util.Scanner;
 import java.util.function.Function;
+
+import static java.lang.System.out;
 
 /**
  * Class which manages the Logging in and Signing up of a User
@@ -26,8 +30,8 @@ public class LoginSystem {
     EventManager eventMan = new EventManager(eventListGateway);
     MessageManager messageMan = new MessageManager(messageListInformationGateway);
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
-    CreateSpeakerController speakerController = new CreateSpeakerController(userManager, loginFileGateway, contactListGateway);
-    EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, speakerController);
+    CreateUserController userController = new CreateUserController(userManager);
+    EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, userController);
     LogInSignUpPresenter logInSignUpPresenter = new LogInSignUpPresenter();
     EventPresenter eventPresenter = new EventPresenter(eventSys, userManager, eventMan);
 
@@ -64,7 +68,7 @@ public class LoginSystem {
     public void welcome() {
         int answer;
         do {
-            answer = logInSignUpPresenter.wel();
+            answer = logInSignUpPresenter.welcome();
             if (answer == 1) {
                 signUp();
                 answer = 2;
@@ -110,37 +114,19 @@ public class LoginSystem {
                     return false;
                 }
             }
-
         } while (true);
-    }
-
-    private String askUser(String prompt, String errorMessage,
-                           Function<String, Boolean> validationFunction) {
-        boolean keepAsking = true;
-        String userInput;
-        do {
-            logInSignUpPresenter.print(prompt);
-            userInput = logInSignUpPresenter.readLine();
-            if (!validationFunction.apply(userInput)) {
-                logInSignUpPresenter.print(errorMessage);
-            } else {
-                keepAsking = false;
-            }
-        }
-        while (keepAsking);
-        return userInput;
     }
 
     /**
      * Signs up a new user
      */
     public void signUp() {
-        String response = askUser("Are you an \n1. Attendee \n2. Organizer", "Incorrect answer",
+        String response = userController.askUser("Are you an \n1. Attendee \n2. Organizer", "Incorrect answer",
                 userInput -> userInput.equals("1") || userInput.equals("2"));
         if (response.equals("1")) {
-            signUpAttendee("A");
+            signUpAttendee(Attendee.TYPE);
         } else {
-            signUpOrganizer("O");
+            signUpOrganizer(Organizer.TYPE);
         }
         logInSignUpPresenter.print("You have successfully signed up.");
         logInSignUpPresenter.print("Continue to Log In.");
@@ -148,7 +134,7 @@ public class LoginSystem {
 
 
     private void signUpOrganizer(String userType) {
-        askUser("Enter your organizer code.", "Invalid code.",
+        userController.askUser("Enter your organizer code.", "Invalid code.",
                 userInput -> userInput.equals("amongUs"));
 
         signUpAttendee(userType);
@@ -156,11 +142,12 @@ public class LoginSystem {
 
 
     private void signUpAttendee(String userType) {
-        String username = askUser("Enter a username.", "Username already exists",
+        String username = userController.askUser("Enter a username.", "Username already exists",
                 userInput -> userManager.getUserByUsername(userInput) == null);
 
         logInSignUpPresenter.print("Enter a password.");
         String password = logInSignUpPresenter.readLine();
         userManager.CreateUser(username, password, userType);
     }
+
 }

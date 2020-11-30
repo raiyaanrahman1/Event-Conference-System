@@ -1,9 +1,6 @@
 package UseCase;
 
-import Entity.Attendee;
-import Entity.Organizer;
-import Entity.Speaker;
-import Entity.User;
+import Entity.*;
 import Gateway.IGateway2;
 
 import java.util.ArrayList;
@@ -42,16 +39,20 @@ public class UserStore {
      */
     public void addUserToList(List<String> userInfo) {
         String type = userInfo.get(2);
-        if (type.equals("A")) {
+        if (type.equals(Attendee.TYPE)) {
             User u = new Attendee(userInfo.get(0), userInfo.get(1));
             userList.add(u);
             readContacts(u);
-        } else if (type.equals("O")) {
+        } else if (type.equals(Organizer.TYPE)) {
             User u = new Organizer(userInfo.get(0), userInfo.get(1));
             userList.add(u);
             readContacts(u);
-        } else if (type.equals("S")) {
+        } else if (type.equals(Speaker.TYPE)) {
             User u = new Speaker(userInfo.get(0), userInfo.get(1));
+            userList.add(u);
+            readContacts(u);
+        } else if (type.equals(VIP.TYPE)) {
+            User u = new VIP(userInfo.get(0), userInfo.get(1));
             userList.add(u);
             readContacts(u);
         }

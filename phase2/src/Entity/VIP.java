@@ -4,6 +4,7 @@ package Entity;
  */
 public class VIP extends Attendee{
 
+    public static final String TYPE = "V";
     /**
      * Creates a new VIP object.
      *
@@ -18,6 +19,6 @@ public class VIP extends Attendee{
      */
     @Override
     public String getUserType() {
-        return "V";
+        return VIP.TYPE;
     }
 }

@@ -149,10 +149,12 @@ public class EventPresenter {
         out.println("6. See the events you organized");
         out.println("7. Broadcast an event");
         out.println("8. Create a Speaker account");
-        out.println("9. Return to Main Menu");
+        out.println("9. Create an Attendee account");
+        out.println("10. Create a VIP account");
+        out.println("11. Return to Main Menu");
         out.println("==================================");
 
-        return promptForNumberRange(1, 9);
+        return promptForNumberRange(1, 11);
     }
 
     /**

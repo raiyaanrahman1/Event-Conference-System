@@ -28,7 +28,7 @@ public class LogInSignUpPresenter {
      * A Display menu which options sign up or log in.
      * @return integer representing the option that was chosen.
      */
-    public int wel(){
+    public int welcome(){
         boolean incorrectOption;
         int answer;
         do {

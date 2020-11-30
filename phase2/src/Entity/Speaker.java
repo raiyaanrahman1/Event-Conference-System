@@ -6,6 +6,7 @@ package Entity;
  */
 public class Speaker extends User {
 
+    public static final String TYPE = "S";
     /**
      * Creates a new speaker object.
      *
@@ -22,6 +23,6 @@ public class Speaker extends User {
      */
     @Override
     public String getUserType() {
-        return "S";
+        return Speaker.TYPE;
     }
 }

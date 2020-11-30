@@ -5,6 +5,7 @@ package Entity;
  */
 public class Attendee extends User {
 
+    public static final String TYPE = "A";
     /**
      * Creates a new attendee object.
      *
@@ -21,6 +22,6 @@ public class Attendee extends User {
      */
     @Override
     public String getUserType() {
-        return "A";
+        return Attendee.TYPE;
     }
 }

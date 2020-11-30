@@ -19,19 +19,19 @@ public class EventManagementSystem {
     private EventPresenter presenter;
     private EventManager manager;
     private MessageManager mess;
-    private CreateSpeakerController speakerController;
+    private CreateUserController userController;
 
     /**
      * Creates an EventManagementSystem and initializes its UserManager, EventManager,
      * CreateSpeakerController and MessageManager.
      */
     public EventManagementSystem(UserManager user, EventManager event, MessageManager mess,
-                                 CreateSpeakerController speakerController) {
+                                 CreateUserController userController) {
         this.manager = event;
         this.user = user;
         this.mess = mess;
         this.presenter = new EventPresenter(this, this.user, this.manager);
-        this.speakerController = speakerController;
+        this.userController = userController;
     }
 
 
@@ -134,7 +134,7 @@ public class EventManagementSystem {
             int after5 = time.compareTo(LocalTime.parse("17:00:00"));
             LocalDateTime datetime = LocalDateTime.parse(date + "T" + time);
             if ((before9 >= 0 && !(after5 >= 0))) {
-                if (manager.addEvent(eventName, room, speaker, org, cap, datetime)) {
+                //if (manager.addEvent(eventName, room, speaker, org, cap, datetime)) {
                     presenter.displayAddEventSuccess();
                 } else {
                     presenter.displayAddEventFailure();
@@ -145,7 +145,7 @@ public class EventManagementSystem {
                 presenter.print("Please make sure the event is between 9AM and 5PM.");
             }
         }
-    }
+
 
     /**
      * Cancels event if the user is an organizer.
@@ -236,8 +236,12 @@ public class EventManagementSystem {
                 } else if (option == 7) {
                     this.broadcastEventOrganizer();
                 } else if (option == 8) {
-                    speakerController.CreateSpeaker();
+                    userController.CreateSpeaker();
                 } else if (option == 9) {
+                    userController.CreateAttendee();
+                }else if (option == 10) {
+                    userController.CreateVIP();
+                }else if (option == 11) {
                     invalidAnswer = false;
                 } else {
                     presenter.displayTryAgain();

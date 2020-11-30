@@ -7,6 +7,7 @@ package Entity;
  */
 public class Organizer extends Attendee{
 
+    public static final String TYPE = "O";
     /**
      * Creates a new organizer object.
      *
@@ -23,6 +24,6 @@ public class Organizer extends Attendee{
      */
     @Override
     public String getUserType() {
-        return "O";
+        return Organizer.TYPE;
     }
 }
