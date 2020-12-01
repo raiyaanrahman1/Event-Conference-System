@@ -6,8 +6,7 @@ import javax.swing.*;
 
 public class MainSystem {
     public MainSystem(){
-        MainGUI guis = new MainGUI();
-        LoginSystem presenters = new LoginSystem();
+        MainGUI main = new MainGUI();
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
