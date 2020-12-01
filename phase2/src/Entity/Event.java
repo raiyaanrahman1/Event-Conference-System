@@ -209,6 +209,30 @@ public class Event {
         return speakers;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRoomCap(int roomCap) {
+        this.roomCap = roomCap;
+    }
+
+    public DateTimeFormatter getFormatter() {
+        return formatter;
+    }
+
+    public void setFormatter(DateTimeFormatter formatter) {
+        this.formatter = formatter;
+    }
+
     /**
      * Adds the Speaker's username of the Event
      */
