@@ -15,7 +15,7 @@ public class MessengerSystem {
 
     private UserManager user;
     private MessageManager msgMan;
-    private MessagePresenter msgPres = new MessagePresenter();
+
 
     /**
      * Creates a MessengerSystem and initializes its UserManager and MessageManager.
@@ -28,106 +28,106 @@ public class MessengerSystem {
         this.msgMan = msgMan;
     }
 
-    /**
-     * Display the appropriate message menu depending on the type of logged-in user
-     */
-    public void menus() {
-        if (user.getUserInfoList().get(2).equals("S")) {
-            runSpeaker();
-        } else {
-            run();
-        }
-    }
-
-    /**
-     * Runs the main message menu.
-     */
-    public void run() {
-        boolean run = true;
-        do {
-            int option = msgPres.mainPage();
-            if (option == 1) {
-                int inboxOption = msgPres.mainInboxPage(viewReceivedMessages());
-                if (inboxOption == 1) {
-                    replyMessage(msgPres.getSelectedMessageNumber(), msgPres.getContent());
-                }
-            } else if (option == 2) {
-                mainContactPageRun(msgPres.mainContactPage(getContacts()));
-            } else if (option == 3) {
-                mainAddUserPageRun();
-            } else {
-                run = false;
-            }
-        } while (run);
-    }
-
-    /**
-     * The main run method for a Speaker user
-     */
-    public void runSpeaker() {
-        boolean run = true;
-        do {
-            int option = msgPres.mainSpeakerPage();
-            if (option == 1) {
-                int inboxOption = msgPres.mainInboxPage(viewReceivedMessages());
-                if (inboxOption == 1) {
-                    replyMessage(msgPres.getSelectedMessageNumber(), msgPres.getContent());
-                }
-            } else {
-                run = false;
-            }
-        } while (run);
-    }
-
-    private void mainContactPageRun(Integer contactOption) {
-        boolean run = true;
-        do {
-            if (contactOption == 1) {
-                String selectedUser = msgPres.selectFromContactList(getContacts());
-                mainSelectedContactPageRun(selectedUser, msgPres.selectedContactPage());
-                contactOption = msgPres.mainContactPage(getContacts());
-            } else {
-                run = false;
-            }
-        } while (run);
-    }
-
-    private void mainSelectedContactPageRun(String selectedUser, Integer option) {
-        boolean run = true;
-        do {
-            if (option == 1) {
-                messageUser(selectedUser, msgPres.getContent());
-                msgPres.successfulMessage();
-                option = msgPres.selectedContactPage();
-            } else if (option == 2) {
-                removeUser(selectedUser);
-                msgPres.removeUserSuccessful();
-                run = false;
-            } else if (option == 3) {
-                msgPres.formatMessages(viewMessages(selectedUser));
-                option = msgPres.selectedContactPage();
-            } else {
-                run = false;
-            }
-        } while (run);
-    }
-
-    private void mainAddUserPageRun() {
-        boolean run = true;
-        do {
-            Integer option = msgPres.mainAddUserPage();
-            if (option == 1) {
-                if (!addUser(msgPres.addUserPage())) {
-                    msgPres.addUserError();
-                } else {
-                    msgPres.addUserSuccessful();
-                    run = false;
-                }
-            } else {
-                run = false;
-            }
-        } while (run);
-    }
+//    /**
+//     * Display the appropriate message menu depending on the type of logged-in user
+//     */
+//    public void menus() {
+//        if (user.getUserInfoList().get(2).equals("S")) {
+//            runSpeaker();
+//        } else {
+//            run();
+//        }
+//    }
+//
+//    /**
+//     * Runs the main message menu.
+//     */
+//    public void run() {
+//        boolean run = true;
+//        do {
+//            int option = msgPres.mainPage();
+//            if (option == 1) {
+//                int inboxOption = msgPres.mainInboxPage(viewReceivedMessages());
+//                if (inboxOption == 1) {
+//                    replyMessage(msgPres.getSelectedMessageNumber(), msgPres.getContent());
+//                }
+//            } else if (option == 2) {
+//                mainContactPageRun(msgPres.mainContactPage(getContacts()));
+//            } else if (option == 3) {
+//                mainAddUserPageRun();
+//            } else {
+//                run = false;
+//            }
+//        } while (run);
+//    }
+//
+//    /**
+//     * The main run method for a Speaker user
+//     */
+//    public void runSpeaker() {
+//        boolean run = true;
+//        do {
+//            int option = msgPres.mainSpeakerPage();
+//            if (option == 1) {
+//                int inboxOption = msgPres.mainInboxPage(viewReceivedMessages());
+//                if (inboxOption == 1) {
+//                    replyMessage(msgPres.getSelectedMessageNumber(), msgPres.getContent());
+//                }
+//            } else {
+//                run = false;
+//            }
+//        } while (run);
+//    }
+//
+//    private void mainContactPageRun(Integer contactOption) {
+//        boolean run = true;
+//        do {
+//            if (contactOption == 1) {
+//                String selectedUser = msgPres.selectFromContactList(getContacts());
+//                mainSelectedContactPageRun(selectedUser, msgPres.selectedContactPage());
+//                contactOption = msgPres.mainContactPage(getContacts());
+//            } else {
+//                run = false;
+//            }
+//        } while (run);
+//    }
+//
+//    private void mainSelectedContactPageRun(String selectedUser, Integer option) {
+//        boolean run = true;
+//        do {
+//            if (option == 1) {
+//                messageUser(selectedUser, msgPres.getContent());
+//                msgPres.successfulMessage();
+//                option = msgPres.selectedContactPage();
+//            } else if (option == 2) {
+//                removeUser(selectedUser);
+//                msgPres.removeUserSuccessful();
+//                run = false;
+//            } else if (option == 3) {
+//                msgPres.formatMessages(viewMessages(selectedUser));
+//                option = msgPres.selectedContactPage();
+//            } else {
+//                run = false;
+//            }
+//        } while (run);
+//    }
+//
+//    private void mainAddUserPageRun() {
+//        boolean run = true;
+//        do {
+//            Integer option = msgPres.mainAddUserPage();
+//            if (option == 1) {
+//                if (!addUser(msgPres.addUserPage())) {
+//                    msgPres.addUserError();
+//                } else {
+//                    msgPres.addUserSuccessful();
+//                    run = false;
+//                }
+//            } else {
+//                run = false;
+//            }
+//        } while (run);
+//    }
 
     /**
      * Gets the list of messages that the logged on user has received.
@@ -158,7 +158,8 @@ public class MessengerSystem {
         String message = viewReceivedMessages().get(number - 1);
         String sender = message.split("\\|")[0];
         msgMan.message(user.getUserInfoList().get(0), sender, content);
-        msgPres.successfulMessage();
+//        msgPres.successfulMessage();
+        System.out.println("Success");
     }
 
     /**
