@@ -25,7 +25,7 @@ public class DateFilter implements EventFilter {
         LocalDateTime dayAfter = day.plusDays(1);
 
         for (Event event: events) {
-            LocalDateTime dateTime = event.getDateTime();
+            LocalDateTime dateTime = event.getStartTime();
             if (dateTime.isAfter(day) && dateTime.isBefore(dayAfter)) {
                 filtered.add(event);
             }
