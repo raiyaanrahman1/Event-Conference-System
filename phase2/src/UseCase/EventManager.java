@@ -1,8 +1,13 @@
 package UseCase;
 import Entity.*;
+import Exceptions.NoSuchFilterException;
 import Gateway.IGateway2;
+import UseCase.Filter.EventFilter;
+import UseCase.Filter.EventFilterFactory;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -13,6 +18,7 @@ import java.util.Objects;
  */
 public class EventManager {
 
+    private final EventFilterFactory factory = new EventFilterFactory();
     private ArrayList<Event> events;
 
     /**
@@ -311,6 +317,102 @@ public class EventManager {
      */
     public String getRoomByEventID(int eventID) {
         return Objects.requireNonNull(this.getEventByID(eventID)).getRoom();
+    }
+
+    /**
+     * Returns the string representations of the event at the same date
+     * as the given date.
+     *
+     * @param date  the date
+     * @return  the list of event strings that occur at the date
+     */
+    public List<String> filterEventsByDate(LocalDate date) {
+        List<String> events = new ArrayList<>();
+        EventFilter filter;
+
+        try {
+            filter = factory.getEventFilter("date");
+        } catch (NoSuchFilterException ex) {
+            return events;
+        }
+
+        for (Event event: filter.filter(this.events, date.format(DateTimeFormatter.ISO_LOCAL_DATE))) {
+            events.add(event.toString());
+        }
+
+        return events;
+    }
+
+    /**
+     * Returns a list with the string representations of the events
+     * at which the given speaker participates in.
+     *
+     * @param username  the username of the speaker
+     * @return  the list of event strings with that speaker
+     */
+    public List<String> filterEventsBySpeaker(String username) {
+        List<String> events = new ArrayList<>();
+        EventFilter filter;
+
+        try {
+            filter = factory.getEventFilter("speaker");
+        } catch (NoSuchFilterException ex) {
+            return events;
+        }
+
+        for (Event event: filter.filter(this.events, username)) {
+            events.add(event.toString());
+        }
+
+        return events;
+    }
+
+    /**
+     * Returns a list with the string representations of the events
+     * organized by the given speaker.
+     *
+     * @param username  the username of the organizer
+     * @return  the list of event strings organized by that speaker
+     */
+    public List<String> filterEventsByOrganizer(String username) {
+        List<String> events = new ArrayList<>();
+        EventFilter filter;
+
+        try {
+            filter = factory.getEventFilter("organizer");
+        } catch (NoSuchFilterException ex) {
+            return events;
+        }
+
+        for (Event event: filter.filter(this.events, username)) {
+            events.add(event.toString());
+        }
+
+        return events;
+    }
+
+    /**
+     * Returns a list with the string representations of the events
+     * at which the given attendee participates in.
+     *
+     * @param username  the username of the attendee
+     * @return  the list of event strings with that attendee
+     */
+    public List<String> filterEventsByDate(String username) {
+        List<String> events = new ArrayList<>();
+        EventFilter filter;
+
+        try {
+            filter = factory.getEventFilter("attendee");
+        } catch (NoSuchFilterException ex) {
+            return events;
+        }
+
+        for (Event event: filter.filter(this.events, username)) {
+            events.add(event.toString());
+        }
+
+        return events;
     }
 
 }
