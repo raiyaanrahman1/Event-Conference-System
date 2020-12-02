@@ -38,7 +38,8 @@ public class EventManagementSystem {
      * Signs a user up for an event.
      */
     public void eventSignUp() {
-        if (manager.getAllowedEvents(user.getUserInfoList().get(0)).size() == 0) {
+        if (manager.getAllowedEvents(user.getUserInfoList().get(0),
+                user.getUserType(user.getUserInfoList().get(0))).size() == 0) {
             System.out.println("There are no available events");
         } else {
             eventSignUpHelper();
@@ -165,7 +166,8 @@ public class EventManagementSystem {
             do {
             getAvailableEventList(user.getUserInfoList().get(0)); // present allowed events
             int eventId = 0; //placeholder
-                if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0))) {
+                if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0),
+                        user.getUserType(user.getUserInfoList().get(0)))) {
                     failedSignUp = false;
                 System.out.println("Successfully signed up for event");
         } else {
@@ -340,7 +342,7 @@ public class EventManagementSystem {
     }
 
     public List<String> getAvailableEventList(String username){
-        return formatEventString(manager.getAllowedEvents(username));
+        return formatEventString(manager.getAllowedEvents(username, user.getUserType(username)));
     }
 
     public List<String> getOrganizerEventList(String username){
