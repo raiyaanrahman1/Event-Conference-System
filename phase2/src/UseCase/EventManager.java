@@ -1,5 +1,6 @@
 package UseCase;
 import Entity.*;
+import Exceptions.NoSuchEventException;
 import Exceptions.NoSuchFilterException;
 import Gateway.IGateway2;
 import UseCase.Filter.EventFilter;
@@ -415,4 +416,87 @@ public class EventManager {
         return events;
     }
 
+    public void setRoom(int eventId, String roomName) throws AssertionError {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new AssertionError();
+        e.setRoom(roomName);
+    }
+
+    public String getSpeaker(int eventId) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new NoSuchEventException();
+        return String.valueOf(e.getSpeaker());
+    }
+
+    public void setSpeakers(int eventId, List<String> speakerList) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        List<String> speakers = e.getSpeaker();
+        for (String s: speakers){ //remove all the speakers
+            e.removeSpeaker(s);
+        }
+        for (String speaker: speakerList){
+            e.addSpeaker(speaker);
+        }
+    }
+
+    public String getName(int eventId) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new NoSuchEventException();
+        return e.getName();
+    }
+
+    public void setName(int eventId, String name) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setName(name);
+    }
+
+    public int getRoomCap(int eventId) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new NoSuchEventException();
+        return e.getRoomCap();
+    }
+
+    public void setRoomCap(int eventId, int cap) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setRoomCap(cap);
+    }
+
+    public String getOrganizer(int eventId) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new NoSuchEventException();
+        return e.getOrganizer();
+    }
+
+    public void setOrganizer(int eventId, String org) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setOrganizer(org);
+    }
+
+    public void setStartTime(int eventId, LocalDateTime startTime) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setStartTime(startTime);
+    }
+
+    public void setEndTime(int eventId, LocalDateTime endTime) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setEndTime(endTime);
+    }
 }
