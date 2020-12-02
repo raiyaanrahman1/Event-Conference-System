@@ -60,7 +60,7 @@ public class EventManagementSystem {
      * Adds a new event to event list iff this user is an Organiser.
      */
     public void addEvent() {
-        String eventName = ""; // placeholer
+        String eventName = ""; // placeholder
         String room = ""; // placeholder
         List<String> ListOfSpeaker = new ArrayList<>(); // placeholder
         int cap = 0; // placeholder
@@ -83,7 +83,7 @@ public class EventManagementSystem {
         if (user.getUserInfoList().get(2).equals("O")) {
             if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
                 do {
-                    formatEventString(manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)));
+                    getOrganizerEventList(user.getUserInfoList().get(0));
                     int eventId = 0; //placeholder
                     if (manager.removeEvent(eventId)) {
                         invalid = false;
@@ -125,12 +125,14 @@ public class EventManagementSystem {
      * @param eventList , a list of ID of events,
      * and prints the corresponding toStrings of the events.
      */
-    public void formatEventString(List<Integer> eventList){
+    public List<String> formatEventString(List<Integer> eventList){
+        List<String> result = new ArrayList<>();
         if (eventList.size()> 0) {
             for (Integer eventID : eventList) {
-                System.out.println(manager.getEventString(eventID));
+                result.add(manager.getEventString(eventID));
             }
         }
+        return result;
     }
 
     /**
@@ -161,7 +163,7 @@ public class EventManagementSystem {
     private void eventSignUpHelper(){
             boolean failedSignUp = true;
             do {
-            formatEventString(manager.getAllowedEvents(user.getUserInfoList().get(0))); // present allowed events
+            getAvailableEventList(user.getUserInfoList().get(0)); // present allowed events
             int eventId = 0; //placeholder
                 if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0))) {
                     failedSignUp = false;
@@ -176,7 +178,7 @@ public class EventManagementSystem {
     private void attendeeCancelEventHelper(){
             boolean invalidCancellation = true;
             do {
-            formatEventString(manager.getEventListByAttendee(user.getUserInfoList().get(0)));
+            getAttendeeEventList(user.getUserInfoList().get(0));
             int eventId = 0; //placeholder
                 if (manager.cancelSpot(eventId, user.getUserInfoList().get(0))) {
                     invalidCancellation = false;
@@ -278,7 +280,7 @@ public class EventManagementSystem {
     }
 
     private void broadcastEventOrganizerHelper(){
-        formatEventString(manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)));
+        getOrganizerEventList(user.getUserInfoList().get(0));
         int eventID = 0; //placeholder
             if (manager.getAttendeesInEvent(eventID).size() == 0) {
             System.out.println("There are no attendees for this event.");
@@ -290,7 +292,7 @@ public class EventManagementSystem {
     }
 
     private void broadcastEventSpeakerHelper(){
-        formatEventString(manager.getTalksBySpeaker(user.getUserInfoList().get(0)));
+        getSpeakerEventList(user.getUserInfoList().get(0));
         int eventID = 0; // placeholder
         if (manager.getAttendeesInEvent(eventID).size() == 0) {
             System.out.println("There are no attendees for this event.");
@@ -328,6 +330,24 @@ public class EventManagementSystem {
         manager.setEndTime(eventId, end);
 
     }
+
+    public List<String> getAttendeeEventList(String username){
+        return formatEventString(manager.getEventListByAttendee(username));
+    }
+
+    public List<String> getSpeakerEventList(String username){
+        return manager.filterEventsBySpeaker(username);
+    }
+
+    public List<String> getAvailableEventList(String username){
+        return formatEventString(manager.getAllowedEvents(username));
+    }
+
+    public List<String> getOrganizerEventList(String username){
+        return manager.filterEventsByOrganizer(username);
+    }
+
+
 
 // NO NEED MENU --> USE GUI
 //    /**

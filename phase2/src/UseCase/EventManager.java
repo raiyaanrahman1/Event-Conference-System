@@ -370,10 +370,10 @@ public class EventManager {
 
     /**
      * Returns a list with the string representations of the events
-     * organized by the given speaker.
+     * organized by the given organizer.
      *
      * @param username  the username of the organizer
-     * @return  the list of event strings organized by that speaker
+     * @return  the list of event strings organized by that organizer
      */
     public List<String> filterEventsByOrganizer(String username) {
         List<String> events = new ArrayList<>();
