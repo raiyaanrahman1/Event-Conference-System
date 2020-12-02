@@ -1,6 +1,7 @@
 package Controller;
 
 import Exceptions.InvalidDateException;
+import Exceptions.NoSuchEventException;
 import UseCase.EventManager;
 import UseCase.UserManager;
 import UseCase.MessageManager;
@@ -15,9 +16,9 @@ import java.util.List;
 
 public class EventManagementSystem {
 
-    private UserManager user;
-    private EventManager manager;
-    private MessageManager mess;
+    private final UserManager user;
+    private final EventManager manager;
+    private final MessageManager mess;
     private CreateUserController userController;
 
     /**
@@ -136,25 +137,25 @@ public class EventManagementSystem {
      * Allows an Organizer to reschedule a specific event from the list of events they organized.
      */
 
-    public void rescheduleEvent(){
+    public void rescheduleEvent() throws NoSuchEventException {
         if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() == 0) {
             System.out.println("You have not created any events");
         }else{
-            rescheduleEventHelper();
+            int eventId = 0;
+            String eventName = "";
+            String roomName = "";
+            List<String> speakerList = new ArrayList<String>();
+            int roomCap = 0;
+            String organizer = "";
+            LocalDate date = LocalDate.parse("");
+            LocalTime start = LocalTime.parse("");
+            LocalDateTime startTime = LocalDateTime.parse(date + "T" + start);
+            LocalTime end = LocalTime.parse("");
+            LocalDateTime endTime = LocalDateTime.parse(date + "T" + end);
+
+            rescheduleEventHelper(eventId, eventName, roomName, speakerList, roomCap, organizer, startTime, endTime);
         }
     }
-    //check if organizer events are empty
-    //get event want to reschedule
-    // get each parameter and ask user for input
-        //do they want to change the value or not
-            // if yes, use setter
-
-    private void rescheduleEventHelper(){
-        int eventId = 0; //placeholder
-
-    }
-
-
 
     //HELPER METHODS
     private void eventSignUpHelper(){
@@ -314,6 +315,18 @@ public class EventManagementSystem {
             }
         }
         return false;
+    }
+
+    private void rescheduleEventHelper(int eventId, String eventName, String room, List<String> speakerList,
+                                       int cap, String org, LocalDateTime start, LocalDateTime end) throws NoSuchEventException {
+        manager.setName(eventId, eventName);
+        manager.setRoom(eventId, room);
+        manager.setSpeakers(eventId, speakerList);
+        manager.setRoomCap(eventId, cap);
+        manager.setOrganizer(eventId, org);
+        manager.setStartTime(eventId, start);
+        manager.setEndTime(eventId, end);
+
     }
 
 // NO NEED MENU --> USE GUI

@@ -1,8 +1,14 @@
 package UseCase;
 import Entity.*;
+import Exceptions.NoSuchEventException;
+import Exceptions.NoSuchFilterException;
 import Gateway.IGateway2;
+import UseCase.Filter.EventFilter;
+import UseCase.Filter.EventFilterFactory;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -13,6 +19,7 @@ import java.util.Objects;
  */
 public class EventManager {
 
+    private final EventFilterFactory factory = new EventFilterFactory();
     private ArrayList<Event> events;
 
     /**
@@ -313,4 +320,183 @@ public class EventManager {
         return Objects.requireNonNull(this.getEventByID(eventID)).getRoom();
     }
 
+    /**
+     * Returns the string representations of the event at the same date
+     * as the given date.
+     *
+     * @param date  the date
+     * @return  the list of event strings that occur at the date
+     */
+    public List<String> filterEventsByDate(LocalDate date) {
+        List<String> events = new ArrayList<>();
+        EventFilter filter;
+
+        try {
+            filter = factory.getEventFilter("date");
+        } catch (NoSuchFilterException ex) {
+            return events;
+        }
+
+        for (Event event: filter.filter(this.events, date.format(DateTimeFormatter.ISO_LOCAL_DATE))) {
+            events.add(event.toString());
+        }
+
+        return events;
+    }
+
+    /**
+     * Returns a list with the string representations of the events
+     * at which the given speaker participates in.
+     *
+     * @param username  the username of the speaker
+     * @return  the list of event strings with that speaker
+     */
+    public List<String> filterEventsBySpeaker(String username) {
+        List<String> events = new ArrayList<>();
+        EventFilter filter;
+
+        try {
+            filter = factory.getEventFilter("speaker");
+        } catch (NoSuchFilterException ex) {
+            return events;
+        }
+
+        for (Event event: filter.filter(this.events, username)) {
+            events.add(event.toString());
+        }
+
+        return events;
+    }
+
+    /**
+     * Returns a list with the string representations of the events
+     * organized by the given speaker.
+     *
+     * @param username  the username of the organizer
+     * @return  the list of event strings organized by that speaker
+     */
+    public List<String> filterEventsByOrganizer(String username) {
+        List<String> events = new ArrayList<>();
+        EventFilter filter;
+
+        try {
+            filter = factory.getEventFilter("organizer");
+        } catch (NoSuchFilterException ex) {
+            return events;
+        }
+
+        for (Event event: filter.filter(this.events, username)) {
+            events.add(event.toString());
+        }
+
+        return events;
+    }
+
+    /**
+     * Returns a list with the string representations of the events
+     * at which the given attendee participates in.
+     *
+     * @param username  the username of the attendee
+     * @return  the list of event strings with that attendee
+     */
+    public List<String> filterEventsByDate(String username) {
+        List<String> events = new ArrayList<>();
+        EventFilter filter;
+
+        try {
+            filter = factory.getEventFilter("attendee");
+        } catch (NoSuchFilterException ex) {
+            return events;
+        }
+
+        for (Event event: filter.filter(this.events, username)) {
+            events.add(event.toString());
+        }
+
+        return events;
+    }
+
+    public void setRoom(int eventId, String roomName) throws AssertionError {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new AssertionError();
+        e.setRoom(roomName);
+    }
+
+    public String getSpeaker(int eventId) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new NoSuchEventException();
+        return String.valueOf(e.getSpeaker());
+    }
+
+    public void setSpeakers(int eventId, List<String> speakerList) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        List<String> speakers = e.getSpeaker();
+        for (String s: speakers){ //remove all the speakers
+            e.removeSpeaker(s);
+        }
+        for (String speaker: speakerList){
+            e.addSpeaker(speaker);
+        }
+    }
+
+    public String getName(int eventId) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new NoSuchEventException();
+        return e.getName();
+    }
+
+    public void setName(int eventId, String name) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setName(name);
+    }
+
+    public int getRoomCap(int eventId) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new NoSuchEventException();
+        return e.getRoomCap();
+    }
+
+    public void setRoomCap(int eventId, int cap) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setRoomCap(cap);
+    }
+
+    public String getOrganizer(int eventId) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) throw new NoSuchEventException();
+        return e.getOrganizer();
+    }
+
+    public void setOrganizer(int eventId, String org) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setOrganizer(org);
+    }
+
+    public void setStartTime(int eventId, LocalDateTime startTime) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setStartTime(startTime);
+    }
+
+    public void setEndTime(int eventId, LocalDateTime endTime) throws NoSuchEventException {
+        Event e = getEventByID(eventId);
+        if (e == null) {
+            throw new NoSuchEventException();
+        }
+        e.setEndTime(endTime);
+    }
 }

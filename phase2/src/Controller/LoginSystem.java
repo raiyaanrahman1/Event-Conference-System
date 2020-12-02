@@ -39,10 +39,23 @@ public class LoginSystem {
     /**
      * Creates a new LoginSystem instance.
      */
-    public LoginSystem() {
-        welcome();
+    public LoginSystem() {}
+
+    /**
+     * Gets the EventManagementSystem
+     * @return event management system
+     */
+    public EventManagementSystem getEventSys(){
+        return eventSys;
     }
 
+    /**
+     * Gets the MessageSystem
+     * @return message management system
+     */
+    public MessengerSystem getMsgSys(){
+        return msgSys;
+    }
 
     /**
      * Calls the appropriate menus depending on the user input.
@@ -53,7 +66,7 @@ public class LoginSystem {
         do {
             answer = logInSignUpPresenter.menu();
             if (answer == 1) {
-                msgSys.menus();
+                //msgSys.menus();
             } else if (answer == 2) {
                 eventPresenter.mainEventPage();
             } else if (answer == 3) {
@@ -95,7 +108,7 @@ public class LoginSystem {
     /**
      * Logs in the user
      *
-     * @return String representing the type of user.
+     * @return boolean representing whether log in was successful
      */
     public boolean logIn() {
         do {
