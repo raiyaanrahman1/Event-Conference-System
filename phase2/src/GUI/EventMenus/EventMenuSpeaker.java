@@ -1,59 +1,98 @@
 package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
+import Controller.LoginSystem;
+import GUI.MessageMenus.MessageGUI;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EventMenuSpeaker extends JPanel{
+public class EventMenuSpeaker {
+    private EventManagementSystem eventSystem;
     private DefaultListModel<String> listModel = new DefaultListModel<>();
-    private EventPanelBuilder panelBuilder = new EventPanelBuilder();
+    private JPanel framePanel = new JPanel();
     private JPanel eventPagePanel = new JPanel();
+    private EventPanelBuilder panelBuilder = new EventPanelBuilder(eventPagePanel);
     private JLabel eventMenu = new JLabel("EVENTS MENU");
     private JList eventJList = new JList(listModel); //TODO pass in list of events of speakers in parameter of JList
     private JButton exitButton = new JButton();
     private JButton broadcastButton = new JButton();
     private JScrollPane listScroller = new JScrollPane(eventJList);
+    private String selectedEvent;
+
+    public EventMenuSpeaker(EventManagementSystem eventSystem) {
+        this.eventSystem = eventSystem;
+    }
+
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame();
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(500,500);
+//        frame.setResizable(false);
+//        frame.setVisible(true);
+//        LoginSystem loginSystem = new LoginSystem();
+//        frame.setContentPane(new EventMenuSpeaker(loginSystem.getEventSys()).startEventPage());
+//
+//    }
 
 
-    public void EventMenuSpeaker() {
+    private void exitButtonListen(){
+        exitButton.addActionListener(e -> eventPagePanel.setVisible(false));
+    }
+
+    private void broadcastButtonListen(){
+        broadcastButton.addActionListener(e -> {
+            String message = JOptionPane.showInputDialog("Enter the content of your message: ");
+            if (message != null){
+                //TODO make broadcast method in eventManagementSystem
+            }
+
+        });
+    }
+
+
+    private void listListener(){
+        eventJList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()){
+                int index = eventJList.getSelectedIndex();
+                 selectedEvent = listModel.get(index);
+                 broadcastButton.setEnabled(true);
+            }
+        });
     }
 
     public JPanel startEventPage() {
         //Panel:
-        eventPagePanel.setSize(500, 500);
-        eventPagePanel.setLayout(null);
+        framePanel = eventPagePanel;
+        eventPagePanel = panelBuilder.build500x500Panel();
         //Title:
-        eventMenu.setFont(new Font("", Font.BOLD, 48));
+        eventMenu = panelBuilder.buildEventMenuLabel(eventMenu);
         eventMenu.setBounds(65, 10, 500, 40);
-        eventPagePanel.add(eventMenu);
         //JList:
-        eventJList.setSelectionBackground(new Color(51, 153, 255));
         eventJList.setBounds(60, 60, 360, 300);
-        eventJList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        eventJList.setLayoutOrientation(JList.VERTICAL);
-        eventJList.setVisibleRowCount(0);
+        eventJList = panelBuilder.buildJListEvents(eventJList);
         listModel.addElement("a");
         listModel.addElement("b");
-        listScroller.setPreferredSize(new Dimension(250,360));
-        listScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        listScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        eventPagePanel.add(listScroller);
-        eventPagePanel.add(eventJList);
+        listListener();
+        //list scroller
+        listScroller = panelBuilder.buildJScrollPane(listScroller);
         //Broadcast Button
         broadcastButton.setEnabled(false);
         broadcastButton.setText("✉");
         broadcastButton.setFont(new Font("", Font.PLAIN, 24));
         broadcastButton.setBounds(200, 370, 80, 25);
         eventPagePanel.add(broadcastButton);
+        broadcastButtonListen();
         //Exit Button
         exitButton.setText("Exit");
         exitButton.setBounds(20, 420, 80, 25);
         eventPagePanel.add(exitButton);
-
+        exitButtonListen();
         return eventPagePanel;
     }
-
 
 }
