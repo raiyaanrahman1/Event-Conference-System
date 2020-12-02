@@ -18,7 +18,7 @@ public class LoginGUI implements ILoginView, ActionListener {
     private JPasswordField passtext = new JPasswordField(20);
     private JButton logInButton = new JButton();
     private boolean loggedIn = false;
-    // private MainMenuGUI mainMenuGUI;
+     private MainMenuGUI mainMenuGUI;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
@@ -34,11 +34,11 @@ public class LoginGUI implements ILoginView, ActionListener {
         this.loginSystem = loginSystem;
         logInPage();
         this.loggedIn = false;
-        //mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys());
+        mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys());
     }
 
-    public boolean getLoggedIn() {
-        return loggedIn;
+    public boolean getIsVisible() {
+        return loginPanel.isVisible();
     }
 
     public JPanel logInPage(){
@@ -87,10 +87,12 @@ public class LoginGUI implements ILoginView, ActionListener {
 
         if (loginSystem.canLogin(uname, pword)) {
             JOptionPane.showMessageDialog(loginPanel, "You have successfully logged in");
-            loggedIn = true;
+            loginPanel.setVisible(false);
+//            mainMenuGUI.startMainMenuPage();
         }
         else {
             JOptionPane.showMessageDialog(loginPanel, "Invalid username or password.");
         }
+
     }
 }

@@ -30,11 +30,11 @@ public class MessageGUI implements IMessageView {
 
     public MessageGUI(MessengerSystem messenger){
         this.messenger = messenger;
-        canvas.setSize(500, 500);
+        // canvas.setSize(500, 500);
 //        canvas.add(titlePanel);
 //        canvas.add(infoPanel);
 //        canvas.add(buttonPanel);
-        canvas.setVisible(true);
+        // canvas.setVisible(true);
         // maybe dont call it here
         menuPage();
 //        titlePanel.setVisible(true);

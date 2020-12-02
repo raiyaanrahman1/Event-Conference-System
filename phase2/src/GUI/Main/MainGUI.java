@@ -12,33 +12,35 @@ public class MainGUI extends JFrame{
     private LoginSystem loginSystem = new LoginSystem();
     private SignUpGUI signUpGUI = new SignUpGUI(loginSystem);
     private LoginGUI loginGUI = new LoginGUI(loginSystem);
-    private JPanel currentJPanel;
+    private MainMenuGUI mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys());
+    private JPanel currentJPanel = new JPanel();
 
     public MainGUI(){
-        setContentPane(currentJPanel);
+        currentJPanel.setSize(500, 500);
+        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 500);
-        pack();
         setResizable(false);
-        setVisible(true);
+        logInRun();
     }
 
     public void logInRun(){
-        boolean run = true;
-        do {
-            currentJPanel = loginGUI.logInPage();
-            boolean isLoggedIn = loginGUI.getLoggedIn();
-            if (isLoggedIn) {
-                setContentPane();
-                }
-            } else if (option == 2) {
-                mainContactPageRun(msgPres.mainContactPage(getContacts()));
-            } else if (option == 3) {
-                mainAddUserPageRun();
-            } else {
-                run = false;
-            }
-        } while (run);
+        setContentPane(loginGUI.logInPage());
+//        if (!loginGUI.getIsVisible()) {
+//            setContentPane(mainMenuGUI.startMainMenuPage());
+//        }
+
+//        boolean run = true;
+//        do {
+////            currentJPanel = loginGUI.logInPage();
+//            boolean isLoggedIn = loginGUI.getLoggedIn();
+//            if (isLoggedIn) {
+//                setContentPane(mainMenuGUI.startMainMenuPage());
+//                }
+//            else {
+//                run = false;
+//            }
+//        } while (run);
 
     }
 

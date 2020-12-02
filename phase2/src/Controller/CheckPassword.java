@@ -7,10 +7,10 @@ package Controller;
 
 public class CheckPassword {
 
-    public int scorePassword(String pass){}
-
-    public boolean checkLength(){}
-
-    public  boolean checkVariation(){}
+//    public int scorePassword(String pass){}
+//
+//    public boolean checkLength(){}
+//
+//    public  boolean checkVariation(){}
 
 }
