@@ -5,8 +5,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class SignUpGUI implements ILoginView, ActionListener {
+    private JFrame frame;
     private LoginSystem loginSystem;
     private JPanel signUpPanel = new JPanel();
     private JLabel titleLabel = new JLabel();
@@ -16,22 +18,25 @@ public class SignUpGUI implements ILoginView, ActionListener {
     private JTextField usertext = new JTextField(20);
     private JPasswordField passtext = new JPasswordField(20);
     private JButton signUpButton = new JButton();
-    private MainMenuGUI mainMenuGUI;
     private String[] userTypes = {"Attendee", "Organizer"};
     private JComboBox typeComboBox = new JComboBox(userTypes);
+    private MainMenuGUI mainMenuGUI;
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
-        frame.setResizable(false);
-        LoginSystem loginSystem = new LoginSystem();
-        frame.setContentPane(new SignUpGUI(loginSystem).signUpPanel);
-        frame.setVisible(true);
-    }
 
-    public SignUpGUI(LoginSystem loginSystem) {
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame();
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(500,500);
+//        frame.setResizable(false);
+//        LoginSystem loginSystem = new LoginSystem();
+//        frame.setContentPane(new SignUpGUI(loginSystem, frame).signUpPanel);
+//        frame.setVisible(true);
+//    }
+
+    public SignUpGUI(LoginSystem loginSystem, JFrame frame) {
         this.loginSystem = loginSystem;
+        this.frame = frame;
+        mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys(), frame);
         signUpPage();
     }
 
@@ -69,7 +74,7 @@ public class SignUpGUI implements ILoginView, ActionListener {
         signUpButton.setText("Sign Up");
         signUpButton.setBounds(214, 364, 80, 25);
         signUpPanel.add(signUpButton);
-        signUpButton.addActionListener(this);
+        signUpButtonListen();
         return signUpPanel;
     }
 
@@ -79,7 +84,7 @@ public class SignUpGUI implements ILoginView, ActionListener {
         String pword = passtext.getText();
 
         if (!loginSystem.isUser(uname)) {
-            if (typeComboBox.getSelectedItem().equals("Attendee")) {
+            if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")) {
                 loginSystem.signUpUser(uname, pword, "A");
                 JOptionPane.showMessageDialog(signUpPanel, "You have successfully signed up as an Attendee.");
             }
@@ -97,5 +102,8 @@ public class SignUpGUI implements ILoginView, ActionListener {
         else {
             JOptionPane.showMessageDialog(signUpPanel, "Username already exists. Please select a different username.");
         }
+    }
+    private void signUpButtonListen(){
+        signUpButton.addActionListener(e -> frame.setContentPane(mainMenuGUI.startMainMenuPage()));
     }
 }

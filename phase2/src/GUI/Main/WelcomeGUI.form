@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="GUI.Main.WelcomeGUI">
+  <grid id="27dc6" binding="startPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="150" left="140" bottom="150" right="150"/>
+    <constraints>
+      <xy x="20" y="20" width="615" height="526"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="3ae54" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono" size="18"/>
+          <horizontalAlignment value="0"/>
+          <horizontalTextPosition value="0"/>
+          <text value="THE AMONG US SUMMIT"/>
+        </properties>
+      </component>
+      <grid id="13f3a" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="100" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <component id="79f54" class="javax.swing.JButton" binding="LogInButton">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="JetBrains Mono" size="12"/>
+          <text value="Log In"/>
+        </properties>
+      </component>
+      <component id="809e9" class="javax.swing.JButton" binding="signUpButton">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono" size="12"/>
+          <text value="Sign Up"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

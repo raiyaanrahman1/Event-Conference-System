@@ -21,37 +21,27 @@ public class MainMenuGUI {
     private JButton messagesButton = new JButton();
     private JButton eventsButton = new JButton();
     private JButton logOutButton = new JButton();
-    private static Container container;
+    private JFrame frame;
 
-    public MainMenuGUI(EventManagementSystem eventSystem, MessengerSystem messageSystem){
+
+    public MainMenuGUI(EventManagementSystem eventSystem, MessengerSystem messageSystem, JFrame frame){
         eventGUI = new EventGUI(eventSystem);
         // messageGUI = new MessageGUI(messageSystem);
-        ems = new EventMenuSpeaker(eventSystem);
-        startMainMenuPage();
+        this.frame = frame;
+
     }
 
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame();
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(500,500);
-//        frame.setResizable(false);
-//        frame.setVisible(true);
-//        LoginSystem loginSystem = new LoginSystem();
-//        container = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys()).mainMenuPanel;
-//        frame.setContentPane(container);
-//
-//    }
 
     private void messagesButtonListen(){
-        messagesButton.addActionListener(e -> mainMenuPanel.setVisible(false));
+ //       messagesButton.addActionListener(e -> TODO call the appropriate message menu );
     }
 
     private void eventsButtonListen(){
-        eventsButton.addActionListener(e -> mainMenuPanel.setVisible(false));
+   //     eventsButton.addActionListener(e -> TODO call the appropriate event menu);
     }
 
     private void logOutButtonListen(){
-        logOutButton.addActionListener(e -> mainMenuPanel.setVisible(false));
+        logOutButton.addActionListener(e -> frame.dispose());
     }
 
     public JPanel startMainMenuPage(){
@@ -84,8 +74,5 @@ public class MainMenuGUI {
 
 
     }
-
-
-
 
 }

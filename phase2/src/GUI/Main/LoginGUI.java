@@ -17,8 +17,8 @@ public class LoginGUI implements ILoginView, ActionListener {
     private JTextField usertext = new JTextField(20);
     private JPasswordField passtext = new JPasswordField(20);
     private JButton logInButton = new JButton();
-    private boolean loggedIn = false;
-     private MainMenuGUI mainMenuGUI;
+    private MainMenuGUI mainMenuGUI;
+    private JFrame frame;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
@@ -26,15 +26,18 @@ public class LoginGUI implements ILoginView, ActionListener {
         frame.setSize(500,500);
         frame.setResizable(false);
         LoginSystem loginSystem = new LoginSystem();
-        frame.setContentPane(new LoginGUI(loginSystem).loginPanel);
+        MainGUI mainGUI = new MainGUI();
+        frame.setContentPane(new LoginGUI(loginSystem, frame).loginPanel);
         frame.setVisible(true);
     }
 
-    public LoginGUI(LoginSystem loginSystem) {
+    public LoginGUI(LoginSystem loginSystem, JFrame frame) {
         this.loginSystem = loginSystem;
         logInPage();
-        this.loggedIn = false;
-        mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys());
+        mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys(), frame);
+        this.frame = frame;
+        logInButton.addActionListener(this);
+
     }
 
     public boolean getIsVisible() {
@@ -76,7 +79,6 @@ public class LoginGUI implements ILoginView, ActionListener {
         logInButton.setBounds(214, 344, 80, 25);
         logInButton.setVisible(true);
         loginPanel.add(logInButton);
-        logInButton.addActionListener(this);
         return loginPanel;
     }
 
@@ -86,9 +88,8 @@ public class LoginGUI implements ILoginView, ActionListener {
         String pword = passtext.getText();
 
         if (loginSystem.canLogin(uname, pword)) {
-            JOptionPane.showMessageDialog(loginPanel, "You have successfully logged in");
-            loginPanel.setVisible(false);
-//            mainMenuGUI.startMainMenuPage();
+            JOptionPane.showMessageDialog(frame, "You have successfully logged in");
+            frame.setContentPane(mainMenuGUI.startMainMenuPage());
         }
         else {
             JOptionPane.showMessageDialog(loginPanel, "Invalid username or password.");
