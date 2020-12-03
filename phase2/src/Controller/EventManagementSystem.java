@@ -75,6 +75,29 @@ public class EventManagementSystem {
         }
         System.out.println("Unsuccessfully added event");
     }
+    /**
+     * Adds a new VIP event to event list iff this user is an Organiser.
+     */
+    public void addVIPEvent()  {
+        String eventName = ""; // placeholder
+        String room = ""; // placeholder
+        List<String> ListOfSpeaker = new ArrayList<>(); // placeholder
+        int cap = 0; // placeholder
+        String inputDate = ""; // placeholder
+        String inputStart = ""; // placeholder
+        String inputEnd = ""; // placeholder
+        LocalTime inputStartTime = checkStartTime(inputStart);
+        LocalTime inputEndTime = checkEndTime(inputEnd);
+        if (addVIPEventHelper(eventName, room, ListOfSpeaker, cap, inputDate, inputStartTime, inputEndTime)){
+            System.out.println("Successfully added VIP event");
+        }
+        System.out.println("Unsuccessfully added VIP event");
+    }
+    public void changeCap() {
+        //if user is organizer
+        //if (manager.changeRoomCapacity(eventID, newCap)) System.out.println("Successfully changed capacity of event");
+        //else System.out.println("Unsuccessfully changed capacity of event");
+    }
 
     /**
      * Cancels event if the user is an organizer.
@@ -239,7 +262,22 @@ public class EventManagementSystem {
                 } else {
             return false;
         }
-                }
+    }
+    private boolean addVIPEventHelper(String eventName, String room, List<String> ListOfSpeaker, int cap, String inputDate,
+                                   LocalTime inputStart, LocalTime inputEnd){
+        if (!user.getUserInfoList().get(2).equals("O")) {
+            return false;
+        }
+        List<String> speaker = checkValidSpeaker(ListOfSpeaker);
+        String org = user.getUserInfoList().get(0);
+        LocalDateTime startTime = formatDateTime(inputStart, inputDate);
+        LocalDateTime endTime = formatDateTime(inputEnd, inputDate);
+        if (!speaker.isEmpty()) {
+            return manager.addVIPEvent(eventName, room, speaker, org, cap, startTime, endTime);
+        } else {
+            return false;
+        }
+    }
 
     private LocalDateTime formatDateTime(LocalTime time, String inputDate) {
         LocalDate date = checkDate(inputDate);
