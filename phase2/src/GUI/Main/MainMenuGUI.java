@@ -25,7 +25,7 @@ public class MainMenuGUI {
 
     public MainMenuGUI(EventManagementSystem eventSystem, MessengerSystem messageSystem){
         eventGUI = new EventGUI(eventSystem);
-        messageGUI = new MessageGUI(messageSystem);
+        // messageGUI = new MessageGUI(messageSystem);
         ems = new EventMenuSpeaker(eventSystem);
         startMainMenuPage();
     }

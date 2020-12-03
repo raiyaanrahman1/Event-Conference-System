@@ -30,10 +30,10 @@ public class EventPresenter {
         this.manager = manager;
 
     }
-//
-//    /**
-//     * Displays the appropriate event menu based on the type of logged-in user.
-//     */
+
+    /**
+     * Displays the appropriate event menu based on the type of logged-in user.
+     */
 //    public void mainEventPage(){
 //        if (user.getUserInfoList().get(2).equals("O")) {
 //            events.eventMenuOrganizer();
@@ -92,7 +92,8 @@ public class EventPresenter {
      * Shows the list of events a user is allowed to sign up for.
      */
     public void displayAllowedEvents() {
-        List<Integer> allowedEvents = manager.getAllowedEvents(user.getUserInfoList().get(0));
+        List<Integer> allowedEvents = manager.getAllowedEvents(user.getUserInfoList().get(0),
+                user.getUserType(user.getUserInfoList().get(0)));
         if (allowedEvents.size() == 0){
             print("There are no events for you to sign up for.");
         }

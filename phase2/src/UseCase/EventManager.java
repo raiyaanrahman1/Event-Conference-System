@@ -149,10 +149,16 @@ public class EventManager {
         return false;
     }
 
-
     /**
-     * Adds a new event to event list if the event is valid.
-     * @return true iff an event was added.
+     * add a new regular event to the system
+     * @param eventName the name of the event
+     * @param room the room of the event
+     * @param speakers the speaker(s) of the event (can be empty for no speakers)
+     * @param organizer the organizer of the event
+     * @param roomCap the room cap of the event
+     * @param startTime the start time of the event
+     * @param endTime the end time of the event
+     * @return true iff the event was added
      */
     public boolean addEvent(String eventName, String room, List<String> speakers, String organizer, int roomCap,
                             LocalDateTime startTime, LocalDateTime endTime){
@@ -174,6 +180,35 @@ public class EventManager {
     }
 
     /**
+     *
+     * @param eventName the name of the event
+     * @param room the room of the event
+     * @param speakers the speaker(s) of the event (can be empty for no speakers)
+     * @param organizer the organizer of the event
+     * @param roomCap the room cap of the event
+     * @param startTime the start time of the event
+     * @param endTime the end time of the event
+     * @return true iff the event was added
+     */
+
+    public boolean addVIPEvent(String eventName, String room, List<String> speakers, String organizer, int roomCap,
+                               LocalDateTime startTime, LocalDateTime endTime){
+        for(Event e : events){
+            if(eventsOverlap(e.getStartTime(), e.getEndTime(), startTime, endTime) &&
+                    (e.getRoom().equals(room) || hasCommonSpeaker(e.getSpeaker(), speakers))) {
+                return false;}
+
+        }
+        VIPEvent event = new VIPEvent(eventName, room, organizer, roomCap, startTime, endTime);
+        for(String s : speakers){
+            event.addSpeaker(s);
+        }
+        event.setEventID(events.size()+1);
+        events.add(event);
+        return true;
+    }
+
+    /**
      * Remove an event to event list iff this user is an Organiser.
      * @param eventID the event that will be removed
      * @return true iff the event was removed
@@ -184,6 +219,22 @@ public class EventManager {
         events.remove(event);
         return true;
 
+    }
+
+    /**
+     *
+     * @param eventID the id of this event
+     * @param newRoomCapacity the new room capacity
+     * @return true iff the room capacity was changed
+     */
+
+    public boolean changeRoomCapacity(int eventID, int newRoomCapacity){
+        Event e = this.getEventByID(eventID);
+        if(e.getAttendees().size() <= newRoomCapacity){
+            e.setRoomCap(newRoomCapacity);
+            return true;
+        }
+        return false;
     }
 
     private boolean validEventTimeForUser(List<List<LocalDateTime>> userEventTimes,
@@ -197,9 +248,42 @@ public class EventManager {
 
     /**
      * Gets the allowed events that this user may sign up for.
+     * @param username the username of the attendee
+     * @param type the type of the attendee
      * @return a list of event IDs corresponding to the allowed events that this user may sign up for.
      */
-    public List<Integer> getAllowedEvents(String username){
+    public List<Integer> getAllowedEvents(String username, String type){
+        if(type.equals("A")) return this.getAllowedEventsForAttendee(username);
+        else return this.getAllowedEventsForVIP(username);
+    }
+
+    private List<Integer> getAllowedEventsForAttendee(String username){
+        List<Integer> allowedEvents = new ArrayList<>();
+        List<List<LocalDateTime>> userEventTimes = new ArrayList<>();
+
+        for (Event e : events){
+            if (e.getAttendees().contains(username)){
+                ArrayList<LocalDateTime> times = new ArrayList<>();
+                times.add(e.getStartTime());
+                times.add(e.getEndTime());
+                userEventTimes.add(times);
+            }
+        }
+
+        for(Event e : events){
+
+            if (e.getSaveableInfo().charAt(0) == 'E' && !e.getAttendees().contains(username) &&
+                    validEventTimeForUser(userEventTimes, e.getStartTime(), e.getEndTime()) &&
+                    e.getAttendees().size() < e.getRoomCap() && e.getStartTime().isAfter(LocalDateTime.now())) {
+                allowedEvents.add(e.getEventID());
+            }
+
+
+        }
+        return allowedEvents;
+    }
+
+    private List<Integer> getAllowedEventsForVIP(String username){
         List<Integer> allowedEvents = new ArrayList<>();
         List<List<LocalDateTime>> userEventTimes = new ArrayList<>();
 
@@ -245,9 +329,9 @@ public class EventManager {
      * @param eventID The event this Attendee wants to sign up for
      * @return true iff attendee was signed up for event.
      */
-    public boolean signUpForEvent(int eventID, String username){
+    public boolean signUpForEvent(int eventID, String username, String userType){
         Event event = this.getEventByID(eventID);
-        if (this.getAllowedEvents(username).contains(eventID) &&
+        if (this.getAllowedEvents(username, userType).contains(eventID) &&
                 !Objects.requireNonNull(event).getAttendees().contains(username)){
             event.addAttendee(username);
             return true;
@@ -370,10 +454,10 @@ public class EventManager {
 
     /**
      * Returns a list with the string representations of the events
-     * organized by the given speaker.
+     * organized by the given organizer.
      *
      * @param username  the username of the organizer
-     * @return  the list of event strings organized by that speaker
+     * @return  the list of event strings organized by that organizer
      */
     public List<String> filterEventsByOrganizer(String username) {
         List<String> events = new ArrayList<>();

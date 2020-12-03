@@ -47,6 +47,10 @@ public class UserManager {
         return null;
     }
 
+    public String getUserType(String user){
+        return this.getUserByUsername(user).getUserType();
+    }
+
     /**
      * Log-in user and updates userInfoList with username, password and type identifier ("A", "O" or "S").
      *
