@@ -349,7 +349,7 @@ public class EventManagementSystem {
         manager.setName(eventId, eventName);
         manager.setRoom(eventId, room);
         manager.setSpeakers(eventId, speakerList);
-        manager.setRoomCap(eventId, cap);
+        manager.changeRoomCapacity(eventId, cap);
         manager.setOrganizer(eventId, org);
         manager.setStartTime(eventId, start);
         manager.setEndTime(eventId, end);
