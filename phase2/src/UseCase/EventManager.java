@@ -546,14 +546,6 @@ public class EventManager {
         return e.getRoomCap();
     }
 
-    public void setRoomCap(int eventId, int cap) throws NoSuchEventException {
-        Event e = getEventByID(eventId);
-        if (e == null) {
-            throw new NoSuchEventException();
-        }
-        e.setRoomCap(cap);
-    }
-
     public String getOrganizer(int eventId) throws NoSuchEventException {
         Event e = getEventByID(eventId);
         if (e == null) throw new NoSuchEventException();
