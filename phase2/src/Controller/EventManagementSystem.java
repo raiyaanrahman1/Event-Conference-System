@@ -110,6 +110,29 @@ public class EventManagementSystem {
         }
     }
 
+    /**
+     * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
+     */
+    public List<String> getBroadcastEventSpeaker() {
+        List<Integer> eventListByIDs = manager.getTalksBySpeaker(user.getUserInfoList().get(0));
+        if (eventListByIDs.size() == 0) {
+            System.out.println("You are not speaking at any events");
+            return null;
+        }else{
+            return formatEventList(eventListByIDs);
+        }
+    }
+
+    //formats the list of events for the getBroadcastEventSpeaker method
+    private List<String> formatEventList(List<Integer> eventList){
+        List<String> listEvents = new ArrayList<>();
+        if (eventList.size()> 0) {
+            for (Integer eventID : eventList) {
+                listEvents.add(manager.getEventString(eventID));
+            }
+        }
+        return listEvents;
+    }
 
     /**
      * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
@@ -304,7 +327,7 @@ public class EventManagementSystem {
         }
     }
 
-    private void broadcast(int eventID, String message) {
+    public void broadcast(int eventID, String message) {
         List<String> users = manager.getAttendeesInEvent(eventID);
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }
