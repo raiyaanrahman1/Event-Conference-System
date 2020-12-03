@@ -83,7 +83,7 @@ public class EventManagementSystem {
         if (user.getUserInfoList().get(2).equals("O")) {
             if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
                 do {
-                    formatEventString(manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)));
+             //       formatEventString(manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)));
                     int eventId = 0; //placeholder
                     if (manager.removeEvent(eventId)) {
                         invalid = false;
@@ -113,13 +113,27 @@ public class EventManagementSystem {
     /**
      * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
      */
-    public void broadcastEventSpeaker() {
-        if (manager.getTalksBySpeaker(user.getUserInfoList().get(0)).size() == 0) {
+    public List<String> getBroadcastEventSpeaker() {
+        List<Integer> eventListByIDs = manager.getTalksBySpeaker(user.getUserInfoList().get(0));
+        if (eventListByIDs.size() == 0) {
             System.out.println("You are not speaking at any events");
+            return null;
         }else{
-            broadcastEventSpeakerHelper();
+            return formatEventList(eventListByIDs);
         }
     }
+
+    //formats the list of events for the getBroadcastEventSpeaker method
+    private List<String> formatEventList(List<Integer> eventList){
+        List<String> listEvents = new ArrayList<>();
+        if (eventList.size()> 0) {
+            for (Integer eventID : eventList) {
+                listEvents.add(manager.getEventString(eventID));
+            }
+        }
+        return listEvents;
+    }
+
     /**
      * Takes in
      * @param eventList , a list of ID of events,
@@ -144,7 +158,7 @@ public class EventManagementSystem {
             int eventId = 0;
             String eventName = "";
             String roomName = "";
-            List<String> speakerList = new ArrayList<String>();
+            List<String> speakerList = new ArrayList<>();
             int roomCap = 0;
             String organizer = "";
             LocalDate date = LocalDate.parse("");
@@ -300,7 +314,7 @@ public class EventManagementSystem {
         }
     }
 
-    private void broadcast(int eventID, String message) {
+    public void broadcast(int eventID, String message) {
         List<String> users = manager.getAttendeesInEvent(eventID);
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }

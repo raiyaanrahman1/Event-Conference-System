@@ -30,19 +30,19 @@ public class EventPresenter {
         this.manager = manager;
 
     }
-
-    /**
-     * Displays the appropriate event menu based on the type of logged-in user.
-     */
-    public void mainEventPage(){
-        if (user.getUserInfoList().get(2).equals("O")) {
-            events.eventMenuOrganizer();
-        }else if (user.getUserInfoList().get(2).equals("S")){
-            events.eventMenuSpeaker();
-        }else{
-            events.eventMenuAttendee();
-        }
-    }
+//
+//    /**
+//     * Displays the appropriate event menu based on the type of logged-in user.
+//     */
+//    public void mainEventPage(){
+//        if (user.getUserInfoList().get(2).equals("O")) {
+//            events.eventMenuOrganizer();
+//        }else if (user.getUserInfoList().get(2).equals("S")){
+//            events.eventMenuSpeaker();
+//        }else{
+//            events.eventMenuAttendee();
+//        }
+//    }
 
     /**
      * Prompts user for the id of event they want to sign up for.
