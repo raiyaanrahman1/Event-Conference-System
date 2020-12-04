@@ -13,32 +13,34 @@ public class MainMenuGUI {
     private MessengerSystem messageSystem;
     private PanelStack panelStack;
     private ContactsGUI contactGUI;
-    private EventGUI eventGUI;;
-    private EventSpeakerGUI ems;
+    private EventGUI eventGUI;
     private InboxGUI inboxGUI;
     private JPanel mainMenuPanel = new JPanel();
     private JLabel mainMenuLabel = new JLabel("MAIN MENU");
-    private JButton inboxButton = new JButton();
-    private JButton contactButton = new JButton();
-    private JButton eventsButton = new JButton();
-    private JButton logOutButton = new JButton();
-    private JFrame frame;
+    private JButton inboxButton = new JButton("Inbox");
+    private JButton contactButton = new JButton("Contacts");
+    private JButton eventsButton = new JButton("Events");
+    private JButton logOutButton = new JButton("Log Out");
+    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(mainMenuPanel);
 
 
-    public MainMenuGUI(EventManagementSystem eventSystem, MessengerSystem messageSystem, PanelStack panelStack){
+    public MainMenuGUI(EventManagementSystem eventSystem, MessengerSystem messageSystem, PanelStack panelStack) {
         eventGUI = new EventGUI(eventSystem);
         this.panelStack = panelStack;
         this.messageSystem = messageSystem;
         inboxGUI = new InboxGUI(messageSystem);
-
-
-    private void inboxButtonListen(){
- //       inboxButton.addActionListener(e -> TODO call the appropriate message menu );
+        inboxButtonListen();
+        contactsButtonListen();
+        eventsButtonListen();
+        logOutButtonListen();
     }
 
+    private void inboxButtonListen(){
+        inboxButton.addActionListener(e -> panelStack.loadPanel(inboxGUI.mainPage()) );
+    }
 
-    private void messagesButtonListen(){
-        messagesButton.addActionListener(e -> panelStack.loadPanel(inboxGUI.mainPage()));
+    private void contactsButtonListen(){
+        //contactButton.addActionListener(e -> TODO call the appropriate event menu);
     }
 
     private void eventsButtonListen(){
@@ -46,48 +48,23 @@ public class MainMenuGUI {
     }
 
     private void logOutButtonListen(){
-        logOutButton.addActionListener(e -> frame.dispose());
+        logOutButton.addActionListener(e -> panelStack.terminateProgram());
     }
 
     public JPanel startMainMenuPage(){
         //Panel:
-        mainMenuPanel.setSize(500, 500);
-        mainMenuPanel.setLayout(null);
+        panelBuilder.buildMainPanel();
         //Title:
-        mainMenuLabel.setFont(new Font("", Font.BOLD, 48));
-        mainMenuLabel.setBounds(95, 10, 500, 40);
-        mainMenuPanel.add(mainMenuLabel);
+        panelBuilder.buildPanelLabel(mainMenuLabel,48, 110, 10, 500, 40);
         //Inbox Button
-        inboxButton.setText("Inbox");
-        inboxButton.setFont(new Font("", Font.PLAIN, 20));
-        inboxButton.setBounds(170, 200, 150, 30);
-        mainMenuPanel.add(inboxButton);
-        inboxButtonListen();
+        panelBuilder.buildButton(inboxButton,170, 200, 150, 30);
         //Contact Button
-        contactButton.setText("Contacts");
-        contactButton.setFont(new Font("", Font.PLAIN, 20));
-        contactButton.setBounds(170, 230, 150, 30);
-        mainMenuPanel.add(contactButton);
-        contactsButtonListen();
+        panelBuilder.buildButton(contactButton,170, 230, 150, 30);
         //Events Button
-        eventsButton.setText("Events");
-        eventsButton.setFont(new Font("", Font.PLAIN, 20));
-        eventsButton.setBounds(170, 260, 150, 30);
-        mainMenuPanel.add(eventsButton);
-        eventsButtonListen();
+        panelBuilder.buildButton(eventsButton,170, 260, 150, 30);
         //Logout Button
-        logOutButton.setText("Log Out");
-        logOutButton.setFont(new Font("", Font.PLAIN, 20));
-        logOutButton.setBounds(170, 290, 150, 30);
-        mainMenuPanel.add(logOutButton);
-        logOutButtonListen();
+        panelBuilder.buildButton(logOutButton,170, 290, 150, 30);
         mainMenuPanel.setVisible(true);
         return mainMenuPanel;
-
-
     }
-
-
-
-
 }

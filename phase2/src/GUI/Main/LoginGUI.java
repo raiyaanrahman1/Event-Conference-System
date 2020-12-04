@@ -11,35 +11,24 @@ public class LoginGUI implements ILoginView, ActionListener {
     private PanelStack panelStack;
     private LoginSystem loginSystem;
     private JPanel loginPanel = new JPanel();
-    private JLabel titleLabel = new JLabel();
-    private JLabel username = new JLabel();
-    private JLabel password = new JLabel();
-    private JLabel programTitle = new JLabel();
-    private JTextField usertext = new JTextField(20);
-    private JPasswordField passtext = new JPasswordField(20);
-    private JButton logInButton = new JButton();
-    private JButton backButton = new JButton();
+    private JLabel titleLabel = new JLabel("Login");
+    private JLabel usernameJLabel = new JLabel("Username");
+    private JLabel passwordJLabel = new JLabel("Password");
+    private JLabel programTitleJLabel = new JLabel("THE AMONG US SUMMIT");
+    private JTextField userTextField = new JTextField(20);
+    private JPasswordField passwordTextField = new JPasswordField(20);
+    private JButton logInButton = new JButton("Login");
+    private JButton backButton = new JButton("Back");
     private MainMenuGUI mainMenuGUI;
-    private JFrame frame;
+    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(loginPanel);
 
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame();
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(500,500);
-//        frame.setResizable(false);
-//        LoginSystem loginSystem = new LoginSystem();
-//        MainGUI mainGUI = new MainGUI();
-//        frame.setContentPane(new LoginGUI(loginSystem, panelStack).loginPanel);
-//        frame.setVisible(true);
-//    }
 
     public LoginGUI(MainMenuGUI menu, LoginSystem loginSystem, PanelStack panelStack) {
         this.panelStack = panelStack;
         this.loginSystem = loginSystem;
-        logInPage();
-        mainMenuGUI = menu;
+        this.mainMenuGUI = menu;
+        backButtonListen();
         logInButton.addActionListener(this);
-
     }
 
     public boolean getIsVisible() {
@@ -48,62 +37,40 @@ public class LoginGUI implements ILoginView, ActionListener {
 
     public JPanel logInPage(){
         // PANEL:
-        loginPanel.setLayout(null);
-        loginPanel.setSize(500, 500);
-        loginPanel.setVisible(true);
+        panelBuilder.buildMainPanel();
         // PROGRAM TITLE:
-        programTitle.setText("THE AMONG US SUMMIT");
-        programTitle.setBounds(125, 10, 500, 60);
-        programTitle.setFont(new Font("", Font.BOLD, 20));
-        loginPanel.add(programTitle);
+        panelBuilder.buildPanelLabel(programTitleJLabel, 32,  65, 10, 500, 60);
         // LOGIN TITLE:
-        titleLabel.setText("Login");
-        titleLabel.setFont(new Font("", Font.BOLD, 20));
-        titleLabel.setVisible(true);
-        titleLabel.setBounds(229, 164, 80, 30);
-        loginPanel.add(titleLabel);
+        panelBuilder.buildPanelLabel(titleLabel, 20, 229, 164, 80, 30);
         // USERNAME:
-        username.setText("Username");
-        username.setVisible(true);
-        username.setBounds(123, 214, 80, 25);
-        loginPanel.add(username);
-        usertext.setBounds(193, 214, 165, 25);
-        loginPanel.add(usertext);
+        panelBuilder.buildComponent(usernameJLabel, 123, 214, 80, 25);
+        panelBuilder.buildComponent(userTextField,193, 214, 165, 25);
         // PASSWORD:
-        password.setText("Password");
-        password.setVisible(true);
-        password.setBounds(123, 264, 80, 25);
-        loginPanel.add(password);
-        passtext.setBounds(193, 264, 165, 25);
-        loginPanel.add(passtext);
+        panelBuilder.buildComponent(passwordJLabel, 123, 264, 80, 25);
+        panelBuilder.buildComponent(passwordTextField,193, 264, 165, 25);
         // LOGIN BUTTON:
-        logInButton.setText("Login");
-        logInButton.setBounds(214, 344, 80, 25);
-        logInButton.setVisible(true);
-        loginPanel.add(logInButton);
+        panelBuilder.buildButton(logInButton, 214, 344, 80, 25);
         // BACK BUTTON:
-        backButton.setText("Back");
-        backButton.setBounds(10, 430, 80, 25);
-        loginPanel.add(backButton);
-        backButtonListen();
+        panelBuilder.buildButton(backButton, 10, 430, 80, 25);
         return loginPanel;
     }
 
     private void backButtonListen(){
         backButton.addActionListener(e -> {
-            frame.setContentPane(mainMenuGUI.startMainMenuPage());
+            panelStack.pop();
+            JPanel panel = (JPanel) panelStack.pop();
+            panelStack.loadPanel(panel);
         });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String uname = usertext.getText();
-        String pword = passtext.getText();
+        String uname = userTextField.getText();
+        String pword = passwordTextField.getText();
 
         if (loginSystem.canLogin(uname, pword)) {
-            JOptionPane.showMessageDialog(frame, "You have successfully logged in");
+            JOptionPane.showMessageDialog(loginPanel, "You have successfully logged in");
             panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
-            //frame.setContentPane(mainMenuGUI.startMainMenuPage());
         }
         else {
             JOptionPane.showMessageDialog(loginPanel, "Invalid username or password.");

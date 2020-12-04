@@ -9,12 +9,7 @@ public class MainSystem {
         MainGUI main = new MainGUI();
     }
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run(){
-                new MainSystem();
-            }
-        });
+        SwingUtilities.invokeLater(MainSystem::new);
     }
 
 }

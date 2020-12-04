@@ -1,5 +1,6 @@
 package GUI.Main;
 import Controller.LoginSystem;
+import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -7,26 +8,37 @@ import java.awt.event.ActionListener;
 
 public class WelcomeGUI implements ILoginView {
     private PanelStack panelStack;
-    private JPanel startPanel;
-    private JButton LogInButton;
-    private JButton signUpButton;
-    private LoginSystem loginSystem = new LoginSystem();
+    private JPanel welcomePanel = new JPanel();
+    private JLabel welcomeJLabel = new JLabel("THE AMONG US SUMMIT");
+    private JButton logInButton = new JButton("Log In");
+    private JButton signUpButton = new JButton("Sign Up");
     private LoginGUI loginGUI;
     private SignUpGUI signUpGUI;
-    public JPanel getStartPanel() {
-        return startPanel;
-    }
+    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(welcomePanel);
+
 
 
     public WelcomeGUI(LoginGUI loginGUI, SignUpGUI signUpGUI, PanelStack panelStack) {
         this.loginGUI = loginGUI;
         this.panelStack = panelStack;
         this.signUpGUI = signUpGUI;
+        logInButtonListener();
+        signUpButtonListener();
+    }
 
-        LogInButton.addActionListener(e -> {
-            this.panelStack.loadPanel(loginGUI.logInPage());
-        });
+    public JPanel WelcomePage(){
+        panelBuilder.buildMainPanel();
+        panelBuilder.buildPanelLabel(welcomeJLabel,32,  65, 10, 500, 60);
+        panelBuilder.buildButton(logInButton, 190, 250, 100, 25);
+        panelBuilder.buildButton(signUpButton, 190, 275, 100, 25);
+        return welcomePanel;
+    }
 
-        signUpButton.addActionListener(e -> this.panelStack.loadPanel(signUpGUI.signUpPage()));
+    private void logInButtonListener(){
+        logInButton.addActionListener(e -> this.panelStack.loadPanel(this.loginGUI.logInPage()));
+    }
+
+    private void signUpButtonListener(){
+        signUpButton.addActionListener(e -> this.panelStack.loadPanel(this.signUpGUI.signUpPage()));
     }
 }

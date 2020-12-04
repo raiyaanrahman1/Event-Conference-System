@@ -27,6 +27,6 @@ public class MainGUI {
     }
 
     public void run(){
-        panelStack.loadPanel(welcomeGUI.getStartPanel());
+        panelStack.loadPanel(welcomeGUI.WelcomePage());
     }
 }

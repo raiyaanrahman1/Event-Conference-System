@@ -15,4 +15,8 @@ public class PanelStack extends Stack {
         this.add(panel);
         mainFrame.setContentPane(panel);
     }
+
+    public void terminateProgram(){
+        mainFrame.dispose();
+    }
 }

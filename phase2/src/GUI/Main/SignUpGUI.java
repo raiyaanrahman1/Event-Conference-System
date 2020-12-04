@@ -9,106 +9,78 @@ import java.util.Objects;
 
 public class SignUpGUI implements ILoginView, ActionListener {
     private PanelStack panelStack;
-    private JFrame frame;
     private LoginSystem loginSystem;
     private JPanel signUpPanel = new JPanel();
-    private JLabel titleLabel = new JLabel();
-    private JLabel username = new JLabel();
-    private JLabel password = new JLabel();
-    private JLabel programTitle = new JLabel();
-    private JTextField usertext = new JTextField(20);
-    private JPasswordField passtext = new JPasswordField(20);
-    private JButton signUpButton = new JButton();
+    private JLabel titleLabel = new JLabel("Sign Up");
+    private JLabel usernameJLabel = new JLabel("Username");
+    private JLabel passwordJLabel = new JLabel("Password");
+    private JLabel programTitleJLabel = new JLabel("THE AMONG US SUMMIT");
+    private JTextField usernameTextField = new JTextField(20);
+    private JPasswordField passwordTextField = new JPasswordField(20);
+    private JButton signUpButton = new JButton("Sign Up");
     private String[] userTypes = {"Attendee", "Organizer"};
     private JComboBox typeComboBox = new JComboBox(userTypes);
     private MainMenuGUI mainMenuGUI;
-    private JButton backButton = new JButton();
+    private JButton backButton = new JButton("Back");
+    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(signUpPanel);
 
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame();
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(500,500);
-//        frame.setResizable(false);
-//        LoginSystem loginSystem = new LoginSystem();
-//        frame.setContentPane(new SignUpGUI(loginSystem, frame).signUpPanel);
-//        frame.setVisible(true);
-//    }
 
     public SignUpGUI(MainMenuGUI menu, LoginSystem loginSystem, PanelStack panelStack) {
         this.loginSystem = loginSystem;
         this.panelStack = panelStack;
         mainMenuGUI = menu;
         signUpPage();
+        backButtonListen();
         signUpButton.addActionListener(this);
     }
 
     public JPanel signUpPage(){
         // PANEL:
-        signUpPanel.setLayout(null);
-        signUpPanel.setSize(500, 500);
+        panelBuilder.buildMainPanel();
         // SIGNUP TITLE:
-        titleLabel.setText("Sign Up");
-        titleLabel.setFont(new Font("", Font.BOLD, 20));
-        titleLabel.setVisible(true);
-        titleLabel.setBounds(219, 164, 80, 30);
-        signUpPanel.add(titleLabel);
+        panelBuilder.buildPanelLabel(titleLabel, 20, 200, 164, 200, 30);
         // PROGRAM TITLE:
-        programTitle.setText("THE AMONG US SUMMIT");
-        programTitle.setBounds(125, 10, 500, 60);
-        programTitle.setFont(new Font("", Font.BOLD, 20));
-        signUpPanel.add(programTitle);
+        panelBuilder.buildPanelLabel(programTitleJLabel,32,  65, 10, 500, 60);
         // USERNAME:
-        username.setText("Username");
-        username.setBounds(123, 214, 80, 25);
-        signUpPanel.add(username);
-        usertext.setBounds(193, 214, 165, 25);
-        signUpPanel.add(usertext);
+        panelBuilder.buildComponent(usernameJLabel, 123, 214, 80, 25);
+        panelBuilder.buildComponent(usernameTextField, 193, 214, 165, 25);
         // PASSWORD:
-        password.setText("Password");
-        password.setBounds(123, 264, 80, 25);
-        signUpPanel.add(password);
-        passtext.setBounds(193, 264, 165, 25);
-        signUpPanel.add(passtext);
+        panelBuilder.buildComponent(passwordJLabel, 123, 264, 80, 25);
+        panelBuilder.buildComponent(passwordTextField, 193, 264, 165, 25);
         // COMBOBOX:
-        typeComboBox.setBounds(214, 314, 80, 25);
-        signUpPanel.add(typeComboBox);
+        panelBuilder.buildComponent(typeComboBox, 190, 314, 100, 25);
         // SIGNUP BUTTON:
-        signUpButton.setText("Sign Up");
-        signUpButton.setBounds(214, 364, 80, 25);
-        signUpPanel.add(signUpButton);
+        panelBuilder.buildButton(signUpButton, 190, 364, 100, 25);
         // BACK BUTTON:
-        backButton.setText("Back");
-        backButton.setBounds(10, 430, 80, 25);
-        signUpPanel.add(backButton);
-        backButtonListen();
+        panelBuilder.buildButton(backButton,10, 430, 80, 25);
         return signUpPanel;
     }
 
     private void backButtonListen(){
         backButton.addActionListener(e -> {
-            frame.setContentPane(mainMenuGUI.startMainMenuPage());
+            panelStack.pop();
+            JPanel panel = (JPanel) panelStack.pop();
+            panelStack.loadPanel(panel);
         });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String uname = usertext.getText();
-        String pword = passtext.getText();
+        String uname = usernameTextField.getText();
+        String pword = passwordTextField.getText();
 
         if (!loginSystem.isUser(uname)) {
             if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")) {
                 loginSystem.signUpUser(uname, pword, "A");
                 JOptionPane.showMessageDialog(signUpPanel, "You have successfully signed up as an Attendee.");
-                frame.setContentPane(mainMenuGUI.startMainMenuPage());
-                signUpPanel.setVisible(false);
+                panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
             }
             else {
                 String input = JOptionPane.showInputDialog("Please enter the Organizer code.");
                 if (input.equals("AmongUs")) {
                     loginSystem.signUpUser(uname, pword, "O");
                     JOptionPane.showMessageDialog(signUpPanel, "You have successfully signed up as an Organizer.");
-                    frame.setContentPane(mainMenuGUI.startMainMenuPage());
-                    signUpPanel.setVisible(false);
+                    panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
                 } else {
                     JOptionPane.showMessageDialog(signUpPanel, "Invalid Organizer code.");
                 }
