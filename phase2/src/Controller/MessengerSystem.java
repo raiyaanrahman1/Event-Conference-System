@@ -77,6 +77,34 @@ public class MessengerSystem {
     }
 
     /**
+     * Deletes the message at the given index in the list of messages for the currently
+     * logged in user.
+     *
+     * @param index  the index of the message in the list
+     */
+    public void deleteMessage(int index) {
+        messageManager.delete(getLoggedInUser(), viewReceivedMessages().get(index - 1));
+    }
+
+    /**
+     * Marks the message at the given index in the list of messages as read.
+     *
+     * @param index  the index of the message in the list
+     */
+    public void markMessageRead(int index) {
+        messageManager.mark(getLoggedInUser(), viewReceivedMessages().get(index - 1), true);
+    }
+
+    /**
+     * Marks the message at the given index in the list of messages as unread.
+     *
+     * @param index  the index of the message in the list
+     */
+    public void markMessageUnread(int index) {
+        messageManager.mark(getLoggedInUser(), viewReceivedMessages().get(index - 1), true);
+    }
+
+    /**
      * Adds the given user to the logged in user's contact list.
      *
      * @param username  the username of the given user
@@ -147,7 +175,7 @@ public class MessengerSystem {
      * @return  true iff the given user is the logged in user's contact list
      */
     private boolean inContacts(String username) {
-        return userManager.getContactList().contains(username);
+        return getContacts().contains(username);
     }
 
 }
