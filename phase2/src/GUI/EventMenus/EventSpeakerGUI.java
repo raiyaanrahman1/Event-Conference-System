@@ -72,7 +72,6 @@ public class EventSpeakerGUI {
         frame.setContentPane(new EventSpeakerGUI(loginSystem.getEventSys()).startEventPage());
     }
 
-
     private void exitButtonListen(){
         backButton.addActionListener(e -> eventPanel.setVisible(false));
     }
@@ -98,7 +97,7 @@ public class EventSpeakerGUI {
     public JPanel startEventPage() {
         eventsJList = new JList(listModel);
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
-        eventsJLabel.setFont(new Font("", Font.BOLD, 48));
+        eventsJLabel.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 48));
         eventPanel.add(eventsJLabel, BorderLayout.NORTH);
         jListPanel.setLayout(new GridLayout(1, 1));
         eventPanel.add(jListPanel, BorderLayout.CENTER);
@@ -109,8 +108,9 @@ public class EventSpeakerGUI {
         buttonPanel.setLayout(new BorderLayout());
         eventPanel.add(buttonPanel, BorderLayout.SOUTH);
         broadcastButton.setEnabled(false);
-        broadcastButton.setFont(new Font("", Font.PLAIN, 24));
+        broadcastButton.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 24));
         buttonPanel.add(broadcastButton, BorderLayout.NORTH);
+        backButton.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
         buttonPanel.add(backButton, BorderLayout.WEST);
         listListener();
         broadcastButtonListen();

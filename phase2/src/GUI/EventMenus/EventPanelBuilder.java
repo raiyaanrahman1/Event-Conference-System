@@ -4,8 +4,11 @@ import java.awt.*;
 
 
 public class EventPanelBuilder {
+    private Font infoFont;
 
-    public EventPanelBuilder(){}
+    public EventPanelBuilder(){
+        infoFont = new Font(Font.MONOSPACED, Font.PLAIN, 14);
+    }
 
     public void buildBorderLayoutPanel(JPanel panel, int top, int left, int bottom, int right){
         panel.setLayout(new BorderLayout());
@@ -35,6 +38,8 @@ public class EventPanelBuilder {
 
     public void buildAttendeeEventsButtonPanel(JPanel eventsButtonPanel, JButton button1, JButton button2){
         eventsButtonPanel.setLayout(new BorderLayout());
+        button1.setFont(infoFont);
+        button2.setFont(infoFont);
         eventsButtonPanel.add(button1, BorderLayout.WEST);
         eventsButtonPanel.add(button2, BorderLayout.EAST);
     }
@@ -43,6 +48,7 @@ public class EventPanelBuilder {
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(northPanel, BorderLayout.CENTER);
         southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        button.setFont(infoFont);
         southPanel.add(button);
         mainPanel.add(southPanel, BorderLayout.SOUTH);
     }
@@ -58,9 +64,11 @@ public class EventPanelBuilder {
     }
 
     public void buildAttendeeEventsPanel(JPanel panel, JLabel titleJLabel){
-        titleJLabel.setFont(new Font("", Font.BOLD, 32));
+        titleJLabel.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 24));
         panel.add(titleJLabel, BorderLayout.NORTH);
     }
+
+
 
 
 }
