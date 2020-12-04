@@ -2,6 +2,7 @@ package GUI.EventMenus;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.ByteOrder;
 
 public class EventPanelBuilder {
     JPanel panel;
@@ -11,13 +12,13 @@ public class EventPanelBuilder {
 
     public JPanel build500x500Panel(){
         this.panel.setSize(500, 500);
-        this.panel.setLayout(null);
+        this.panel.setLayout(new BorderLayout());
+        this.panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 40, 20));
         return panel;
     }
 
     public JLabel buildEventMenuLabel(JLabel jLabel){
         jLabel.setFont(new Font("", Font.BOLD, 48));
-        panel.add(jLabel);
         return jLabel;
     }
 
@@ -26,15 +27,16 @@ public class EventPanelBuilder {
         jList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jList.setLayoutOrientation(JList.VERTICAL);
         jList.setVisibleRowCount(0);
-        panel.add(jList);
+  //      panel.add(jList, BorderLayout.CENTER);
         return jList;
     }
 
     public JScrollPane buildJScrollPane(JScrollPane jScrollPane){
-        jScrollPane.setPreferredSize(new Dimension(250,360));
-        jScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        panel.add(jScrollPane);
+        jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setVisible(true);
+   //     panel.add(jScrollPane, BorderLayout.CENTER);
+
         return jScrollPane;
     }
 

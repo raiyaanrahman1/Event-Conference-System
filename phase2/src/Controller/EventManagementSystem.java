@@ -38,7 +38,8 @@ public class EventManagementSystem {
      * Signs a user up for an event.
      */
     public void eventSignUp() {
-        if (manager.getAllowedEvents(user.getUserInfoList().get(0)).size() == 0) {
+        if (manager.getAllowedEvents(user.getUserInfoList().get(0),
+                user.getUserType(user.getUserInfoList().get(0))).size() == 0) {
             System.out.println("There are no available events");
         } else {
             eventSignUpHelper();
@@ -60,7 +61,7 @@ public class EventManagementSystem {
      * Adds a new event to event list iff this user is an Organiser.
      */
     public void addEvent() {
-        String eventName = ""; // placeholer
+        String eventName = ""; // placeholder
         String room = ""; // placeholder
         List<String> ListOfSpeaker = new ArrayList<>(); // placeholder
         int cap = 0; // placeholder
@@ -74,6 +75,29 @@ public class EventManagementSystem {
         }
         System.out.println("Unsuccessfully added event");
     }
+    /**
+     * Adds a new VIP event to event list iff this user is an Organiser.
+     */
+    public void addVIPEvent()  {
+        String eventName = ""; // placeholder
+        String room = ""; // placeholder
+        List<String> ListOfSpeaker = new ArrayList<>(); // placeholder
+        int cap = 0; // placeholder
+        String inputDate = ""; // placeholder
+        String inputStart = ""; // placeholder
+        String inputEnd = ""; // placeholder
+        LocalTime inputStartTime = checkStartTime(inputStart);
+        LocalTime inputEndTime = checkEndTime(inputEnd);
+        if (addVIPEventHelper(eventName, room, ListOfSpeaker, cap, inputDate, inputStartTime, inputEndTime)){
+            System.out.println("Successfully added VIP event");
+        }
+        System.out.println("Unsuccessfully added VIP event");
+    }
+    public void changeCap() {
+        //if user is organizer
+        //if (manager.changeRoomCapacity(eventID, newCap)) System.out.println("Successfully changed capacity of event");
+        //else System.out.println("Unsuccessfully changed capacity of event");
+    }
 
     /**
      * Cancels event if the user is an organizer.
@@ -83,7 +107,7 @@ public class EventManagementSystem {
         if (user.getUserInfoList().get(2).equals("O")) {
             if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
                 do {
-                    formatEventString(manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)));
+                    getOrganizerEventList(user.getUserInfoList().get(0));
                     int eventId = 0; //placeholder
                     if (manager.removeEvent(eventId)) {
                         invalid = false;
@@ -109,6 +133,29 @@ public class EventManagementSystem {
         }
     }
 
+    /**
+     * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
+     */
+    public List<String> getBroadcastEventSpeaker() {
+        List<Integer> eventListByIDs = manager.getTalksBySpeaker(user.getUserInfoList().get(0));
+        if (eventListByIDs.size() == 0) {
+            System.out.println("You are not speaking at any events");
+            return null;
+        }else{
+            return formatEventList(eventListByIDs);
+        }
+    }
+
+    //formats the list of events for the getBroadcastEventSpeaker method
+    private List<String> formatEventList(List<Integer> eventList){
+        List<String> listEvents = new ArrayList<>();
+        if (eventList.size()> 0) {
+            for (Integer eventID : eventList) {
+                listEvents.add(manager.getEventString(eventID));
+            }
+        }
+        return listEvents;
+    }
 
     /**
      * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
@@ -125,12 +172,14 @@ public class EventManagementSystem {
      * @param eventList , a list of ID of events,
      * and prints the corresponding toStrings of the events.
      */
-    public void formatEventString(List<Integer> eventList){
+    public List<String> formatEventString(List<Integer> eventList){
+        List<String> result = new ArrayList<>();
         if (eventList.size()> 0) {
             for (Integer eventID : eventList) {
-                System.out.println(manager.getEventString(eventID));
+                result.add(manager.getEventString(eventID));
             }
         }
+        return result;
     }
 
     /**
@@ -161,9 +210,10 @@ public class EventManagementSystem {
     private void eventSignUpHelper(){
             boolean failedSignUp = true;
             do {
-            formatEventString(manager.getAllowedEvents(user.getUserInfoList().get(0))); // present allowed events
+            getAvailableEventList(user.getUserInfoList().get(0)); // present allowed events
             int eventId = 0; //placeholder
-                if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0))) {
+                if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0),
+                        user.getUserType(user.getUserInfoList().get(0)))) {
                     failedSignUp = false;
                 System.out.println("Successfully signed up for event");
         } else {
@@ -176,7 +226,7 @@ public class EventManagementSystem {
     private void attendeeCancelEventHelper(){
             boolean invalidCancellation = true;
             do {
-            formatEventString(manager.getEventListByAttendee(user.getUserInfoList().get(0)));
+            getAttendeeEventList(user.getUserInfoList().get(0));
             int eventId = 0; //placeholder
                 if (manager.cancelSpot(eventId, user.getUserInfoList().get(0))) {
                     invalidCancellation = false;
@@ -212,7 +262,22 @@ public class EventManagementSystem {
                 } else {
             return false;
         }
-                }
+    }
+    private boolean addVIPEventHelper(String eventName, String room, List<String> ListOfSpeaker, int cap, String inputDate,
+                                   LocalTime inputStart, LocalTime inputEnd){
+        if (!user.getUserInfoList().get(2).equals("O")) {
+            return false;
+        }
+        List<String> speaker = checkValidSpeaker(ListOfSpeaker);
+        String org = user.getUserInfoList().get(0);
+        LocalDateTime startTime = formatDateTime(inputStart, inputDate);
+        LocalDateTime endTime = formatDateTime(inputEnd, inputDate);
+        if (!speaker.isEmpty()) {
+            return manager.addVIPEvent(eventName, room, speaker, org, cap, startTime, endTime);
+        } else {
+            return false;
+        }
+    }
 
     private LocalDateTime formatDateTime(LocalTime time, String inputDate) {
         LocalDate date = checkDate(inputDate);
@@ -278,7 +343,7 @@ public class EventManagementSystem {
     }
 
     private void broadcastEventOrganizerHelper(){
-        formatEventString(manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)));
+        getOrganizerEventList(user.getUserInfoList().get(0));
         int eventID = 0; //placeholder
             if (manager.getAttendeesInEvent(eventID).size() == 0) {
             System.out.println("There are no attendees for this event.");
@@ -290,7 +355,7 @@ public class EventManagementSystem {
     }
 
     private void broadcastEventSpeakerHelper(){
-        formatEventString(manager.getTalksBySpeaker(user.getUserInfoList().get(0)));
+        getSpeakerEventList(user.getUserInfoList().get(0));
         int eventID = 0; // placeholder
         if (manager.getAttendeesInEvent(eventID).size() == 0) {
             System.out.println("There are no attendees for this event.");
@@ -300,7 +365,7 @@ public class EventManagementSystem {
         }
     }
 
-    private void broadcast(int eventID, String message) {
+    public void broadcast(int eventID, String message) {
         List<String> users = manager.getAttendeesInEvent(eventID);
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }
@@ -322,12 +387,30 @@ public class EventManagementSystem {
         manager.setName(eventId, eventName);
         manager.setRoom(eventId, room);
         manager.setSpeakers(eventId, speakerList);
-        manager.setRoomCap(eventId, cap);
+        manager.changeRoomCapacity(eventId, cap);
         manager.setOrganizer(eventId, org);
         manager.setStartTime(eventId, start);
         manager.setEndTime(eventId, end);
 
     }
+
+    public List<String> getAttendeeEventList(String username){
+        return formatEventString(manager.getEventListByAttendee(username));
+    }
+
+    public List<String> getSpeakerEventList(String username){
+        return manager.filterEventsBySpeaker(username);
+    }
+
+    public List<String> getAvailableEventList(String username){
+        return formatEventString(manager.getAllowedEvents(username, user.getUserType(username)));
+    }
+
+    public List<String> getOrganizerEventList(String username){
+        return manager.filterEventsByOrganizer(username);
+    }
+
+
 
 // NO NEED MENU --> USE GUI
 //    /**

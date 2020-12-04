@@ -12,11 +12,6 @@ import UseCase.EventManager;
 import UseCase.MessageManager;
 import UseCase.UserManager;
 
-import java.util.Scanner;
-import java.util.function.Function;
-
-import static java.lang.System.out;
-
 /**
  * Class which manages the Logging in and Signing up of a User
  */
@@ -34,6 +29,7 @@ public class LoginSystem {
     EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, userController);
     LogInSignUpPresenter logInSignUpPresenter = new LogInSignUpPresenter();
     EventPresenter eventPresenter = new EventPresenter(eventSys, userManager, eventMan);
+    CheckPassword checkPassword = new CheckPassword();
 
 
     /**
@@ -46,7 +42,7 @@ public class LoginSystem {
      * @return event management system
      */
     public EventManagementSystem getEventSys(){
-        return eventSys;
+        return this.eventSys;
     }
 
     /**
@@ -54,7 +50,7 @@ public class LoginSystem {
      * @return message management system
      */
     public MessengerSystem getMsgSys(){
-        return msgSys;
+        return this.msgSys;
     }
 
     /**
@@ -65,13 +61,13 @@ public class LoginSystem {
         int answer;
         do {
             answer = logInSignUpPresenter.menu();
-            if (answer == 1) {
-                //msgSys.menus();
-            } else if (answer == 2) {
-                eventPresenter.mainEventPage();
-            } else if (answer == 3) {
-                signOut();
-            }
+//            if (answer == 1) {
+//                //msgSys.menus();
+//            } else if (answer == 2) {
+//                eventPresenter.mainEventPage();
+//            } else if (answer == 3) {
+//                signOut();
+//            }
         } while (answer != 3);
     }
 
@@ -103,6 +99,18 @@ public class LoginSystem {
         userManager.storeContacts();
         eventMan.storeEvents(eventListGateway);
         System.exit(0);
+    }
+
+    public boolean canLogin(String username, String password) {
+        return userManager.logInUser(username, password);
+    }
+
+    public boolean isUser(String username){
+        return userManager.getSignedUpUsers().contains(username);
+    }
+
+    public void signUpUser(String username, String password, String userType) {
+        userManager.CreateUser(username, password, userType);
     }
 
     /**
@@ -160,6 +168,8 @@ public class LoginSystem {
 
         logInSignUpPresenter.print("Enter a password.");
         String password = logInSignUpPresenter.readLine();
+        String strength = checkPassword.scorePassword(password);
+        logInSignUpPresenter.print(strength);
         userManager.CreateUser(username, password, userType);
     }
 
