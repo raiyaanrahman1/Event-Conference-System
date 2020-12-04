@@ -139,6 +139,15 @@ public class MessengerSystem {
     }
 
     /**
+     * Gets the list of messages that the logged in user has archived.
+     *
+     * @return  a list of received messages
+     */
+    public List<String> viewArchivedMessages() {
+        return msgMan.getArchivedMessages(getLoggedInUser());
+    }
+
+    /**
      * Messages the user inputted with the content inputted.
      *
      * @param username the username of the User that will be messaged.
@@ -160,6 +169,15 @@ public class MessengerSystem {
         msgMan.message(user.getUserInfoList().get(0), sender, content);
 //        msgPres.successfulMessage();
         System.out.println("Success");
+    }
+
+    /**
+     * Archives the message at the given index in the list of messages.
+     *
+     * @param index  the index of the message in the list
+     */
+    public void archiveMessage(int index) {
+        msgMan.archive(getLoggedInUser(), viewReceivedMessages().get(index - 1));
     }
 
     /**
@@ -209,6 +227,10 @@ public class MessengerSystem {
             }
         }
         return msgsfromsender;
+    }
+
+    private String getLoggedInUser() {
+        return user.getUserInfoList().get(0);
     }
 
 }
