@@ -9,7 +9,7 @@ import java.awt.*;
 public class MessagePanelBuilder {
     private JPanel mainPanel;
     private JLabel title;
-    private JButton backButton;
+    //private JButton backButton;
     private Font titleFont;
     private Font infoFont;
 
@@ -26,60 +26,52 @@ public class MessagePanelBuilder {
     private void preparePanel(JPanel panel){
         mainPanel.setLayout(null);
         mainPanel.setSize(500, 500);
-        mainPanel.add(backButton);
         mainPanel.add(title);
         mainPanel.setVisible(true);
     }
 
-    public void setMainPanel(JPanel other){
-        this.mainPanel = other;
-        preparePanel(other);
+//    public void setMainPanel(JPanel other){
+//        this.mainPanel = other;
+//        preparePanel(other);
+//
+//    }
 
+    public Component[] prepareReplyPane(){
+        title.setText("reply");
+        JTextArea reply = new JTextArea();
+        reply.setBounds(50, 80, 225, 340);
+        reply.setEditable(true);
+        reply.setVisible(true);
+        reply.setFont(infoFont);
+        JScrollPane pane = new JScrollPane(reply,  ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        pane.setBounds(50, 80, 225, 340);
+        pane.setVisible(true);
+        return new Component[]{reply, pane};
     }
-
-    public JPanel getMainPanel(){
-        return mainPanel;
-    }
-
-    public void makeBackButton(){
-        backButton = new JButton("back");
+    public JButton makeBackButton(){
+        JButton backButton = new JButton("back");
         backButton.setFont(infoFont);
         backButton.setBounds(350, 22, 75, 30);
-//        backButton.setSize(new Dimension(25, 20));
-//        backButton.setVerticalAlignment(backButton.TOP);
-//        backButton.setHorizontalAlignment(backButton.LEFT);
+        return backButton;
+    }
+
+    public JButton buildButton(String name){
+        JButton button = new JButton(name);
+        button.setFont(infoFont);
+        button.setBounds(310, 260, 100, 30);
+        return button;
+
     }
 
     private void makeTitle(){
         title = new JLabel("");
         title.setFont(titleFont);
-        title.setBounds(50, 5, 120, 60);
-//        title.setSize(new Dimension(25, 20));
-//        title.setVerticalAlignment(title.TOP);
-//        title.setVerticalAlignment(title.CENTER);
+        title.setBounds(50, 5, 200, 60);
     }
 
-    public JPanel buildMain(){
-        title.setText("Messages");
-        backButton.setVisible(false);
-        return mainPanel;
-    }
-
-//    public JButton[] buildMenuButtons(){
-//        JButton inbox = new JButton("Inbox");
-//        inbox.setSize(50, 20);
-//        JButton contacts = new JButton("Contacts");
-//        contacts.setSize(50,20 );
-//        return new JButton[]{inbox, contacts};
-//    }
-//
-//    public JPanel createMessage(String content){
-//        return new JPanel();
-//
-//    }
-
-    public JScrollPane buildInbox(JScrollPane jScroll){
-        title.setText("inbox");
+    public JScrollPane buildMainPane(JScrollPane jScroll, String name){
+        title.setText(name);
         jScroll.setBounds(50, 80, 225, 340);
         jScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -88,12 +80,14 @@ public class MessagePanelBuilder {
         mainPanel.add(title);
         return jScroll;
     }
+
+    public void setTitle(String name){
+        title.setText(name);
+    }
     public JScrollPane buildMessagePreview(JScrollPane messagePreview){
         messagePreview.setBounds(300, 80, 125, 160);
-        //messagePreview.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        //messagePreview.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        messagePreview.setFont(infoFont);
         mainPanel.add(messagePreview);
-//        messagePreview.setVisible(true);
         return messagePreview;
     }
 
@@ -105,54 +99,73 @@ public class MessagePanelBuilder {
         content.setWrapStyleWord(true);
         return content;
     }
-    public JButton[] buildOptions(){
+    public JButton[] buildOptions(String[] options, int startY){
         // make this shorter using iteration
-        // view the current selected message
-        JButton viewMsg = new JButton("view");
-        viewMsg.setFont(infoFont);
-        viewMsg.setBounds(310, 260, 100, 30);
-        //viewMsg.setVisible(true);
-        //mainPanel.add(viewMsg);
+        JButton[] buttons = new JButton[]{};
+        int y = startY;
+        for (String option: options){
+            JButton button = new JButton(option);
+            button.setFont(infoFont);
+            button.setBounds(310, y, 100, 30);
+            y += 40;
+        }
 
-        // reply to the current selected message
-        JButton reply = new JButton("reply");
-        reply.setFont(infoFont);
-        reply.setBounds(310, 300, 100, 30);
-        //reply.setEnabled(false);
-        //mainPanel.add(reply);
-
-        // archive selected message
-        JButton archive = new JButton("archive");
-        archive.setFont(infoFont);
-        archive.setBounds(310, 340, 100, 30);
-        //archive.setEnabled(false);
-        //mainPanel.add(archive);
-
-
-        // view all received messages from sender
-        JButton viewAll = new JButton("view all");
-        viewAll.setFont(infoFont);
-        viewAll.setBounds(310, 380, 100, 30);
-        //viewAll.setEnabled(false);
-        //mainPanel.add(viewAll);
-
-        return new JButton[]{viewMsg, reply, archive, viewAll};
+        return buttons;
+//
+//        // view the current selected message
+//        JButton viewMsg = new JButton("view");
+//        viewMsg.setFont(infoFont);
+//        viewMsg.setBounds(310, 260, 100, 30);
+//
+//
+//        // reply to the current selected message
+//        JButton reply = new JButton("reply");
+//        reply.setFont(infoFont);
+//        reply.setBounds(310, 300, 100, 30);
+//
+//        // archive selected message
+//        JButton archive = new JButton("archive");
+//        archive.setFont(infoFont);
+//        archive.setBounds(310, 340, 100, 30);
+//
+//        // view all received messages from sender
+//        JButton viewAll = new JButton("view all");
+//        viewAll.setFont(infoFont);
+//        viewAll.setBounds(310, 380, 100, 30);
+//
+//        return new JButton[]{viewMsg, reply, archive, viewAll};
     }
 
 
-    public JList buildInboxJList(DefaultListModel<String> msgs){
+    public JList buildJList(DefaultListModel<String> list){
 
-        JList messageList = new JList(msgs);
-        messageList.setBounds(50,80, 220,300);
-        messageList.setFixedCellHeight(40);
-        messageList.setFixedCellWidth(100);
-        messageList.setFont(infoFont);
-        messageList.setSelectionBackground(Color.cyan);
-        messageList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        messageList.setLayoutOrientation(JList.VERTICAL);
-        messageList.setVisibleRowCount(0);
-        mainPanel.add(messageList);
-        return messageList;
+        JList jList = new JList(list);
+        jList.setBounds(50,80, 220,300);
+        jList.setFixedCellHeight(40);
+        jList.setFixedCellWidth(100);
+        jList.setFont(infoFont);
+        jList.setSelectionBackground(Color.cyan);
+        jList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jList.setLayoutOrientation(JList.VERTICAL);
+        jList.setVisibleRowCount(0);
+        mainPanel.add(jList);
+        return jList;
+    }
+
+    public JScrollPane buildMessageThread(List<String> messages){
+        title.setText("received");
+        String fullThread = "";
+        for (String msg : messages){
+            fullThread += msg + "\n";
+        }
+        JTextArea text = new JTextArea(fullThread);
+        text.setFont(infoFont);
+        text.setEditable(false);
+        JScrollPane pane = new JScrollPane(text, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        pane.setBounds(50, 80, 225, 340);
+        return pane;
+
     }
 
 //    public JPanel buildInbox(List<String> messages){
