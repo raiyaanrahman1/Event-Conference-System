@@ -14,16 +14,15 @@ public class EventSpeakerGUI {
     private JList eventJList; //TODO pass in list of events of speakers in parameter of JList
     private JScrollPane listScroller = new JScrollPane();
     private DefaultListModel<String> listModel = new DefaultListModel<>();
-    private JPanel framePanel = new JPanel();
-    private JPanel eventPagePanel = new JPanel();
-    private EventPanelBuilder panelBuilder = new EventPanelBuilder(eventPagePanel);
     private JLabel eventMenu = new JLabel("EVENTS MENU");
     private JButton exitButton = new JButton();
     private JButton broadcastButton = new JButton();
     private int selectedEventIndex;
     private JPanel jListPanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
+    private JPanel eventPagePanel = new JPanel();
     private JLabel noEventLabel = new JLabel("You are not speaking at any events.");
+    private EventPanelBuilder panelBuilder = new EventPanelBuilder(eventPagePanel);
 
     public EventSpeakerGUI(EventManagementSystem eventSystem) {
         this.eventSystem = eventSystem;
@@ -89,10 +88,11 @@ public class EventSpeakerGUI {
 
     public JPanel startEventPage() {
         //Panel:
-        framePanel = eventPagePanel;
+//        framePanel = eventPagePanel;
         eventPagePanel = panelBuilder.build500x500Panel();
         //Title:
         eventMenu = panelBuilder.buildEventMenuLabel(eventMenu);
+        eventPagePanel.add(eventMenu, BorderLayout.NORTH);
         eventMenu.setBounds(65, 10, 500, 40);
         // Panel for jlist and jscrollpane:
         jListPanel.setLayout(new GridLayout(1, 1));
@@ -106,6 +106,7 @@ public class EventSpeakerGUI {
         listScroller.setBounds(60, 60, 360, 300);
         listScroller = panelBuilder.buildJScrollPane(listScroller);
         listScroller.setViewportView(eventJList);
+        listScroller.setSize(new Dimension(360, 300));
         jListPanel.add(listScroller);
         //ButtonPanel:
         buttonPanel.setLayout(new BorderLayout());

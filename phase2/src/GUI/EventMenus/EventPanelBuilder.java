@@ -19,7 +19,6 @@ public class EventPanelBuilder {
 
     public JLabel buildEventMenuLabel(JLabel jLabel){
         jLabel.setFont(new Font("", Font.BOLD, 48));
-        panel.add(jLabel, BorderLayout.NORTH);
         return jLabel;
     }
 
@@ -33,7 +32,6 @@ public class EventPanelBuilder {
     }
 
     public JScrollPane buildJScrollPane(JScrollPane jScrollPane){
-        jScrollPane.setSize(new Dimension(360, 300));
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setVisible(true);
