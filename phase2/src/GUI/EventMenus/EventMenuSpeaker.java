@@ -2,7 +2,7 @@ package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
 import Controller.LoginSystem;
-import GUI.MessageMenus.MessageGUI;
+import GUI.MessageMenus.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

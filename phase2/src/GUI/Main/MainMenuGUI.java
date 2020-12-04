@@ -1,20 +1,18 @@
 package GUI.Main;
 
 import Controller.EventManagementSystem;
-import Controller.LoginSystem;
 import Controller.MessengerSystem;
 import GUI.EventMenus.EventGUI;
 import GUI.EventMenus.EventMenuSpeaker;
-import GUI.MessageMenus.MessageGUI;
+import GUI.MessageMenus.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainMenuGUI {
+    private ContactsGUI contactGUI;
     private EventGUI eventGUI;
-    private MessageGUI messageGUI;
+    private InboxGUI inboxGUI;
     private EventMenuSpeaker ems;
     private JPanel mainMenuPanel = new JPanel();
     private JLabel mainMenuLabel = new JLabel("MAIN MENU");
@@ -25,7 +23,8 @@ public class MainMenuGUI {
 
     public MainMenuGUI(EventManagementSystem eventSystem, MessengerSystem messageSystem){
         eventGUI = new EventGUI(eventSystem);
-        messageGUI = new MessageGUI(messageSystem);
+        inboxGUI = new InboxGUI(messageSystem);
+        contactGUI = new ContactsGUI(messageSystem);
         ems = new EventMenuSpeaker(eventSystem);
         startMainMenuPage();
     }

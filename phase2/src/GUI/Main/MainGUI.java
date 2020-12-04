@@ -1,8 +1,6 @@
 package GUI.Main;
 
 import Controller.LoginSystem;
-import GUI.EventMenus.EventGUI;
-import GUI.MessageMenus.MessageGUI;
 
 import javax.swing.*;
 
