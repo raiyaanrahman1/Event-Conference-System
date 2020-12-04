@@ -5,11 +5,11 @@ import Controller.LoginSystem;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventSpeakerGUI {
     private EventManagementSystem eventSystem;
-
     private List<String> listEvents;
     private JList eventJList; //TODO pass in list of events of speakers in parameter of JList
     private JScrollPane listScroller = new JScrollPane();
@@ -23,7 +23,7 @@ public class EventSpeakerGUI {
     private int selectedEventIndex;
     private JPanel jListPanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
-    private JLabel noEventLabel = new JLabel("You are not speaking at any.");
+    private JLabel noEventLabel = new JLabel("You are not speaking at any events.");
 
     public EventSpeakerGUI(EventManagementSystem eventSystem) {
         this.eventSystem = eventSystem;
@@ -41,12 +41,14 @@ public class EventSpeakerGUI {
 
     private boolean setListEvents(){
         boolean eventsExists = false;
-        List<String> tempList = eventSystem.getBroadcastEventSpeaker();
+        List<String> tempList = new ArrayList<>();//eventSystem.getBroadcastEventSpeaker();
+        tempList.add("Hi");
         if (tempList == null) {
             this.noEventLabel.setVisible(true);
         }
         else{
             this.listEvents = tempList;
+            this.noEventLabel.setVisible(false);
             eventsExists = true;
         }
         return eventsExists;
