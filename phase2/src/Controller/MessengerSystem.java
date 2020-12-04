@@ -101,7 +101,7 @@ public class MessengerSystem {
      * @param index  the index of the message in the list
      */
     public void markMessageUnread(int index) {
-        messageManager.mark(getLoggedInUser(), viewReceivedMessages().get(index - 1), true);
+        messageManager.mark(getLoggedInUser(), viewReceivedMessages().get(index - 1), false);
     }
 
     /**
