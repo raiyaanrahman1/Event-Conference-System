@@ -10,19 +10,28 @@ import java.util.List;
 
 public class EventSpeakerGUI {
     private EventManagementSystem eventSystem;
+    private EventPanelBuilder panelBuilder = new EventPanelBuilder();
+
+
     private List<String> listEvents;
-    private JList eventJList; //TODO pass in list of events of speakers in parameter of JList
-    private JScrollPane listScroller = new JScrollPane();
     private DefaultListModel<String> listModel = new DefaultListModel<>();
-    private JLabel eventMenu = new JLabel("EVENTS MENU");
-    private JButton exitButton = new JButton();
-    private JButton broadcastButton = new JButton();
-    private int selectedEventIndex;
+
+
+    private JPanel eventPanel = new JPanel();
     private JPanel jListPanel = new JPanel();
     private JPanel buttonPanel = new JPanel();
-    private JPanel eventPagePanel = new JPanel();
+
+    private JLabel eventsJLabel = new JLabel("EVENTS MENU");
+
+    private JList eventsJList; //TODO pass in list of events of speakers in parameter of JList
+
+    private JScrollPane eventsJScrollPane = new JScrollPane();
+    private JButton backButton = new JButton("Back");
+    private JButton broadcastButton = new JButton("✉");
+
+
+    private int selectedEventIndex;
     private JLabel noEventLabel = new JLabel("You are not speaking at any events.");
-    private EventPanelBuilder panelBuilder = new EventPanelBuilder(eventPagePanel);
 
     public EventSpeakerGUI(EventManagementSystem eventSystem) {
         this.eventSystem = eventSystem;
@@ -65,7 +74,7 @@ public class EventSpeakerGUI {
 
 
     private void exitButtonListen(){
-        exitButton.addActionListener(e -> eventPagePanel.setVisible(false));
+        backButton.addActionListener(e -> eventPanel.setVisible(false));
     }
 
     private void broadcastButtonListen(){
@@ -78,54 +87,35 @@ public class EventSpeakerGUI {
     }
 
     private void listListener(){
-        eventJList.addListSelectionListener(e -> {
+        eventsJList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()){
-                selectedEventIndex = eventJList.getSelectedIndex();
+                selectedEventIndex = eventsJList.getSelectedIndex();
                  broadcastButton.setEnabled(true);
             }
         });
     }
 
     public JPanel startEventPage() {
-        //Panel:
-//        framePanel = eventPagePanel;
-        eventPagePanel = panelBuilder.build500x500Panel();
-        //Title:
-        eventMenu = panelBuilder.buildEventMenuLabel(eventMenu);
-        eventPagePanel.add(eventMenu, BorderLayout.NORTH);
-        eventMenu.setBounds(65, 10, 500, 40);
-        // Panel for jlist and jscrollpane:
+        eventsJList = new JList(listModel);
+        panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
+        eventsJLabel.setFont(new Font("", Font.BOLD, 48));
+        eventPanel.add(eventsJLabel, BorderLayout.NORTH);
         jListPanel.setLayout(new GridLayout(1, 1));
-        eventPagePanel.add(jListPanel, BorderLayout.CENTER);
-        //JList:
-        eventJList = new JList(listModel);
-        eventJList.setBounds(60, 60, 360, 300);
-        eventJList = panelBuilder.buildJListEvents(eventJList);
-        listListener();
-        //list scroller
-        listScroller.setBounds(60, 60, 360, 300);
-        listScroller = panelBuilder.buildJScrollPane(listScroller);
-        listScroller.setViewportView(eventJList);
-        listScroller.setSize(new Dimension(360, 300));
-        jListPanel.add(listScroller);
-        //ButtonPanel:
+        eventPanel.add(jListPanel, BorderLayout.CENTER);
+        panelBuilder.buildJListEvents(eventsJList);
+        panelBuilder.buildJScrollPane(eventsJScrollPane);
+        eventsJScrollPane.setViewportView(eventsJList);
+        jListPanel.add(eventsJScrollPane);
         buttonPanel.setLayout(new BorderLayout());
-        eventPagePanel.add(buttonPanel, BorderLayout.SOUTH);
-        //Broadcast Button
+        eventPanel.add(buttonPanel, BorderLayout.SOUTH);
         broadcastButton.setEnabled(false);
-        broadcastButton.setText("✉");
         broadcastButton.setFont(new Font("", Font.PLAIN, 24));
-        broadcastButton.setBounds(100, 0, 80, 25);
         buttonPanel.add(broadcastButton, BorderLayout.NORTH);
+        buttonPanel.add(backButton, BorderLayout.WEST);
+        listListener();
         broadcastButtonListen();
-        //Exit Button
-        exitButton.setText("Exit");
-        exitButton.setBounds(150, 0, 80, 25);
-        buttonPanel.add(exitButton, BorderLayout.WEST);
         exitButtonListen();
-        //No event Label:
-        buttonPanel.add(noEventLabel, BorderLayout.SOUTH);
-        return eventPagePanel;
+        return eventPanel;
     }
 
 }
