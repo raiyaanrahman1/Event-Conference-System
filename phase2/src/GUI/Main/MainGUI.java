@@ -12,7 +12,7 @@ public class MainGUI {
     private SignUpGUI signUpGUI = new SignUpGUI(loginSystem, mainFrame);
     private MainMenuGUI mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys(), mainFrame);
     private JPanel currentJPanel = new JPanel();
-    private WelcomeGUI languageSelectionGUI = new WelcomeGUI(mainFrame, loginGUI, signUpGUI);
+    private WelcomeGUI welcomeGUI = new WelcomeGUI(mainFrame, loginSystem);
 
     public MainGUI(){
         currentJPanel.setSize(500, 500);
@@ -21,14 +21,13 @@ public class MainGUI {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(500, 500);
         mainFrame.setResizable(false);
-//        mainFrame.setContentPane(languageSelectionGUI.getStartPanel());
-        run();
+        welcomeGUI.startProgram();
     }
 
-    public void run(){
-        mainFrame.setContentPane(signUpGUI.signUpPage());
-        if (!signUpGUI.signUpPage().isVisible()){
-            mainFrame.setContentPane(mainMenuGUI.startMainMenuPage());
-        }
-    }
+//    public void run(){
+//        mainFrame.setContentPane(signUpGUI.signUpPage());
+//        if (!signUpGUI.signUpPage().isVisible()){
+//            mainFrame.setContentPane(mainMenuGUI.startMainMenuPage());
+//        }
+//    }
 }

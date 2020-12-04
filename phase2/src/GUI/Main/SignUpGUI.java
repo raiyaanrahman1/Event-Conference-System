@@ -21,6 +21,7 @@ public class SignUpGUI implements ILoginView, ActionListener {
     private String[] userTypes = {"Attendee", "Organizer"};
     private JComboBox typeComboBox = new JComboBox(userTypes);
     private MainMenuGUI mainMenuGUI;
+    private JButton backButton = new JButton();
 
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame();
@@ -74,7 +75,18 @@ public class SignUpGUI implements ILoginView, ActionListener {
         signUpButton.setText("Sign Up");
         signUpButton.setBounds(214, 364, 80, 25);
         signUpPanel.add(signUpButton);
+        // BACK BUTTON:
+        backButton.setText("Back");
+        backButton.setBounds(10, 430, 80, 25);
+        signUpPanel.add(backButton);
+        backButtonListen();
         return signUpPanel;
+    }
+
+    private void backButtonListen(){
+        backButton.addActionListener(e -> {
+            frame.setContentPane(mainMenuGUI.startMainMenuPage());
+        });
     }
 
     @Override
@@ -86,7 +98,7 @@ public class SignUpGUI implements ILoginView, ActionListener {
             if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")) {
                 loginSystem.signUpUser(uname, pword, "A");
                 JOptionPane.showMessageDialog(signUpPanel, "You have successfully signed up as an Attendee.");
-//                frame.setContentPane(mainMenuGUI.startMainMenuPage());
+                frame.setContentPane(mainMenuGUI.startMainMenuPage());
                 signUpPanel.setVisible(false);
             }
             else {
@@ -94,7 +106,7 @@ public class SignUpGUI implements ILoginView, ActionListener {
                 if (input.equals("AmongUs")) {
                     loginSystem.signUpUser(uname, pword, "O");
                     JOptionPane.showMessageDialog(signUpPanel, "You have successfully signed up as an Organizer.");
-//                    frame.setContentPane(mainMenuGUI.startMainMenuPage());
+                    frame.setContentPane(mainMenuGUI.startMainMenuPage());
                     signUpPanel.setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(signUpPanel, "Invalid Organizer code.");

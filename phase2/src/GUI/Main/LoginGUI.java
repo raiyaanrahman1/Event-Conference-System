@@ -17,6 +17,7 @@ public class LoginGUI implements ILoginView, ActionListener {
     private JTextField usertext = new JTextField(20);
     private JPasswordField passtext = new JPasswordField(20);
     private JButton logInButton = new JButton();
+    private JButton backButton = new JButton();
     private MainMenuGUI mainMenuGUI;
     private JFrame frame;
 
@@ -79,7 +80,18 @@ public class LoginGUI implements ILoginView, ActionListener {
         logInButton.setBounds(214, 344, 80, 25);
         logInButton.setVisible(true);
         loginPanel.add(logInButton);
+        // BACK BUTTON:
+        backButton.setText("Back");
+        backButton.setBounds(10, 430, 80, 25);
+        loginPanel.add(backButton);
+        backButtonListen();
         return loginPanel;
+    }
+
+    private void backButtonListen(){
+        backButton.addActionListener(e -> {
+            frame.setContentPane(mainMenuGUI.startMainMenuPage());
+        });
     }
 
     @Override
