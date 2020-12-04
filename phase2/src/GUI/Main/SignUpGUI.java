@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.Objects;
 
 public class SignUpGUI implements ILoginView, ActionListener {
+    private PanelStack panelStack;
     private JFrame frame;
     private LoginSystem loginSystem;
     private JPanel signUpPanel = new JPanel();
@@ -33,10 +34,10 @@ public class SignUpGUI implements ILoginView, ActionListener {
 //        frame.setVisible(true);
 //    }
 
-    public SignUpGUI(LoginSystem loginSystem, JFrame frame) {
+    public SignUpGUI(MainMenuGUI menu, LoginSystem loginSystem, PanelStack panelStack) {
         this.loginSystem = loginSystem;
-        this.frame = frame;
-        mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys(), frame);
+        this.panelStack = panelStack;
+        mainMenuGUI = menu;
         signUpPage();
         signUpButton.addActionListener(this);
     }

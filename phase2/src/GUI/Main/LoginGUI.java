@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginGUI implements ILoginView, ActionListener {
+    private PanelStack panelStack;
     private LoginSystem loginSystem;
     private JPanel loginPanel = new JPanel();
     private JLabel titleLabel = new JLabel();
@@ -21,22 +22,22 @@ public class LoginGUI implements ILoginView, ActionListener {
     private MainMenuGUI mainMenuGUI;
     private JFrame frame;
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
-        frame.setResizable(false);
-        LoginSystem loginSystem = new LoginSystem();
-        MainGUI mainGUI = new MainGUI();
-        frame.setContentPane(new LoginGUI(loginSystem, frame).loginPanel);
-        frame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame();
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(500,500);
+//        frame.setResizable(false);
+//        LoginSystem loginSystem = new LoginSystem();
+//        MainGUI mainGUI = new MainGUI();
+//        frame.setContentPane(new LoginGUI(loginSystem, panelStack).loginPanel);
+//        frame.setVisible(true);
+//    }
 
-    public LoginGUI(LoginSystem loginSystem, JFrame frame) {
+    public LoginGUI(MainMenuGUI menu, LoginSystem loginSystem, PanelStack panelStack) {
+        this.panelStack = panelStack;
         this.loginSystem = loginSystem;
         logInPage();
-        mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys(), frame);
-        this.frame = frame;
+        mainMenuGUI = menu;
         logInButton.addActionListener(this);
 
     }
@@ -101,7 +102,8 @@ public class LoginGUI implements ILoginView, ActionListener {
 
         if (loginSystem.canLogin(uname, pword)) {
             JOptionPane.showMessageDialog(frame, "You have successfully logged in");
-            frame.setContentPane(mainMenuGUI.startMainMenuPage());
+            panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
+            //frame.setContentPane(mainMenuGUI.startMainMenuPage());
         }
         else {
             JOptionPane.showMessageDialog(loginPanel, "Invalid username or password.");

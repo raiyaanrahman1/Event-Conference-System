@@ -19,7 +19,7 @@ public class InboxGUI implements IMessageView {
     private JList messageJList;
     private JPanel mainPanel = new JPanel();
     private String currSelectedMsg;
-    private JButton[] messageOptions;
+    private List<JButton> messageOptions;
     private JScrollPane currMsgPreview;
     private JScrollPane currReplyPane;
     private JTextArea currReplyText;
@@ -135,12 +135,7 @@ public class InboxGUI implements IMessageView {
         currMsgPreview = builder.buildMessagePreview(new JScrollPane());
         currMsgPreview.setVisible(false);
         mainPanel.add(currMsgPreview);
-
         listListener();
-
-
-
-
         return mainPanel;
     }
 
@@ -198,23 +193,23 @@ public class InboxGUI implements IMessageView {
     }
     private void listenToButtons(){
         // view
-        messageOptions[0].addActionListener(e -> {
+        messageOptions.get(0).addActionListener(e -> {
             currMsgPreview.setViewportView(builder.prepareSelectedMessage(currSelectedMsg));
             currMsgPreview.setVisible(true);
         });
         // reply
-        messageOptions[1].addActionListener(e -> {
+        messageOptions.get(1).addActionListener(e -> {
             currMsgPreview.setViewportView(builder.prepareSelectedMessage(currSelectedMsg));
             currMsgPreview.setVisible(true);
             loadReplyPanel();
 
         });
         // archive
-        messageOptions[2].addActionListener(e -> {
+        messageOptions.get(2).addActionListener(e -> {
             //null;
         });
         // viewAll
-        messageOptions[3].addActionListener(e -> {
+        messageOptions.get(3).addActionListener(e -> {
             loadThreadPanel();
             internalBackListener();
         });

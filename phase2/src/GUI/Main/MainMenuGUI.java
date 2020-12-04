@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainMenuGUI {
+    private MessengerSystem messageSystem;
+    private PanelStack panelStack;
     private ContactsGUI contactGUI;
     private EventGUI eventGUI;;
     private EventSpeakerGUI ems;
@@ -23,23 +25,24 @@ public class MainMenuGUI {
     private JFrame frame;
 
 
-    public MainMenuGUI(EventManagementSystem eventSystem, MessengerSystem messageSystem, JFrame frame){
+    public MainMenuGUI(EventManagementSystem eventSystem, MessengerSystem messageSystem, PanelStack panelStack){
         eventGUI = new EventGUI(eventSystem);
-        // messageGUI = new MessageGUI(messageSystem);
-        this.frame = frame;
-    }
+        this.panelStack = panelStack;
+        this.messageSystem = messageSystem;
+        inboxGUI = new InboxGUI(messageSystem);
 
 
     private void inboxButtonListen(){
  //       inboxButton.addActionListener(e -> TODO call the appropriate message menu );
     }
 
-    private void contactsButtonListen(){
- //       contactButton.addActionListener(e -> TODO call the appropriate message menu );
+
+    private void messagesButtonListen(){
+        messagesButton.addActionListener(e -> panelStack.loadPanel(inboxGUI.mainPage()));
     }
 
     private void eventsButtonListen(){
- //     eventsButton.addActionListener(e -> TODO call the appropriate event menu);
+   //     eventsButton.addActionListener(e -> TODO call the appropriate event menu);
     }
 
     private void logOutButtonListen(){
@@ -80,6 +83,8 @@ public class MainMenuGUI {
         logOutButtonListen();
         mainMenuPanel.setVisible(true);
         return mainMenuPanel;
+
+
     }
 
 

@@ -3,6 +3,7 @@ package GUI.MessageMenus;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 
@@ -93,21 +94,23 @@ public class MessagePanelBuilder {
 
     public JTextArea prepareSelectedMessage(String message){
         JTextArea content = new JTextArea(message);
+        content.setFont(infoFont);
         content.setVisible(true);
         content.setEditable(false);
         content.setLineWrap(true);
         content.setWrapStyleWord(true);
         return content;
     }
-    public JButton[] buildOptions(String[] options, int startY){
+    public List<JButton> buildOptions(String[] options, int startY){
         // make this shorter using iteration
-        JButton[] buttons = new JButton[]{};
+        List<JButton> buttons = new ArrayList<>();
         int y = startY;
         for (String option: options){
             JButton button = new JButton(option);
             button.setFont(infoFont);
             button.setBounds(310, y, 100, 30);
             y += 40;
+            buttons.add(button);
         }
 
         return buttons;
