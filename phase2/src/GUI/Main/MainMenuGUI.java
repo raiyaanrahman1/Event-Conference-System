@@ -4,15 +4,16 @@ import Controller.EventManagementSystem;
 import Controller.MessengerSystem;
 import GUI.EventMenus.EventGUI;
 import GUI.EventMenus.EventSpeakerGUI;
-import GUI.MessageMenus.MessageGUI;
+import GUI.MessageMenus.*;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MainMenuGUI {
-    private EventGUI eventGUI;
-    private MessageGUI messageGUI;
+    private ContactsGUI contactGUI;
+    private EventGUI eventGUI;;
     private EventSpeakerGUI ems;
+    private InboxGUI inboxGUI;
     private JPanel mainMenuPanel = new JPanel();
     private JLabel mainMenuLabel = new JLabel("MAIN MENU");
     private JButton inboxButton = new JButton();
@@ -80,5 +81,8 @@ public class MainMenuGUI {
         mainMenuPanel.setVisible(true);
         return mainMenuPanel;
     }
+
+
+
 
 }
