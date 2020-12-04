@@ -15,7 +15,8 @@ public class MainMenuGUI {
     private EventSpeakerGUI ems;
     private JPanel mainMenuPanel = new JPanel();
     private JLabel mainMenuLabel = new JLabel("MAIN MENU");
-    private JButton messagesButton = new JButton();
+    private JButton inboxButton = new JButton();
+    private JButton contactButton = new JButton();
     private JButton eventsButton = new JButton();
     private JButton logOutButton = new JButton();
     private JFrame frame;
@@ -25,16 +26,19 @@ public class MainMenuGUI {
         eventGUI = new EventGUI(eventSystem);
         // messageGUI = new MessageGUI(messageSystem);
         this.frame = frame;
-
     }
 
 
-    private void messagesButtonListen(){
- //       messagesButton.addActionListener(e -> TODO call the appropriate message menu );
+    private void inboxButtonListen(){
+ //       inboxButton.addActionListener(e -> TODO call the appropriate message menu );
+    }
+
+    private void contactsButtonListen(){
+ //       contactButton.addActionListener(e -> TODO call the appropriate message menu );
     }
 
     private void eventsButtonListen(){
-   //     eventsButton.addActionListener(e -> TODO call the appropriate event menu);
+ //     eventsButton.addActionListener(e -> TODO call the appropriate event menu);
     }
 
     private void logOutButtonListen(){
@@ -49,28 +53,32 @@ public class MainMenuGUI {
         mainMenuLabel.setFont(new Font("", Font.BOLD, 48));
         mainMenuLabel.setBounds(95, 10, 500, 40);
         mainMenuPanel.add(mainMenuLabel);
-        //Messages Button
-        messagesButton.setText("Messages");
-        messagesButton.setFont(new Font("", Font.PLAIN, 20));
-        messagesButton.setBounds(170, 200, 150, 30);
-        mainMenuPanel.add(messagesButton);
-        messagesButtonListen();
+        //Inbox Button
+        inboxButton.setText("Inbox");
+        inboxButton.setFont(new Font("", Font.PLAIN, 20));
+        inboxButton.setBounds(170, 200, 150, 30);
+        mainMenuPanel.add(inboxButton);
+        inboxButtonListen();
+        //Contact Button
+        contactButton.setText("Contacts");
+        contactButton.setFont(new Font("", Font.PLAIN, 20));
+        contactButton.setBounds(170, 230, 150, 30);
+        mainMenuPanel.add(contactButton);
+        contactsButtonListen();
         //Events Button
         eventsButton.setText("Events");
         eventsButton.setFont(new Font("", Font.PLAIN, 20));
-        eventsButton.setBounds(170, 230, 150, 30);
+        eventsButton.setBounds(170, 260, 150, 30);
         mainMenuPanel.add(eventsButton);
         eventsButtonListen();
         //Logout Button
         logOutButton.setText("Log Out");
         logOutButton.setFont(new Font("", Font.PLAIN, 20));
-        logOutButton.setBounds(170, 260, 150, 30);
+        logOutButton.setBounds(170, 290, 150, 30);
         mainMenuPanel.add(logOutButton);
         logOutButtonListen();
         mainMenuPanel.setVisible(true);
         return mainMenuPanel;
-
-
     }
 
 }
