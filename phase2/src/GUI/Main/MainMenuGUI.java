@@ -70,6 +70,7 @@ public class MainMenuGUI {
         logOutButton.setBounds(170, 260, 150, 30);
         mainMenuPanel.add(logOutButton);
         logOutButtonListen();
+        mainMenuPanel.setVisible(true);
         return mainMenuPanel;
 
 

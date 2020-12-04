@@ -22,7 +22,6 @@ public class SignUpGUI implements ILoginView, ActionListener {
     private JComboBox typeComboBox = new JComboBox(userTypes);
     private MainMenuGUI mainMenuGUI;
 
-
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame();
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,6 +37,7 @@ public class SignUpGUI implements ILoginView, ActionListener {
         this.frame = frame;
         mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys(), frame);
         signUpPage();
+        signUpButton.addActionListener(this);
     }
 
     public JPanel signUpPage(){
@@ -74,7 +74,6 @@ public class SignUpGUI implements ILoginView, ActionListener {
         signUpButton.setText("Sign Up");
         signUpButton.setBounds(214, 364, 80, 25);
         signUpPanel.add(signUpButton);
-        signUpButtonListen();
         return signUpPanel;
     }
 
@@ -87,14 +86,17 @@ public class SignUpGUI implements ILoginView, ActionListener {
             if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")) {
                 loginSystem.signUpUser(uname, pword, "A");
                 JOptionPane.showMessageDialog(signUpPanel, "You have successfully signed up as an Attendee.");
+//                frame.setContentPane(mainMenuGUI.startMainMenuPage());
+                signUpPanel.setVisible(false);
             }
             else {
                 String input = JOptionPane.showInputDialog("Please enter the Organizer code.");
                 if (input.equals("AmongUs")) {
                     loginSystem.signUpUser(uname, pword, "O");
                     JOptionPane.showMessageDialog(signUpPanel, "You have successfully signed up as an Organizer.");
-                }
-                else{
+//                    frame.setContentPane(mainMenuGUI.startMainMenuPage());
+                    signUpPanel.setVisible(false);
+                } else {
                     JOptionPane.showMessageDialog(signUpPanel, "Invalid Organizer code.");
                 }
             }
@@ -102,8 +104,5 @@ public class SignUpGUI implements ILoginView, ActionListener {
         else {
             JOptionPane.showMessageDialog(signUpPanel, "Username already exists. Please select a different username.");
         }
-    }
-    private void signUpButtonListen(){
-        signUpButton.addActionListener(e -> frame.setContentPane(mainMenuGUI.startMainMenuPage()));
     }
 }

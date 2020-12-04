@@ -21,7 +21,14 @@ public class MainGUI {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(500, 500);
         mainFrame.setResizable(false);
-        mainFrame.setContentPane(languageSelectionGUI.getStartPanel());
+//        mainFrame.setContentPane(languageSelectionGUI.getStartPanel());
+        run();
     }
 
+    public void run(){
+        mainFrame.setContentPane(signUpGUI.signUpPage());
+        if (!signUpGUI.signUpPage().isVisible()){
+            mainFrame.setContentPane(mainMenuGUI.startMainMenuPage());
+        }
+    }
 }
