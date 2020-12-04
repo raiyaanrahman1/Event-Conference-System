@@ -3,16 +3,18 @@ package GUI.Main;
 import Controller.LoginSystem;
 
 import javax.swing.*;
+import java.util.Stack;
 
 public class MainGUI {
 
     private JFrame mainFrame = new JFrame();
+    private PanelStack panelStack = new PanelStack(mainFrame);
     private LoginSystem loginSystem = new LoginSystem();
-    private LoginGUI loginGUI = new LoginGUI(loginSystem, mainFrame);
-    private SignUpGUI signUpGUI = new SignUpGUI(loginSystem, mainFrame);
-    private MainMenuGUI mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys(), mainFrame);
+    private MainMenuGUI mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys(), panelStack);
+    private LoginGUI loginGUI = new LoginGUI(mainMenuGUI, loginSystem, panelStack);
+    private SignUpGUI signUpGUI = new SignUpGUI(mainMenuGUI, loginSystem, panelStack);
     private JPanel currentJPanel = new JPanel();
-    private WelcomeGUI languageSelectionGUI = new WelcomeGUI(mainFrame, loginGUI, signUpGUI);
+    private WelcomeGUI welcomeGUI = new WelcomeGUI(loginGUI, signUpGUI, panelStack);
 
     public MainGUI(){
         currentJPanel.setSize(500, 500);
@@ -21,14 +23,10 @@ public class MainGUI {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(500, 500);
         mainFrame.setResizable(false);
-//        mainFrame.setContentPane(languageSelectionGUI.getStartPanel());
         run();
     }
 
     public void run(){
-        mainFrame.setContentPane(signUpGUI.signUpPage());
-        if (!signUpGUI.signUpPage().isVisible()){
-            mainFrame.setContentPane(mainMenuGUI.startMainMenuPage());
-        }
+        panelStack.loadPanel(welcomeGUI.getStartPanel());
     }
 }

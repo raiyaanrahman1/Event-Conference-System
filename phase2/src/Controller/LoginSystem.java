@@ -29,7 +29,6 @@ public class LoginSystem {
     EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, userController);
     LogInSignUpPresenter logInSignUpPresenter = new LogInSignUpPresenter();
     EventPresenter eventPresenter = new EventPresenter(eventSys, userManager, eventMan);
-    CheckPassword checkPassword = new CheckPassword();
 
 
     /**
@@ -168,8 +167,8 @@ public class LoginSystem {
 
         logInSignUpPresenter.print("Enter a password.");
         String password = logInSignUpPresenter.readLine();
-        String strength = checkPassword.scorePassword(password);
-        logInSignUpPresenter.print(strength);
+//        String strength = checkPassword.scorePassword(password);
+//        logInSignUpPresenter.print(strength);
         userManager.CreateUser(username, password, userType);
     }
 

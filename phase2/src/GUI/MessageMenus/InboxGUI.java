@@ -135,12 +135,7 @@ public class InboxGUI implements IMessageView {
         currMsgPreview = builder.buildMessagePreview(new JScrollPane());
         currMsgPreview.setVisible(false);
         mainPanel.add(currMsgPreview);
-
         listListener();
-
-
-
-
         return mainPanel;
     }
 

@@ -6,10 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class WelcomeGUI implements ILoginView {
+    private PanelStack panelStack;
     private JPanel startPanel;
     private JButton LogInButton;
     private JButton signUpButton;
-    private JFrame frame;
     private LoginSystem loginSystem = new LoginSystem();
     private LoginGUI loginGUI;
     private SignUpGUI signUpGUI;
@@ -18,13 +18,15 @@ public class WelcomeGUI implements ILoginView {
     }
 
 
-    public WelcomeGUI(JFrame frame, LoginGUI loginGUI, SignUpGUI signUpGUI) {
-        this.frame = frame;
+    public WelcomeGUI(LoginGUI loginGUI, SignUpGUI signUpGUI, PanelStack panelStack) {
         this.loginGUI = loginGUI;
+        this.panelStack = panelStack;
         this.signUpGUI = signUpGUI;
 
-        LogInButton.addActionListener(e -> frame.setContentPane(loginGUI.logInPage()));
+        LogInButton.addActionListener(e -> {
+            this.panelStack.loadPanel(loginGUI.logInPage());
+        });
 
-        signUpButton.addActionListener(e -> frame.setContentPane(signUpGUI.signUpPage()));
+        signUpButton.addActionListener(e -> this.panelStack.loadPanel(signUpGUI.signUpPage()));
     }
 }
