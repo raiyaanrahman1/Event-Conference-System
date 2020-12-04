@@ -1,21 +1,18 @@
 package GUI.Main;
 
 import Controller.EventManagementSystem;
-import Controller.LoginSystem;
 import Controller.MessengerSystem;
 import GUI.EventMenus.EventGUI;
-import GUI.EventMenus.EventMenuSpeaker;
+import GUI.EventMenus.EventSpeakerGUI;
 import GUI.MessageMenus.MessageGUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainMenuGUI {
     private EventGUI eventGUI;
     private MessageGUI messageGUI;
-    private EventMenuSpeaker ems;
+    private EventSpeakerGUI ems;
     private JPanel mainMenuPanel = new JPanel();
     private JLabel mainMenuLabel = new JLabel("MAIN MENU");
     private JButton messagesButton = new JButton();

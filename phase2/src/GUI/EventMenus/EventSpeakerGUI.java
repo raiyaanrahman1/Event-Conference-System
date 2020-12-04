@@ -2,17 +2,12 @@ package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
 import Controller.LoginSystem;
-import GUI.MessageMenus.MessageGUI;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
-public class EventMenuSpeaker {
+public class EventSpeakerGUI {
     private EventManagementSystem eventSystem;
 
     private List<String> listEvents;
@@ -30,7 +25,7 @@ public class EventMenuSpeaker {
     private JPanel buttonPanel = new JPanel();
     private JLabel noEventLabel = new JLabel("You are not speaking at any.");
 
-    public EventMenuSpeaker(EventManagementSystem eventSystem) {
+    public EventSpeakerGUI(EventManagementSystem eventSystem) {
         this.eventSystem = eventSystem;
         buildListModel();
     }
@@ -64,7 +59,7 @@ public class EventMenuSpeaker {
         frame.setResizable(false);
         frame.setVisible(true);
         LoginSystem loginSystem = new LoginSystem();
-        frame.setContentPane(new EventMenuSpeaker(loginSystem.getEventSys()).startEventPage());
+        frame.setContentPane(new EventSpeakerGUI(loginSystem.getEventSys()).startEventPage());
     }
 
 
