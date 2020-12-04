@@ -12,7 +12,7 @@ public class ContactsGUI implements IMessageView{
     private MessengerSystem messenger;
     private JPanel mainPanel = new JPanel();
     private DefaultListModel<String> contactListModel = new DefaultListModel<>();
-    private JButton[] contactOptions;
+    private List<JButton> contactOptions;
     private JButton addButton;
     private JButton mainBackButton;
     private JButton internalBackButton;
@@ -48,7 +48,7 @@ public class ContactsGUI implements IMessageView{
         for (String s: testMsgs){
             contactListModel.addElement(s);
         }
-        contactsJList = new JList(contactListModel);
+        contactsJList = builder.buildJList(contactListModel);
         contacts = new JScrollPane(contactsJList);
         contacts.setVisible(true);
         mainPanel.add(builder.buildMainPane(contacts, "contacts"));
