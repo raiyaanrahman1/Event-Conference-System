@@ -1,1 +1,5 @@
-
+E|1|Conference 1 |BA220|TBA,,,|Organizer|20|2021-03-02T13:00:00|2021-03-02T14:00:00|Attendee1,Olivia,
+E|2|haha11's Funeral|Our Hearts|TBA,,,|Organizer1|8|2020-11-20T15:00:00|2020-11-20T16:00:00|Olivia,
+E|3|CSC207 FINAL EXAM|Quercus|TBA,,,|Organizer1|20|2020-12-18T15:00:00|2020-12-18T16:00:00|Olivia,
+E|4|example|exampleRoom|Speaker1,,,|Organizer1|100|2021-07-08T10:00:00|2021-07-08T11:00:00|
+E|5|example|exampleRoom|Speaker1,,,|Organizer1|100|2021-07-08T10:00:00|2021-07-08T11:00:00|Olivia,

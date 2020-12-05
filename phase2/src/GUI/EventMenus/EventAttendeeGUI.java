@@ -1,13 +1,15 @@
 package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
-import Controller.LoginSystem;
 import GUI.Main.PanelStack;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class EventAttendeeGUI {
+    private SortGUI yourEventSortGUI;
+    private SortGUI eventSortGUI;
     private PanelStack panelStack;
     private JList eventsJList = new JList();
     private JList yourEventsJList = new JList();
@@ -44,7 +46,11 @@ public class EventAttendeeGUI {
     public EventAttendeeGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;
         this.panelStack = panelStack;
+        eventSortGUI = new SortGUI(eventSystem, eventsListModel, panelStack);
+        yourEventSortGUI = new SortGUI(eventSystem, yourEventsListModel, panelStack);
         backButtonListen();
+        sortButtonListener();
+        sort2ButtonListener();
     }
 
     public JPanel startEventPage() {
@@ -53,7 +59,7 @@ public class EventAttendeeGUI {
         //EventsPanel:
         panelBuilder.buildAttendeeEventsPanel(eventsPanel, eventsJLabel);
         // EventsJListPanel:
-        eventsJList = new JList(eventsListModel);
+        eventsJList = new JList<String>(eventsListModel);
         panelBuilder.buildAttendeeEventsJListPanel(eventsJlistPanel, eventsJList, eventsListScroller);
         eventsPanel.add(eventsJlistPanel, BorderLayout.CENTER);
         // EventsButtonPanel
@@ -72,16 +78,76 @@ public class EventAttendeeGUI {
 
         //MainPanel
         panelBuilder.buildAttendeeMainPanel(mainPanel, northPanel, southPanel, backButton);
+        buildEventListModel();
+        buildYourEventListModel();
+        signUpButtonListener();
+        cancelButtonListener();
         return mainPanel;
     }
 
     private void backButtonListen(){
         backButton.addActionListener(e -> {
+            yourEventsListModel.clear();
+            eventsListModel.clear();
             panelStack.pop();
             JPanel panel = (JPanel) panelStack.pop();
             panelStack.loadPanel(panel);
         });
     }
 
+    private void sortButtonListener(){
+        sort1Button.addActionListener(e -> {
+            panelStack.loadPanel(eventSortGUI.sortPage());
+        });
+    }
 
+    private void sort2ButtonListener(){
+        sort2Button.addActionListener(e -> {
+            panelStack.loadPanel(yourEventSortGUI.sortPage());
+        });
+    }
+
+    private void signUpButtonListener(){
+        signUpButton.addActionListener(e -> {
+            int index = eventsJList.getSelectedIndex();
+            String event = (String) eventsJList.getSelectedValue();
+            boolean canSignUp = eventSystem.eventSignUp(Integer.parseInt(event.split("//|")[0]), eventsPanel);
+            if (canSignUp){
+                yourEventsListModel.addElement(event);
+                eventsListModel.remove(index);
+                yourEventsJList.setModel(yourEventsListModel);
+            }
+        });
+    }
+
+    private void cancelButtonListener(){
+        cancelButton.addActionListener(e -> {
+            int index = yourEventsJList.getSelectedIndex();
+            String event = (String) yourEventsJList.getSelectedValue();
+            boolean canCancel = eventSystem.attendeeCancelEvent(Integer.parseInt(event.split("//|")[0]), yourEventsPanel);
+            if (canCancel){
+                eventsListModel.addElement(event);
+                yourEventsListModel.remove(index);
+                eventsJList.setModel(eventsListModel);
+            }
+        });
+    }
+
+    private void buildEventListModel(){
+        List<String> eventList = eventSystem.getAvailableEventList();
+        if (!eventList.isEmpty()){
+            for (String event:eventList) {
+                eventsListModel.addElement(event);
+            }
+        }
+    }
+
+    private void buildYourEventListModel(){
+        List<String> yourEventList = eventSystem.getAttendeeEventList();
+        if (!yourEventList.isEmpty()){
+            for (String event:yourEventList) {
+                yourEventsListModel.addElement(event);
+            }
+        }
+    }
 }

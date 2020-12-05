@@ -26,7 +26,7 @@ public class LoginSystem {
     MessageManager messageMan = new MessageManager(messageListInformationGateway);
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
     CreateUserController userController = new CreateUserController(userManager);
-    EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, userController);
+    EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, userController, eventListGateway);
     LogInSignUpPresenter logInSignUpPresenter = new LogInSignUpPresenter();
     EventPresenter eventPresenter = new EventPresenter(eventSys, userManager, eventMan);
 
