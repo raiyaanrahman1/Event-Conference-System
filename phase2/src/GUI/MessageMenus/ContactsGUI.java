@@ -135,9 +135,6 @@ public class ContactsGUI implements IMessageView{
     }
 
     private void sendMsgPanel(){
-        JPanel sendPanel = new JPanel();
-        sendPanel.setLayout(null);
-//        contacts.setEnabled(false);
         addUserTextField.setVisible(false);
         panelHelper.disableButtons(options);
         contacts.setVisible(false);
@@ -148,8 +145,6 @@ public class ContactsGUI implements IMessageView{
         currMessageText = (JTextArea) elements[0];
         currMessagePane = (JScrollPane) elements[1];
         currMessagePane.setVisible(true);
-        sendPanel.add(currMessagePane);
-        mainPanel = sendPanel;
         internalBackListener();
         options.get(0).addActionListener(e -> {
             messenger.messageUser(currSelectedContact,
@@ -159,7 +154,6 @@ public class ContactsGUI implements IMessageView{
 
     private void viewMsgsPanel(){
         contacts.setVisible(false);
-
     }
 
 }
