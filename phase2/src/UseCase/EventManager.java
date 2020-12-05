@@ -19,8 +19,8 @@ import java.util.Objects;
  */
 public class EventManager {
 
-    private final EventFilterFactory factory = new EventFilterFactory();
     private ArrayList<Event> events;
+    public EventGetter eventGetter;
 
     /**
      * Creates an EventManager and initializes its list of events.
@@ -59,6 +59,7 @@ public class EventManager {
             }
 
             this.events.add(event);
+            this.eventGetter = new EventGetter(this.events);
         }
     }
 
@@ -96,51 +97,9 @@ public class EventManager {
         return formattedEvents;
     }
 
-    /**
-     * Gets the events that this user is already signed up for, iff user is an Attendee.
-     *
-     * @return a list of event IDs corresponding to the events this user is signed up for.
-     */
-    public List<Integer> getEventListByAttendee(String username){
 
-        List<Integer> eventListIDs = new ArrayList<>();
-        for(Event e : events){
-            if(e.getAttendees().contains(username)) eventListIDs.add(e.getEventID());
-        }
-        return eventListIDs;
-    }
 
-    /**
-     * Gets the events that this user is speaking in, iff user is an Speaker.
-     *
-     * @return a list of event IDs corresponding to the talks user is giving.
-     */
-    public List<Integer> getTalksBySpeaker(String username){
-        List<Integer> eventListIDs = new ArrayList<>();
-        for(Event e : events){
-            if(e.getSpeaker().contains(username)) eventListIDs.add(e.getEventID());
-        }
-        return eventListIDs;
-    }
 
-    /**
-     * Gets the events that this user organised, iff user is an Organizer.
-     *
-     * @return a list of event IDs corresponding to the events this user organised.
-     */
-    public List<Integer> getOrganizedEventsByOrganizer(String username){
-        List<Integer> eventListIDs = new ArrayList<>();
-        for(Event e : events){
-            if(e.getOrganizer().equals(username)) eventListIDs.add(e.getEventID());
-        }
-        return eventListIDs;
-    }
-
-    private boolean eventsOverlap(LocalDateTime start1, LocalDateTime end1, LocalDateTime start2, LocalDateTime end2){
-        return  start1.compareTo(start2) < 0 && end1.compareTo(start2) > 0 ||
-                start1.compareTo(start2) > 0 && start1.compareTo(end2) < 0 ||
-                start1.equals(start2);
-    }
 
     private boolean hasCommonSpeaker(List<String> speakers1, List<String> speakers2){
         for(String s : speakers2){
@@ -165,7 +124,7 @@ public class EventManager {
 
 
         for(Event e : events){
-            if(eventsOverlap(e.getStartTime(), e.getEndTime(), startTime, endTime) &&
+            if(eventGetter.eventsOverlap(e.getStartTime(), e.getEndTime(), startTime, endTime) &&
                     (e.getRoom().equals(room) || hasCommonSpeaker(e.getSpeaker(), speakers))) {
                 return false;}
 
@@ -176,6 +135,7 @@ public class EventManager {
         }
         event.setEventID(events.size()+1);
         events.add(event);
+        eventGetter.events.add(event);
         return true;
     }
 
@@ -194,7 +154,7 @@ public class EventManager {
     public boolean addVIPEvent(String eventName, String room, List<String> speakers, String organizer, int roomCap,
                                LocalDateTime startTime, LocalDateTime endTime){
         for(Event e : events){
-            if(eventsOverlap(e.getStartTime(), e.getEndTime(), startTime, endTime) &&
+            if(eventGetter.eventsOverlap(e.getStartTime(), e.getEndTime(), startTime, endTime) &&
                     (e.getRoom().equals(room) || hasCommonSpeaker(e.getSpeaker(), speakers))) {
                 return false;}
 
@@ -205,6 +165,7 @@ public class EventManager {
         }
         event.setEventID(events.size()+1);
         events.add(event);
+        eventGetter.events.add(event);
         return true;
     }
 
@@ -217,6 +178,7 @@ public class EventManager {
         Event event = this.getEventByID(eventID);
 
         events.remove(event);
+        eventGetter.events.remove(event);
         return true;
 
     }
@@ -237,77 +199,6 @@ public class EventManager {
         return false;
     }
 
-    private boolean validEventTimeForUser(List<List<LocalDateTime>> userEventTimes,
-                                          LocalDateTime start, LocalDateTime end){
-        for(List<LocalDateTime> l : userEventTimes){
-            if(eventsOverlap(l.get(0), l.get(1), start, end)) return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Gets the allowed events that this user may sign up for.
-     * @param username the username of the attendee
-     * @param type the type of the attendee
-     * @return a list of event IDs corresponding to the allowed events that this user may sign up for.
-     */
-    public List<Integer> getAllowedEvents(String username, String type){
-        if(type.equals("A")) return this.getAllowedEventsForAttendee(username);
-        else return this.getAllowedEventsForVIP(username);
-    }
-
-    private List<Integer> getAllowedEventsForAttendee(String username){
-        List<Integer> allowedEvents = new ArrayList<>();
-        List<List<LocalDateTime>> userEventTimes = new ArrayList<>();
-
-        for (Event e : events){
-            if (e.getAttendees().contains(username)){
-                ArrayList<LocalDateTime> times = new ArrayList<>();
-                times.add(e.getStartTime());
-                times.add(e.getEndTime());
-                userEventTimes.add(times);
-            }
-        }
-
-        for(Event e : events){
-
-            if (e.getSaveableInfo().charAt(0) == 'E' && !e.getAttendees().contains(username) &&
-                    validEventTimeForUser(userEventTimes, e.getStartTime(), e.getEndTime()) &&
-                    e.getAttendees().size() < e.getRoomCap() && e.getStartTime().isAfter(LocalDateTime.now())) {
-                allowedEvents.add(e.getEventID());
-            }
-
-
-        }
-        return allowedEvents;
-    }
-
-    private List<Integer> getAllowedEventsForVIP(String username){
-        List<Integer> allowedEvents = new ArrayList<>();
-        List<List<LocalDateTime>> userEventTimes = new ArrayList<>();
-
-        for (Event e : events){
-            if (e.getAttendees().contains(username)){
-                ArrayList<LocalDateTime> times = new ArrayList<>();
-                times.add(e.getStartTime());
-                times.add(e.getEndTime());
-                userEventTimes.add(times);
-            }
-        }
-
-        for(Event e : events){
-
-            if (!e.getAttendees().contains(username) &&
-                    validEventTimeForUser(userEventTimes, e.getStartTime(), e.getEndTime()) &&
-                    e.getAttendees().size() < e.getRoomCap() && e.getStartTime().isAfter(LocalDateTime.now())) {
-                allowedEvents.add(e.getEventID());
-            }
-
-
-        }
-        return allowedEvents;
-    }
 
 
     /**
@@ -331,7 +222,7 @@ public class EventManager {
      */
     public boolean signUpForEvent(int eventID, String username, String userType){
         Event event = this.getEventByID(eventID);
-        if (this.getAllowedEvents(username, userType).contains(eventID) &&
+        if (eventGetter.getAllowedEvents(username, userType).contains(eventID) &&
                 !Objects.requireNonNull(event).getAttendees().contains(username)){
             event.addAttendee(username);
             return true;
@@ -347,7 +238,7 @@ public class EventManager {
      */
     public boolean cancelSpot(int eventID, String username){
         Event event = this.getEventByID(eventID);
-         if (this.getEventListByAttendee(username).contains(eventID)) {
+         if (eventGetter.getEventListByAttendee(username).contains(eventID)) {
              assert event != null;
              event.removeAttendee(username);
             return true;
@@ -356,149 +247,10 @@ public class EventManager {
         }
     }
 
-    /**
-     * Gets all the attendees of an event.
-     * @param eventID the ID of the event we want to get the attendees of
-     * @return an ArrayList of all the attendees attending this event
-     */
-    public List<String> getAttendeesInEvent(int eventID) {
-        Event event = this.getEventByID(eventID);
-        assert event != null;
-        return event.getAttendees();
-    }
 
-    /**
-     * Gets the dateTime of an event by its eventID.
-     * @param eventID the ID of the event we want to get the datetime of
-     * @return a string representing the formatted dateTime of this event
-     */
-    public String getStartTimeByEventID(int eventID) {
-        return Objects.requireNonNull(this.getEventByID(eventID)).getStartTime().toString();
-    }
-
-    /**
-     * Gets the dateTime of an event by its eventID.
-     * @param eventID the ID of the event we want to get the datetime of
-     * @return a string representing the formatted dateTime of this event
-     */
-    public String getEndTimeByEventID(int eventID) {
-        return Objects.requireNonNull(this.getEventByID(eventID)).getEndTime().toString();
-    }
-
-    /**
-     * Gets the string format of this event.
-     * @param eventID the ID of the event we want to get the string format of
-     * @return a formatted string representing this event
-     */
-    public String getEventString(int eventID) {
-        return Objects.requireNonNull(getEventByID(eventID)).toString();
-    }
 
     // Phase 2 Functionality
-    /**
-     * Gets the room of an event by its eventID.
-     * @param eventID the ID of the event we want to get the room of
-     * @return a string representing the room of this event
-     */
-    public String getRoomByEventID(int eventID) {
-        return Objects.requireNonNull(this.getEventByID(eventID)).getRoom();
-    }
 
-    /**
-     * Returns the string representations of the event at the same date
-     * as the given date.
-     *
-     * @param date  the date
-     * @return  the list of event strings that occur at the date
-     */
-    public List<String> filterEventsByDate(LocalDate date) {
-        List<String> events = new ArrayList<>();
-        EventFilter filter;
-
-        try {
-            filter = factory.getEventFilter("date");
-        } catch (NoSuchFilterException ex) {
-            return events;
-        }
-
-        for (Event event: filter.filter(this.events, date.format(DateTimeFormatter.ISO_LOCAL_DATE))) {
-            events.add(event.toString());
-        }
-
-        return events;
-    }
-
-    /**
-     * Returns a list with the string representations of the events
-     * at which the given speaker participates in.
-     *
-     * @param username  the username of the speaker
-     * @return  the list of event strings with that speaker
-     */
-    public List<String> filterEventsBySpeaker(String username) {
-        List<String> events = new ArrayList<>();
-        EventFilter filter;
-
-        try {
-            filter = factory.getEventFilter("speaker");
-        } catch (NoSuchFilterException ex) {
-            return events;
-        }
-
-        for (Event event: filter.filter(this.events, username)) {
-            events.add(event.toString());
-        }
-
-        return events;
-    }
-
-    /**
-     * Returns a list with the string representations of the events
-     * organized by the given organizer.
-     *
-     * @param username  the username of the organizer
-     * @return  the list of event strings organized by that organizer
-     */
-    public List<String> filterEventsByOrganizer(String username) {
-        List<String> events = new ArrayList<>();
-        EventFilter filter;
-
-        try {
-            filter = factory.getEventFilter("organizer");
-        } catch (NoSuchFilterException ex) {
-            return events;
-        }
-
-        for (Event event: filter.filter(this.events, username)) {
-            events.add(event.toString());
-        }
-
-        return events;
-    }
-
-    /**
-     * Returns a list with the string representations of the events
-     * at which the given attendee participates in.
-     *
-     * @param username  the username of the attendee
-     * @return  the list of event strings with that attendee
-     */
-    public List<String> filterEventsByDate(String username) {
-        List<String> events = new ArrayList<>();
-        EventFilter filter;
-
-        try {
-            filter = factory.getEventFilter("attendee");
-        } catch (NoSuchFilterException ex) {
-            return events;
-        }
-
-        for (Event event: filter.filter(this.events, username)) {
-            events.add(event.toString());
-        }
-
-        return events;
-    }
 
     public void setRoom(int eventId, String roomName) throws AssertionError {
         Event e = getEventByID(eventId);
@@ -506,11 +258,6 @@ public class EventManager {
         e.setRoom(roomName);
     }
 
-    public String getSpeaker(int eventId) throws NoSuchEventException {
-        Event e = getEventByID(eventId);
-        if (e == null) throw new NoSuchEventException();
-        return String.valueOf(e.getSpeaker());
-    }
 
     public void setSpeakers(int eventId, List<String> speakerList) throws NoSuchEventException {
         Event e = getEventByID(eventId);
@@ -526,11 +273,6 @@ public class EventManager {
         }
     }
 
-    public String getName(int eventId) throws NoSuchEventException {
-        Event e = getEventByID(eventId);
-        if (e == null) throw new NoSuchEventException();
-        return e.getName();
-    }
 
     public void setName(int eventId, String name) throws NoSuchEventException {
         Event e = getEventByID(eventId);
@@ -540,17 +282,7 @@ public class EventManager {
         e.setName(name);
     }
 
-    public int getRoomCap(int eventId) throws NoSuchEventException {
-        Event e = getEventByID(eventId);
-        if (e == null) throw new NoSuchEventException();
-        return e.getRoomCap();
-    }
 
-    public String getOrganizer(int eventId) throws NoSuchEventException {
-        Event e = getEventByID(eventId);
-        if (e == null) throw new NoSuchEventException();
-        return e.getOrganizer();
-    }
 
     public void setOrganizer(int eventId, String org) throws NoSuchEventException {
         Event e = getEventByID(eventId);

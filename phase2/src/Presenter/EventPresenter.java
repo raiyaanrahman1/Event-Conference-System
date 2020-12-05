@@ -1,6 +1,7 @@
 package Presenter;
 
 import Controller.EventManagementSystem;
+import UseCase.EventGetter;
 import UseCase.EventManager;
 import UseCase.UserManager;
 
@@ -17,6 +18,7 @@ public class EventPresenter {
     private PrintStream out = System.out;
     private EventManagementSystem events;
     private EventManager manager;
+    private EventGetter getter;
 
     /**
      * Creates an EventPresenter instance.
@@ -28,13 +30,11 @@ public class EventPresenter {
         this.events = event;
         this.user = user;
         this.manager = manager;
+        getter = this.manager.eventGetter;
 
     }
 
-    /**
-     * Displays the appropriate event menu based on the type of logged-in user.
-     */
-//    public void mainEventPage(){
+    //    public void mainEventPage(){
 //        if (user.getUserInfoList().get(2).equals("O")) {
 //            events.eventMenuOrganizer();
 //        }else if (user.getUserInfoList().get(2).equals("S")){
@@ -59,7 +59,7 @@ public class EventPresenter {
      * Displays the events that the user has signed up for.
      */
     public void displayEventsByUser() {
-        List<Integer> userEvents = manager.getEventListByAttendee(user.getUserInfoList().get(0));
+        List<Integer> userEvents = getter.getEventListByAttendee(user.getUserInfoList().get(0));
         if (userEvents.size() == 0){
             print("You have not signed up for any events.");
         }
@@ -70,7 +70,7 @@ public class EventPresenter {
      * Shows the list of events an Organizer.
      */
     public void displayEventsByOrganizer() {
-        List<Integer> organizerEvents = manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0));
+        List<Integer> organizerEvents = getter.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0));
         if (organizerEvents.size() == 0){
             print("You have not organized any events.");
         }
@@ -81,7 +81,7 @@ public class EventPresenter {
      * Shows the list of events a Speaker is speaking at.
      */
     public void displayEventsBySpeaker() {
-        List<Integer> speakerEvents = manager.getTalksBySpeaker(user.getUserInfoList().get(0));
+        List<Integer> speakerEvents = getter.getTalksBySpeaker(user.getUserInfoList().get(0));
         if (speakerEvents.size() == 0) {
             print("You are not speaking any events.");
         }
@@ -92,7 +92,7 @@ public class EventPresenter {
      * Shows the list of events a user is allowed to sign up for.
      */
     public void displayAllowedEvents() {
-        List<Integer> allowedEvents = manager.getAllowedEvents(user.getUserInfoList().get(0),
+        List<Integer> allowedEvents = getter.getAllowedEvents(user.getUserInfoList().get(0),
                 user.getUserType(user.getUserInfoList().get(0)));
         if (allowedEvents.size() == 0){
             print("There are no events for you to sign up for.");
@@ -272,7 +272,7 @@ public class EventPresenter {
     public void formatEventString(List<Integer> eventList){
         if (eventList.size()> 0) {
             for (Integer eventID : eventList) {
-                System.out.println(manager.getEventString(eventID));
+                System.out.println(getter.getEventString(eventID));
             }
 
         }
