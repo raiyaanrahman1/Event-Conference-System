@@ -76,7 +76,7 @@ public class SignUpGUI implements ILoginView, ActionListener {
                     if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")){
                         loginSystem.signUpUser(uname, pword, "A");
                     JOptionPane.showMessageDialog(signUpPanel,
-                            String.format("You have successfully signed up as an Attendee.\nPassword Strength: {}",
+                            String.format("You have successfully signed up as an Attendee.\nPassword Strength: %s",
                                     checker.scorePassword(pword)));
                     panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
                 } else {
@@ -84,7 +84,7 @@ public class SignUpGUI implements ILoginView, ActionListener {
                         if (input.equals("AmongUs")) {
                             loginSystem.signUpUser(uname, pword, "O");
                             JOptionPane.showMessageDialog(signUpPanel,
-                                    String.format("You have successfully signed up as an Organizer.\nPassword Strength: {}",
+                                    String.format("You have successfully signed up as an Organizer.\nPassword Strength: %s",
                                             checker.scorePassword(pword)));
                             panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
                         } else {

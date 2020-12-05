@@ -31,7 +31,7 @@ public class CheckPassword {
     }
 
     private boolean checkLength(String pass){
-        if (pass.matches("^(?=.{8,})")){
+        if (pass.length() >= 8){
             score += 10;
             return true;
         }else{
