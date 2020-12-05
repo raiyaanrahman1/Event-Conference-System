@@ -2,10 +2,10 @@ package Controller;
 
 import Entity.Attendee;
 import Entity.Organizer;
-import Gateway.LoginFileGateway;
 import Gateway.IGateway;
 import Gateway.IGateway2;
 import Gateway.InfoFileGateway;
+import Gateway.LoginFileGateway;
 import Presenter.EventPresenter;
 import Presenter.LogInSignUpPresenter;
 import UseCase.EventManager;
@@ -34,27 +34,29 @@ public class LoginSystem {
     /**
      * Creates a new LoginSystem instance.
      */
-    public LoginSystem() {}
+    public LoginSystem() {
+    }
 
     /**
      * Gets the EventManagementSystem
+     *
      * @return event management system
      */
-    public EventManagementSystem getEventSys(){
+    public EventManagementSystem getEventSys() {
         return this.eventSys;
     }
 
     /**
      * Gets the MessageSystem
+     *
      * @return message management system
      */
-    public MessengerSystem getMsgSys(){
+    public MessengerSystem getMsgSys() {
         return this.msgSys;
     }
 
     /**
      * Calls the appropriate menus depending on the user input.
-     *
      */
     public void mainPage() {
         int answer;
@@ -82,11 +84,11 @@ public class LoginSystem {
                 answer = 2;
             }
             if (answer == 2) {
-                 if (logIn()) {
-                     mainPage();
-                 }
+                if (logIn()) {
+                    mainPage();
+                }
             }
-        } while(answer != 3);
+        } while (answer != 3);
     }
 
     /**
@@ -100,14 +102,23 @@ public class LoginSystem {
         System.exit(0);
     }
 
+    /**
+     * Determines if given username and password can log in
+     */
     public boolean canLogin(String username, String password) {
         return userManager.logInUser(username, password);
     }
 
-    public boolean isUser(String username){
+    /**
+     * Determines if given username exists in list of users
+     */
+    public boolean isUser(String username) {
         return userManager.getSignedUpUsers().contains(username);
     }
 
+    /**
+     * Signs in the user
+     */
     public void signUpUser(String username, String password, String userType) {
         userManager.CreateUser(username, password, userType);
     }
@@ -126,8 +137,7 @@ public class LoginSystem {
             if (userManager.logInUser(username, password)) {
                 logInSignUpPresenter.print("Log in successful. Welcome " + username);
                 return true;
-            }
-            else {
+            } else {
                 logInSignUpPresenter.print("Invalid user name or password. Please try again.");
                 logInSignUpPresenter.print("Or type 'm' to go back to main menu or any other key to try again");
                 if (logInSignUpPresenter.readLine().equals("m")) {
