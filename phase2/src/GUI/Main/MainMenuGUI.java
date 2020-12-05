@@ -42,7 +42,8 @@ public class MainMenuGUI {
         eventAttendeeGUI = new EventAttendeeGUI(eventSystem, panelStack);
         eventOrganizerGUI = new EventOrganizerGUI(eventSystem, panelStack);
         createAccountGUI = new CreateAccountGUI(loginSystem, panelStack);
-        inboxGUI = new InboxGUI(messageSystem);
+        inboxGUI = new InboxGUI(messageSystem, panelStack);
+        contactGUI = new ContactsGUI(messageSystem, panelStack);
         inboxButtonListen();
         contactsButtonListen();
         eventsButtonListen();
@@ -55,7 +56,7 @@ public class MainMenuGUI {
     }
 
     private void contactsButtonListen(){
-        //contactButton.addActionListener(e -> TODO call the appropriate event menu);
+        contactButton.addActionListener(e -> panelStack.loadPanel(contactGUI.mainPage()));
     }
 
     private void eventsButtonListen(){

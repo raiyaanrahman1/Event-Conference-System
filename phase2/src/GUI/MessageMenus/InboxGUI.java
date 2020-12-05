@@ -1,17 +1,16 @@
 package GUI.MessageMenus;
 
-import Controller.LoginSystem;
 import Controller.MessengerSystem;
-import com.sun.istack.internal.NotNull;
-import javafx.scene.control.DialogPane;
+import GUI.Main.PanelStack;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InboxGUI implements IMessageView {
+    private MessagePanel panelHelper = new MessagePanel();
+    private PanelStack panelStack;
     private MessagePanelBuilder builder;
     private MessengerSystem messenger;
     private JScrollPane inbox;
@@ -31,28 +30,42 @@ public class InboxGUI implements IMessageView {
     private List<String> testMsgs;
     private JScrollPane currThread;
 
-    public InboxGUI(MessengerSystem messenger){
+    private InboxListRenderer listCellRenderer = new InboxListRenderer();
+
+    private class InboxListRenderer extends DefaultListCellRenderer {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+                                                          boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (messenger.isRead(index))
+                    c.setBackground(Color.LIGHT_GRAY);
+                else
+                    c.setBackground(Color.WHITE);
+                return c;
+            }
+    }
+    public InboxGUI(MessengerSystem messenger, PanelStack panelStack){
+
         this.messenger = messenger;
+        this.panelStack = panelStack;
         builder = new MessagePanelBuilder(mainPanel);
-        messageOptions = builder.buildOptions(new String[]{"view", "reply", "archive", "viewAll"}, 260);
+        // unread, reply, archive, delete, view All, view archive
+        messageOptions = builder.buildOptions(new String[]{"unread", "reply", "archive", "view All"}, 260);
         for (JButton button : messageOptions){
             mainPanel.add(button);
-            button.setEnabled(false);
         }
+        panelHelper.enableButtons(messageOptions);
         // duplicate code in ContactsGUI, make interface?
         mainBackButton = builder.makeBackButton();
         internalBackButton = builder.makeBackButton();
         mainPanel.add(mainBackButton);
-        internalBackButton.setVisible(false);
         mainPanel.add(internalBackButton);
+        mainBackButton.setEnabled(true);
+        internalBackButton.setEnabled(false);
+        panelHelper.mainBackListener(panelStack, mainBackButton, internalBackButton);
     }
-    private void mainBackListener(){
-        mainBackButton.setVisible(true);
-        internalBackButton.setVisible(false);
-        mainBackButton.addActionListener(e -> {
-            // go back to main menu
-        });
-    }
+
+
 
     private void internalBackListener(){
         mainBackButton.setVisible(false);
@@ -70,63 +83,19 @@ public class InboxGUI implements IMessageView {
                 currThread.setVisible(false);
             }
             inbox.setVisible(true);
-            enableButtons();
+            panelHelper.enableButtons(messageOptions);
             listListener();
             builder.setTitle("inbox");
         });
     }
-    public JPanel mainPage(){
-        testMsgs = new ArrayList<>();
-        testMsgs.add("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhjjjjjjjjjjjjjj" +
-                "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhjjjjjjjjjjjjjj" +
-                "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhjjjjjjjjjjjjjj"+
-                "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhjjjjjjjjjjjjjj"+
-                "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhjjjjjjjjjjjjjj"+
-                "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhjjjjjjjjjjjjjj");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
-        testMsgs.add("HEY");
 
+    public JPanel mainPage(){
         inboxListModel = new DefaultListModel<String>();
-        for (String m : testMsgs) { // should be messenger.viewReceivedMessages()
+        for (String m : messenger.viewReceivedMessages()) {
             inboxListModel.addElement(m);
         }
         messageJList = builder.buildJList(inboxListModel);
+        messageJList.setCellRenderer(listCellRenderer);
         inbox = new JScrollPane(messageJList);
         inbox.setVisible(true);
         mainPanel.add(builder.buildMainPane(inbox, "inbox"));
@@ -139,27 +108,36 @@ public class InboxGUI implements IMessageView {
         return mainPanel;
     }
 
+    private void readMessage(){
+        currMsgPreview.setViewportView(builder.prepareSelectedMessage(currSelectedMsg));
+        currMsgPreview.setVisible(true);
+        //messageJList.getCellRenderer().getListCellRendererComponent()
+
+
+    }
+
     public void listListener(){
 
         messageJList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                currMsgPreview.setVisible(false);
-                currMessageIndex = messageJList.getSelectedIndex();
+//                currMessageIndex = messageJList.getSelectedIndex();
+                currMessageIndex = e.getLastIndex();
                 currSelectedMsg = inboxListModel.get(currMessageIndex);
-                enableButtons();
+                readMessage();
+                panelHelper.enableButtons(messageOptions);
                 listenToButtons();
             }
         });
     }
 
     private void loadReplyPanel(){
-        hideButtons();
+        panelHelper.disableButtons(messageOptions);
         inbox.setVisible(false);
         // might have to add a JPanel for where the inbox/reply is
-        Component[] temp = builder.prepareReplyPane();
-        currReplyText = (JTextArea) temp[0];
-        currReplyPane = (JScrollPane) temp[1];
-        sendButton = builder.buildButton("send");
+        Component[] elements = builder.prepareEditablePane("reply");
+        currReplyText = (JTextArea) elements[0];
+        currReplyPane = (JScrollPane) elements[1];
+        sendButton = builder.buildButton("send",310, 260);
         sendButton.setVisible(true);
         mainPanel.add(currReplyPane);
         mainPanel.add(sendButton);
@@ -174,7 +152,7 @@ public class InboxGUI implements IMessageView {
                 sendButton.setEnabled(false);
                 sendButton.setVisible(false);
                 inbox.setVisible(true);
-                enableButtons();
+                panelHelper.enableButtons(messageOptions);
                 listListener();
                 builder.setTitle("inbox");
             }
@@ -183,7 +161,7 @@ public class InboxGUI implements IMessageView {
 
 
     private void loadThreadPanel(){
-        hideButtons();
+        panelHelper.disableButtons(messageOptions);
         inbox.setVisible(false);
         currMsgPreview.setVisible(false);
         // get sender and call messenger.viewMessages(username)
@@ -192,10 +170,12 @@ public class InboxGUI implements IMessageView {
         mainPanel.add(currThread);
     }
     private void listenToButtons(){
-        // view
+        // unread
         messageOptions.get(0).addActionListener(e -> {
-            currMsgPreview.setViewportView(builder.prepareSelectedMessage(currSelectedMsg));
-            currMsgPreview.setVisible(true);
+            // need method to return current message state
+            messenger.markMessageRead(currMessageIndex);
+            Component c = messageJList.getComponent(currMessageIndex);
+            c.setBackground(Color.WHITE);
         });
         // reply
         messageOptions.get(1).addActionListener(e -> {
@@ -206,7 +186,7 @@ public class InboxGUI implements IMessageView {
         });
         // archive
         messageOptions.get(2).addActionListener(e -> {
-            //null;
+            messenger.archiveMessage(currMessageIndex);
         });
         // viewAll
         messageOptions.get(3).addActionListener(e -> {
@@ -214,64 +194,17 @@ public class InboxGUI implements IMessageView {
             internalBackListener();
         });
     }
-    private void enableButtons(){
-        for (JButton button : messageOptions){
-            button.setEnabled(true);
-            button.setVisible(true);
-        }
-    }
-    private void hideButtons(){
-        for (JButton button : messageOptions){
-            button.setVisible(false);
-        }
-    }
-//    public JPanel menuPage() {
-//        JPanel panel = builder.buildMain();
-//        panel.setVisible(true);
-//        JButton[] menuButtons = builder.buildMenuButtons();
-//        // might not need a button panel
-//        JPanel buttonPanel = new JPanel();
-//        buttonPanel.setLayout(null);
-//        buttonPanel.setBounds(20, 80, 250, 250);
-//        panel.add(menuButtons[0]);
-//        menuButtons[0].setBounds(20, 5, 50, 30);
-//        panel.add(menuButtons[1]);
-//        menuButtons[0].setBounds(20, 30, 50, 30);
-//        panel.add(buttonPanel, BorderLayout.CENTER);
-//        menuListen(menuButtons[0], menuButtons[1]);
+
 //
-//        return panel;
-//    }
-
-//    private void menuListen(JButton inbox, JButton contacts) {
-//        inbox.addActionListener(e -> inboxPage());
-//        contacts.addActionListener(e -> {
-//            //contactPage();
-//        });
-//    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Main");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(500,500);
+//        frame.setResizable(false);
+//        frame.setVisible(true);
+//        LoginSystem loginSystem = new LoginSystem();
+//        InboxGUI test = new InboxGUI(loginSystem.getMsgSys());
+//        frame.setContentPane(test.mainPage());
 //
-//    private void backListen(){
-//        builder.backButton.addActionListener(e -> menuPage());
 //    }
-
-//    public JPanel contactPage(){
-////        builder.buildContacts(mainPanel, messenger.getContacts());
-//        builder.buildContacts(mainPanel, new ArrayList<>());
-//        backListen();
-//        return mainPanel;
-//    }
-
-
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Main");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        LoginSystem loginSystem = new LoginSystem();
-        InboxGUI test = new InboxGUI(loginSystem.getMsgSys());
-        frame.setContentPane(test.mainPage());
-
-    }
 }

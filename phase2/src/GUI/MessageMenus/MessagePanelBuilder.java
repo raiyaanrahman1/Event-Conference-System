@@ -1,8 +1,6 @@
 package GUI.MessageMenus;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
@@ -31,24 +29,18 @@ public class MessagePanelBuilder {
         mainPanel.setVisible(true);
     }
 
-//    public void setMainPanel(JPanel other){
-//        this.mainPanel = other;
-//        preparePanel(other);
-//
-//    }
-
-    public Component[] prepareReplyPane(){
-        title.setText("reply");
-        JTextArea reply = new JTextArea();
-        reply.setBounds(50, 80, 225, 340);
-        reply.setEditable(true);
-        reply.setVisible(true);
-        reply.setFont(infoFont);
-        JScrollPane pane = new JScrollPane(reply,  ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+    public Component[] prepareEditablePane(String title){
+        this.title.setText(title);
+        JTextArea textArea = new JTextArea();
+        textArea.setBounds(50, 80, 225, 340);
+        textArea.setEditable(true);
+        textArea.setVisible(true);
+        textArea.setFont(infoFont);
+        JScrollPane pane = new JScrollPane(textArea,  ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         pane.setBounds(50, 80, 225, 340);
         pane.setVisible(true);
-        return new Component[]{reply, pane};
+        return new Component[]{textArea, pane};
     }
     public JButton makeBackButton(){
         JButton backButton = new JButton("back");
@@ -57,14 +49,21 @@ public class MessagePanelBuilder {
         return backButton;
     }
 
-    public JButton buildButton(String name){
+    public JButton buildButton(String name, int xCoordinate, int yCoordinate){
         JButton button = new JButton(name);
         button.setFont(infoFont);
-        button.setBounds(310, 260, 100, 30);
+        button.setBounds(xCoordinate, yCoordinate, 120, 30);
         return button;
 
     }
 
+    public JTextField buildTextField(int xCoordinate, int yCoordinate){
+        JTextField field = new JTextField();
+        field.setBounds(xCoordinate, yCoordinate, 120, 30);
+        field.setFont(infoFont);
+        return field;
+    }
+    // do we need this
     private void makeTitle(){
         title = new JLabel("");
         title.setFont(titleFont);
@@ -108,9 +107,10 @@ public class MessagePanelBuilder {
         for (String option: options){
             JButton button = new JButton(option);
             button.setFont(infoFont);
-            button.setBounds(310, y, 100, 30);
+            button.setBounds(310, y, 120, 30);
             y += 40;
             buttons.add(button);
+            mainPanel.add(button);
         }
 
         return buttons;
