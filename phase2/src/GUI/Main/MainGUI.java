@@ -10,7 +10,7 @@ public class MainGUI {
     private JFrame mainFrame = new JFrame();
     private PanelStack panelStack = new PanelStack(mainFrame);
     private LoginSystem loginSystem = new LoginSystem();
-    private MainMenuGUI mainMenuGUI = new MainMenuGUI(loginSystem.getEventSys(), loginSystem.getMsgSys(), panelStack);
+    private MainMenuGUI mainMenuGUI = new MainMenuGUI(loginSystem, loginSystem.getEventSys(), loginSystem.getMsgSys(), panelStack);
     private LoginGUI loginGUI = new LoginGUI(mainMenuGUI, loginSystem, panelStack);
     private SignUpGUI signUpGUI = new SignUpGUI(mainMenuGUI, loginSystem, panelStack);
     private JPanel currentJPanel = new JPanel();

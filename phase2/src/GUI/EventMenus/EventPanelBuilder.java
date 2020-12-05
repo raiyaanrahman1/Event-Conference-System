@@ -15,6 +15,17 @@ public class EventPanelBuilder {
         panel.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
     }
 
+    public void buildComponentBorderLayout(Component component, JPanel panel, String place, int size){
+        component.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, size));
+        panel.add(component, place);
+    }
+
+    public void buildComponent(Component component, JPanel panel, int size){
+        component.setEnabled(false);
+        component.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, size));
+        panel.add(component);
+    }
+
     public void buildJListEvents(JList jList){
         jList.setSelectionBackground(new Color(51, 153, 255));
         jList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -22,16 +33,17 @@ public class EventPanelBuilder {
         jList.setVisibleRowCount(0);
     }
 
-    public void buildJScrollPane(JScrollPane jScrollPane){
+    public void buildJScrollPane(JScrollPane jScrollPane, JPanel panel, JList jList){
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        jScrollPane.setVisible(true);
+        jScrollPane.setViewportView(jList);
+        panel.add(jScrollPane);
     }
 
     public void buildAttendeeEventsJListPanel(JPanel eventsJListPanel, JList eventsJList, JScrollPane eventsJScrollPane){
         eventsJListPanel.setLayout(new GridLayout(1, 1));
         buildJListEvents(eventsJList);
-        buildJScrollPane(eventsJScrollPane);
+        buildJScrollPane(eventsJScrollPane, eventsJListPanel, eventsJList);
         eventsJScrollPane.setViewportView(eventsJList);
         eventsJListPanel.add(eventsJScrollPane);
     }
