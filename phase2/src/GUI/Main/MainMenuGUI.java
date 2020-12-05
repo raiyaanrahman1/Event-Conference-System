@@ -2,6 +2,7 @@ package GUI.Main;
 
 import Controller.EventManagementSystem;
 import Controller.MessengerSystem;
+import GUI.EventMenus.EventAttendeeGUI;
 import GUI.EventMenus.EventGUI;
 import GUI.EventMenus.EventSpeakerGUI;
 import GUI.MessageMenus.*;
@@ -11,9 +12,11 @@ import java.awt.*;
 
 public class MainMenuGUI {
     private MessengerSystem messageSystem;
+    private EventManagementSystem eventSystem;
     private PanelStack panelStack;
     private ContactsGUI contactGUI;
-    private EventGUI eventGUI;
+    private EventSpeakerGUI eventSpeakerGUI;
+    private EventAttendeeGUI eventAttendeeGUI;
     private InboxGUI inboxGUI;
     private JPanel mainMenuPanel = new JPanel();
     private JLabel mainMenuLabel = new JLabel("MAIN MENU");
@@ -25,9 +28,11 @@ public class MainMenuGUI {
 
 
     public MainMenuGUI(EventManagementSystem eventSystem, MessengerSystem messageSystem, PanelStack panelStack) {
-        eventGUI = new EventGUI(eventSystem);
         this.panelStack = panelStack;
         this.messageSystem = messageSystem;
+        this.eventSystem = eventSystem;
+        eventSpeakerGUI = new EventSpeakerGUI(eventSystem, panelStack);
+        eventAttendeeGUI = new EventAttendeeGUI(eventSystem, panelStack);
         inboxGUI = new InboxGUI(messageSystem);
         inboxButtonListen();
         contactsButtonListen();
@@ -44,7 +49,15 @@ public class MainMenuGUI {
     }
 
     private void eventsButtonListen(){
-   //     eventsButton.addActionListener(e -> TODO call the appropriate event menu);
+        eventsButton.addActionListener(e -> {
+            String type = eventSystem.getUserType();
+            if (type.equals("S")){
+                panelStack.loadPanel(eventSpeakerGUI.startEventPage());
+            }
+            else if (type.equals("A")){
+                panelStack.loadPanel(eventAttendeeGUI.startEventPage());
+            }
+        });
     }
 
     private void logOutButtonListen(){

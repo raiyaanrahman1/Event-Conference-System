@@ -33,6 +33,9 @@ public class EventManagementSystem {
         this.userController = userController;
     }
 
+    public String getUserType(){
+        return user.getUserInfoList().get(2);
+    }
 
     /**
      * Signs a user up for an event.

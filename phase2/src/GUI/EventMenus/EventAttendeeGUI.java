@@ -2,12 +2,13 @@ package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
 import Controller.LoginSystem;
+import GUI.Main.PanelStack;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class EventAttendeeGUI {
-
+    private PanelStack panelStack;
     private JList eventsJList = new JList();
     private JList yourEventsJList = new JList();
 
@@ -18,7 +19,7 @@ public class EventAttendeeGUI {
     private JButton sort1Button = new JButton("Sort");
     private JButton sort2Button = new JButton("Sort");
     private JButton cancelButton = new JButton("Cancel");
-    private JButton backButton = new JButton("Exit");
+    private JButton backButton = new JButton("Back");
 
     private JPanel eventsButtonPanel = new JPanel();
     private JPanel yourEventsButtonPanel = new JPanel();
@@ -40,18 +41,10 @@ public class EventAttendeeGUI {
     private JScrollPane eventsListScroller = new JScrollPane();
     private JScrollPane yourEventsListScroller = new JScrollPane();
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        LoginSystem loginSystem = new LoginSystem();
-        frame.setContentPane(new EventAttendeeGUI(loginSystem.getEventSys()).startEventPage());
-    }
-
-    public EventAttendeeGUI(EventManagementSystem eventSystem) {
+    public EventAttendeeGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;
+        this.panelStack = panelStack;
+        backButtonListen();
     }
 
     public JPanel startEventPage() {
@@ -79,12 +72,15 @@ public class EventAttendeeGUI {
 
         //MainPanel
         panelBuilder.buildAttendeeMainPanel(mainPanel, northPanel, southPanel, backButton);
-        backButtonListen();
         return mainPanel;
     }
 
     private void backButtonListen(){
-        backButton.addActionListener(e -> mainPanel.setVisible(false));
+        backButton.addActionListener(e -> {
+            panelStack.pop();
+            JPanel panel = (JPanel) panelStack.pop();
+            panelStack.loadPanel(panel);
+        });
     }
 
 
