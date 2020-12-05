@@ -10,6 +10,11 @@ import java.util.List;
 public class CheckPassword {
     int score = 0;
 
+    /**
+     *
+     * @param pass the password to be checked.
+     * @return a string determining if the password is weak, medium or strong.
+     */
     public String scorePassword(String pass){
         boolean length = checkLength(pass);
         boolean variation = checkVariation(pass);
@@ -25,7 +30,7 @@ public class CheckPassword {
         }
     }
 
-    public boolean checkLength(String pass){
+    private boolean checkLength(String pass){
         if (pass.matches("^(?=.{8,})")){
             score += 10;
             return true;
@@ -35,7 +40,7 @@ public class CheckPassword {
         }
     }
 
-    public boolean checkVariation(String pass){
+    private boolean checkVariation(String pass){
         if (!pass.matches("^(?=.*[a-z])") && !pass.matches("^(?=.*[A-Z])") &&
                 !pass.matches("^(?=.*[0-9])") && !pass.matches("^(?=.[!@#$%^&])")){
             return false;
@@ -45,7 +50,7 @@ public class CheckPassword {
         }
     }
 
-    public void checkUniqueLetters(String pass) {
+    private void checkUniqueLetters(String pass) {
         List<Character> done = new ArrayList<>();
         if (pass.length() != 0) {
             for (char c : pass.toCharArray()) {

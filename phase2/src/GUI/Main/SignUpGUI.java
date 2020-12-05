@@ -1,5 +1,6 @@
 package GUI.Main;
 
+import Controller.CheckPassword;
 import Controller.LoginSystem;
 import javax.swing.*;
 import java.awt.*;
@@ -34,13 +35,13 @@ public class SignUpGUI implements ILoginView, ActionListener {
         signUpButton.addActionListener(this);
     }
 
-    public JPanel signUpPage(){
+    public JPanel signUpPage() {
         // PANEL:
         panelBuilder.buildMainPanel();
         // SIGNUP TITLE:
         panelBuilder.buildPanelLabel(titleLabel, 20, 200, 164, 200, 30);
         // PROGRAM TITLE:
-        panelBuilder.buildPanelLabel(programTitleJLabel,32,  65, 10, 500, 60);
+        panelBuilder.buildPanelLabel(programTitleJLabel, 32, 65, 10, 500, 60);
         // USERNAME:
         panelBuilder.buildComponent(usernameJLabel, 123, 214, 80, 25);
         panelBuilder.buildComponent(usernameTextField, 193, 214, 165, 25);
@@ -52,11 +53,11 @@ public class SignUpGUI implements ILoginView, ActionListener {
         // SIGNUP BUTTON:
         panelBuilder.buildButton(signUpButton, 190, 364, 100, 25);
         // BACK BUTTON:
-        panelBuilder.buildButton(backButton,10, 430, 80, 25);
+        panelBuilder.buildButton(backButton, 10, 430, 80, 25);
         return signUpPanel;
     }
 
-    private void backButtonListen(){
+    private void backButtonListen() {
         backButton.addActionListener(e -> {
             panelStack.pop();
             JPanel panel = (JPanel) panelStack.pop();
@@ -68,26 +69,34 @@ public class SignUpGUI implements ILoginView, ActionListener {
     public void actionPerformed(ActionEvent e) {
         String uname = usernameTextField.getText();
         String pword = passwordTextField.getText();
-
-        if (!loginSystem.isUser(uname)) {
-            if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")) {
-                loginSystem.signUpUser(uname, pword, "A");
-                JOptionPane.showMessageDialog(signUpPanel, "You have successfully signed up as an Attendee.");
-                panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
-            }
-            else {
-                String input = JOptionPane.showInputDialog("Please enter the Organizer code.");
-                if (input.equals("AmongUs")) {
-                    loginSystem.signUpUser(uname, pword, "O");
-                    JOptionPane.showMessageDialog(signUpPanel, "You have successfully signed up as an Organizer.");
+        CheckPassword checker = new CheckPassword();
+        if (checker.scorePassword(pword).equals("Strong Password") ||
+                checker.scorePassword(pword).equals("Medium Password") ) {
+                if (!loginSystem.isUser(uname)) {
+                    if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")){
+                        loginSystem.signUpUser(uname, pword, "A");
+                    JOptionPane.showMessageDialog(signUpPanel,
+                            String.format("You have successfully signed up as an Attendee.\nPassword Strength: {}",
+                                    checker.scorePassword(pword)));
                     panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
                 } else {
-                    JOptionPane.showMessageDialog(signUpPanel, "Invalid Organizer code.");
-                }
+                    String input = JOptionPane.showInputDialog("Please enter the Organizer code.");
+                        if (input.equals("AmongUs")) {
+                            loginSystem.signUpUser(uname, pword, "O");
+                            JOptionPane.showMessageDialog(signUpPanel,
+                                    String.format("You have successfully signed up as an Organizer.\nPassword Strength: {}",
+                                            checker.scorePassword(pword)));
+                            panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
+                        } else {
+                        JOptionPane.showMessageDialog(signUpPanel, "Invalid Organizer code.");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(signUpPanel, "Username already exists. Please select a different username.");
             }
-        }
-        else {
-            JOptionPane.showMessageDialog(signUpPanel, "Username already exists. Please select a different username.");
+        } else {
+            JOptionPane.showMessageDialog(signUpPanel,
+                    "Password is weak. Please make sure your password is longer than 8 characters.");
         }
     }
 }
