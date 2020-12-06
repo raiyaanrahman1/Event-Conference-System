@@ -2,6 +2,7 @@ package UseCase;
 
 import Entity.Message;
 import Exceptions.NoSuchMessageException;
+import Gateway.IGateway2;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -21,6 +22,33 @@ public class MessageMap implements MessageCollection {
      */
     public MessageMap() {
         messages = new HashMap<>();
+    }
+
+    public MessageMap(IGateway2 gateway) {
+        messages = new HashMap<>();
+
+        List<String> formattedMessages = new ArrayList<>();
+
+        gateway.openForRead();
+
+        while (gateway.hasNext()) {
+            formattedMessages.add(gateway.next());
+        }
+
+        gateway.closeForRead();
+
+        for (String formattedMessage: formattedMessages) {
+            String[] tokens = formattedMessage.split("\\|");
+
+            String receiver = tokens[0];
+            String sender = tokens[1];
+            String dateTime = tokens[2];
+            String content = tokens[3];
+
+            Message message = new Message(content, receiver, sender, dateTime);
+
+            this.add(message);
+        }
     }
 
     @Override
