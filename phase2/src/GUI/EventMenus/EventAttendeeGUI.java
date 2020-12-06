@@ -124,12 +124,10 @@ public class EventAttendeeGUI {
         cancelButton.addActionListener(e -> {
             int index = yourEventsJList.getSelectedIndex();
             String event = (String) yourEventsJList.getSelectedValue();
-            boolean canCancel = eventSystem.attendeeCancelEvent(Integer.parseInt(event.split("//|")[0]), yourEventsPanel);
-            if (canCancel){
-                eventsListModel.addElement(event);
-                yourEventsListModel.remove(index);
-                eventsJList.setModel(eventsListModel);
-            }
+            eventSystem.attendeeCancelEvent(Integer.parseInt(event.split("//|")[0]), yourEventsPanel);
+            eventsListModel.addElement(event);
+            yourEventsListModel.remove(index);
+            eventsJList.setModel(eventsListModel);
         });
     }
 

@@ -46,11 +46,11 @@ public class EventManagementSystem {
     }
 
     public List<String> filterEventDate(LocalDate date) {
-        return manager.filterEventsByDate(date);
+        return getter.filterEventsByDate(date);
     }
 
     public List<String> filterSpeakerDate(String speaker) {
-        return manager.filterEventsBySpeaker(speaker);
+        return getter.filterEventsBySpeaker(speaker);
     }
 
     /**
@@ -235,24 +235,18 @@ public class EventManagementSystem {
             canSignUp = true;
         }
         else {
-            JOptionPane.showMessageDialog(panel, "You have unsuccessfully signed up for an event");
+            JOptionPane.showMessageDialog(panel, "You cannot sign up for this event.");
         }
         return canSignUp;
 
 
     }
 
-    public boolean attendeeCancelEvent(int eventid, JPanel panel){
-        boolean canCancel = false;
+    public void attendeeCancelEvent(int eventid, JPanel panel){
         if (manager.cancelSpot(eventid, user.getUserInfoList().get(0))) {
             JOptionPane.showMessageDialog(panel,"Successfully cancelled event");
             manager.storeEvents(eventListGateway);
-            canCancel = true;
             }
-        else {
-            JOptionPane.showMessageDialog(panel,"Unsuccessfully cancelled event");
-        }
-        return canCancel;
     }
 
     private boolean checkDateValid(String date) throws InvalidDateException {
