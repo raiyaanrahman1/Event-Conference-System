@@ -14,8 +14,6 @@ public class EventSpeakerGUI {
     private EventManagementSystem eventSystem;
     private EventPanelBuilder panelBuilder = new EventPanelBuilder();
 
-
-    private List<String> listEvents;
     private DefaultListModel<String> listModel = new DefaultListModel<>();
 
 
@@ -25,7 +23,7 @@ public class EventSpeakerGUI {
 
     private JLabel eventsJLabel = new JLabel("EVENTS MENU");
 
-    private JList eventsJList = new JList(listModel);; //TODO pass in list of events of speakers in parameter of JList
+    private JList eventsJList = new JList(); //TODO pass in list of events of speakers in parameter of JList
 
     private JScrollPane eventsJScrollPane = new JScrollPane();
     private JButton backButton = new JButton("Back");
@@ -38,36 +36,37 @@ public class EventSpeakerGUI {
     public EventSpeakerGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;
         this.panelStack = panelStack;
-        buildListModel();
-        listListener();
         broadcastButtonListen();
         backButtonListen();
     }
 
-    private void buildListModel(){
-        boolean eventsExists = setListEvents();
+//    private void buildListModel(){
+//        boolean eventsExists = setListEvents();
+//
+//        if (eventsExists) {
+//            for (String s : this.listEvents) {
+//                listModel.addElement(s);
+//            }
+//        }
+//    }
 
-        if (eventsExists) {
-            for (String s : this.listEvents) {
-                listModel.addElement(s);
-            }
-        }
-    }
 
-    private boolean setListEvents(){
-        boolean eventsExists = false;
-        List<String> tempList = new ArrayList<>();//eventSystem.getBroadcastEventSpeaker();
-        tempList.add("Hi");
-        if (tempList.isEmpty()) {
-            this.noEventLabel.setVisible(true);
-        }
-        else{
-            this.listEvents = tempList;
-            this.noEventLabel.setVisible(false);
-            eventsExists = true;
-        }
-        return eventsExists;
-    }
+//    private boolean setListEvents(){
+//        boolean eventsExists = false;
+//        List<String> tempList = new ArrayList<>();//eventSystem.getBroadcastEventSpeaker();
+//        for (String event : eventSystem.getSpeakerEventList()) {
+//
+//        }
+//        if (tempList.isEmpty()) {
+//            this.noEventLabel.setVisible(true);
+//        }
+//        else{
+//            this.listEvents = tempList;
+//            this.noEventLabel.setVisible(false);
+//            eventsExists = true;
+//        }
+//        return eventsExists;
+//    }
 
     public JPanel startEventPage() {
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
@@ -76,8 +75,9 @@ public class EventSpeakerGUI {
         jListPanel.setLayout(new GridLayout(1, 1));
         eventPanel.add(jListPanel, BorderLayout.CENTER);
         panelBuilder.buildJListEvents(eventsJList);
-        panelBuilder.buildJScrollPane(eventsJScrollPane, eventPanel, eventsJList);
+        panelBuilder.buildJScrollPane(eventsJScrollPane, jListPanel, eventsJList);
         eventsJScrollPane.setViewportView(eventsJList);
+        eventsJList = new JList(listModel);
         jListPanel.add(eventsJScrollPane);
         buttonPanel.setLayout(new BorderLayout());
         eventPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -86,9 +86,19 @@ public class EventSpeakerGUI {
         buttonPanel.add(broadcastButton, BorderLayout.NORTH);
         backButton.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
         buttonPanel.add(backButton, BorderLayout.WEST);
+        buildListModel();
+        listListener();
         return eventPanel;
     }
 
+    private void buildListModel(){
+        List<String> eventList = eventSystem.getSpeakerEventList();
+        if (!eventList.isEmpty()){
+            for (String event:eventList) {
+                listModel.addElement(event);
+            }
+        }
+    }
 
     private void backButtonListen(){
         backButton.addActionListener(e -> {

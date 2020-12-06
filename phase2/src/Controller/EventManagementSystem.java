@@ -238,8 +238,6 @@ public class EventManagementSystem {
             JOptionPane.showMessageDialog(panel, "You cannot sign up for this event.");
         }
         return canSignUp;
-
-
     }
 
     public void attendeeCancelEvent(int eventid, JPanel panel){
@@ -257,7 +255,6 @@ public class EventManagementSystem {
         } else {
             throw new InvalidDateException();
         }
-
     }
 
     private boolean addEventHelper(String eventName, String room, List<String> ListOfSpeaker, int cap, String inputDate,
@@ -275,6 +272,7 @@ public class EventManagementSystem {
             return false;
         }
     }
+
     private boolean addVIPEventHelper(String eventName, String room, List<String> ListOfSpeaker, int cap, String inputDate,
                                    LocalTime inputStart, LocalTime inputEnd){
         if (!user.getUserInfoList().get(2).equals("O")) {
@@ -367,7 +365,7 @@ public class EventManagementSystem {
     }
 
     private void broadcastEventSpeakerHelper(){
-        getSpeakerEventList(user.getUserInfoList().get(0));
+        getSpeakerEventList();
         int eventID = 0; // placeholder
         if (getter.getAttendeesInEvent(eventID).size() == 0) {
             System.out.println("There are no attendees for this event.");
@@ -418,8 +416,8 @@ public class EventManagementSystem {
         return user.getSpeakers();
     }
 
-    public List<String> getSpeakerEventList(String username){
-        return getter.filterEventsBySpeaker(username);
+    public List<String> getSpeakerEventList(){
+        return getter.filterEventsBySpeaker(user.getUserInfoList().get(0));
     }
 
     public List<String> getAllEventList() {
