@@ -3,6 +3,7 @@ package GUI.Main;
 import Controller.LoginSystem;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
 import java.util.Stack;
 
 public class MainGUI {
@@ -24,6 +25,16 @@ public class MainGUI {
         mainFrame.setSize(500, 500);
         mainFrame.setResizable(false);
         run();
+        exitListener();
+    }
+
+    public void exitListener() {
+        mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                loginSystem.signOut();
+            }
+        });
     }
 
     public void run(){
