@@ -131,6 +131,26 @@ public class MessageManager {
         return true;
     }
 
+    public boolean unarchive(String receiver, String formattedMessage) {
+        Message message;
+
+        try {
+            message = this.parseMessage(receiver, formattedMessage);
+        } catch (InvalidMessageFormatException | DateTimeParseException ex) {
+            return false;
+        }
+
+        try {
+            message = this.messages.find(message);
+        } catch (NoSuchMessageException ex) {
+            return false;
+        }
+
+        this.archive.remove(message);
+        this.messages.add(message);
+
+        return true;
+    }
     /**
      * Marks the message that matches the given string representation
      * as read or unread. Returns true iff the message was marked

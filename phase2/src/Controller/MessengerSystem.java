@@ -60,7 +60,7 @@ public class MessengerSystem {
      * @param content  the content of the message
      */
     public void replyMessage(int index, String content) {
-        String message = viewReceivedMessages().get(index - 1);
+        String message = viewReceivedMessages().get(index);
         String sender = message.split("\\|")[0];
         messageManager.message(userManager.getUserInfoList().get(0), sender, content);
 //        msgPres.successfulMessage();
@@ -73,7 +73,11 @@ public class MessengerSystem {
      * @param index  the index of the message in the list
      */
     public void archiveMessage(int index) {
-        messageManager.archive(getLoggedInUser(), viewReceivedMessages().get(index - 1));
+        messageManager.archive(getLoggedInUser(), viewReceivedMessages().get(index));
+    }
+
+    public void unarchiveMessage(int index) {
+        messageManager.unarchive(getLoggedInUser(), viewReceivedMessages().get(index));
     }
 
     /**
@@ -83,7 +87,7 @@ public class MessengerSystem {
      * @param index  the index of the message in the list
      */
     public void deleteMessage(int index) {
-        messageManager.delete(getLoggedInUser(), viewReceivedMessages().get(index - 1));
+        messageManager.delete(getLoggedInUser(), viewReceivedMessages().get(index));
     }
 
     public boolean isRead(int index){
@@ -95,7 +99,7 @@ public class MessengerSystem {
      * @param index  the index of the message in the list
      */
     public void markMessageRead(int index) {
-        messageManager.mark(getLoggedInUser(), viewReceivedMessages().get(index - 1), true);
+        messageManager.mark(getLoggedInUser(), viewReceivedMessages().get(index), true);
     }
 
     /**
@@ -104,7 +108,7 @@ public class MessengerSystem {
      * @param index  the index of the message in the list
      */
     public void markMessageUnread(int index) {
-        messageManager.mark(getLoggedInUser(), viewReceivedMessages().get(index - 1), false);
+        messageManager.mark(getLoggedInUser(), viewReceivedMessages().get(index), false);
     }
 
     /**
@@ -131,6 +135,7 @@ public class MessengerSystem {
      */
     public void removeUser(String username) {
         userManager.removeUserFromContacts(username);
+        userManager.storeContacts();
     }
 
     /**
