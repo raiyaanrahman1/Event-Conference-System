@@ -49,6 +49,15 @@ public class MessagePanelBuilder {
         return backButton;
     }
 
+    public JButton buildButton(String name, int xCoordinate, int yCoordinate, int width, int height){
+        JButton button = new JButton(name);
+        button.setFont(infoFont);
+        button.setBounds(xCoordinate, yCoordinate, width, height);
+        return button;
+
+    }
+
+
     public JButton buildButton(String name, int xCoordinate, int yCoordinate){
         JButton button = new JButton(name);
         button.setFont(infoFont);
@@ -71,6 +80,7 @@ public class MessagePanelBuilder {
     }
 
     public JScrollPane buildMainPane(JScrollPane jScroll, String name){
+        title.setVisible(true);
         title.setText(name);
         jScroll.setBounds(50, 80, 225, 340);
         jScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -85,7 +95,7 @@ public class MessagePanelBuilder {
         title.setText(name);
     }
     public JScrollPane buildMessagePreview(JScrollPane messagePreview){
-        messagePreview.setBounds(300, 80, 125, 160);
+        messagePreview.setBounds(300, 80, 130, 160);
         messagePreview.setFont(infoFont);
         mainPanel.add(messagePreview);
         return messagePreview;

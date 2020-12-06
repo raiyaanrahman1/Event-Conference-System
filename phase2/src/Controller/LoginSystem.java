@@ -22,7 +22,9 @@ public class LoginSystem {
     IGateway2 eventListGateway = new InfoFileGateway("phase2/src/Controller/eventListInfo.txt");
     UserManager userManager = new UserManager(loginFileGateway, contactListGateway);
     EventManager eventMan = new EventManager(eventListGateway);
-    MessageManager messageMan;
+    MessageCollection messages = new MessageMap(messageListInformationGateway);
+    MessageCollection archive = new MessageMap(archiveFileGateway);
+    MessageManager messageMan = new MessageManager(messages, archive);
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
     CreateUserController userController = new CreateUserController(userManager);
     EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, userController, eventListGateway);
@@ -34,9 +36,6 @@ public class LoginSystem {
      * Creates a new LoginSystem instance.
      */
     public LoginSystem() {
-        MessageCollection messages = new MessageMap(messageListInformationGateway);
-        MessageCollection archive = new MessageMap(archiveFileGateway);
-        messageMan = new MessageManager(messages, archive);
     }
 
     /**
