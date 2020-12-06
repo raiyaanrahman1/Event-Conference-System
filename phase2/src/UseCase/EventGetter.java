@@ -159,6 +159,18 @@ public class EventGetter {
     }
 
     /**
+     * Get a list of all Event IDs
+     * @return list of all Event IDs
+     */
+    public List<Integer> getAllEventIDs(){
+        ArrayList<Integer> eventIDs = new ArrayList<>();
+        for(Event e: events){
+            eventIDs.add(e.getEventID());
+        }
+        return eventIDs;
+    }
+
+    /**
      * Gets all the attendees of an event.
      * @param eventID the ID of the event we want to get the attendees of
      * @return an ArrayList of all the attendees attending this event
