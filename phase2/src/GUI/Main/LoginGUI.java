@@ -11,14 +11,14 @@ public class LoginGUI implements ILoginView, ActionListener {
     private PanelStack panelStack;
     private LoginSystem loginSystem;
     private JPanel loginPanel = new JPanel();
-    private JLabel titleLabel = new JLabel("Login");
-    private JLabel usernameJLabel = new JLabel("Username");
-    private JLabel passwordJLabel = new JLabel("Password");
-    private JLabel programTitleJLabel = new JLabel("THE AMONG US SUMMIT");
+    private JLabel titleLabel = new JLabel("login");
+    private JLabel usernameJLabel = new JLabel("username");
+    private JLabel passwordJLabel = new JLabel("password");
+    private JLabel programTitleJLabel = new JLabel("the imposter summit");
     private JTextField userTextField = new JTextField(20);
     private JPasswordField passwordTextField = new JPasswordField(20);
-    private JButton logInButton = new JButton("Login");
-    private JButton backButton = new JButton("Back");
+    private JButton logInButton = new JButton("login");
+    private JButton backButton = new JButton("back");
     private MainMenuGUI mainMenuGUI;
     private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(loginPanel);
 
@@ -70,6 +70,8 @@ public class LoginGUI implements ILoginView, ActionListener {
 
         if (loginSystem.canLogin(uname, pword)) {
             JOptionPane.showMessageDialog(loginPanel, "You have successfully logged in");
+            userTextField.setText("");
+            passwordTextField.setText("");
             panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
         }
         else {

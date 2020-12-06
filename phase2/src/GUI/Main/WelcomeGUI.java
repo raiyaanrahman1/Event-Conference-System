@@ -9,9 +9,9 @@ import java.awt.event.ActionListener;
 public class WelcomeGUI implements ILoginView {
     private PanelStack panelStack;
     private JPanel welcomePanel = new JPanel();
-    private JLabel welcomeJLabel = new JLabel("THE AMONG US SUMMIT");
-    private JButton logInButton = new JButton("Log In");
-    private JButton signUpButton = new JButton("Sign Up");
+    private JLabel welcomeJLabel = new JLabel("the imposter summit");
+    private JButton logInButton = new JButton("log in");
+    private JButton signUpButton = new JButton("sign up");
     private LoginGUI loginGUI;
     private SignUpGUI signUpGUI;
     private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(welcomePanel);

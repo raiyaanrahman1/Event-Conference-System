@@ -12,17 +12,17 @@ public class SignUpGUI implements ILoginView, ActionListener {
     private PanelStack panelStack;
     private LoginSystem loginSystem;
     private JPanel signUpPanel = new JPanel();
-    private JLabel titleLabel = new JLabel("Sign Up");
-    private JLabel usernameJLabel = new JLabel("Username");
-    private JLabel passwordJLabel = new JLabel("Password");
-    private JLabel programTitleJLabel = new JLabel("THE AMONG US SUMMIT");
+    private JLabel titleLabel = new JLabel("sign up");
+    private JLabel usernameJLabel = new JLabel("username");
+    private JLabel passwordJLabel = new JLabel("password");
+    private JLabel programTitleJLabel = new JLabel("the imposter summit");
     private JTextField usernameTextField = new JTextField(20);
     private JPasswordField passwordTextField = new JPasswordField(20);
-    private JButton signUpButton = new JButton("Sign Up");
-    private String[] userTypes = {"Attendee", "Organizer"};
+    private JButton signUpButton = new JButton("sign up");
+    private String[] userTypes = {"attendee", "organizer"};
     private JComboBox typeComboBox = new JComboBox(userTypes);
     private MainMenuGUI mainMenuGUI;
-    private JButton backButton = new JButton("Back");
+    private JButton backButton = new JButton("back");
     private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(signUpPanel);
 
 

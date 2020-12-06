@@ -11,15 +11,15 @@ public class CreateAccountGUI implements ILoginView, ActionListener {
     private PanelStack panelStack;
     private LoginSystem loginSystem;
     private JPanel signUpPanel = new JPanel();
-    private JLabel titleLabel = new JLabel("Create Account");
-    private JLabel usernameJLabel = new JLabel("Username");
-    private JLabel passwordJLabel = new JLabel("Password");
+    private JLabel titleLabel = new JLabel("create account");
+    private JLabel usernameJLabel = new JLabel("username");
+    private JLabel passwordJLabel = new JLabel("password");
     private JTextField usernameTextField = new JTextField(20);
     private JPasswordField passwordTextField = new JPasswordField(20);
-    private JButton signUpButton = new JButton("Create");
-    private String[] userTypes = {"VIP Attendee", "Speaker"};
+    private JButton signUpButton = new JButton("create");
+    private String[] userTypes = {"Attendee", "VIP Attendee", "Speaker"};
     private JComboBox typeComboBox = new JComboBox(userTypes);
-    private JButton backButton = new JButton("Back");
+    private JButton backButton = new JButton("back");
     private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(signUpPanel);
 
 
@@ -64,7 +64,13 @@ public class CreateAccountGUI implements ILoginView, ActionListener {
         String pword = passwordTextField.getText();
 
         if (!loginSystem.isUser(uname)) {
-            if (Objects.equals(typeComboBox.getSelectedItem(), "VIP Attendee")) {
+            if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")) {
+                    loginSystem.signUpUser(uname, pword, "A");
+                    JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a Attendee.");
+                    usernameTextField.setText("");
+                    passwordTextField.setText("");
+            }
+            else if(Objects.equals(typeComboBox.getSelectedItem(), "VIP Attendee")) {
                 loginSystem.signUpUser(uname, pword, "V");
                 JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a VIP Attendee.");
                 usernameTextField.setText("");
