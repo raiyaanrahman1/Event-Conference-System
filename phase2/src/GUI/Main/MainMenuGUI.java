@@ -24,12 +24,12 @@ public class MainMenuGUI {
     private CreateAccountGUI createAccountGUI;
     private InboxGUI inboxGUI;
     private JPanel mainMenuPanel = new JPanel();
-    private JLabel mainMenuLabel = new JLabel("MAIN MENU");
-    private JButton inboxButton = new JButton("Inbox");
-    private JButton contactButton = new JButton("Contacts");
-    private JButton eventsButton = new JButton("Events");
-    private JButton logOutButton = new JButton("Log Out");
-    private JButton createAccountButton = new JButton("Create Account");
+    private JLabel mainMenuLabel = new JLabel("main menu");
+    private JButton inboxButton = new JButton("inbox");
+    private JButton contactButton = new JButton("contacts");
+    private JButton eventsButton = new JButton("events");
+    private JButton logOutButton = new JButton("log out");
+    private JButton createAccountButton = new JButton("create account");
     private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(mainMenuPanel);
 
 
@@ -59,7 +59,7 @@ public class MainMenuGUI {
         contactButton.addActionListener(e -> panelStack.loadPanel(contactGUI.mainPage()));
     }
 
-    private void eventsButtonListen(){
+    private void eventsButtonListen(){//invalidate for jpanel (redo drawing of panel)
         eventSpeakerGUI = new EventSpeakerGUI(eventSystem, panelStack);
         eventAttendeeGUI = new EventAttendeeGUI(eventSystem, panelStack);
         eventsButton.addActionListener(e -> {
@@ -71,15 +71,15 @@ public class MainMenuGUI {
                 panelStack.loadPanel(eventAttendeeGUI.startEventPage());
             }
             else{
-                Object[] options = {"Attend Events", "Manage Events", "Create Account"};
+                Object[] options = {"Attend Events", "Manage Events"};
                 int n = JOptionPane.showOptionDialog(mainMenuPanel,
                         "Where would you like to go?",
                         "",
-                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE,
                         null,
                         options,
-                        options[2]);
+                        options[1]);
                 if( n == 0){
                     panelStack.loadPanel(eventAttendeeGUI.startEventPage());
                 }
@@ -96,7 +96,11 @@ public class MainMenuGUI {
 
 
     private void logOutButtonListen(){
-        logOutButton.addActionListener(e -> panelStack.terminateProgram());
+        logOutButton.addActionListener(e -> {
+            panelStack.pop();
+            JPanel panel = (JPanel) panelStack.pop();
+            panelStack.loadPanel(panel);
+        });
     }
 
     public JPanel startMainMenuPage(){
