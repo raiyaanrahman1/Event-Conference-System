@@ -422,9 +422,9 @@ public class EventManagementSystem {
         return getter.filterEventsBySpeaker(username);
     }
 
-    public List<String> getAvailableEventList() {
+    public List<String> getAllEventList() {
         if (user.getUserInfoList().get(0) != null) {
-            return formatEventString(getter.getAllowedEvents(user.getUserInfoList().get(0), user.getUserInfoList().get(2)));
+            return formatEventString(getter.getAllEventIDs());
         }
         else {
             return new ArrayList<>();

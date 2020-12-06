@@ -123,7 +123,7 @@ public class Event {
     public String toString() {
         String[] formatted = getFormattedDateTime().split("T");
         return  eventID + ". " + name + " at " + formatted[0] + " " + formatted[1] + " " + "in room " + room +
-                ". Speaker/s: " + getSavableSpeakers();
+                ". Speaker/s: " + getFormattedSpeakers();
     }
 
     /**
@@ -150,16 +150,27 @@ public class Event {
         }
         return attendees.toString();
     }
-    private String getSavableSpeakers() {
+
+    private String getSavableSpeakers(){
+        StringBuilder speakers = new StringBuilder();
+        for (String s: this.speakers){
+            speakers.append(s).append(',');
+        }
+        return speakers.toString();
+    }
+
+    private String getFormattedSpeakers() {
         if (this.speakers.size() > 0) {
             StringBuilder speakers = new StringBuilder();
             for (String s : this.speakers) {
                 speakers.append(s).append(',');
             }
-            return speakers.toString();
+            String formattedSpeakers = speakers.toString();
+            return speakers.substring(0, formattedSpeakers.length()-2);
         }
         return "";
     }
+
     /**
      * Returns the Event's list of attendees
      */

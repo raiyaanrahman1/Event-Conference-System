@@ -132,7 +132,7 @@ public class EventAttendeeGUI {
     }
 
     private void buildEventListModel(){
-        List<String> eventList = eventSystem.getAvailableEventList();
+        List<String> eventList = eventSystem.getAllEventList();
         if (!eventList.isEmpty()){
             for (String event:eventList) {
                 eventsListModel.addElement(event);
