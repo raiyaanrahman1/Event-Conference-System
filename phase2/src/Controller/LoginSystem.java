@@ -8,9 +8,7 @@ import Gateway.InfoFileGateway;
 import Gateway.LoginFileGateway;
 import Presenter.EventPresenter;
 import Presenter.LogInSignUpPresenter;
-import UseCase.EventManager;
-import UseCase.MessageManager;
-import UseCase.UserManager;
+import UseCase.*;
 
 /**
  * Class which manages the Logging in and Signing up of a User
@@ -19,11 +17,12 @@ import UseCase.UserManager;
 public class LoginSystem {
     IGateway loginFileGateway = new LoginFileGateway("phase2/src/Controller/LogInInformation.txt");
     IGateway2 messageListInformationGateway = new InfoFileGateway("phase2/src/Controller/MessageListInformation.txt");
+    IGateway2 archiveFileGateway = new InfoFileGateway("phase2/src/Controller/MessageListInformation.txt");
     IGateway2 contactListGateway = new InfoFileGateway("phase2/src/Controller/contactListInfo.txt");
     IGateway2 eventListGateway = new InfoFileGateway("phase2/src/Controller/eventListInfo.txt");
     UserManager userManager = new UserManager(loginFileGateway, contactListGateway);
     EventManager eventMan = new EventManager(eventListGateway);
-    MessageManager messageMan = new MessageManager(messageListInformationGateway);
+    MessageManager messageMan;
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
     CreateUserController userController = new CreateUserController(userManager);
     EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, userController, eventListGateway);
@@ -35,6 +34,9 @@ public class LoginSystem {
      * Creates a new LoginSystem instance.
      */
     public LoginSystem() {
+        MessageCollection messages = new MessageMap(messageListInformationGateway);
+        MessageCollection archive = new MessageMap(archiveFileGateway);
+        messageMan = new MessageManager(messages, archive);
     }
 
     /**
@@ -96,7 +98,7 @@ public class LoginSystem {
      */
     public void signOut() {
         logInSignUpPresenter.print("Goodbye.");
-        messageMan.storeMessages(messageListInformationGateway);
+        messageMan.storeMessages(messageListInformationGateway, archiveFileGateway);
         userManager.storeContacts();
         eventMan.storeEvents(eventListGateway);
         System.exit(0);

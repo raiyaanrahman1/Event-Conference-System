@@ -14,6 +14,20 @@ import java.util.Comparator;
  * The MessageManager class manages communications between users.
  */
 public class MessageManager {
+    /*
+     * TODO: READ THIS
+     * Note: Every message has two string representations. One that represents the
+     * whole object, and another that represents the basic information used in the
+     * messenger system.
+     *
+     * The first representation is simple, it follows the following format:
+     *  ( receiver )|( sender )|( dateTime )|( content )|( read/unread )
+     * this is called the string representation of the message.
+     *
+     * The second one is also simple, it follows the following format:
+     *  ( sender )|( dateTime )|( content )|( read/unread )
+     * this is called the formatted message.
+     */
 
     /*
      * A message collection for all active messages.
@@ -30,6 +44,7 @@ public class MessageManager {
      * The file should be formatted like so:
      *   receiver|sender|dateTime|content
      */
+    @Deprecated
     public MessageManager(IGateway2 gateway) {
         messages = new MessageMap();
         archive = new MessageMap();
@@ -52,6 +67,11 @@ public class MessageManager {
         }
     }
 
+    /**
+     * Initializes the message manager with given message collections
+     * @param messages  the collection of active messages
+     * @param archive  the collection of archived messages
+     */
     public MessageManager(MessageCollection messages, MessageCollection archive) {
         this.messages = messages;
         this.archive = archive;
@@ -85,8 +105,9 @@ public class MessageManager {
     }
 
     /**
-     * Removes the message that matches the given string representation.
-     * Returns true iff the message was removed correctly, otherwise
+     * Removes the message that matches the given formatted message.
+     * Returns true iff the message was removed correctly.
+     *
      * @param formattedMessage  the string representation of the message
      *                          to remove
      * @return  true iff the message has been removed correctly
@@ -104,7 +125,7 @@ public class MessageManager {
     }
 
     /**
-     * Archives the message that matches the given string representation.
+     * Archives the message that matches the given formatted message.
      * Returns true iff the message was archived correctly.
      *
      * @param formattedMessage  the string representation of the message
@@ -131,6 +152,13 @@ public class MessageManager {
         return true;
     }
 
+    /**
+     * Moves the archived message that matches the given formatted message
+     * to the active messages. Returns true iff the message was archived correctly.
+     *
+     * @param formattedMessage  the string representation of the message
+     * @return  true iff the message has been unarchived correctly
+     */
     public boolean unarchive(String receiver, String formattedMessage) {
         Message message;
 
@@ -151,10 +179,11 @@ public class MessageManager {
 
         return true;
     }
+
     /**
-     * Marks the message that matches the given string representation
+     * Marks the message that matches the given formatted message
      * as read or unread. Returns true iff the message was marked
-     * correctly, otherwise it returns false.
+     * correctly.
      *
      * @param formattedMessage  the string representation of the message
      * @return  true iff the message has been marks correctly
@@ -180,10 +209,10 @@ public class MessageManager {
     /**
      * Gets the messages received by the given user. Each message is
      * represented by a string with the following format:
-     *         (sender's username)|(date)|(time)|(content)
+     *  (sender's username)|(datetime)|(content)|(read/unread)
      *
      * For example,
-     *  ken|09/08/1969 11:37:45|Ritchie, check this out, i call it ed.
+     *  ken|09/08/1969 11:37:45|hey ritchie|false
      *
      * @param receiver  the receiver of the messages
      */
@@ -201,7 +230,8 @@ public class MessageManager {
 
     /**
      * Gets the messages archived by the given user in the usual
-     * string representation.
+     * string representation
+     *  (sender's username)|(datetime)|(content)|(read/unread)
      *
      * @param receiver  the receiver of this message
      * @return  the list of archived messages
@@ -222,30 +252,30 @@ public class MessageManager {
      * Stores the messages through a gateway.
      * Precondition: the gateway must not be open for write/read.
      *
-     * @param gateway  the gateway through which we save our messages
+     * @param messageGateway  the gateway through which we save our messages
      */
-    public void storeMessages(IGateway2 gateway) {
-        if (gateway.openForWrite()) {
+    public void storeMessages(IGateway2 messageGateway, IGateway2 archiveMessage) {
+        if (messageGateway.openForWrite()) {
             for (Message message: this.messages.getAll()) {
-                gateway.write(this.convertToString(message));
+                messageGateway.write(this.convertToString(message));
             }
 
-            gateway.closeForWrite();
+            messageGateway.closeForWrite();
+        }
+
+        if (archiveMessage.openForWrite()) {
+            for (Message message: this.archive.getAll()) {
+                messageGateway.write(this.convertToString(message));
+            }
+
+            messageGateway.closeForWrite();
         }
     }
 
-    public boolean isRead(int index, String receiver){
-        try {
-            return this.messages.find(messages.get(receiver).get(index)).isRead();
-        } catch (NoSuchMessageException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
     /*
      * Gets the strings that represent each message to the manager.
      * Each string should be formatted in the manner:
-     *          (receiver)|(sender)|(datetime)|(content)
+     *  (receiver)|(sender)|(datetime)|(content)|(read/unread)
      *
      * @param gateway2  the interface that holds the message data
      * @return  a list of formatted messages
@@ -262,7 +292,7 @@ public class MessageManager {
      * Returns the formatted form of a given message.
      *
      * For example,
-     *  ken|09/08/1969 11:37:45|Ritchie, check this out, i call it ed.
+     *  ken|09/08/1969 11:37:45|hey, ritchie|false
      *
      * @param message  the message
      * @return  the formatted string that represents the message.
@@ -271,15 +301,16 @@ public class MessageManager {
         String dateTime = message.getFormattedDateTime();
         String content = message.getContent();
         String sender = message.getSender();
+        boolean read = message.isRead();
 
-        return String.format("%s|%s|%s", sender, dateTime, content);
+        return String.format("%s|%s|%s|%b", sender, dateTime, content, read);
     }
 
     /*
-     * Splits a formatted message into its necessary string components.
+     * Splits a message string representation into its necessary string components.
      *
-     * @param formattedMessage  the formatted message
-     * @return  an array containing the components of the message
+     * @param formattedMessage  the string representation of the message
+     * @return  the message
      * @throws InvalidMessageFormatException iff formatted message is invalid
      */
     private Message parseMessage(String receiver, String formattedMessage)
@@ -309,8 +340,9 @@ public class MessageManager {
         String content = message.getContent();
         String sender = message.getSender();
         String receiver = message.getReceiver();
+        boolean read = message.isRead();
 
-        return String.format("%s|%s|%s|%s", receiver, sender, dateTime, content);
+        return String.format("%s|%s|%s|%s|%b", receiver, sender, dateTime, content, read);
     }
 
     /*

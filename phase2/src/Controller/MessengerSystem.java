@@ -91,8 +91,11 @@ public class MessengerSystem {
     }
 
     public boolean isRead(int index){
-        return messageManager.isRead(index, getLoggedInUser());
+        String[] tokens = viewReceivedMessages().get(index).split("\\|");
+
+        return Boolean.parseBoolean(tokens[3]);
     }
+
     /**
      * Marks the message at the given index in the list of messages as read.
      *
