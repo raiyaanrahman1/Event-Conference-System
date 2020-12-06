@@ -60,6 +60,8 @@ public class MainMenuGUI {
     }
 
     private void eventsButtonListen(){
+        eventSpeakerGUI = new EventSpeakerGUI(eventSystem, panelStack);
+        eventAttendeeGUI = new EventAttendeeGUI(eventSystem, panelStack);
         eventsButton.addActionListener(e -> {
             String type = eventSystem.getUserType();
             if (type.equals("S")){

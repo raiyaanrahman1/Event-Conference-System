@@ -78,7 +78,8 @@ public class SignUpGUI implements ILoginView, ActionListener {
                     JOptionPane.showMessageDialog(signUpPanel,
                             String.format("You have successfully signed up as an Attendee.\nPassword Strength: %s",
                                     checker.scorePassword(pword)));
-                    panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
+                        loginSystem.canLogin(uname, pword);
+                        panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
                 } else {
                     String input = JOptionPane.showInputDialog("Please enter the Organizer code.");
                         if (input.equals("AmongUs")) {
@@ -86,6 +87,7 @@ public class SignUpGUI implements ILoginView, ActionListener {
                             JOptionPane.showMessageDialog(signUpPanel,
                                     String.format("You have successfully signed up as an Organizer.\nPassword Strength: %s",
                                             checker.scorePassword(pword)));
+                            loginSystem.canLogin(uname, pword);
                             panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
                         } else {
                         JOptionPane.showMessageDialog(signUpPanel, "Invalid Organizer code.");

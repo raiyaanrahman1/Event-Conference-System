@@ -35,7 +35,6 @@ public class CheckPassword {
             score += 10;
             return true;
         }else{
-            System.out.println("Password has to be longer than 8 characters");
             return false;
         }
     }

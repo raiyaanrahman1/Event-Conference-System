@@ -4,6 +4,8 @@ package UseCase;
 import Entity.User;
 import Gateway.IGateway;
 import Gateway.IGateway2;
+
+import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,16 @@ public class UserManager {
         ArrayList<List<String>> userInfo = gateway.read();
         userStore.createUserList(userInfo);
         rawUserInfo = userInfo;
+    }
+
+    public List<String> getSpeakers(){
+        List<String> listOfSpeakers = new ArrayList<>();
+        for(User speaker : userStore.userList) {
+            if (speaker.getUserType().equals("S")){
+                listOfSpeakers.add(speaker.getUsername());
+            }
+        }
+        return listOfSpeakers;
     }
 
     /**

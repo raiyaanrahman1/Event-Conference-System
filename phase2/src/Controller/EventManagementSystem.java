@@ -2,11 +2,14 @@ package Controller;
 
 import Exceptions.InvalidDateException;
 import Exceptions.NoSuchEventException;
+import Gateway.IGateway2;
+import Gateway.InfoFileGateway;
 import UseCase.EventGetter;
 import UseCase.EventManager;
 import UseCase.UserManager;
 import UseCase.MessageManager;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -19,6 +22,7 @@ public class EventManagementSystem {
 
     private final UserManager user;
     private final EventManager manager;
+    IGateway2 eventListGateway;
     private final EventGetter getter;
     private final MessageManager mess;
     private CreateUserController userController;
@@ -28,40 +32,49 @@ public class EventManagementSystem {
      * CreateSpeakerController and MessageManager.
      */
     public EventManagementSystem(UserManager user, EventManager event, MessageManager mess,
-                                 CreateUserController userController) {
+                                 CreateUserController userController, IGateway2 eventListGateway) {
         this.manager = event;
         this.user = user;
         this.mess = mess;
         this.userController = userController;
         getter = manager.eventGetter;
+        this.eventListGateway = eventListGateway;
     }
 
     public String getUserType(){
         return user.getUserInfoList().get(2);
     }
 
+    public List<String> filterEventDate(LocalDate date) {
+        return getter.filterEventsByDate(date);
+    }
+
+    public List<String> filterSpeakerDate(String speaker) {
+        return getter.filterEventsBySpeaker(speaker);
+    }
+
     /**
      * Signs a user up for an event.
      */
-    public void eventSignUp() {
-        if (getter.getAllowedEvents(user.getUserInfoList().get(0),
-                user.getUserType(user.getUserInfoList().get(0))).size() == 0) {
-            System.out.println("There are no available events");
-        } else {
-            eventSignUpHelper();
-        }
-    }
+//    public void eventSignUp(JPanel panel) {
+//        if (manager.getAllowedEvents(user.getUserInfoList().get(0),
+//                user.getUserType(user.getUserInfoList().get(0))).size() == 0) {
+//            JOptionPane.showMessageDialog(panel, "There are no available events");
+//        } else {
+//            eventSignUpHelper(panel);
+//        }
+//    }
 
     /**
      * Cancels a spot at the event of a user that is already signed up to the event.
      */
-    public void attendeeCancelEvent() {
-        if (getter.getEventListByAttendee(user.getUserInfoList().get(0)).size() == 0) {
-            System.out.println("You have not signed up for any events");
-        }else{
-        attendeeCancelEventHelper();
-        }
-    }
+//    public void attendeeCancelEvent(JPanel panel) {
+//        if (manager.getEventListByAttendee(user.getUserInfoList().get(0)).size() == 0) {
+//            JOptionPane.showMessageDialog(panel, "You have not signed up for any events");
+//        }else{
+//        attendeeCancelEventHelper(panel);
+//        }
+//    }
 
     /**
      * Adds a new event to event list iff this user is an Organiser.
@@ -213,34 +226,25 @@ public class EventManagementSystem {
     }
 
     //HELPER METHODS
-    private void eventSignUpHelper(){
-            boolean failedSignUp = true;
-            do {
-            getAvailableEventList(user.getUserInfoList().get(0)); // present allowed events
-            int eventId = 0; //placeholder
-                if (manager.signUpForEvent(eventId, user.getUserInfoList().get(0),
-                        user.getUserType(user.getUserInfoList().get(0)))) {
-                    failedSignUp = false;
-                System.out.println("Successfully signed up for event");
-        } else {
-                System.out.println("Unsuccessfully signed up for an event");
+    public boolean eventSignUp(int eventid, JPanel panel){
+        boolean canSignUp = false;
+        if (manager.signUpForEvent(eventid, user.getUserInfoList().get(0),
+                user.getUserType(user.getUserInfoList().get(0)))) {
+            manager.storeEvents(eventListGateway);
+            JOptionPane.showMessageDialog(panel, "You have successfully signed up for this event.");
+            canSignUp = true;
         }
-    }
-        while (failedSignUp);
+        else {
+            JOptionPane.showMessageDialog(panel, "You cannot sign up for this event.");
+        }
+        return canSignUp;
     }
 
-    private void attendeeCancelEventHelper(){
-            boolean invalidCancellation = true;
-            do {
-            getAttendeeEventList(user.getUserInfoList().get(0));
-            int eventId = 0; //placeholder
-                if (manager.cancelSpot(eventId, user.getUserInfoList().get(0))) {
-                    invalidCancellation = false;
-                System.out.println("Successfully cancelled event");
-                } else {
-                System.out.println("Unsuccessfully cancelled event");
-                }
-            } while (invalidCancellation);
+    public void attendeeCancelEvent(int eventid, JPanel panel){
+        if (manager.cancelSpot(eventid, user.getUserInfoList().get(0))) {
+            JOptionPane.showMessageDialog(panel,"Successfully cancelled event");
+            manager.storeEvents(eventListGateway);
+            }
     }
 
     private boolean checkDateValid(String date) throws InvalidDateException {
@@ -251,7 +255,6 @@ public class EventManagementSystem {
         } else {
             throw new InvalidDateException();
         }
-
     }
 
     private boolean addEventHelper(String eventName, String room, List<String> ListOfSpeaker, int cap, String inputDate,
@@ -269,6 +272,7 @@ public class EventManagementSystem {
             return false;
         }
     }
+
     private boolean addVIPEventHelper(String eventName, String room, List<String> ListOfSpeaker, int cap, String inputDate,
                                    LocalTime inputStart, LocalTime inputEnd){
         if (!user.getUserInfoList().get(2).equals("O")) {
@@ -361,7 +365,7 @@ public class EventManagementSystem {
     }
 
     private void broadcastEventSpeakerHelper(){
-        getSpeakerEventList(user.getUserInfoList().get(0));
+        getSpeakerEventList();
         int eventID = 0; // placeholder
         if (getter.getAttendeesInEvent(eventID).size() == 0) {
             System.out.println("There are no attendees for this event.");
@@ -397,19 +401,32 @@ public class EventManagementSystem {
         manager.setOrganizer(eventId, org);
         manager.setStartTime(eventId, start);
         manager.setEndTime(eventId, end);
-
     }
 
-    public List<String> getAttendeeEventList(String username){
-        return formatEventString(getter.getEventListByAttendee(username));
+    public List<String> getAttendeeEventList(){
+        if (user.getUserInfoList().get(0) != null){
+            return formatEventString(getter.getEventListByAttendee(user.getUserInfoList().get(0)));
+        }
+        else {
+            return new ArrayList<>();
+        }
     }
 
-    public List<String> getSpeakerEventList(String username){
-        return getter.filterEventsBySpeaker(username);
+    public List<String> getSpeakers(){
+        return user.getSpeakers();
     }
 
-    public List<String> getAvailableEventList(String username){
-        return formatEventString(getter.getAllowedEvents(username, user.getUserType(username)));
+    public List<String> getSpeakerEventList(){
+        return getter.filterEventsBySpeaker(user.getUserInfoList().get(0));
+    }
+
+    public List<String> getAllEventList() {
+        if (user.getUserInfoList().get(0) != null) {
+            return formatEventString(getter.getAllEventIDs());
+        }
+        else {
+            return new ArrayList<>();
+        }
     }
 
     public List<String> getOrganizerEventList(String username){
