@@ -214,6 +214,14 @@ public class MessageManager {
         }
     }
 
+    public boolean isRead(int index, String receiver){
+        try {
+            return this.messages.find(messages.get(receiver).get(index)).isRead();
+        } catch (NoSuchMessageException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     /*
      * Gets the strings that represent each message to the manager.
      * Each string should be formatted in the manner:

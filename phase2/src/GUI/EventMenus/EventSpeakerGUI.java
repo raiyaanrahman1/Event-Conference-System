@@ -76,7 +76,7 @@ public class EventSpeakerGUI {
         jListPanel.setLayout(new GridLayout(1, 1));
         eventPanel.add(jListPanel, BorderLayout.CENTER);
         panelBuilder.buildJListEvents(eventsJList);
-        panelBuilder.buildJScrollPane(eventsJScrollPane);
+        panelBuilder.buildJScrollPane(eventsJScrollPane, eventPanel, eventsJList);
         eventsJScrollPane.setViewportView(eventsJList);
         jListPanel.add(eventsJScrollPane);
         buttonPanel.setLayout(new BorderLayout());

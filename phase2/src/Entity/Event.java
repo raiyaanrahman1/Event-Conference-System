@@ -193,7 +193,6 @@ public class Event {
         this.attendees.remove(attendee);
     }
 
-
     /**
      * Returns the Event's room
      */
@@ -208,27 +207,39 @@ public class Event {
     public List<String> getSpeaker() {
         return speakers;
     }
-
+    /**
+     * Returns the Name of the event
+     */
     public String getName() {
         return name;
     }
-
+    /**
+     * Setter for the room the event is in.
+     */
     public void setRoom(String room) {
         this.room = room;
     }
-
+    /**
+     * Setter for the name of the Event.
+     */
     public void setName(String name) {
         this.name = name;
     }
-
+    /**
+     * Setter for the room capacity.
+     */
     public void setRoomCap(int roomCap) {
         this.roomCap = roomCap;
     }
-
+    /**
+     * Returns the formatter.
+     */
     public DateTimeFormatter getFormatter() {
         return formatter;
     }
-
+    /**
+     * Setter for the formatter.
+     */
     public void setFormatter(DateTimeFormatter formatter) {
         this.formatter = formatter;
     }

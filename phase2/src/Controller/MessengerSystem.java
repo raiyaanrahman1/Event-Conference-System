@@ -86,6 +86,9 @@ public class MessengerSystem {
         messageManager.delete(getLoggedInUser(), viewReceivedMessages().get(index - 1));
     }
 
+    public boolean isRead(int index){
+        return messageManager.isRead(index, getLoggedInUser());
+    }
     /**
      * Marks the message at the given index in the list of messages as read.
      *
@@ -114,6 +117,7 @@ public class MessengerSystem {
                 && !inContacts(username)
                 && userManager.getSignedUpUsers().contains(username)) {
             userManager.addUserToContacts(username);
+            userManager.storeContacts();
             return true;
         } else {
             return false;

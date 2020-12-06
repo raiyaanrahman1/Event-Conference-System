@@ -17,11 +17,13 @@ public class CreateUserController {
 
     /**
      * Creates a new CreateUserController instance.
+     *
      * @param user the UserManager instance instantiated in LoginSystem
      */
-    public CreateUserController(UserManager user){
+    public CreateUserController(UserManager user) {
         userManager = user;
     }
+
     /**
      * Creates a Speaker account iff the user is an Organizer
      */
@@ -29,14 +31,25 @@ public class CreateUserController {
         CreateAccount(Speaker.TYPE, "speaker");
     }
 
-    public void CreateAttendee(){
+    /**
+     * Creates an Attendee account iff the user is an Organizer
+     */
+    public void CreateAttendee() {
         CreateAccount(Attendee.TYPE, "attendee");
     }
 
-    public void CreateVIP(){
+    /**
+     * Creates a VIP account iff the user is an Organizer
+     */
+    public void CreateVIP() {
         CreateAccount(VIP.TYPE, "VIP");
     }
 
+    /**
+     * Creates an account
+     * @param type String representing user type
+     * @param prompt String message prompting user
+     */
     public void CreateAccount(String type, String prompt) {
         Scanner in = new Scanner(System.in);
         String username = askUser("Enter a username.", "Username already exists.",
@@ -48,6 +61,13 @@ public class CreateUserController {
         userManager.CreateUser(username, password, type);
     }
 
+    /**
+     * Generally asks the user for input based on prompt
+     * @param prompt String representing a prompt
+     * @param errorMessage String error message that appears when error occurs
+     * @param validationFunction a function that checks the validity of input
+     * @return String representing user input
+     */
     public String askUser(String prompt, String errorMessage,
                           Function<String, Boolean> validationFunction) {
         Scanner myObj = new Scanner(System.in);

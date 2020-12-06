@@ -4,6 +4,7 @@ import Exceptions.InvalidDateException;
 import Exceptions.NoSuchEventException;
 import Gateway.IGateway2;
 import Gateway.InfoFileGateway;
+import UseCase.EventGetter;
 import UseCase.EventManager;
 import UseCase.UserManager;
 import UseCase.MessageManager;
@@ -22,6 +23,7 @@ public class EventManagementSystem {
     private final UserManager user;
     private final EventManager manager;
     IGateway2 eventListGateway;
+    private final EventGetter getter;
     private final MessageManager mess;
     private CreateUserController userController;
 
@@ -35,6 +37,7 @@ public class EventManagementSystem {
         this.user = user;
         this.mess = mess;
         this.userController = userController;
+        getter = manager.eventGetter;
         this.eventListGateway = eventListGateway;
     }
 
@@ -121,7 +124,7 @@ public class EventManagementSystem {
     public void cancelEvent() {
         boolean invalid = true;
         if (user.getUserInfoList().get(2).equals("O")) {
-            if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
+            if (getter.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
                 do {
                     getOrganizerEventList(user.getUserInfoList().get(0));
                     int eventId = 0; //placeholder
@@ -142,7 +145,7 @@ public class EventManagementSystem {
      * Allows an Organizer to broadcast a message to all Attendees of a specific event they organized.
      */
     public void broadcastEventOrganizer() {
-        if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() == 0) {
+        if (getter.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() == 0) {
             System.out.println("You have not created any events");
         }else{
             broadcastEventOrganizerHelper();
@@ -153,7 +156,7 @@ public class EventManagementSystem {
      * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
      */
     public List<String> getBroadcastEventSpeaker() {
-        List<Integer> eventListByIDs = manager.getTalksBySpeaker(user.getUserInfoList().get(0));
+        List<Integer> eventListByIDs = getter.getTalksBySpeaker(user.getUserInfoList().get(0));
         if (eventListByIDs.size() == 0) {
             System.out.println("You are not speaking at any events");
             return null;
@@ -167,7 +170,7 @@ public class EventManagementSystem {
         List<String> listEvents = new ArrayList<>();
         if (eventList.size()> 0) {
             for (Integer eventID : eventList) {
-                listEvents.add(manager.getEventString(eventID));
+                listEvents.add(getter.getEventString(eventID));
             }
         }
         return listEvents;
@@ -177,7 +180,7 @@ public class EventManagementSystem {
      * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
      */
     public void broadcastEventSpeaker() {
-        if (manager.getTalksBySpeaker(user.getUserInfoList().get(0)).size() == 0) {
+        if (getter.getTalksBySpeaker(user.getUserInfoList().get(0)).size() == 0) {
             System.out.println("You are not speaking at any events");
         }else{
             broadcastEventSpeakerHelper();
@@ -192,7 +195,7 @@ public class EventManagementSystem {
         List<String> result = new ArrayList<>();
         if (eventList.size()> 0) {
             for (Integer eventID : eventList) {
-                result.add(manager.getEventString(eventID));
+                result.add(getter.getEventString(eventID));
             }
         }
         return result;
@@ -203,7 +206,7 @@ public class EventManagementSystem {
      */
 
     public void rescheduleEvent() throws NoSuchEventException {
-        if (manager.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() == 0) {
+        if (getter.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() == 0) {
             System.out.println("You have not created any events");
         }else{
             int eventId = 0;
@@ -360,7 +363,7 @@ public class EventManagementSystem {
     private void broadcastEventOrganizerHelper(){
         getOrganizerEventList(user.getUserInfoList().get(0));
         int eventID = 0; //placeholder
-            if (manager.getAttendeesInEvent(eventID).size() == 0) {
+            if (getter.getAttendeesInEvent(eventID).size() == 0) {
             System.out.println("There are no attendees for this event.");
             } else {
             String message = "message"; // placeholder
@@ -372,7 +375,7 @@ public class EventManagementSystem {
     private void broadcastEventSpeakerHelper(){
         getSpeakerEventList(user.getUserInfoList().get(0));
         int eventID = 0; // placeholder
-        if (manager.getAttendeesInEvent(eventID).size() == 0) {
+        if (getter.getAttendeesInEvent(eventID).size() == 0) {
             System.out.println("There are no attendees for this event.");
         } else {
             String message = "message"; // placeholder
@@ -381,7 +384,7 @@ public class EventManagementSystem {
     }
 
     public void broadcast(int eventID, String message) {
-        List<String> users = manager.getAttendeesInEvent(eventID);
+        List<String> users = getter.getAttendeesInEvent(eventID);
         mess.broadcast(user.getUserInfoList().get(0), users, message);
     }
 
@@ -410,7 +413,7 @@ public class EventManagementSystem {
 
     public List<String> getAttendeeEventList(){
         if (user.getUserInfoList().get(0) != null){
-            return formatEventString(manager.getEventListByAttendee(user.getUserInfoList().get(0)));
+            return formatEventString(getter.getEventListByAttendee(user.getUserInfoList().get(0)));
         }
         else {
             return new ArrayList<>();
@@ -422,12 +425,12 @@ public class EventManagementSystem {
     }
 
     public List<String> getSpeakerEventList(String username){
-        return manager.filterEventsBySpeaker(username);
+        return getter.filterEventsBySpeaker(username);
     }
 
     public List<String> getAvailableEventList() {
         if (user.getUserInfoList().get(0) != null) {
-            return formatEventString(manager.getAllowedEvents(user.getUserInfoList().get(0), user.getUserInfoList().get(2)));
+            return formatEventString(getter.getAllowedEvents(user.getUserInfoList().get(0), user.getUserInfoList().get(2)));
         }
         else {
             return new ArrayList<>();
@@ -435,8 +438,10 @@ public class EventManagementSystem {
     }
 
     public List<String> getOrganizerEventList(String username){
-        return manager.filterEventsByOrganizer(username);
+        return getter.filterEventsByOrganizer(username);
     }
+
+
 
 // NO NEED MENU --> USE GUI
 //    /**

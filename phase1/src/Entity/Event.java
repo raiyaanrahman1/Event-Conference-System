@@ -62,6 +62,10 @@ public class Event {
         this.attendees = new ArrayList<>();
     }
 
+    public Event(String name, String room, String organizer, int roomCap, LocalDateTime dateTime) {
+    }
+
+
     /**
      * Returns the toString of the Event
      *
