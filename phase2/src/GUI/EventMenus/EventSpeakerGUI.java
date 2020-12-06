@@ -16,6 +16,7 @@ public class EventSpeakerGUI {
 
     private DefaultListModel<String> listModel = new DefaultListModel<>();
 
+    private List<String> eventList;
 
     private JPanel eventPanel = new JPanel();
     private JPanel jListPanel = new JPanel();
@@ -36,8 +37,6 @@ public class EventSpeakerGUI {
     public EventSpeakerGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;
         this.panelStack = panelStack;
-        broadcastButtonListen();
-        backButtonListen();
     }
 
 //    private void buildListModel(){
@@ -72,13 +71,10 @@ public class EventSpeakerGUI {
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
         eventsJLabel.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 48));
         eventPanel.add(eventsJLabel, BorderLayout.NORTH);
-        jListPanel.setLayout(new GridLayout(1, 1));
-        eventPanel.add(jListPanel, BorderLayout.CENTER);
-        panelBuilder.buildJListEvents(eventsJList);
-        panelBuilder.buildJScrollPane(eventsJScrollPane, jListPanel, eventsJList);
-        eventsJScrollPane.setViewportView(eventsJList);
+        buildListModel();
         eventsJList = new JList(listModel);
-        jListPanel.add(eventsJScrollPane);
+        panelBuilder.buildAttendeeEventsJListPanel(jListPanel, eventsJList, eventsJScrollPane);
+        eventPanel.add(jListPanel, BorderLayout.CENTER);
         buttonPanel.setLayout(new BorderLayout());
         eventPanel.add(buttonPanel, BorderLayout.SOUTH);
         broadcastButton.setEnabled(false);
@@ -86,13 +82,14 @@ public class EventSpeakerGUI {
         buttonPanel.add(broadcastButton, BorderLayout.NORTH);
         backButton.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
         buttonPanel.add(backButton, BorderLayout.WEST);
-        buildListModel();
         listListener();
+        broadcastButtonListen();
+        backButtonListen();
         return eventPanel;
     }
 
     private void buildListModel(){
-        List<String> eventList = eventSystem.getSpeakerEventList();
+        this.eventList = eventSystem.getSpeakerEventList();
         if (!eventList.isEmpty()){
             for (String event:eventList) {
                 listModel.addElement(event);
@@ -102,6 +99,7 @@ public class EventSpeakerGUI {
 
     private void backButtonListen(){
         backButton.addActionListener(e -> {
+            listModel.clear();
             panelStack.pop();
             JPanel panel = (JPanel) panelStack.pop();
             panelStack.loadPanel(panel);
@@ -110,9 +108,12 @@ public class EventSpeakerGUI {
 
     private void broadcastButtonListen(){
         broadcastButton.addActionListener(e -> {
-            String message = JOptionPane.showInputDialog("Enter the content of your message: ");
-            if (message != null){
-                eventSystem.broadcast(selectedEventIndex, message);
+            if(!eventsJList.isSelectionEmpty()){
+                String message = JOptionPane.showInputDialog("Enter the content of your message: ");
+                if (message != null) {
+                    String event = eventsJList.getSelectedValue().toString();
+                    eventSystem.broadcast(Integer.parseInt(event.substring(0, 1)), message);
+                }
             }
         });
     }

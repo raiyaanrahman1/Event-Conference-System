@@ -56,6 +56,8 @@ public class EventManager {
             if (tokens.length > 9) {
                 String attendees = tokens[9];
                 event.setAttendees(attendees);
+                String speakers = tokens[4];
+                event.setSpeakers(speakers);
             }
 
             this.events.add(event);

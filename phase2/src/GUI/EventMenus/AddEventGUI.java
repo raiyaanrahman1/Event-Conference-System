@@ -42,6 +42,7 @@ public class AddEventGUI implements ActionListener {
     private JComboBox monthComboBox = new JComboBox(months);
     private JButton backButton = new JButton("Back");
     private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(addEventPanel);
+    private DefaultListModel s = new DefaultListModel();
 
 
     public AddEventGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
@@ -74,8 +75,8 @@ public class AddEventGUI implements ActionListener {
         for(int i = 1; i < 20; i++){
             speakers.add("speaker" + i);
         }
-        DefaultListModel s = new DefaultListModel();
-        s.addAll(speakers);
+        buildListModel();
+
         speakersJList = new JList(s);
         speakersJList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         speakersJScrollPane = new JScrollPane(speakersJList);
@@ -171,6 +172,14 @@ public class AddEventGUI implements ActionListener {
             JPanel panel = (JPanel) panelStack.pop();
             panelStack.loadPanel(panel);
         });
+    }
+
+    private void buildListModel(){
+        if (!speakers.isEmpty()){
+            for (String event:speakers) {
+                s.addElement(event);
+            }
+        }
     }
 
     @Override

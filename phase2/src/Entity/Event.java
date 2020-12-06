@@ -152,23 +152,31 @@ public class Event {
     }
 
     private String getSavableSpeakers(){
-        StringBuilder speakers = new StringBuilder();
+        StringBuilder speakersBuilder = new StringBuilder();
         for (String s: this.speakers){
-            speakers.append(s).append(',');
+            speakersBuilder.append(s).append(',');
         }
-        return speakers.toString();
+        return speakersBuilder.toString();
     }
 
     private String getFormattedSpeakers() {
         if (this.speakers.size() > 0) {
-            StringBuilder speakers = new StringBuilder();
+            StringBuilder speakersBuilder = new StringBuilder();
             for (String s : this.speakers) {
-                speakers.append(s).append(',');
+                speakersBuilder.append(s).append(',');
             }
-            String formattedSpeakers = speakers.toString();
-            return speakers.substring(0, formattedSpeakers.length()-2);
+            return speakersBuilder.toString();
         }
         return "";
+    }
+    /**
+     * Sets this Event's speakers lit using information saved in the text file
+     * @param speakersString a string representing the attendee list
+     */
+    public void setSpeakers(String speakersString){
+        String[] speakerList = speakersString.split(",");
+        this.speakers.clear();
+        this.speakers.addAll(Arrays.asList(speakerList));
     }
 
     /**

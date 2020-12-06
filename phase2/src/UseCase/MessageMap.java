@@ -41,7 +41,7 @@ public class MessageMap implements MessageCollection {
         if (!this.contains(receiver)) {
             return new ArrayList<>();
         } else {
-            return this.get(receiver);
+            return this.messages.get(receiver);
         }
     }
 

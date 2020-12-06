@@ -121,23 +121,12 @@ public class EventManagementSystem {
     /**
      * Cancels event if the user is an organizer.
      */
-    public void cancelEvent() {
-        boolean invalid = true;
-        if (user.getUserInfoList().get(2).equals("O")) {
-            if (getter.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0) {
-                do {
-                    getOrganizerEventList(user.getUserInfoList().get(0));
-                    int eventId = 0; //placeholder
-                    if (manager.removeEvent(eventId)) {
-                        invalid = false;
-                        System.out.println("You have successfully cancelled this event.");
-                    }else {
-                        System.out.println("You have unsuccessfully cancelled this event.");
-                    }
-                } while (invalid);
-            } else {
-                System.out.println("You have not organized any events.");
-            }
+    public void cancelEvent(JPanel panel, int eventId) {
+        if (user.getUserInfoList().get(2).equals("O") &&
+                getter.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0 &&
+                manager.removeEvent(eventId)) {
+            manager.storeEvents(eventListGateway);
+            JOptionPane.showMessageDialog(panel, "You have successfully cancelled this event.");
         }
     }
 
@@ -353,7 +342,7 @@ public class EventManagementSystem {
     }
 
     private void broadcastEventOrganizerHelper(){
-        getOrganizerEventList(user.getUserInfoList().get(0));
+        getOrganizerEventList();
         int eventID = 0; //placeholder
             if (getter.getAttendeesInEvent(eventID).size() == 0) {
             System.out.println("There are no attendees for this event.");
@@ -429,8 +418,8 @@ public class EventManagementSystem {
         }
     }
 
-    public List<String> getOrganizerEventList(String username){
-        return getter.filterEventsByOrganizer(username);
+    public List<String> getOrganizerEventList(){
+        return getter.filterEventsByOrganizer(user.getUserInfoList().get(0));
     }
 
 
