@@ -10,13 +10,12 @@ public class MessagePanel {
     // these were private but I needed to make them public for access from subclasses
     public void enableButtons(List<JButton> options){
         for (JButton button : options){
-            button.setEnabled(true);
+//            button.setEnabled(true);
             button.setVisible(true);
         }
     }
 
-    public void mainBackListener(PanelStack panelStack, JButton backButton, JButton internalBack){
-        internalBack.setVisible(false);
+    public void mainBackListener(PanelStack panelStack, JButton backButton){
         backButton.addActionListener(e -> {
             panelStack.pop();
             panelStack.loadPanel((JPanel) panelStack.pop());

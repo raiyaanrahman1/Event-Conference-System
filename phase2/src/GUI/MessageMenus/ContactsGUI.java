@@ -55,7 +55,7 @@ public class ContactsGUI implements IMessageView{
         internalSendButton.setVisible(false);
 
         addButton.addActionListener(e -> addListener());
-        panelHelper.mainBackListener(panelStack, mainBackButton, internalBackButton);
+        panelHelper.mainBackListener(panelStack, mainBackButton);
         internalBackListener();
         addUserTextField = builder.buildTextField(310, 130);
         addUserTextField.setVisible(false);

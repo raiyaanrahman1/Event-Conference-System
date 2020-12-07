@@ -2,108 +2,129 @@ package GUI.MessageMenus;
 
 import Controller.MessengerSystem;
 import GUI.Main.PanelStack;
+import com.sun.org.apache.bcel.internal.util.ClassVector;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InboxGUI implements IMessageView {
-    private JButton viewAllButton;
-    private JButton viewArchiveButton;
-    private MessagePanel panelHelper = new MessagePanel();
-    private PanelStack panelStack;
-    private MessagePanelBuilder builder;
-    private MessengerSystem messenger;
-    private JScrollPane inbox;
-    private DefaultListModel<String> inboxListModel;
-    private JList messageJList;
-    private JPanel mainPanel = new JPanel();
-    private String currSelectedMsg;
-    private List<JButton> messageOptions;
-    private JScrollPane currMsgPreview;
-    private JScrollPane currArchivePane;
-    private JScrollPane currReplyPane;
-    // might not need currInboxPane
-    private JScrollPane currInboxPane;
-    private JTextArea currReplyText;
-    private JButton sendButton;
-    private JButton mainBackButton;
-    private JButton internalBackButton;
-    private JButton unarchiveButton;
-    private int currMessageIndex;
-    private DefaultListModel<String> archiveListModel;
-    private JList archiveJList;
-//    private JScrollPane archive;
-
-    private JScrollPane currThread;
 
     private InboxListRenderer listCellRenderer = new InboxListRenderer();
+    private MessengerSystem messenger;
+    private PanelStack panelStack;
+    private MessagePanel panelHelper = new MessagePanel();
+
+    private MessagePanelBuilder inboxBuilder;
+    private MessagePanelBuilder archiveBuilder;
+    private MessagePanelBuilder replyBuilder;
+
+    private JPanel inboxPanel = new JPanel();
+    private JPanel archivePanel = new JPanel();
+    private JPanel replyPanel = new JPanel();
+    private JPanel viewAllPanel = new JPanel();
+
+    private JButton backButton;
+
+    // inboxPanel elements
+    private JScrollPane currInboxPreview;
+    private JList inboxJList;
+    private DefaultListModel<String> inboxListModel;
+    private int currInboxIndex;
+    private String currInboxMsg;
+
+    // archivePanel elements
+    private JScrollPane currArchivePreview;
+    private JList archiveJList;
+    private DefaultListModel<String> archiveListModel;
+    private int currArchiveIndex;
+    private String currArchiveMsg;
+
+    // replyPanel elements
+    private JScrollPane currReplyPreview;
+    private JList replyJList;
+    private DefaultListModel<String> replyListModel;
+    private int currReplyIndex;
+    private String currReplyMsg;
+
+    // viewAllPanel elements
+
 
     private class InboxListRenderer extends DefaultListCellRenderer {
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-                                                          boolean cellHasFocus) {
-                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (messenger.isRead(index))
-                    c.setBackground(Color.LIGHT_GRAY);
-                else
-                    c.setBackground(Color.WHITE);
-                return c;
-            }
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
+            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (messenger.isRead(index))
+                c.setBackground(Color.LIGHT_GRAY);
+            else
+                c.setBackground(Color.WHITE);
+            return c;
+        }
     }
-    public InboxGUI(MessengerSystem messenger, PanelStack panelStack){
+
+    public InboxGUI(MessengerSystem messenger, PanelStack panelStack) {
 
         this.messenger = messenger;
         this.panelStack = panelStack;
-        builder = new MessagePanelBuilder(mainPanel);
-        // unread, reply, archive, delete, view All, view archive
-        messageOptions = builder.buildOptions(new String[]{"unread", "reply", "archive", "delete"}, 260);
-        viewArchiveButton = builder.buildButton("\uD83D\uDCC2", 225, 60, 50, 20);
-        viewAllButton = builder.buildButton("\uD83D\uDCEA", 175, 60, 50, 20);
-        unarchiveButton = builder.buildButton("unarchive", 310 ,340 );
+        inboxBuilder = new MessagePanelBuilder(inboxPanel);
+        archiveBuilder = new MessagePanelBuilder(archivePanel);
+        replyBuilder = new MessagePanelBuilder(replyPanel);
 
-        messageOptions.add(viewAllButton);
-        for (JButton button : messageOptions){
-            mainPanel.add(button);
-        }
-
-        mainBackButton = builder.makeBackButton();
-        internalBackButton = builder.makeBackButton();
-        internalBackButton.setVisible(false);
-        unarchiveButton.setVisible(false);
-        mainPanel.add(mainBackButton);
-        mainPanel.add(internalBackButton);
-        mainPanel.add(viewArchiveButton);
-//        mainPanel.add(viewAllButton);
-        mainPanel.add(unarchiveButton);
-
-        internalBackListener();
-        panelHelper.mainBackListener(panelStack, mainBackButton, internalBackButton);
-//        unarchiveButton.addActionListener(e -> {
-//            messenger.unarchiveMessage(currMessageIndex);
-//            archiveListModel.removeElement(currSelectedMsg);
-//            inboxListModel.addElement(currSelectedMsg);
-//            archiveJList.setModel(archiveListModel);
-//
-//        });
+//        backButton = inboxBuilder.makeBackButton();
+//        panelHelper.mainBackListener(panelStack, backButton);
     }
 
-
-
-    private void internalBackListener(){
-        internalBackButton.addActionListener(e -> {
-            for (Component c : mainPanel.getComponents()){
-                c.setVisible(false);
+    private void inboxOptionListener(List<JButton> inboxOptions){
+        inboxJList.addListSelectionListener(e ->{
+            if (!e.getValueIsAdjusting()) {
+                currInboxIndex = inboxJList.getSelectedIndex();
+                if (currInboxIndex != 1){
+                    currInboxMsg = inboxListModel.get(currInboxIndex);
+                    currInboxPreview.setViewportView(inboxBuilder.prepareSelectedMessage(currInboxMsg));
+                    currInboxPreview.setVisible(true);
+                    messenger.markMessageRead(currInboxIndex);
+                    panelHelper.enableButtons(inboxOptions);
+                }
             }
-            panelStack.getMainFrame().setContentPane(mainPage());
-            viewArchiveButton.setVisible(true);
-            viewAllButton.setVisible(true);
-            mainBackButton.setVisible(true);
-            mainBackButton.setEnabled(true);
         });
+
+        // unread
+        inboxOptions.get(0).addActionListener(e -> {
+            messenger.markMessageUnread(currInboxIndex);
+        });
+
+        // reply
+        inboxOptions.get(1).addActionListener(e -> {
+            panelStack.loadPanel(buildReply());
+        });
+
+        // archive
+        inboxOptions.get(2).addActionListener(e -> {
+            messenger.archiveMessage(currInboxIndex);
+            inboxListModel.removeElement(currInboxMsg);
+        });
+
+        // delete
+        inboxOptions.get(3).addActionListener(e -> {
+            messenger.deleteMessage(currInboxIndex);
+            inboxListModel.removeElement(currInboxMsg);
+        });
+
+        // view all
+        inboxOptions.get(4).addActionListener(e -> {
+            // TODO: Add mouse listener that informs user what this does
+            panelStack.loadPanel(buildViewAll());
+        });
+
     }
 
-    private void loadInbox(){
+    public JPanel mainPage(){
+        return buildInbox();
+    }
+
+    private JScrollPane loadInbox(){
         inboxListModel = new DefaultListModel<String>();
         for (String m : messenger.viewReceivedMessages()) {
             if(!inboxListModel.contains(m))
@@ -115,86 +136,44 @@ public class InboxGUI implements IMessageView {
                 inboxListModel.remove(i);
         }
 
-        messageJList = builder.buildJList(inboxListModel);
-        messageJList.setCellRenderer(listCellRenderer);
-        currInboxPane = builder.buildMainPane(new JScrollPane(messageJList), "inbox");
-        mainPanel.add(currInboxPane);
-    }
-    public JPanel mainPage(){
-//        panelHelper.enableButtons(messageOptions);
-        loadArchive();
-        loadInbox();
-        currArchivePane.setVisible(false);
-        currInboxPane.setVisible(true);
-
-        currMsgPreview = builder.buildMessagePreview(new JScrollPane());
-        currMsgPreview.setVisible(false);
-        mainPanel.add(currMsgPreview);
-        internalBackButton.setVisible(false);
-        listListener();
-        return mainPanel;
+        inboxJList = inboxBuilder.buildJList(inboxListModel);
+//        inboxJList.setCellRenderer(listCellRenderer);
+        return inboxBuilder.buildMainPane(new JScrollPane(inboxJList), "inbox");
     }
 
-    private void readMessage(){
-        currMsgPreview.setViewportView(builder.prepareSelectedMessage(currSelectedMsg));
-        currMsgPreview.setVisible(true);
-        messenger.markMessageRead(currMessageIndex);
-    }
 
-    public void listListener(){
+    private JPanel buildInbox(){
+        JScrollPane inboxPane = loadInbox();
+        inboxPanel.add(inboxPane);
+        JButton inboxBack = inboxBuilder.makeBackButton();
+        inboxPanel.add(inboxBack);
+        panelHelper.mainBackListener(panelStack, inboxBack);
 
-        messageJList.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                if(currInboxPane.isVisible())
-                    currMessageIndex = messageJList.getSelectedIndex();
-                else
-                    currMessageIndex = archiveJList.getSelectedIndex();
+        currInboxPreview = inboxBuilder.buildMessagePreview(new JScrollPane());
+        inboxPanel.add(currInboxPreview);
+        currInboxPreview.setVisible(false);
 
-                if (currMessageIndex != -1) {
-                    if (currInboxPane.isVisible()) {
-                        currSelectedMsg = inboxListModel.get(currMessageIndex);
-                        readMessage();
-                        panelHelper.enableButtons(messageOptions);
-                    }
-                    else {
-                        currSelectedMsg = archiveListModel.get(currMessageIndex);
-                        // TODO: fix this if all archived messages are 'read' by default
-                        panelHelper.enableButtons(messageOptions);
-                        messageOptions.get(2).setVisible(false);
-                        unarchiveButton.setVisible(true);
-                    }
-//                    panelHelper.enableButtons(messageOptions);
-                    listenToButtons();
-                }
-            }
+        List<JButton> inboxOptions = inboxBuilder.buildOptions(new String[]{"unread", "reply",
+                "archive", "delete"}, 260);
+        inboxOptions.add(inboxBuilder.buildButton("\uD83D\uDCEA", 175,
+                60, 50, 20));
+        for (JButton button : inboxOptions){
+            inboxPanel.add(button);
+        }
+        panelHelper.disableButtons(inboxOptions);
+        inboxOptionListener(inboxOptions);
+
+        JButton viewArchive = inboxBuilder.buildButton("\uD83D\uDCC2", 225,
+                60, 50, 20);
+        inboxPanel.add(viewArchive);
+        viewArchive.addActionListener(e ->{
+            panelStack.loadPanel(buildArchive());
         });
+        return inboxPanel;
     }
 
-    private void loadReplyPanel(){
-        panelHelper.disableButtons(messageOptions);
-        currInboxPane.setVisible(false);
-        Component[] elements = builder.prepareEditablePane("reply");
-        currReplyText = (JTextArea) elements[0];
-        currReplyPane = (JScrollPane) elements[1];
-        sendButton = builder.buildButton("send",310, 260);
-        sendButton.setVisible(true);
-        mainPanel.add(currReplyPane);
-        mainPanel.add(sendButton);
-        internalBackListener();
-        sendButton.addActionListener(e -> {
-            if(!currReplyText.getText().equals(""))
-                messenger.replyMessage(currMessageIndex, currReplyText.getText());
-            currReplyPane.setVisible(false);
-            currMsgPreview.setVisible(false);
-            sendButton.setVisible(false);
-//            currInboxPane.setVisible(true);
-            panelStack.getMainFrame().setContentPane(mainPage());
-        });
-    }
-
-    private void loadArchive(){
-        archiveListModel = new DefaultListModel<>();
-
+    private JScrollPane loadArchive(){
+        archiveListModel = new DefaultListModel<String>();
         for (String m : messenger.viewArchivedMessages()) {
             if(!archiveListModel.contains(m))
                 archiveListModel.addElement(m);
@@ -204,77 +183,65 @@ public class InboxGUI implements IMessageView {
             if (!messenger.viewArchivedMessages().contains(archiveListModel.get(i)))
                 archiveListModel.remove(i);
         }
-        archiveJList = builder.buildJList(archiveListModel);
-        archiveJList.setCellRenderer(listCellRenderer);
-        currArchivePane = builder.buildMainPane(new JScrollPane(archiveJList), "archive");
-        currArchivePane.setVisible(true);
-        mainPanel.add(currArchivePane);
-    }
-    private void loadArchivePanel(){
-        panelHelper.disableButtons(messageOptions);
-//        messageOptions.get(2).setVisible(false);
-        //        currThread.setVisible(false);
-        currInboxPane.setVisible(false);
-        mainBackButton.setVisible(false);
-        internalBackButton.setVisible(true);
-        viewAllButton.setVisible(false);
-        viewArchiveButton.setVisible(false);
-        currArchivePane.setVisible(true);
-        loadArchive();
-        currMsgPreview.setViewportView(builder.prepareSelectedMessage(currSelectedMsg));
-        currMsgPreview.setVisible(true);
-        unarchiveButton.setVisible(true);
-        unarchiveButton.addActionListener(e -> {
-            messenger.unarchiveMessage(currMessageIndex);
-            archiveListModel.removeElement(currSelectedMsg);
-            inboxListModel.addElement(currSelectedMsg);
-            archiveJList.setModel(archiveListModel);
 
+        archiveJList = archiveBuilder.buildJList(archiveListModel);
+//        archiveJList.setCellRenderer(listCellRenderer);
+        return archiveBuilder.buildMainPane(new JScrollPane(archiveJList), "archive");
+    }
+
+    private void archiveListener(JButton unarchive){
+        archiveJList.addListSelectionListener(e->{
+            if (!e.getValueIsAdjusting()) {
+                currArchiveIndex = archiveJList.getSelectedIndex();
+                if (currArchiveIndex != -1) {
+                    currArchiveMsg = archiveListModel.get(currArchiveIndex);
+                    currArchivePreview.setViewportView(archiveBuilder.prepareSelectedMessage(currArchiveMsg));
+                    currArchivePreview.setVisible(true);
+                    unarchive.setVisible(true);
+                }
+            }
+        });
+
+        unarchive.addActionListener(e -> {
+            messenger.unarchiveMessage(currArchiveIndex);
+            archiveListModel.removeElement(currArchiveMsg);
+            inboxListModel.addElement(currArchiveMsg);
         });
     }
 
-    private void loadThreadPanel(){
-        panelHelper.disableButtons(messageOptions);
-        currInboxPane.setVisible(false);
-        currMsgPreview.setVisible(false);
-        String[] userInfo = currSelectedMsg.split("\\|");
-        currThread = builder.buildMessageThread(messenger.viewMessages(userInfo[0]));
-        currThread.setVisible(true);
-        mainPanel.add(currThread);
-    }
-    private void listenToButtons(){
-        // unread
-        messageOptions.get(0).addActionListener(e -> {
-            messenger.markMessageUnread(currMessageIndex);
-        });
-        // reply
-        messageOptions.get(1).addActionListener(e -> {
-            mainBackButton.setVisible(false);
-            internalBackButton.setVisible(true);
-            currMsgPreview.setViewportView(builder.prepareSelectedMessage(currSelectedMsg));
-            currMsgPreview.setVisible(true);
-            loadReplyPanel();
+    private JPanel buildArchive(){
+        JScrollPane archivePane = loadArchive();
+        archivePanel.add(archivePane);
+        JButton archiveBack = inboxBuilder.makeBackButton();
+        archivePanel.add(archiveBack);
+        panelHelper.mainBackListener(panelStack, archiveBack);
 
-        });
-        // archive
-        messageOptions.get(2).addActionListener(e -> {
-            messenger.archiveMessage(currMessageIndex);
-            archiveListModel.addElement(currSelectedMsg);
-            inboxListModel.removeElement(currSelectedMsg);
-        });
-        // delete
-        messageOptions.get(3).addActionListener(e -> {
-            messenger.deleteMessage(currMessageIndex);
-            inboxListModel.removeElement(currSelectedMsg);
-        });
-        // view archived messages
-        viewArchiveButton.addActionListener(e ->{
-            loadArchivePanel();
-        });
-        // view all messages from the sender in the selected message
-        viewAllButton.addActionListener(e -> {
-            loadThreadPanel();
-        });
+        JButton unarchive = archiveBuilder.buildButton("unarchive",310, 260);
+        archivePanel.add(unarchive);
+        unarchive.setVisible(false);
+        archiveListener(unarchive);
+
+        currArchivePreview = archiveBuilder.buildMessagePreview(new JScrollPane());
+        archivePanel.add(currArchivePreview);
+        currArchivePreview.setVisible(false);
+
+        return archivePanel;
+    }
+
+    private JPanel buildReply(){
+//        JScrollPane replyPane = new JScrollPane();
+//        replyPanel.add(replyPane);
+//        replyPanel.add(backButton);
+//
+//        currInboxPreview = replyBuilder.buildMessagePreview(new JScrollPane());
+//        replyPanel.add(currInboxPreview);
+//        currInboxPreview.setVisible(false);
+
+        return replyPanel;
+    }
+
+    private JPanel buildViewAll() {
+        return replyPanel;
     }
 
 }

@@ -4,13 +4,11 @@ import Controller.EventManagementSystem;
 import Controller.LoginSystem;
 import Controller.MessengerSystem;
 import GUI.EventMenus.EventAttendeeGUI;
-import GUI.EventMenus.EventGUI;
 import GUI.EventMenus.EventOrganizerGUI;
 import GUI.EventMenus.EventSpeakerGUI;
 import GUI.MessageMenus.*;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MainMenuGUI {
     private MessengerSystem messageSystem;
