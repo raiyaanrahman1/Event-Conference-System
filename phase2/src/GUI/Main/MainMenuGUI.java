@@ -80,7 +80,7 @@ public class MainMenuGUI {
                         null,
                         options,
                         options[1]);
-                if( n == 0){
+                if(n == 0){
                     panelStack.loadPanel(eventAttendeeGUI.startEventPage());
                 }
                 else if(n == 1){

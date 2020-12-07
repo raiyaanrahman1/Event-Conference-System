@@ -51,7 +51,7 @@ public class LoginGUI implements ILoginView, ActionListener {
         // LOGIN BUTTON:
         panelBuilder.buildButton(logInButton, 214, 344, 80, 25);
         // BACK BUTTON:
-        panelBuilder.buildButton(backButton, 10, 430, 80, 25);
+        panelBuilder.buildButton(backButton, 10, 410, 80, 25);
         return loginPanel;
     }
 
