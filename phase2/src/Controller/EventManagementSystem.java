@@ -53,9 +53,9 @@ public class EventManagementSystem {
         return getter.filterEventsBySpeaker(speaker);
     }
 
-    /**
-     * Signs a user up for an event.
-     */
+//    /**
+//     * Signs a user up for an event.
+//     */
 //    public void eventSignUp(JPanel panel) {
 //        if (manager.getAllowedEvents(user.getUserInfoList().get(0),
 //                user.getUserType(user.getUserInfoList().get(0))).size() == 0) {
@@ -65,9 +65,9 @@ public class EventManagementSystem {
 //        }
 //    }
 
-    /**
-     * Cancels a spot at the event of a user that is already signed up to the event.
-     */
+//    /**
+//     * Cancels a spot at the event of a user that is already signed up to the event.
+//     */
 //    public void attendeeCancelEvent(JPanel panel) {
 //        if (manager.getEventListByAttendee(user.getUserInfoList().get(0)).size() == 0) {
 //            JOptionPane.showMessageDialog(panel, "You have not signed up for any events");
@@ -75,43 +75,43 @@ public class EventManagementSystem {
 //        attendeeCancelEventHelper(panel);
 //        }
 //    }
-
-    /**
-     * Adds a new event to event list iff this user is an Organiser.
-     */
-    public void addEvent() {
-        String eventName = ""; // placeholder
-        String room = ""; // placeholder
-        List<String> ListOfSpeaker = new ArrayList<>(); // placeholder
-        int cap = 0; // placeholder
-        String inputDate = ""; // placeholder
-        String inputStart = ""; // placeholder
-        String inputEnd = ""; // placeholder
-        LocalTime inputStartTime = checkStartTime(inputStart);
-        LocalTime inputEndTime = checkEndTime(inputEnd);
-        if (addEventHelper(eventName, room, ListOfSpeaker, cap, inputDate, inputStartTime, inputEndTime)){
-            System.out.println("Successfully added event");
-        }
-        System.out.println("Unsuccessfully added event");
-    }
-    /**
-     * Adds a new VIP event to event list iff this user is an Organiser.
-     */
-    public void addVIPEvent()  {
-        String eventName = ""; // placeholder
-        String room = ""; // placeholder
-        List<String> ListOfSpeaker = new ArrayList<>(); // placeholder
-        int cap = 0; // placeholder
-        String inputDate = ""; // placeholder
-        String inputStart = ""; // placeholder
-        String inputEnd = ""; // placeholder
-        LocalTime inputStartTime = checkStartTime(inputStart);
-        LocalTime inputEndTime = checkEndTime(inputEnd);
-        if (addVIPEventHelper(eventName, room, ListOfSpeaker, cap, inputDate, inputStartTime, inputEndTime)){
-            System.out.println("Successfully added VIP event");
-        }
-        System.out.println("Unsuccessfully added VIP event");
-    }
+//
+//    /**
+//     * Adds a new event to event list iff this user is an Organiser.
+//     */
+//    public void addEvent() {
+//        String eventName = ""; // placeholder
+//        String room = ""; // placeholder
+//        List<String> ListOfSpeaker = new ArrayList<>(); // placeholder
+//        int cap = 0; // placeholder
+//        String inputDate = ""; // placeholder
+//        String inputStart = ""; // placeholder
+//        String inputEnd = ""; // placeholder
+//        LocalTime inputStartTime = checkStartTime(inputStart);
+//        LocalTime inputEndTime = checkEndTime(inputEnd);
+//        if (addEvent(eventName, room, ListOfSpeaker, cap, inputDate, inputStartTime, inputEndTime)){
+//            System.out.println("Successfully added event");
+//        }
+//        System.out.println("Unsuccessfully added event");
+//    }
+//    /**
+//     * Adds a new VIP event to event list iff this user is an Organiser.
+//     */
+//    public void addVIPEvent()  {
+//        String eventName = ""; // placeholder
+//        String room = ""; // placeholder
+//        List<String> ListOfSpeaker = new ArrayList<>(); // placeholder
+//        int cap = 0; // placeholder
+//        String inputDate = ""; // placeholder
+//        String inputStart = ""; // placeholder
+//        String inputEnd = ""; // placeholder
+//        LocalTime inputStartTime = checkStartTime(inputStart);
+//        LocalTime inputEndTime = checkEndTime(inputEnd);
+//        if (addVIPEventHelper(eventName, room, ListOfSpeaker, cap, inputDate, inputStartTime, inputEndTime)){
+//            System.out.println("Successfully added VIP event");
+//        }
+//        System.out.println("Unsuccessfully added VIP event");
+// }
     public void changeCap() {
         //if user is organizer
         //if (manager.changeRoomCapacity(eventID, newCap)) System.out.println("Successfully changed capacity of event");
@@ -246,33 +246,30 @@ public class EventManagementSystem {
         }
     }
 
-    private boolean addEventHelper(String eventName, String room, List<String> ListOfSpeaker, int cap, String inputDate,
-                                   LocalTime inputStart, LocalTime inputEnd){
+    public boolean addEvent(String eventName, String room, List<String> ListOfSpeaker, int cap,
+                                   LocalDateTime inputStart, LocalDateTime inputEnd){
         if (!user.getUserInfoList().get(2).equals("O")) {
             return false;
         }
         List<String> speaker = checkValidSpeaker(ListOfSpeaker);
         String org = user.getUserInfoList().get(0);
-        LocalDateTime startTime = formatDateTime(inputStart, inputDate);
-        LocalDateTime endTime = formatDateTime(inputEnd, inputDate);
-        if (!speaker.isEmpty()) {
-            return manager.addEvent(eventName, room, speaker, org, cap, startTime, endTime);
-                } else {
-            return false;
-        }
+        //LocalDateTime startTime = formatDateTime(inputStart, inputDate);
+        //LocalDateTime endTime = formatDateTime(inputEnd, inputDate);
+        return manager.addEvent(eventName, room, speaker, org, cap, inputStart, inputEnd);
+
     }
 
-    private boolean addVIPEventHelper(String eventName, String room, List<String> ListOfSpeaker, int cap, String inputDate,
-                                   LocalTime inputStart, LocalTime inputEnd){
+    public boolean addVIPEvent(String eventName, String room, List<String> ListOfSpeaker, int cap,
+                                   LocalDateTime inputStart, LocalDateTime inputEnd){
         if (!user.getUserInfoList().get(2).equals("O")) {
             return false;
         }
         List<String> speaker = checkValidSpeaker(ListOfSpeaker);
         String org = user.getUserInfoList().get(0);
-        LocalDateTime startTime = formatDateTime(inputStart, inputDate);
-        LocalDateTime endTime = formatDateTime(inputEnd, inputDate);
+        //LocalDateTime startTime = formatDateTime(inputStart, inputDate);
+        //LocalDateTime endTime = formatDateTime(inputEnd, inputDate);
         if (!speaker.isEmpty()) {
-            return manager.addVIPEvent(eventName, room, speaker, org, cap, startTime, endTime);
+            return manager.addVIPEvent(eventName, room, speaker, org, cap, inputStart, inputEnd);
         } else {
             return false;
         }
@@ -284,37 +281,38 @@ public class EventManagementSystem {
         return LocalDateTime.parse(date + "T" + time);
     }
 
-    private LocalTime checkStartTime (String inputTime){
-        LocalTime time = LocalTime.parse(inputTime + ":00:00");
+    public LocalTime checkStartTime (String inputTime){
+        LocalTime time = LocalTime.parse(inputTime + ":00");
         int before9 = time.compareTo(LocalTime.parse("09:00:00"));
         int after5 = time.compareTo(LocalTime.parse("17:00:00"));
         boolean incorrect = true;
-        do if ((before9 >= 0 && !(after5 >= 0))) {
+        if ((before9 >= 0 && !(after5 >= 0))) {
             incorrect = false;
             return LocalTime.parse(inputTime);
         } else {
-            System.out.println("Input a time between 9 and 17.");
+            //System.out.println("Input a time between 9 and 17.");
+            return null;
         }
-        while (incorrect);
-        return null;
+        //return null;
     }
 
-    private LocalTime checkEndTime (String inputTime){
-        LocalTime time = LocalTime.parse(inputTime + ":00:00");
+    public LocalTime checkEndTime (String inputTime){
+        LocalTime time = LocalTime.parse(inputTime + ":00");
         int before10 = time.compareTo(LocalTime.parse("10:00:00"));
         int after6 = time.compareTo(LocalTime.parse("18:00:00"));
         boolean incorrect = true;
-        do if ((before10 >= 0 && !(after6 >= 0))) {
+        if ((before10 >= 0 && !(after6 >= 0))) {
             incorrect = false;
             return LocalTime.parse(inputTime);
-                } else {
-            System.out.println("Input a time between 10 and 18.");
         }
-        while (incorrect);
-        return null;
-                }
+        else {
+            //System.out.println("Input a time between 10 and 18.");
+            return null;
+        }
+        //return null;
+    }
 
-    private LocalDate checkDate(String inputDate){
+    public LocalDate checkDate(String inputDate){
             boolean correct = false;
             do {
                 try {

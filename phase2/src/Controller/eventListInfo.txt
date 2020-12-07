@@ -1,3 +1,3 @@
 E|1|Conference 1 |BA220|Speaker1,|Organizer|20|2021-03-02T13:00:00|2021-03-02T14:00:00|Attendee1,Olivia,
-E|3|CSC207 FINAL EXAM|Quercus|TBA,|Organizer1|20|2020-12-18T15:00:00|2020-12-18T16:00:00|Olivia,
-E|4|example2|exampleRoom|Speaker1,Speaker2,|Organizer1|100|2021-07-08T10:00:00|2021-07-08T11:00:00|Olivia,Eric,
+E|2|CSC207 FINAL EXAM|Quercus|TBA,|Organizer1|20|2020-12-18T15:00:00|2020-12-18T16:00:00|Olivia,
+V|3|Raiyaan's TED Talk|Bill Gate's Mansion|Speaker2,RaiyaanSpeaker,,|Organizer1|100|2021-01-31T11:00:00|2021-01-31T12:30:00|Tariq,

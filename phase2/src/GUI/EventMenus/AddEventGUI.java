@@ -2,6 +2,7 @@ package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
 import Controller.LoginSystem;
+import Exceptions.InvalidDateException;
 import GUI.Main.LoginPanelBuilder;
 import GUI.Main.PanelStack;
 import UseCase.UserManager;
@@ -10,8 +11,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class AddEventGUI implements ActionListener {
@@ -22,11 +26,13 @@ public class AddEventGUI implements ActionListener {
     private JLabel eventNameJLabel = new JLabel("Event Name:");
     private JLabel speakersJLabel = new JLabel("Speaker(s):");
     private JLabel dateJLabel = new JLabel("Date:");
-    private JLabel timeJLabel = new JLabel("Time:");
+    //private JLabel timeJLabel = new JLabel("Time:");
     private JLabel roomNameJLabel = new JLabel("Room Name:");
     private JLabel capacityJLabel = new JLabel("Capacity");
     private JLabel typeJLabel = new JLabel("Type:");
-    private ArrayList<String> speakers = new ArrayList<String>();
+    private JTextField startTimeTextField;
+    private JTextField endTimeTextField;
+    private java.util.List<String> speakers;
     private JList speakersJList;
     private JScrollPane speakersJScrollPane;
     private JTextField eventNameTextField = new JTextField(20);
@@ -46,7 +52,6 @@ public class AddEventGUI implements ActionListener {
 
 
     public AddEventGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
-
         this.eventSystem = eventSystem;
         this.panelStack = panelStack;
         backButtonListen();
@@ -72,9 +77,7 @@ public class AddEventGUI implements ActionListener {
         speakersJLabel.setBounds(20, 120, 80, 25);
         addEventPanel.add(speakersJLabel);
 
-        for(int i = 1; i < 20; i++){
-            speakers.add("speaker" + i);
-        }
+        speakers = eventSystem.getSpeakers();
         buildListModel();
 
         speakersJList = new JList(s);
@@ -135,13 +138,13 @@ public class AddEventGUI implements ActionListener {
         addEventPanel.add(yearJLabel);
 
         // TIME
-        JTextField startTimeTextField = new JTextField();
+        startTimeTextField = new JTextField();
         startTimeTextField.setBounds(120, 290, 80, 25);
         JLabel startTimeJLabel = new JLabel("Start Time");
         startTimeJLabel.setBounds(130, 310, 80, 25);
 
 
-        JTextField endTimeTextField = new JTextField();
+        endTimeTextField = new JTextField();
         endTimeTextField.setBounds(220, 290, 80, 25);
         JLabel endTimeJLabel = new JLabel("End Time");
         endTimeJLabel.setBounds(230, 310, 80, 25);
@@ -169,7 +172,8 @@ public class AddEventGUI implements ActionListener {
     private void backButtonListen(){
         backButton.addActionListener(e -> {
             panelStack.pop();
-            JPanel panel = (JPanel) panelStack.pop();
+            panelStack.pop();
+            JPanel panel = new EventOrganizerGUI(eventSystem, panelStack).startEventPage();
             panelStack.loadPanel(panel);
         });
     }
@@ -185,7 +189,67 @@ public class AddEventGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String eventName = eventNameTextField.getText();
-        System.out.println("button pressed!");
+        int[] speakerIndexes = speakersJList.getSelectedIndices();
+        ArrayList<String> selectedSpeakers = new ArrayList<>();
+        for(int i : speakerIndexes){
+            selectedSpeakers.add(speakers.get(i));
+        }
+        String day = dateTextField.getText();
+        String month = (String)monthComboBox.getSelectedItem();
+        String year = yearTextField.getText();
+        String startTime = startTimeTextField.getText();
+        String endTime = endTimeTextField.getText();
+        String roomName = roomNameTextField.getText();
+        String type = (String)typeComboBox.getSelectedItem();
+        String capacity = capacityTextField.getText();
+
+        int cap = -1;
+        boolean cont = true;
+        int m = -1;
+        LocalDate date = null;
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        try {
+            cap = Integer.parseInt(capacity);
+            m = Arrays.asList(months).indexOf(month) + 1;
+            if(eventSystem.checkStartTime(startTime) == null || eventSystem.checkEndTime(endTime) == null) {
+                throw new InvalidDateException();
+            }
+            date = LocalDate.of(Integer.parseInt(year), m, Integer.parseInt(day));
+            start = LocalDateTime.of(date, eventSystem.checkStartTime(startTime));
+            end = LocalDateTime.of(date, eventSystem.checkEndTime(endTime));
+            if(!start.isAfter(LocalDateTime.now()) || !end.isAfter(start)) throw new InvalidDateException();
+        }
+        catch (InvalidDateException invalidDateException){
+            JOptionPane.showMessageDialog(addEventPanel, "The date and time of the event " +
+                    "must be after the current date and" +
+                    "time and must be between 9:00 and 17:00");
+            cont = false;
+        }
+        catch (Exception ex){
+            JOptionPane.showMessageDialog(addEventPanel, "One of your fields is in an incorrect format." +
+                    " Please try again.");
+            cont = false;
+        }
+
+        if (cont){
+            if(type.equals("Regular")){
+                if (eventSystem.addEvent(eventName, roomName, selectedSpeakers, cap, start, end)){
+                    JOptionPane.showMessageDialog(addEventPanel, "Successfully added event");
+                }
+                else JOptionPane.showMessageDialog(addEventPanel, "The event could not be added");
+            }
+            else if (type.equals("VIP Only")){
+                if (eventSystem.addVIPEvent(eventName, roomName, selectedSpeakers, cap, start, end)){
+                    JOptionPane.showMessageDialog(addEventPanel, "Successfully added event");
+                }
+                else JOptionPane.showMessageDialog(addEventPanel, "The event could not be added");
+            }
+
+        }
+
+
+        //System.out.println("button pressed!");
         //eventSystem.addEvent();
 
 //        if (!loginSystem.isUser(uname)) {
