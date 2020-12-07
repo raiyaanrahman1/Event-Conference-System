@@ -240,7 +240,7 @@ public class MessageManager {
         List<String> userMessages = new ArrayList<>();
 
         if (this.archive.contains(receiver)) {
-            for (Message message: this.messages.get(receiver)) {
+            for (Message message: this.archive.get(receiver)) {
                 userMessages.add(this.getFormattedMessage(message));
             }
         }

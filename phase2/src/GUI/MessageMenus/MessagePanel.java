@@ -25,7 +25,7 @@ public class MessagePanel {
 
     public void disableButtons(List<JButton> options){
         for (JButton button : options){
-            button.setEnabled(false);
+//            button.setEnabled(false);
             button.setVisible(false);
         }
     }
