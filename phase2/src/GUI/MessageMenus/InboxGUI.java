@@ -122,8 +122,8 @@ public class InboxGUI implements IMessageView {
     }
     public JPanel mainPage(){
 //        panelHelper.enableButtons(messageOptions);
-        loadInbox();
         loadArchive();
+        loadInbox();
         currArchivePane.setVisible(false);
         currInboxPane.setVisible(true);
 
@@ -259,8 +259,8 @@ public class InboxGUI implements IMessageView {
         // archive
         messageOptions.get(2).addActionListener(e -> {
             messenger.archiveMessage(currMessageIndex);
-            inboxListModel.removeElement(currSelectedMsg);
             archiveListModel.addElement(currSelectedMsg);
+            inboxListModel.removeElement(currSelectedMsg);
         });
         // delete
         messageOptions.get(3).addActionListener(e -> {

@@ -77,7 +77,7 @@ public class MessengerSystem {
     }
 
     public void unarchiveMessage(int index) {
-        messageManager.unarchive(getLoggedInUser(), viewReceivedMessages().get(index));
+        messageManager.unarchive(getLoggedInUser(), viewArchivedMessages().get(index));
     }
 
     /**
