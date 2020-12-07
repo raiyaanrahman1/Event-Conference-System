@@ -124,29 +124,6 @@ public class MessagePanelBuilder {
         }
 
         return buttons;
-//
-//        // view the current selected message
-//        JButton viewMsg = new JButton("view");
-//        viewMsg.setFont(infoFont);
-//        viewMsg.setBounds(310, 260, 100, 30);
-//
-//
-//        // reply to the current selected message
-//        JButton reply = new JButton("reply");
-//        reply.setFont(infoFont);
-//        reply.setBounds(310, 300, 100, 30);
-//
-//        // archive selected message
-//        JButton archive = new JButton("archive");
-//        archive.setFont(infoFont);
-//        archive.setBounds(310, 340, 100, 30);
-//
-//        // view all received messages from sender
-//        JButton viewAll = new JButton("view all");
-//        viewAll.setFont(infoFont);
-//        viewAll.setBounds(310, 380, 100, 30);
-//
-//        return new JButton[]{viewMsg, reply, archive, viewAll};
     }
 
 
@@ -174,6 +151,7 @@ public class MessagePanelBuilder {
         JTextArea text = new JTextArea(fullThread);
         text.setFont(infoFont);
         text.setEditable(false);
+        text.setLineWrap(true);
         JScrollPane pane = new JScrollPane(text, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         pane.setBounds(50, 80, 225, 340);

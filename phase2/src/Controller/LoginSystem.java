@@ -17,7 +17,7 @@ import UseCase.*;
 public class LoginSystem {
     IGateway loginFileGateway = new LoginFileGateway("phase2/src/Controller/LogInInformation.txt");
     IGateway2 messageListInformationGateway = new InfoFileGateway("phase2/src/Controller/MessageListInformation.txt");
-    IGateway2 archiveFileGateway = new InfoFileGateway("phase2/src/Controller/MessageListInformation.txt");
+    IGateway2 archiveFileGateway = new InfoFileGateway("phase2/src/Controller/archive.txt");
     IGateway2 contactListGateway = new InfoFileGateway("phase2/src/Controller/contactListInfo.txt");
     IGateway2 eventListGateway = new InfoFileGateway("phase2/src/Controller/eventListInfo.txt");
     UserManager userManager = new UserManager(loginFileGateway, contactListGateway);
@@ -72,7 +72,6 @@ public class LoginSystem {
 //            }
         } while (answer != 3);
     }
-
     /**
      * Manages the initial page that the user sees/
      */

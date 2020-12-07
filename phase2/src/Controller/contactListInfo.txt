@@ -1,12 +1,12 @@
 Organizer1
-Attendee1
-Speaker1
+Attendee1|hala
+Speaker1|hala
 Olivia|hala
 raiyaan|hala
 Ayah|hala
-aa
+aa|hala
 a|hala
-hala|a|Ayah|nitin|tk|Air|Eric|Olivia|Speaker2|raiyaan
+hala|Ayah|nitin|Air|Eric|Olivia|raiyaan|a|aa|Speaker1|Attendee1|tk
 tk|hala
 dsf
 nitin|hala
@@ -17,7 +17,7 @@ ewroewuri
 Air|hala
 Eric|hala
 Tariq
-Speaker2|hala
+Speaker2
 Attendee2
 Speaker3
 Speaker4
