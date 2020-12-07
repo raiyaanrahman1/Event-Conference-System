@@ -2,7 +2,7 @@ package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
 import GUI.Main.PanelStack;
-import javafx.scene.layout.Pane;
+//import javafx.scene.layout.Pane;
 
 import javax.swing.*;
 import java.awt.*;

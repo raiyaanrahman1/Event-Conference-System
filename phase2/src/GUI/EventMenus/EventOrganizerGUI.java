@@ -34,6 +34,7 @@ public class EventOrganizerGUI {
     private JButton editButton = new JButton("Edit");
     private JButton deleteButton = new JButton("Delete");
     private JButton sortButton = new JButton("Sort");
+    private JButton addEventButton = new JButton("Add Event");
 
     private int selectedEventIndex;
     private JLabel noEventLabel = new JLabel("You are not speaking at any events.");
@@ -45,6 +46,7 @@ public class EventOrganizerGUI {
         broadcastButtonListen();
         backButtonListen();
         sortButtonListener();
+        addEventButtonListener();
     }
 
     private void buildListModel(){
@@ -73,6 +75,7 @@ public class EventOrganizerGUI {
         panelBuilder.buildComponent(editButton, northButtonPanel,14);
         panelBuilder.buildComponent(deleteButton, northButtonPanel,14);
         panelBuilder.buildComponent(sortButton, northButtonPanel,14);
+        panelBuilder.buildComponentBorderLayout(addEventButton, buttonPanel, BorderLayout.EAST, 14);
         sortButton.setEnabled(true);
         deleteButtonListen();
         listListener();
@@ -85,6 +88,12 @@ public class EventOrganizerGUI {
             panelStack.pop();
             JPanel panel = (JPanel) panelStack.pop();
             panelStack.loadPanel(panel);
+        });
+    }
+
+    private void addEventButtonListener(){
+        addEventButton.addActionListener(e -> {
+            panelStack.loadPanel(new AddEventGUI(eventSystem, panelStack).addEventPage());
         });
     }
 

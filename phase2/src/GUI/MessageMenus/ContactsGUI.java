@@ -55,7 +55,7 @@ public class ContactsGUI implements IMessageView{
         internalSendButton.setVisible(false);
 
         addButton.addActionListener(e -> addListener());
-        panelHelper.mainBackListener(panelStack, mainBackButton, internalBackButton);
+        panelHelper.mainBackListener(panelStack, mainBackButton);
         internalBackListener();
         addUserTextField = builder.buildTextField(310, 130);
         addUserTextField.setVisible(false);
@@ -67,14 +67,14 @@ public class ContactsGUI implements IMessageView{
             for (Component c : mainPanel.getComponents()){
                 c.setVisible(false);
             }
-            mainBackButton.setVisible(true);
-            addButton.setVisible(true);
             panelStack.getMainFrame().setContentPane(mainPage());
+            addButton.setVisible(true);
+            mainBackButton.setVisible(true);
+            mainBackButton.setEnabled(true);
         });
     }
 
     public void loadContacts(){
-        mainBackButton.setVisible(true);
         for (String s: messenger.getContacts()){
             if (!contactListModel.contains(s))
                 contactListModel.addElement(s);
@@ -92,6 +92,8 @@ public class ContactsGUI implements IMessageView{
     }
     public JPanel mainPage(){
         mainBackButton.setVisible(true);
+        internalAddButton.setVisible(false);
+        internalSendButton.setVisible(false);
         internalBackButton.setVisible(false);
         loadContacts();
         listListener();
@@ -102,7 +104,6 @@ public class ContactsGUI implements IMessageView{
         contactsJList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 currContactIndex = contactsJList.getSelectedIndex();
-//                currContactIndex = e.getLastIndex();
                 if (currContactIndex != -1) {
                     currSelectedContact = contactListModel.get(currContactIndex);
                     panelHelper.enableButtons(options);
@@ -113,6 +114,7 @@ public class ContactsGUI implements IMessageView{
     }
     private void addListener(){
         mainBackButton.setVisible(false);
+        mainBackButton.setEnabled(false);
         internalBackButton.setVisible(true);
         panelHelper.disableButtons(options);
         addButton.setVisible(false);
@@ -145,11 +147,7 @@ public class ContactsGUI implements IMessageView{
         options.get(1).addActionListener(e -> {
             messenger.removeUser(currSelectedContact);
             contactListModel.removeElement(currSelectedContact);
-//            contacts.revalidate();
-//            loadContacts();
-//            listListener();
-//            currContactIndex = contactsJList.getSelectedIndex();
-//            contacts.setViewportView(contactsJList);
+
 
         });
 
@@ -162,7 +160,7 @@ public class ContactsGUI implements IMessageView{
     }
 
     private void sendMsgPanel(){
-        addUserTextField.setVisible(false);
+//        addUserTextField.setVisible(false);
         panelHelper.disableButtons(options);
         contacts.setVisible(false);
         addButton.setVisible(false);
@@ -173,11 +171,14 @@ public class ContactsGUI implements IMessageView{
         currMessagePane.setVisible(true);
         mainPanel.add(currMessagePane);
         internalSendButton.addActionListener(e -> {
-            messenger.messageUser(currSelectedContact,
+            if (!currMessageText.getText().equals(""))
+                messenger.messageUser(currSelectedContact,
                 currMessageText.getText());
             currMessagePane.setVisible(false);
             internalSendButton.setVisible(false);
+            panelStack.getMainFrame().setContentPane(mainPage());
             contacts.setVisible(true);
+
         });
     }
 

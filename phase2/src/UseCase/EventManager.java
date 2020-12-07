@@ -137,7 +137,6 @@ public class EventManager {
         }
         event.setEventID(events.size()+1);
         events.add(event);
-        eventGetter.events.add(event);
         return true;
     }
 
@@ -167,7 +166,6 @@ public class EventManager {
         }
         event.setEventID(events.size()+1);
         events.add(event);
-        eventGetter.events.add(event);
         return true;
     }
 
@@ -178,9 +176,7 @@ public class EventManager {
      */
     public boolean removeEvent(int eventID){
         Event event = this.getEventByID(eventID);
-
         events.remove(event);
-        eventGetter.events.remove(event);
         return true;
 
     }

@@ -240,7 +240,7 @@ public class MessageManager {
         List<String> userMessages = new ArrayList<>();
 
         if (this.archive.contains(receiver)) {
-            for (Message message: this.messages.get(receiver)) {
+            for (Message message: this.archive.get(receiver)) {
                 userMessages.add(this.getFormattedMessage(message));
             }
         }
@@ -254,7 +254,7 @@ public class MessageManager {
      *
      * @param messageGateway  the gateway through which we save our messages
      */
-    public void storeMessages(IGateway2 messageGateway, IGateway2 archiveMessage) {
+    public void storeMessages(IGateway2 messageGateway, IGateway2 archiveGateway) {
         if (messageGateway.openForWrite()) {
             for (Message message: this.messages.getAll()) {
                 messageGateway.write(this.convertToString(message));
@@ -263,12 +263,12 @@ public class MessageManager {
             messageGateway.closeForWrite();
         }
 
-        if (archiveMessage.openForWrite()) {
+        if (archiveGateway.openForWrite()) {
             for (Message message: this.archive.getAll()) {
-                messageGateway.write(this.convertToString(message));
+                archiveGateway.write(this.convertToString(message));
             }
 
-            messageGateway.closeForWrite();
+            archiveGateway.closeForWrite();
         }
     }
 
