@@ -29,14 +29,14 @@ public class InboxGUI implements IMessageView {
     // inboxPanel elements
     private JScrollPane currInboxPreview;
     private JList inboxJList;
-    private DefaultListModel<String> inboxListModel;
+    private DefaultListModel<String> inboxListModel = new DefaultListModel<String>();;
     private int currInboxIndex;
     private String currInboxMsg;
 
     // archivePanel elements
     private JScrollPane currArchivePreview;
     private JList archiveJList;
-    private DefaultListModel<String> archiveListModel;
+    private DefaultListModel<String> archiveListModel = new DefaultListModel<String>();
     private int currArchiveIndex;
     private String currArchiveMsg;
 
@@ -50,32 +50,37 @@ public class InboxGUI implements IMessageView {
     /*
      *  A DefaultListCellRenderer implementation specific to elements in the inboxJList.
      */
-    private class InboxListRenderer extends DefaultListCellRenderer {
-        @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-                                                      boolean cellHasFocus) {
-            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-            if (messenger.isRead(index))
-                c.setBackground(Color.LIGHT_GRAY);
-            else
-                c.setBackground(Color.WHITE);
-            return c;
-        }
+    private void setInboxListCellRendererComponent(){
+        inboxJList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+                                                          boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (messenger.isRead(index))
+                    setBackground(Color.WHITE);
+                else
+                    setBackground(Color.LIGHT_GRAY);
+                return c;
+            }
+        });
     }
 
     /*
      *  A DefaultListCellRenderer implementation specific to elements in the archiveJList.
      */
-    private class ArchiveListRenderer extends DefaultListCellRenderer {
+    private void setArchiveListCellRendererComponent(){
+        archiveJList.setCellRenderer(new DefaultListCellRenderer() {
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                       boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-            c.setBackground(Color.LIGHT_GRAY);
+            setBackground(Color.LIGHT_GRAY);
             return c;
         }
+        });
     }
 
     /**
@@ -108,6 +113,7 @@ public class InboxGUI implements IMessageView {
         inboxOptions.get(0).addActionListener(e -> {
             messenger.markMessageUnread(currInboxIndex);
             panelHelper.disableButtons(inboxOptions);
+            inboxJList.updateUI();
         });
 
         // reply
@@ -120,6 +126,7 @@ public class InboxGUI implements IMessageView {
             messenger.archiveMessage(currInboxIndex);
             inboxListModel.removeElementAt(currInboxIndex);
             archiveListModel.addElement(currInboxMsg);
+            currInboxPreview.setVisible(false);
             panelHelper.disableButtons(inboxOptions);
         });
 
@@ -143,7 +150,6 @@ public class InboxGUI implements IMessageView {
     }
 
     private JScrollPane loadInbox(){
-        inboxListModel = new DefaultListModel<String>();
         for (String m : messenger.viewReceivedMessages()) {
             if(!inboxListModel.contains(m))
                 inboxListModel.addElement(m);
@@ -155,7 +161,7 @@ public class InboxGUI implements IMessageView {
         }
 
         inboxJList = inboxBuilder.buildJList(inboxListModel);
-//        inboxJList.setCellRenderer(new InboxListRenderer());
+        setInboxListCellRendererComponent();
         return inboxBuilder.buildMainPane(new JScrollPane(inboxJList), "inbox");
     }
 
@@ -199,11 +205,11 @@ public class InboxGUI implements IMessageView {
         viewArchive.addActionListener(e ->{
             panelStack.loadPanel(buildArchive());
         });
+
         return inboxPanel;
     }
 
-    private JScrollPane loadArchive(){
-        archiveListModel = new DefaultListModel<String>();
+    private void loadArchive(){
         for (String m : messenger.viewArchivedMessages()) {
             if(!archiveListModel.contains(m))
                 archiveListModel.addElement(m);
@@ -214,9 +220,6 @@ public class InboxGUI implements IMessageView {
                 archiveListModel.removeElementAt(i);
         }
 
-        archiveJList = archiveBuilder.buildJList(archiveListModel);
-//        archiveJList.setCellRenderer(new ArchiveListRenderer());
-        return archiveBuilder.buildMainPane(new JScrollPane(archiveJList), "archive");
     }
 
     private void archiveListener(JButton unarchive){
@@ -230,7 +233,10 @@ public class InboxGUI implements IMessageView {
     }
 
     private JPanel buildArchive(){
-        JScrollPane archivePane = loadArchive();
+        loadArchive();
+        archiveJList = archiveBuilder.buildJList(archiveListModel);
+        JScrollPane archivePane = archiveBuilder.buildMainPane(new JScrollPane(archiveJList), "archive");
+
         archivePanel.add(archivePane);
         JButton archiveBack = archiveBuilder.makeBackButton();
         archivePanel.add(archiveBack);
@@ -240,7 +246,6 @@ public class InboxGUI implements IMessageView {
         archivePanel.add(unarchive);
         unarchive.setVisible(false);
         archiveListener(unarchive);
-
         archiveJList.addListSelectionListener(e->{
             if (!e.getValueIsAdjusting()) {
                 currArchiveIndex = archiveJList.getSelectedIndex();
@@ -255,7 +260,7 @@ public class InboxGUI implements IMessageView {
         currArchivePreview = archiveBuilder.buildMessagePreview(new JScrollPane());
         archivePanel.add(currArchivePreview);
         currArchivePreview.setVisible(false);
-
+        setArchiveListCellRendererComponent();
         return archivePanel;
     }
 
