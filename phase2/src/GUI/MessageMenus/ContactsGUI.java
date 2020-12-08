@@ -9,142 +9,74 @@ import java.util.List;
 
 public class ContactsGUI implements IMessageView{
     private MessagePanel panelHelper = new MessagePanel();
-    private PanelStack panelStack;
-    private MessagePanelBuilder builder;
     private MessengerSystem messenger;
-    private JPanel mainPanel = new JPanel();
-    private DefaultListModel<String> contactListModel = new DefaultListModel<>();
-    private List<JButton> options;
-    private JButton addButton;
-    private JButton mainBackButton;
-    private JButton internalBackButton;
+    private PanelStack panelStack;
+
+    private MessagePanelBuilder contactBuilder;
+    private MessagePanelBuilder sendMsgBuilder;
+    private MessagePanelBuilder viewAllBuilder;
+    private MessagePanelBuilder addContactBuilder;
+
+    private JPanel contactPanel = new JPanel();
+    private JPanel sendMsgPanel = new JPanel();
+    private JPanel viewAllPanel = new JPanel();
+    private JPanel addContactPanel = new JPanel();
+
+    private JButton backButton;
+
+    //contactPanel elements
     private JList contactsJList;
-    private JScrollPane contacts;
+    private JScrollPane contactPane;
+    private DefaultListModel<String> contactListModel = new DefaultListModel<>();
+    private JButton addButton;
     private int currContactIndex;
     private String currSelectedContact;
-    private JTextArea currMessageText;
+    private List<JButton> contactOptions;
+
+    //sendMsgPanel
     private JScrollPane currMessagePane;
-    private JTextField addUserTextField;
+    private JTextArea currMessageText;
+    private JButton sendMsgButton;
+
+    //viewAllPanel
     private JScrollPane currViewMessagePane;
+
+
+    //addContactPanel
     private JButton internalAddButton;
-    private JButton internalSendButton;
+    private JScrollPane addContactPane;
+    private JList addContactJList;
+    private DefaultListModel<String> addContactListModel = new DefaultListModel<>();
+    private JTextField addUserTextField;
+
 
 
     public ContactsGUI(MessengerSystem messenger, PanelStack panelStack){
         this.messenger = messenger;
         this.panelStack = panelStack;
-        builder = new MessagePanelBuilder(mainPanel);
+        contactBuilder = new MessagePanelBuilder(contactPanel);
+        sendMsgBuilder = new MessagePanelBuilder(sendMsgPanel);
+        viewAllBuilder = new MessagePanelBuilder(viewAllPanel);
+        addContactBuilder = new MessagePanelBuilder(addContactPanel);
 
-        options = builder.buildOptions(new String[]{"send msg", "remove", "view msgs"}, 300);
-        internalSendButton = builder.buildButton("send", 310, 300);
-        addButton = builder.buildButton("add", 310, 80);
-        internalAddButton = builder.buildButton("add", 310, 80);
-        mainBackButton = builder.makeBackButton();
-        internalBackButton = builder.makeBackButton();
-
-        for (JButton button : options){
-            mainPanel.add(button);
-        }
-        mainPanel.add(addButton);
-        mainPanel.add(internalAddButton);
-        mainPanel.add(mainBackButton);
-        mainPanel.add(internalBackButton);
-        mainPanel.add(internalSendButton);
-        internalBackButton.setVisible(false);
-        internalAddButton.setVisible(false);
-        internalSendButton.setVisible(false);
-
-        addButton.addActionListener(e -> addListener());
-        panelHelper.mainBackListener(panelStack, mainBackButton);
-        internalBackListener();
-        addUserTextField = builder.buildTextField(310, 130);
-        addUserTextField.setVisible(false);
-        mainPanel.add(addUserTextField);
     }
 
-    private void internalBackListener(){
-        internalBackButton.addActionListener(e -> {
-            for (Component c : mainPanel.getComponents()){
-                c.setVisible(false);
-            }
-            panelStack.getMainFrame().setContentPane(mainPage());
-            addButton.setVisible(true);
-            mainBackButton.setVisible(true);
-            mainBackButton.setEnabled(true);
-        });
-    }
-
-    public void loadContacts(){
-        for (String s: messenger.getContacts()){
-            if (!contactListModel.contains(s))
-                contactListModel.addElement(s);
-        }
-
-        for (int i=0; i < contactListModel.size(); i++) {
-            if (!messenger.getContacts().contains(contactListModel.get(i)))
-                contactListModel.remove(i);
-        }
-
-
-        contactsJList = builder.buildJList(contactListModel);
-        contacts = builder.buildMainPane(new JScrollPane(contactsJList), "contacts");
-        mainPanel.add(contacts);
-    }
-    public JPanel mainPage(){
-        mainBackButton.setVisible(true);
-        internalAddButton.setVisible(false);
-        internalSendButton.setVisible(false);
-        internalBackButton.setVisible(false);
-        loadContacts();
-        listListener();
-        return mainPanel;
-    }
-
-    public void listListener(){
+    private void contactListListener(List<JButton> contactOptions){
         contactsJList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 currContactIndex = contactsJList.getSelectedIndex();
                 if (currContactIndex != -1) {
                     currSelectedContact = contactListModel.get(currContactIndex);
-                    panelHelper.enableButtons(options);
-                    listenToButtons();
+                    panelHelper.enableButtons(contactOptions);
                 }
             }
         });
-    }
-    private void addListener(){
-        mainBackButton.setVisible(false);
-        mainBackButton.setEnabled(false);
-        internalBackButton.setVisible(true);
-        panelHelper.disableButtons(options);
-        addButton.setVisible(false);
-        internalAddButton.setVisible(true);
-        addUserTextField.setVisible(true);
-        internalAddButton.addActionListener(e -> {
-            if (!messenger.addUser(addUserTextField.getText())) {
-                JOptionPane.showMessageDialog(mainPanel, "User does not exist or is already in your contacts!");
-                addUserTextField.setText("");
-            }
-            else {
-                messenger.addUser(addUserTextField.getText());
-                JOptionPane.showMessageDialog(mainPanel, "User successfully added!");
-                addUserTextField.setText("");
-                loadContacts();
-            }
-        });
 
-    }
-
-    private void listenToButtons() {
-        // send msg
-        options.get(0).addActionListener(e ->{
-            mainBackButton.setVisible(false);
-            internalBackButton.setVisible(true);
-            sendMsgPanel();
-        });
+        //send msg
+        contactOptions.get(0).addActionListener( e -> panelStack.loadPanel(buildsSendMsgPanel()));
 
         // remove
-        options.get(1).addActionListener(e -> {
+        contactOptions.get(1).addActionListener(e -> {
             messenger.removeUser(currSelectedContact);
             contactListModel.removeElement(currSelectedContact);
 
@@ -152,51 +84,121 @@ public class ContactsGUI implements IMessageView{
         });
 
         // view msgs
-        options.get(2).addActionListener(e ->{
-            mainBackButton.setVisible(false);
-            internalBackButton.setVisible(true);
-            viewMsgsPanel();
-        });
+        contactOptions.get(2).addActionListener(e -> panelStack.loadPanel(buildViewAllPanel()));
     }
 
-    private void sendMsgPanel(){
-//        addUserTextField.setVisible(false);
-        panelHelper.disableButtons(options);
-        contacts.setVisible(false);
-        addButton.setVisible(false);
-        internalSendButton.setVisible(true);
-        Component[] elements = builder.prepareEditablePane("send msg");
+    /**
+     * Constructs the main contact page
+     * @return the main contact page
+     */
+    public JPanel mainPage() {
+        return buildContactPanel();
+    }
+
+    private void loadContacts(DefaultListModel listModel){
+        listModel.clear();
+        for (String s: messenger.getContacts()){
+            if (!listModel.contains(s))
+                listModel.addElement(s);
+        }
+    }
+
+    private JPanel buildContactPanel(){
+        loadContacts(contactListModel);
+        contactsJList = contactBuilder.buildJList(contactListModel);
+        contactPane = contactBuilder.buildMainPane(new JScrollPane(contactsJList), "contacts");
+        contactPanel.add(contactPane);
+        JButton contactBackButton = contactBuilder.makeBackButton();
+        contactPanel.add(contactBackButton);
+        panelHelper.mainBackListener(panelStack, contactBackButton);
+        addButton = contactBuilder.buildButton("add", 310, 80);
+        contactPanel.add(addButton);
+
+        contactOptions = contactBuilder.buildOptions(new String[]{"send msg", "remove", "view msgs"}, 300);
+
+        for (JButton button: contactOptions){
+            contactPanel.add(button);
+        }
+        panelHelper.disableButtons(contactOptions);
+        contactListListener(contactOptions);
+        addButtonListener();
+        return contactPanel;
+    }
+
+
+    private JPanel addContactPanel(){
+        loadContacts(addContactListModel);
+        addContactJList = addContactBuilder.buildJList(addContactListModel);
+        addContactPane = addContactBuilder.buildMainPane(new JScrollPane(addContactJList), "add");
+
+        addContactPanel.add(addContactPane);
+
+        JButton addContactBackButton = addContactBuilder.makeBackButton();
+        addContactPanel.add(addContactBackButton);
+        panelHelper.mainBackListener(panelStack, addContactBackButton);
+
+        internalAddButton = contactBuilder.buildButton("add", 310, 80);
+        addContactPanel.add(internalAddButton);
+
+        addUserTextField = addContactBuilder.buildTextField(310, 130);
+        addContactPanel.add(addUserTextField);
+
+        internalAddListener();
+        return addContactPanel;
+    }
+
+    private void addButtonListener(){
+        addButton.addActionListener(e -> panelStack.loadPanel(addContactPanel()));
+    }
+
+    private void internalAddListener(){
+        internalAddButton.addActionListener(e -> {
+            if (!messenger.addUser(addUserTextField.getText())) {
+                JOptionPane.showMessageDialog(panelStack.getMainFrame(), "User does not exist or is already in your contacts!");
+            }
+            else {
+                JOptionPane.showMessageDialog(panelStack.getMainFrame(), "User successfully added!");
+                addContactListModel.addElement(addUserTextField.getText());
+                contactListModel.addElement(addUserTextField.getText());
+            }
+            addUserTextField.setText("");
+        });
+
+    }
+
+
+    private JPanel buildsSendMsgPanel(){
+        Component[] elements = sendMsgBuilder.prepareEditablePane("send msg");
+        sendMsgButton = sendMsgBuilder.buildButton("send", 310, 300);
         currMessageText = (JTextArea) elements[0];
         currMessagePane = (JScrollPane) elements[1];
         currMessagePane.setVisible(true);
-        mainPanel.add(currMessagePane);
-        internalSendButton.addActionListener(e -> {
+        sendMsgPanel.add(currMessagePane);
+        JButton sendMgsBackButton = sendMsgBuilder.makeBackButton();
+        sendMsgPanel.add(sendMgsBackButton);
+        panelHelper.mainBackListener(panelStack, sendMgsBackButton);
+        sendMsgButton.addActionListener(e -> {
             if (!currMessageText.getText().equals(""))
                 messenger.messageUser(currSelectedContact,
                 currMessageText.getText());
-            currMessagePane.setVisible(false);
-            internalSendButton.setVisible(false);
-            panelStack.getMainFrame().setContentPane(mainPage());
-            contacts.setVisible(true);
-
+            currMessageText.setText("");
         });
+        sendMsgPanel.add(sendMsgButton);
+        return sendMsgPanel;
     }
 
-    private void viewMsgsPanel(){
-        addUserTextField.setVisible(false);
-        panelHelper.disableButtons(options);
-        //currMessagePane.setVisible(false);
-        contacts.setVisible(false);
-
-        addButton.setVisible(false);
+    private JPanel buildViewAllPanel(){
+        JButton viewAllBackButton = viewAllBuilder.makeBackButton();
+        viewAllPanel.add(viewAllBackButton);
+        panelHelper.mainBackListener(panelStack, viewAllBackButton);
         DefaultListModel<String> list = new DefaultListModel<>();
         for (String s: messenger.viewMessages(currSelectedContact)){
             list.addElement(s);
         }
-        JList messages = builder.buildJList(list);
-        currViewMessagePane = builder.buildMainPane(new JScrollPane(messages), "view all");
-        currViewMessagePane.setVisible(true);
-        mainPanel.add(currViewMessagePane);
+        JList messages = viewAllBuilder.buildJList(list);
+        currViewMessagePane = viewAllBuilder.buildMainPane(new JScrollPane(messages), "view all");
+        viewAllPanel.add(currViewMessagePane);
+        return viewAllPanel;
     }
 
 }
