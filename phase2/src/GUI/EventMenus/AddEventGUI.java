@@ -56,6 +56,12 @@ public class AddEventGUI implements ActionListener {
     private DefaultListModel s = new DefaultListModel();
 
 
+    /**
+     * Creates an AddEventGUI and initializes its EventManagementSystem and the panelStack
+     *
+     * @param eventSystem the EventManagementSystem that the AddEventGUI communicates with
+     * @param panelStack the stack containing all the panels that have been loaded
+     */
     public AddEventGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;
         this.panelStack = panelStack;
@@ -63,7 +69,11 @@ public class AddEventGUI implements ActionListener {
         addEventButton.addActionListener(this);
 
     }
-
+    /**
+     * Builds and loads the Add Event Page
+     *
+     * @return The add event panel
+     */
     public JPanel addEventPage(){
         // PANEL:
         addEventPanel.setSize(500, 500);
@@ -141,6 +151,11 @@ public class AddEventGUI implements ActionListener {
         }
     }
 
+    /**
+     * Builds and loads the Add Event Page
+     *
+     * @return The add event panel
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String eventName = eventNameTextField.getText();
@@ -202,38 +217,5 @@ public class AddEventGUI implements ActionListener {
             }
 
         }
-
-
-        //System.out.println("button pressed!");
-        //eventSystem.addEvent();
-
-//        if (!loginSystem.isUser(uname)) {
-//            if (Objects.equals(typeComboBox.getSelectedItem(), "VIP Attendee")) {
-//                loginSystem.signUpUser(uname, pword, "V");
-//                JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a VIP Attendee.");
-//                usernameTextField.setText("");
-//                passwordTextField.setText("");
-//            }
-//            else {
-//                loginSystem.signUpUser(uname, pword, "S");
-//                JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a Speaker.");
-//                usernameTextField.setText("");
-//                passwordTextField.setText("");
-//            }
-//        }
-//        else {
-//            JOptionPane.showMessageDialog(signUpPanel, "Username already exists. Please select a different username.");
-//        }
     }
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame();
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(500, 500);
-//        frame.setResizable(false);
-//        frame.setContentPane(new AddEventGUI().addEventPage());
-//    }
-
 }
