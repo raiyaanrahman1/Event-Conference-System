@@ -33,7 +33,10 @@ public class UserManager {
         userStore.createUserList(userInfo);
         rawUserInfo = userInfo;
     }
-
+    /**
+     * Gets the list of all the Speakers.
+     * @return the list of Speakers
+     */
     public List<String> getSpeakers(){
         List<String> listOfSpeakers = new ArrayList<>();
         for(User speaker : userStore.userList) {
@@ -58,7 +61,10 @@ public class UserManager {
         }
         return null;
     }
-
+    /**
+     * Gets the user type (A, O, S or V).
+     * @return the letter indiciating the user type
+     */
     public String getUserType(String user){
         return this.getUserByUsername(user).getUserType();
     }

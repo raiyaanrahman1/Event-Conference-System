@@ -91,6 +91,7 @@ public class MessengerSystem {
     }
 
     public boolean isRead(int index){
+
         String[] tokens = viewReceivedMessages().get(index).split("\\|");
 
         return Boolean.parseBoolean(tokens[3]);

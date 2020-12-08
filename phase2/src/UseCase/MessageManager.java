@@ -169,7 +169,7 @@ public class MessageManager {
         }
 
         try {
-            message = this.messages.find(message);
+            message = this.archive.find(message);
         } catch (NoSuchMessageException ex) {
             return false;
         }
@@ -254,7 +254,7 @@ public class MessageManager {
      *
      * @param messageGateway  the gateway through which we save our messages
      */
-    public void storeMessages(IGateway2 messageGateway, IGateway2 archiveGateway) {
+    public void storeMessages(IGateway2 messageGateway, IGateway2 archiveMessage) {
         if (messageGateway.openForWrite()) {
             for (Message message: this.messages.getAll()) {
                 messageGateway.write(this.convertToString(message));
@@ -263,12 +263,12 @@ public class MessageManager {
             messageGateway.closeForWrite();
         }
 
-        if (archiveGateway.openForWrite()) {
+        if (archiveMessage.openForWrite()) {
             for (Message message: this.archive.getAll()) {
-                archiveGateway.write(this.convertToString(message));
+                archiveMessage.write(this.convertToString(message));
             }
 
-            archiveGateway.closeForWrite();
+            archiveMessage.closeForWrite();
         }
     }
 

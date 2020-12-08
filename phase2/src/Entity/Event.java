@@ -14,7 +14,7 @@ public class Event {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String room;
-    private List<String> speakers; // perhaps more than one speaker in phase 2
+    private List<String> speakers;
     private String organizer;
     private int roomCap;
     private int eventID;
@@ -250,18 +250,6 @@ public class Event {
     public void setRoomCap(int roomCap) {
         this.roomCap = roomCap;
     }
-    /**
-     * Returns the formatter.
-     */
-    public DateTimeFormatter getFormatter() {
-        return formatter;
-    }
-    /**
-     * Setter for the formatter.
-     */
-    public void setFormatter(DateTimeFormatter formatter) {
-        this.formatter = formatter;
-    }
 
     /**
      * Adds the Speaker's username of the Event
@@ -322,6 +310,7 @@ public class Event {
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
+
     /**
      * Gets the LocalDateTime of the end of the event
      *
@@ -331,7 +320,6 @@ public class Event {
         return endTime;
     }
 
-    // Phase 2 Functionality
     /**
      * Sets the LocalDateTime of the end of the event
      *

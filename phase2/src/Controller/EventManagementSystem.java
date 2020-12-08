@@ -3,7 +3,6 @@ package Controller;
 import Exceptions.InvalidDateException;
 import Exceptions.NoSuchEventException;
 import Gateway.IGateway2;
-import Gateway.InfoFileGateway;
 import UseCase.EventGetter;
 import UseCase.EventManager;
 import UseCase.UserManager;
@@ -112,11 +111,6 @@ public class EventManagementSystem {
 //        }
 //        System.out.println("Unsuccessfully added VIP event");
 // }
-    public void changeCap() {
-        //if user is organizer
-        //if (manager.changeRoomCapacity(eventID, newCap)) System.out.println("Successfully changed capacity of event");
-        //else System.out.println("Unsuccessfully changed capacity of event");
-    }
 
     /**
      * Cancels event if the user is an organizer.
@@ -140,19 +134,18 @@ public class EventManagementSystem {
             broadcastEventOrganizerHelper();
         }
     }
-
-    /**
-     * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
-     */
-    public List<String> getBroadcastEventSpeaker() {
-        List<Integer> eventListByIDs = getter.getTalksBySpeaker(user.getUserInfoList().get(0));
-        if (eventListByIDs.size() == 0) {
-            System.out.println("You are not speaking at any events");
-            return null;
-        }else{
-            return formatEventList(eventListByIDs);
-        }
-    }
+//    /**
+//     * Allows a Speaker to broadcast a message to all Attendees of a specific event they are speaking at.
+//     */
+//    public List<String> getBroadcastEventSpeaker() {
+//        List<Integer> eventListByIDs = getter.getTalksBySpeaker(user.getUserInfoList().get(0));
+//        if (eventListByIDs.size() == 0) {
+//            System.out.println("You are not speaking at any events");
+//            return null;
+//        }else{
+//            return formatEventList(eventListByIDs);
+//        }
+//    }
 
     //formats the list of events for the getBroadcastEventSpeaker method
     private List<String> formatEventList(List<Integer> eventList){
@@ -214,7 +207,9 @@ public class EventManagementSystem {
         }
     }
 
-    //HELPER METHODS
+    /**
+     * Allows a user to sign up for an available event.
+     */
     public boolean eventSignUp(int eventid, JPanel panel){
         boolean canSignUp = false;
         if (manager.signUpForEvent(eventid, user.getUserInfoList().get(0),
@@ -229,6 +224,9 @@ public class EventManagementSystem {
         return canSignUp;
     }
 
+    /**
+     * Allows a user to cancel an event they have signed up for.
+     */
     public void attendeeCancelEvent(int eventid, JPanel panel){
         if (manager.cancelSpot(eventid, user.getUserInfoList().get(0))) {
             JOptionPane.showMessageDialog(panel,"Successfully cancelled event");
@@ -246,6 +244,15 @@ public class EventManagementSystem {
         }
     }
 
+    /**
+     * Allows an organiser to add an event to the event list.
+     * @param eventName the name of the event
+     * @param room the name of the room
+     * @param ListOfSpeaker the list of Speakers for this event
+     * @param cap the capacity of the event
+     * @param inputStart the start time of the event
+     * @param inputEnd the end time of the event
+     */
     public boolean addEvent(String eventName, String room, List<String> ListOfSpeaker, int cap,
                                    LocalDateTime inputStart, LocalDateTime inputEnd){
         if (!user.getUserInfoList().get(2).equals("O")) {
@@ -259,6 +266,15 @@ public class EventManagementSystem {
 
     }
 
+    /**
+     * Allows an organiser to add a VIP event to the event list.
+     * @param eventName the name of the event
+     * @param room the name of the room
+     * @param ListOfSpeaker the list of Speakers for this event
+     * @param cap the capacity of the event
+     * @param inputStart the start time of the event
+     * @param inputEnd the end time of the event
+     */
     public boolean addVIPEvent(String eventName, String room, List<String> ListOfSpeaker, int cap,
                                    LocalDateTime inputStart, LocalDateTime inputEnd){
         if (!user.getUserInfoList().get(2).equals("O")) {
@@ -281,38 +297,38 @@ public class EventManagementSystem {
         return LocalDateTime.parse(date + "T" + time);
     }
 
+    /**
+     * Checks whether the input time is between 9 am and 5 pm.
+     * @param inputTime the time to be checked
+     */
     public LocalTime checkStartTime (String inputTime){
         LocalTime time = LocalTime.parse(inputTime + ":00");
         int before9 = time.compareTo(LocalTime.parse("09:00:00"));
         int after5 = time.compareTo(LocalTime.parse("17:00:00"));
-        boolean incorrect = true;
         if ((before9 >= 0 && !(after5 >= 0))) {
-            incorrect = false;
             return LocalTime.parse(inputTime);
         } else {
-            //System.out.println("Input a time between 9 and 17.");
             return null;
         }
-        //return null;
     }
 
+    /**
+     * Checks whether the input time is between 10 am and 6 pm.
+     * @param inputTime the time to be checked
+     */
     public LocalTime checkEndTime (String inputTime){
         LocalTime time = LocalTime.parse(inputTime + ":00");
         int before10 = time.compareTo(LocalTime.parse("10:00:00"));
         int after6 = time.compareTo(LocalTime.parse("18:00:00"));
-        boolean incorrect = true;
         if ((before10 >= 0 && !(after6 >= 0))) {
-            incorrect = false;
             return LocalTime.parse(inputTime);
         }
         else {
-            //System.out.println("Input a time between 10 and 18.");
             return null;
         }
-        //return null;
     }
 
-    public LocalDate checkDate(String inputDate){
+    private LocalDate checkDate(String inputDate){
             boolean correct = false;
             do {
                 try {
@@ -361,7 +377,11 @@ public class EventManagementSystem {
             broadcast(eventID, message);
         }
     }
-
+    /**
+     * Sends a message to all the participants of a certain event.
+     * @param eventID the id of the event
+     * @param message the message to be sent in the broadcast
+     */
     public void broadcast(int eventID, String message) {
         List<String> users = getter.getAttendeesInEvent(eventID);
         mess.broadcast(user.getUserInfoList().get(0), users, message);
@@ -389,7 +409,10 @@ public class EventManagementSystem {
         manager.setStartTime(eventId, start);
         manager.setEndTime(eventId, end);
     }
-
+    /**
+     * Gets the list of events this user has signed up for
+     * @return the list of events this user has signed up for in toString form
+     */
     public List<String> getAttendeeEventList(){
         if (user.getUserInfoList().get(0) != null){
             return formatEventString(getter.getEventListByAttendee(user.getUserInfoList().get(0)));
@@ -399,14 +422,26 @@ public class EventManagementSystem {
         }
     }
 
+    /**
+     * Gets the list of Speakers
+     * @return a list of Speakers
+     */
     public List<String> getSpeakers(){
         return user.getSpeakers();
     }
 
+    /**
+     * Gets the list of events this Speaker is speaking at
+     * @return the list of events this Speaker is speaking at in toString form
+     */
     public List<String> getSpeakerEventList(){
         return getter.filterEventsBySpeaker(user.getUserInfoList().get(0));
     }
 
+    /**
+     *
+     * @return the list of events this Speaker is speaking at in toString form
+     */
     public List<String> getAllEventList() {
         if (user.getUserInfoList().get(0) != null) {
             return formatEventString(getter.getAllEventIDs());
@@ -415,7 +450,10 @@ public class EventManagementSystem {
             return new ArrayList<>();
         }
     }
-
+    /**
+     * Gets the list of events this Organizer has created
+     * @return the list of events this Organizer has created in toString form
+     */
     public List<String> getOrganizerEventList(){
         return getter.filterEventsByOrganizer(user.getUserInfoList().get(0));
     }

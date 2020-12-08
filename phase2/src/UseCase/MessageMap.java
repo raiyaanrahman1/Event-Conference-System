@@ -99,7 +99,7 @@ public class MessageMap implements MessageCollection {
         if (!this.contains(receiver)) {
             return false;
         } else {
-            return this.get(receiver).remove(message);
+            return this.get(message.getReceiver()).remove(message);
         }
     }
 

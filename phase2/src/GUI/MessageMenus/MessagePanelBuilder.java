@@ -1,5 +1,7 @@
 package GUI.MessageMenus;
 
+import javafx.scene.control.DialogPane;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,12 @@ public class MessagePanelBuilder {
         mainPanel.setSize(500, 500);
         mainPanel.add(title);
         mainPanel.setVisible(true);
+    }
+
+    public JLabel buildJLabel(String message){
+        JLabel label = new JLabel(message);
+        label.setFont(infoFont);
+        return label;
     }
 
     public Component[] prepareEditablePane(String title){
@@ -102,7 +110,10 @@ public class MessagePanelBuilder {
     }
 
     public JTextArea prepareSelectedMessage(String message){
-        JTextArea content = new JTextArea(message);
+        String[] msgContent = message.split("\\|");
+        String formattedMessage = msgContent[0] + "\n" + msgContent[2] + "\nSent at: \n" +
+                msgContent[1];
+        JTextArea content = new JTextArea(formattedMessage);
         content.setFont(infoFont);
         content.setVisible(true);
         content.setEditable(false);
@@ -110,14 +121,14 @@ public class MessagePanelBuilder {
         content.setWrapStyleWord(true);
         return content;
     }
+
     public List<JButton> buildOptions(String[] options, int startY){
-        // make this shorter using iteration
         List<JButton> buttons = new ArrayList<>();
         int y = startY;
         for (String option: options){
             JButton button = new JButton(option);
             button.setFont(infoFont);
-            button.setBounds(310, y, 120, 30);
+            button.setBounds(305, y, 120, 30);
             y += 40;
             buttons.add(button);
             mainPanel.add(button);
@@ -158,72 +169,5 @@ public class MessagePanelBuilder {
         return pane;
 
     }
-
-//    public JPanel buildInbox(List<String> messages){
-//        preparePanel(mainPanel);
-//        new JScrollPane()
-//        title.setText("Inbox");
-//        backButton.setVisible(true);
-//        JPanel infoPanel = new JPanel();
-//        for (String msg : messages){
-//            infoPanel.add(createMessage(msg));
-//        }
-//        mainPanel.add(infoPanel);
-//        return mainPanel;
-//    }
-
-//    public void buildContacts(JPanel canvas, List<String> contactList){
-//        title.setText("Contacts");
-//        contacts.setVisible(false);
-//        inbox.setVisible(false);
-//        backButton.setVisible(true);
-//    }
-
-
-//    public void buildInbox(JPanel canvas, List<String> messages){
-//        title.setText("Inbox");
-//        contacts.setVisible(false);
-//        inbox.setVisible(false);
-//        backButton.setVisible(true);
-//    }
-
-//    public JPanel buildMain(JPanel canvas){
-//        title.setText("Messages");
-//        titlePanel.setVisible(true);
-//        backButton.setVisible(false);
-//        canvas.add(titlePanel, BorderLayout.NORTH);
-//
-//        inbox = new JButton("Inbox");
-//        inbox.setSize(50, 20);
-//        contacts = new JButton("Contacts");
-//        contacts.setSize(50,20 );
-//        infoPanel.add(inbox);
-//        infoPanel.add(contacts);
-//        canvas.add(infoPanel, BorderLayout.CENTER);
-//        return canvas;
-//    }
-
-//    public void initialiseCanvas(JPanel[] mainPanels){
-//        titlePanel = new JPanel(new BorderLayout(150,0));
-//        titlePanel.setBounds(150,0,300,20);
-
-//        title = new JLabel("");
-//        title.setSize(new Dimension(25, 20));
-//        title.setFont(Font.getFont("JetBrains Mono"));
-//        title.setVerticalAlignment(title.TOP);
-//        title.setVerticalAlignment(title.CENTER);
-
-
-//        backButton = new JButton("Back");
-//        backButton.setSize(new Dimension(25, 20));
-//        backButton.setVerticalAlignment(backButton.TOP);
-//        backButton.setHorizontalAlignment(backButton.LEFT);
-//        titlePanel.add(backButton, BorderLayout.WEST);
-//        titlePanel.add(title, BorderLayout.CENTER);
-
-//
-//        infoPanel = new JPanel(new GridLayout(3,4,50,50));
-//        infoPanel.setSize(new Dimension(400, 100));
-//    }
 
 }

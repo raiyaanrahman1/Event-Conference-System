@@ -82,15 +82,6 @@ public class Message {
     }
 
     /**
-     *Changes the receiver of the message
-     *
-     * @param receiver  username of the new receiver of the message
-     */
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    /**
      * Returns the username of the sender of the message
      */
     public String getSender() {
