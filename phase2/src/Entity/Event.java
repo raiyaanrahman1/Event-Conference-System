@@ -310,6 +310,7 @@ public class Event {
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
+
     /**
      * Gets the LocalDateTime of the end of the event
      *

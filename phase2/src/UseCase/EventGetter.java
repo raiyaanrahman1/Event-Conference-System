@@ -291,6 +291,11 @@ public class EventGetter {
         return events;
     }
 
+    /**
+     * Gets the speaker of a specific event
+     * @param eventId the id of the event
+     * @
+     */
     public String getSpeaker(int eventId) throws NoSuchEventException {
         Event e = getEventByID(eventId);
         if (e == null) throw new NoSuchEventException();
