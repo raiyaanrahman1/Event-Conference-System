@@ -1,13 +1,14 @@
 package GUI.Main;
 
 import Controller.LoginSystem;
+import GUI.PanelBuilder.LoginPanelBuilder;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
-public class CreateAccountGUI implements ILoginView, ActionListener {
+public class CreateAccountGUI implements ActionListener {
     private PanelStack panelStack;
     private LoginSystem loginSystem;
     private JPanel signUpPanel = new JPanel();

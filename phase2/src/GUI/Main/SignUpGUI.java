@@ -2,13 +2,14 @@ package GUI.Main;
 
 import Controller.CheckPassword;
 import Controller.LoginSystem;
+import GUI.PanelBuilder.LoginPanelBuilder;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
-public class SignUpGUI implements ILoginView, ActionListener {
+public class SignUpGUI implements ActionListener {
     private PanelStack panelStack;
     private LoginSystem loginSystem;
     private JPanel signUpPanel = new JPanel();

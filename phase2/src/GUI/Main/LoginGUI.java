@@ -1,13 +1,13 @@
 package GUI.Main;
 
 import Controller.LoginSystem;
+import GUI.PanelBuilder.LoginPanelBuilder;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginGUI implements ILoginView, ActionListener {
+public class LoginGUI implements ActionListener {
     private PanelStack panelStack;
     private LoginSystem loginSystem;
     private JPanel loginPanel = new JPanel();
@@ -52,6 +52,10 @@ public class LoginGUI implements ILoginView, ActionListener {
         panelBuilder.buildButton(logInButton, 214, 344, 80, 25);
         // BACK BUTTON:
         panelBuilder.buildButton(backButton, 10, 410, 80, 25);
+        usernameJLabel.setFont(panelBuilder.getInfoFont());
+        passwordJLabel.setFont(panelBuilder.getInfoFont());
+        userTextField.setFont(panelBuilder.getInfoFont());
+        passwordTextField.setFont(panelBuilder.getInfoFont());
         return loginPanel;
     }
 
@@ -69,7 +73,11 @@ public class LoginGUI implements ILoginView, ActionListener {
         String pword = passwordTextField.getText();
 
         if (loginSystem.canLogin(uname, pword)) {
-            JOptionPane.showMessageDialog(loginPanel, "You have successfully logged in");
+            JLabel label = new JLabel("You have successfully logged in");
+            panelBuilder.buildPanelLabel(label,40,0,0,0, 0);
+            JOptionPane.showMessageDialog(null, label,
+                    "Nice!",
+                    JOptionPane.INFORMATION_MESSAGE);
             userTextField.setText("");
             passwordTextField.setText("");
             panelStack.loadPanel(mainMenuGUI.startMainMenuPage());

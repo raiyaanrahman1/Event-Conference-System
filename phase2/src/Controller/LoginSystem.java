@@ -6,8 +6,6 @@ import Gateway.IGateway;
 import Gateway.IGateway2;
 import Gateway.InfoFileGateway;
 import Gateway.LoginFileGateway;
-import Presenter.EventPresenter;
-import Presenter.LogInSignUpPresenter;
 import UseCase.*;
 
 /**
@@ -28,8 +26,6 @@ public class LoginSystem {
     MessengerSystem msgSys = new MessengerSystem(userManager, messageMan);
     CreateUserController userController = new CreateUserController(userManager);
     EventManagementSystem eventSys = new EventManagementSystem(userManager, eventMan, messageMan, userController, eventListGateway);
-    LogInSignUpPresenter logInSignUpPresenter = new LogInSignUpPresenter();
-    EventPresenter eventPresenter = new EventPresenter(eventSys, userManager, eventMan);
 
 
     /**
@@ -55,14 +51,14 @@ public class LoginSystem {
     public MessengerSystem getMsgSys() {
         return this.msgSys;
     }
-
-    /**
-     * Calls the appropriate menus depending on the user input.
-     */
-    public void mainPage() {
-        int answer;
-        do {
-            answer = logInSignUpPresenter.menu();
+//
+//    /**
+//     * Calls the appropriate menus depending on the user input.
+//     */
+//    public void mainPage() {
+//        int answer;
+//        do {
+//            answer = logInSignUpPresenter.menu();
 //            if (answer == 1) {
 //                //msgSys.menus();
 //            } else if (answer == 2) {
@@ -70,32 +66,32 @@ public class LoginSystem {
 //            } else if (answer == 3) {
 //                signOut();
 //            }
-        } while (answer != 3);
-    }
-    /**
-     * Manages the initial page that the user sees/
-     */
-    public void welcome() {
-        int answer;
-        do {
-            answer = logInSignUpPresenter.welcome();
-            if (answer == 1) {
-                signUp();
-                answer = 2;
-            }
-            if (answer == 2) {
-                if (logIn()) {
-                    mainPage();
-                }
-            }
-        } while (answer != 3);
-    }
+//        } while (answer != 3);
+//    }
+//    /**
+//     * Manages the initial page that the user sees/
+//     */
+//    public void welcome() {
+//        int answer;
+//        do {
+////            answer = logInSignUpPresenter.welcome();
+//            if (answer == 1) {
+////                signUp();
+//                answer = 2;
+//            }
+//            if (answer == 2) {
+////                if (logIn()) {
+//                    mainPage();
+//                }
+//            }
+//        } while (answer != 3);
+//    }
 
     /**
      * Signs out the user
      */
     public void signOut() {
-        logInSignUpPresenter.print("Goodbye.");
+//        logInSignUpPresenter.print("Goodbye.");
         messageMan.storeMessages(messageListInformationGateway, archiveFileGateway);
         userManager.storeContacts();
         eventMan.storeEvents(eventListGateway);
@@ -123,44 +119,44 @@ public class LoginSystem {
         userManager.CreateUser(username, password, userType);
     }
 
-    /**
-     * Logs in the user
-     *
-     * @return boolean representing whether log in was successful
-     */
-    public boolean logIn() {
-        do {
-            logInSignUpPresenter.print("Enter a username.");
-            String username = logInSignUpPresenter.readLine();
-            logInSignUpPresenter.print("Enter a password.");
-            String password = logInSignUpPresenter.readLine();
-            if (userManager.logInUser(username, password)) {
-                logInSignUpPresenter.print("Log in successful. Welcome " + username);
-                return true;
-            } else {
-                logInSignUpPresenter.print("Invalid user name or password. Please try again.");
-                logInSignUpPresenter.print("Or type 'm' to go back to main menu or any other key to try again");
-                if (logInSignUpPresenter.readLine().equals("m")) {
-                    return false;
-                }
-            }
-        } while (true);
-    }
+//    /**
+//     * Logs in the user
+//     *
+//     * @return boolean representing whether log in was successful
+//     */
+//    public boolean logIn() {
+//        do {
+//            logInSignUpPresenter.print("Enter a username.");
+//            String username = logInSignUpPresenter.readLine();
+//            logInSignUpPresenter.print("Enter a password.");
+//            String password = logInSignUpPresenter.readLine();
+//            if (userManager.logInUser(username, password)) {
+//                logInSignUpPresenter.print("Log in successful. Welcome " + username);
+//                return true;
+//            } else {
+//                logInSignUpPresenter.print("Invalid user name or password. Please try again.");
+//                logInSignUpPresenter.print("Or type 'm' to go back to main menu or any other key to try again");
+//                if (logInSignUpPresenter.readLine().equals("m")) {
+//                    return false;
+//                }
+//            }
+//        } while (true);
+//    }
 
-    /**
-     * Signs up a new user
-     */
-    public void signUp() {
-        String response = userController.askUser("Are you an \n1. Attendee \n2. Organizer", "Incorrect answer",
-                userInput -> userInput.equals("1") || userInput.equals("2"));
-        if (response.equals("1")) {
-            signUpAttendee(Attendee.TYPE);
-        } else {
-            signUpOrganizer(Organizer.TYPE);
-        }
-        logInSignUpPresenter.print("You have successfully signed up.");
-        logInSignUpPresenter.print("Continue to Log In.");
-    }
+//    /**
+//     * Signs up a new user
+//     */
+//    public void signUp() {
+//        String response = userController.askUser("Are you an \n1. Attendee \n2. Organizer", "Incorrect answer",
+//                userInput -> userInput.equals("1") || userInput.equals("2"));
+//        if (response.equals("1")) {
+//            signUpAttendee(Attendee.TYPE);
+//        } else {
+//            signUpOrganizer(Organizer.TYPE);
+//        }
+//        logInSignUpPresenter.print("You have successfully signed up.");
+//        logInSignUpPresenter.print("Continue to Log In.");
+//    }
 
 
     private void signUpOrganizer(String userType) {
@@ -175,11 +171,11 @@ public class LoginSystem {
         String username = userController.askUser("Enter a username.", "Username already exists",
                 userInput -> userManager.getUserByUsername(userInput) == null);
 
-        logInSignUpPresenter.print("Enter a password.");
-        String password = logInSignUpPresenter.readLine();
-//        String strength = checkPassword.scorePassword(password);
-//        logInSignUpPresenter.print(strength);
-        userManager.CreateUser(username, password, userType);
+//        logInSignUpPresenter.print("Enter a password.");
+//        String password = logInSignUpPresenter.readLine();
+////        String strength = checkPassword.scorePassword(password);
+////        logInSignUpPresenter.print(strength);
+//        userManager.CreateUser(username, password, userType);
     }
 
 }

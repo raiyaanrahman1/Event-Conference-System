@@ -1,11 +1,9 @@
 package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
-import Controller.LoginSystem;
 import Exceptions.InvalidDateException;
-import GUI.Main.LoginPanelBuilder;
 import GUI.Main.PanelStack;
-import UseCase.UserManager;
+import GUI.PanelBuilder.EventPanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class AddEventGUI implements ActionListener {
     private PanelStack panelStack;

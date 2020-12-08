@@ -1,6 +1,4 @@
-package GUI.MessageMenus;
-
-import javafx.scene.control.DialogPane;
+package GUI.PanelBuilder;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -10,7 +8,6 @@ import java.awt.*;
 public class MessagePanelBuilder {
     private JPanel mainPanel;
     private JLabel title;
-    //private JButton backButton;
     private Font titleFont;
     private Font infoFont;
 
@@ -20,7 +17,6 @@ public class MessagePanelBuilder {
         titleFont = new Font(Font.MONOSPACED, Font.TYPE1_FONT, 40);
         infoFont = new Font(Font.MONOSPACED, Font.PLAIN, 14);
         makeTitle();
-        makeBackButton();
         preparePanel(mainPanel);
     }
 
@@ -50,6 +46,7 @@ public class MessagePanelBuilder {
         pane.setVisible(true);
         return new Component[]{textArea, pane};
     }
+
     public JButton makeBackButton(){
         JButton backButton = new JButton("back");
         backButton.setFont(infoFont);
@@ -65,7 +62,6 @@ public class MessagePanelBuilder {
 
     }
 
-
     public JButton buildButton(String name, int xCoordinate, int yCoordinate){
         JButton button = new JButton(name);
         button.setFont(infoFont);
@@ -80,7 +76,7 @@ public class MessagePanelBuilder {
         field.setFont(infoFont);
         return field;
     }
-    // do we need this
+
     private void makeTitle(){
         title = new JLabel("");
         title.setFont(titleFont);
