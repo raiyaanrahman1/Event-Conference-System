@@ -82,6 +82,17 @@ public class EventPanelBuilder {
         panel.add(titleJLabel, BorderLayout.NORTH);
     }
 
+    /**
+     * Builds a component for a given panel with a null layout
+     *
+     * @param panel the panel that will have the given component
+     * @param component the component that will be built and added to the panel
+     * @param size the font size of the text of the component
+     * @param x the x location of the component
+     * @param y the y location of the component
+     * @param width the width of the component
+     * @param height the height of the component
+     */
     public void buildComponentNullLayout(JPanel panel, Component component, int size, int x, int y, int width, int height){
         component.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, size));
         component.setBounds(x, y, width, height);

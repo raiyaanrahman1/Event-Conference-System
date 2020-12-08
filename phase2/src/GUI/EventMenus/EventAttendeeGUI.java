@@ -43,6 +43,12 @@ public class EventAttendeeGUI {
     private JScrollPane eventsListScroller = new JScrollPane();
     private JScrollPane yourEventsListScroller = new JScrollPane();
 
+    /**
+     * Creates an EventAttendeeGUI and initializes its EventManagementSystem and the panelStack
+     *
+     * @param eventSystem the EventManagementSystem that the AddEventGUI communicates with
+     * @param panelStack the stack containing all the panels that have been loaded
+     */
     public EventAttendeeGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;
         this.panelStack = panelStack;
@@ -53,6 +59,11 @@ public class EventAttendeeGUI {
         sort2ButtonListener();
     }
 
+    /**
+     * Builds and loads the Event Page for Attendees
+     *
+     * @return The Event panel for Attendees
+     */
     public JPanel startEventPage() {
         // NorthPanel:
         panelBuilder.buildAttendeeNorthPanel(northPanel, eventsPanel, yourEventsPanel);

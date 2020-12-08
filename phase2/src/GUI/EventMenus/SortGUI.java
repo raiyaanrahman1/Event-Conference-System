@@ -44,6 +44,12 @@ public class SortGUI implements ActionListener {
 
     private PanelStack panelStack;
 
+    /**
+     * Creates a SortGUI and initializes its EventManagementSystem, the DefaultListModel and the panelStack
+     *
+     * @param eventSystem the EventManagementSystem that the AddEventGUI communicates with
+     * @param panelStack the stack containing all the panels that have been loaded
+     */
     public SortGUI(EventManagementSystem eventSystem, DefaultListModel<String> listModel, PanelStack panelStack) {
         sortButton.addActionListener(this);
         this.eventSystem = eventSystem;
@@ -54,6 +60,11 @@ public class SortGUI implements ActionListener {
         backButtonListen();
     }
 
+    /**
+     * Builds and loads the Sort Event Page
+     *
+     * @return The Sort Event panel
+     */
     public JPanel sortPage(){
         // PANEL:
         mainPanel.setLayout(null);
@@ -89,6 +100,11 @@ public class SortGUI implements ActionListener {
         });
     }
 
+    /**
+     * Gets the date information or speaker information depending on which button the user selected
+     *
+     * @param e the action that occurs when the sort button is selected
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String month = (String) monthsCombobox.getSelectedItem();

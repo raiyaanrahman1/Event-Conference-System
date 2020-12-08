@@ -39,6 +39,13 @@ public class EventOrganizerGUI {
     private int selectedEventIndex;
     private JLabel noEventLabel = new JLabel("You are not speaking at any events.");
 
+
+    /**
+     * Creates an EventOrganizerGUI and initializes its EventManagementSystem and the panelStack
+     *
+     * @param eventSystem the EventManagementSystem that the AddEventGUI communicates with
+     * @param panelStack the stack containing all the panels that have been loaded
+     */
     public EventOrganizerGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;
         this.panelStack = panelStack;
@@ -49,16 +56,11 @@ public class EventOrganizerGUI {
         addEventButtonListener();
     }
 
-    private void buildListModel(){
-        List<String> eventList = eventSystem.getOrganizerEventList();
-        if (!eventList.isEmpty()){
-            for (String event:eventList) {
-                listModel.addElement(event);
-            }
-        }
-    }
-
-
+    /**
+     * Builds and loads the Event Page for Organizers
+     *
+     * @return The Event panel for Organizers
+     */
     public JPanel startEventPage() {
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
         panelBuilder.buildComponentBorderLayout(eventsJLabel, eventPanel, BorderLayout.NORTH, 48);
@@ -80,6 +82,15 @@ public class EventOrganizerGUI {
         deleteButtonListen();
         listListener();
         return eventPanel;
+    }
+
+    private void buildListModel(){
+        List<String> eventList = eventSystem.getOrganizerEventList();
+        if (!eventList.isEmpty()){
+            for (String event:eventList) {
+                listModel.addElement(event);
+            }
+        }
     }
 
     private void backButtonListen(){

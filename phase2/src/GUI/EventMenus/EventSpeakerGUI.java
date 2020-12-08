@@ -34,39 +34,22 @@ public class EventSpeakerGUI {
     private int selectedEventIndex;
     private JLabel noEventLabel = new JLabel("You are not speaking at any events.");
 
+    /**
+     * Creates an EventSpeakerGUI and initializes its EventManagementSystem and the panelStack
+     *
+     * @param eventSystem the EventManagementSystem that the AddEventGUI communicates with
+     * @param panelStack the stack containing all the panels that have been loaded
+     */
     public EventSpeakerGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;
         this.panelStack = panelStack;
     }
 
-//    private void buildListModel(){
-//        boolean eventsExists = setListEvents();
-//
-//        if (eventsExists) {
-//            for (String s : this.listEvents) {
-//                listModel.addElement(s);
-//            }
-//        }
-//    }
-
-
-//    private boolean setListEvents(){
-//        boolean eventsExists = false;
-//        List<String> tempList = new ArrayList<>();//eventSystem.getBroadcastEventSpeaker();
-//        for (String event : eventSystem.getSpeakerEventList()) {
-//
-//        }
-//        if (tempList.isEmpty()) {
-//            this.noEventLabel.setVisible(true);
-//        }
-//        else{
-//            this.listEvents = tempList;
-//            this.noEventLabel.setVisible(false);
-//            eventsExists = true;
-//        }
-//        return eventsExists;
-//    }
-
+    /**
+     * Builds and loads the Event Page for Speakers
+     *
+     * @return The Event panel for Speakers
+     */
     public JPanel startEventPage() {
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
         eventsJLabel.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 48));

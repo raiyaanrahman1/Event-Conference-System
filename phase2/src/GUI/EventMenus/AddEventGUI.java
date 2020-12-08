@@ -69,6 +69,7 @@ public class AddEventGUI implements ActionListener {
         addEventButton.addActionListener(this);
 
     }
+
     /**
      * Builds and loads the Add Event Page
      *
