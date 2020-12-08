@@ -1,12 +1,11 @@
 package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
-import Controller.LoginSystem;
 import GUI.Main.PanelStack;
+import GUI.PanelBuilder.EventPanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EventOrganizerGUI {

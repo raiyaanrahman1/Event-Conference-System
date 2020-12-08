@@ -2,19 +2,20 @@ package GUI.MessageMenus;
 
 import Controller.MessengerSystem;
 import GUI.Main.PanelStack;
+import GUI.PanelBuilder.MessagePanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class InboxGUI implements IMessageView {
+public class InboxGUI {
     /**
      *  The GUI class responsible for the Inbox Option in the Main Menu.
      */
 
     private MessengerSystem messenger;
     private PanelStack panelStack;
-    private MessagePanel panelHelper = new MessagePanel();
+    private PanelHelper panelHelper = new PanelHelper();
 
     private MessagePanelBuilder inboxBuilder;
     private MessagePanelBuilder archiveBuilder;
@@ -50,7 +51,6 @@ public class InboxGUI implements IMessageView {
     /*
      *  A DefaultListCellRenderer implementation specific to elements in the inboxJList.
      */
-
     private void setInboxListCellRendererComponent(){
         inboxJList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
@@ -112,7 +112,7 @@ public class InboxGUI implements IMessageView {
         // unread
         inboxOptions.get(0).addActionListener(e -> {
             messenger.markMessageUnread(currInboxIndex);
-            panelHelper.disableButtons(inboxOptions);
+            panelHelper.makeButtonsInvisible(inboxOptions);
             inboxJList.updateUI();
         });
 
@@ -127,14 +127,14 @@ public class InboxGUI implements IMessageView {
             inboxListModel.removeElementAt(currInboxIndex);
             archiveListModel.addElement(currInboxMsg);
             currInboxPreview.setVisible(false);
-            panelHelper.disableButtons(inboxOptions);
+            panelHelper.makeButtonsInvisible(inboxOptions);
         });
 
         // delete
         inboxOptions.get(3).addActionListener(e -> {
             messenger.deleteMessage(currInboxIndex);
             inboxListModel.removeElementAt(currInboxIndex);
-            panelHelper.disableButtons(inboxOptions);
+            panelHelper.makeButtonsInvisible(inboxOptions);
         });
 
         // view all
@@ -184,7 +184,7 @@ public class InboxGUI implements IMessageView {
         for (JButton button : inboxOptions){
             inboxPanel.add(button);
         }
-        panelHelper.disableButtons(inboxOptions);
+        panelHelper.makeButtonsInvisible(inboxOptions);
         inboxOptionListener(inboxOptions);
         inboxJList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -194,7 +194,7 @@ public class InboxGUI implements IMessageView {
                     currInboxPreview.setViewportView(inboxBuilder.prepareSelectedMessage(currInboxMsg));
                     currInboxPreview.setVisible(true);
                     messenger.markMessageRead(currInboxIndex);
-                    panelHelper.enableButtons(inboxOptions);
+                    panelHelper.makeButtonsVisible(inboxOptions);
                 }
             }
         });

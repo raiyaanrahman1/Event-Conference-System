@@ -2,10 +2,10 @@ package GUI.EventMenus;
 
 import Controller.EventManagementSystem;
 import GUI.Main.PanelStack;
+import GUI.PanelBuilder.EventPanelBuilder;
 //import javafx.scene.layout.Pane;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;

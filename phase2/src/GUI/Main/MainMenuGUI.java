@@ -7,6 +7,7 @@ import GUI.EventMenus.EventAttendeeGUI;
 import GUI.EventMenus.EventOrganizerGUI;
 import GUI.EventMenus.EventSpeakerGUI;
 import GUI.MessageMenus.*;
+import GUI.PanelBuilder.LoginPanelBuilder;
 
 import javax.swing.*;
 

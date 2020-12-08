@@ -5,12 +5,10 @@ import GUI.Main.PanelStack;
 import javax.swing.*;
 import java.util.List;
 
-public class MessagePanel {
+public class PanelHelper {
 
-    // these were private but I needed to make them public for access from subclasses
-    public void enableButtons(List<JButton> options){
+    public void makeButtonsVisible(List<JButton> options){
         for (JButton button : options){
-//            button.setEnabled(true);
             button.setVisible(true);
         }
     }
@@ -22,9 +20,8 @@ public class MessagePanel {
         });
     }
 
-    public void disableButtons(List<JButton> options){
+    public void makeButtonsInvisible(List<JButton> options){
         for (JButton button : options){
-//            button.setEnabled(false);
             button.setVisible(false);
         }
     }

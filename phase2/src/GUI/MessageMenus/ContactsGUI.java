@@ -2,17 +2,18 @@ package GUI.MessageMenus;
 
 import Controller.MessengerSystem;
 import GUI.Main.PanelStack;
+import GUI.PanelBuilder.MessagePanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class ContactsGUI implements IMessageView{
+public class ContactsGUI {
     /**
      *  The GUI class responsible for the Inbox Option in the Main Menu.
      */
 
-    private MessagePanel panelHelper = new MessagePanel();
+    private PanelHelper panelHelper = new PanelHelper();
     private MessengerSystem messenger;
     private PanelStack panelStack;
 
@@ -74,7 +75,7 @@ public class ContactsGUI implements IMessageView{
                 currContactIndex = contactsJList.getSelectedIndex();
                 if (currContactIndex != -1) {
                     currSelectedContact = contactListModel.get(currContactIndex);
-                    panelHelper.enableButtons(contactOptions);
+                    panelHelper.makeButtonsVisible(contactOptions);
                 }
             }
         });
@@ -124,7 +125,7 @@ public class ContactsGUI implements IMessageView{
         for (JButton button: contactOptions){
             contactPanel.add(button);
         }
-        panelHelper.disableButtons(contactOptions);
+        panelHelper.makeButtonsInvisible(contactOptions);
         contactListListener(contactOptions);
         addButtonListener();
         return contactPanel;

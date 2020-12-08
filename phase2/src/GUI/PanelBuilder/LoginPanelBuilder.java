@@ -1,19 +1,19 @@
-package GUI.Main;
+package GUI.PanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginPanelBuilder {
     private JPanel panel;
-    private Font titleFont;
     private Font infoFont;
 
     public LoginPanelBuilder(JPanel panel){
         this.panel = panel;
-        titleFont = new Font(Font.MONOSPACED, Font.TYPE1_FONT, 20);
         infoFont = new Font(Font.MONOSPACED, Font.PLAIN, 14);
     }
-
+    public Font getInfoFont(){
+        return infoFont;
+    }
     public void buildMainPanel(){
         this.panel.setSize(500, 500);
         this.panel.setLayout(null);

@@ -1,12 +1,10 @@
 package GUI.Main;
-import Controller.LoginSystem;
-import sun.rmi.runtime.Log;
+
+import GUI.PanelBuilder.LoginPanelBuilder;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class WelcomeGUI implements ILoginView {
+public class WelcomeGUI {
     private PanelStack panelStack;
     private JPanel welcomePanel = new JPanel();
     private JLabel welcomeJLabel = new JLabel("the imposter summit");

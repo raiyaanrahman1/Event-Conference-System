@@ -1,4 +1,4 @@
-package GUI.EventMenus;
+package GUI.PanelBuilder;
 import com.sun.xml.internal.messaging.saaj.soap.JpegDataContentHandler;
 
 import javax.swing.*;
@@ -87,66 +87,6 @@ public class EventPanelBuilder {
         component.setBounds(x, y, width, height);
         panel.add(component);
     }
-
-//    public void buildSortPanel(JPanel panel, JLabel title, JLabel question){
-//        // PANEL:
-//        panel.setLayout(null);
-//        panel.setSize(500, 500);
-//        // SORT LABEL:
-//        title.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 24));
-//        title.setBounds(25, 25, 200, 25);
-//        panel.add(title);
-//        // SELECT LABEL:
-//        question.setBounds(25, 70, 500, 100);
-//        question.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-//        panel.add(question);
-//    }
-//
-//    public void buildSortLabels(JPanel panel, JRadioButton title1, JRadioButton title2) {
-//        // SPEAKER SELECTION BUTTON:
-//        title1.setBounds(25, 230, 150, 25);
-//        title1.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-//        panel.add(title1);
-//        // DATE SELECTION BUTTON:
-//        title2.setBounds(25, 200, 175, 25);
-//        title2.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-//        panel.add(title2);
-//    }
-//
-//    public void buildSortButtons(JPanel panel, JButton button1, JButton button2) {
-//        // SORT BUTTON:
-//        button1.setBounds(210, 350, 80, 25);
-//        button1.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-//        panel.add(button1);
-//        // BACK BUTTON:
-//        button2.setBounds(25, 420, 80, 25);
-//        button2.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-//        panel.add(button2);
-//    }
-//
-//    public void buildDateComboBoxes(JPanel panel, JComboBox comboBox1, JComboBox comboBox2, JComboBox comboBox3){
-//        // MONTH COMBOBOX:
-//        comboBox1.setBounds(200, 200, 80, 25);
-//        comboBox1.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-//        panel.add(comboBox1);
-//        // DAY COMBOBOX:
-//        comboBox2.setBounds(290, 200, 80, 25);
-//        comboBox2.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-//        panel.add(comboBox2);
-//        // YEAR COMBOBOX:
-//        comboBox3.setBounds(380, 200, 80, 25);
-//        comboBox3.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-//        panel.add(comboBox3);
-//    }
-//
-//    public void buildSpeakerComboBox(JPanel panel, JComboBox comboBox){
-//        // SPEAKER COMBOBOX:
-//        comboBox.setBounds(200, 230, 260, 25);
-//        comboBox.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-//        panel.add(comboBox);
-//    }
-
-
 
 
 }
