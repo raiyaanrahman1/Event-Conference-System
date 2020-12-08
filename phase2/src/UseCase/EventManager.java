@@ -99,10 +99,6 @@ public class EventManager {
         return formattedEvents;
     }
 
-
-
-
-
     private boolean hasCommonSpeaker(List<String> speakers1, List<String> speakers2){
         for(String s : speakers2){
             if(speakers1.contains(s)) return true;
@@ -178,7 +174,6 @@ public class EventManager {
         Event event = this.getEventByID(eventID);
         events.remove(event);
         return true;
-
     }
 
     /**
@@ -196,8 +191,6 @@ public class EventManager {
         }
         return false;
     }
-
-
 
     /**
      * Get the event object by its ID.
@@ -249,13 +242,21 @@ public class EventManager {
 
     // Phase 2 Functionality
 
-
+    /**
+     * Sets the room of a specific event
+     * @param eventId the id of the event
+     * @param roomName the name of the room
+     */
     public void setRoom(int eventId, String roomName) throws AssertionError {
         Event e = getEventByID(eventId);
         if (e == null) throw new AssertionError();
         e.setRoom(roomName);
     }
-
+    /**
+     * Sets the Speakers of a specific event
+     * @param eventId the id of the event
+     * @param speakerList the usernames of the Speakers speaking at this event
+     */
 
     public void setSpeakers(int eventId, List<String> speakerList) throws NoSuchEventException {
         Event e = getEventByID(eventId);
@@ -271,7 +272,11 @@ public class EventManager {
         }
     }
 
-
+    /**
+     * Sets the name of a specific event
+     * @param eventId the id of the event
+     * @param name the name of the event
+     */
     public void setName(int eventId, String name) throws NoSuchEventException {
         Event e = getEventByID(eventId);
         if (e == null) {
@@ -281,7 +286,11 @@ public class EventManager {
     }
 
 
-
+    /**
+     * Sets the organizer of a specific event
+     * @param eventId the id of the event
+     * @param org the username of the Organizer of the event
+     */
     public void setOrganizer(int eventId, String org) throws NoSuchEventException {
         Event e = getEventByID(eventId);
         if (e == null) {
@@ -290,6 +299,11 @@ public class EventManager {
         e.setOrganizer(org);
     }
 
+    /**
+     * Sets the start time of a specific event
+     * @param eventId the id of the event
+     * @param startTime the start time of the event
+     */
     public void setStartTime(int eventId, LocalDateTime startTime) throws NoSuchEventException {
         Event e = getEventByID(eventId);
         if (e == null) {
@@ -298,6 +312,11 @@ public class EventManager {
         e.setStartTime(startTime);
     }
 
+    /**
+     * Sets the end time of a specific event
+     * @param eventId the id of the event
+     * @param endTime the start time of the event
+     */
     public void setEndTime(int eventId, LocalDateTime endTime) throws NoSuchEventException {
         Event e = getEventByID(eventId);
         if (e == null) {

@@ -294,7 +294,7 @@ public class EventGetter {
     /**
      * Gets the speaker of a specific event
      * @param eventId the id of the event
-     * @
+     * @return the Speaker of an event
      */
     public String getSpeaker(int eventId) throws NoSuchEventException {
         Event e = getEventByID(eventId);
@@ -302,18 +302,33 @@ public class EventGetter {
         return String.valueOf(e.getSpeaker());
     }
 
+    /**
+     * Gets the name of a specific event
+     * @param eventId the id of the event
+     * @return the name of an event
+     */
     public String getName(int eventId) throws NoSuchEventException {
         Event e = getEventByID(eventId);
         if (e == null) throw new NoSuchEventException();
         return e.getName();
     }
 
+    /**
+     * Gets the capacity of a specific event
+     * @param eventId the id of the event
+     * @return the capacity of an event
+     */
     public int getRoomCap(int eventId) throws NoSuchEventException {
         Event e = getEventByID(eventId);
         if (e == null) throw new NoSuchEventException();
         return e.getRoomCap();
     }
 
+    /**
+     * Gets the organizer of a specific event
+     * @param eventId the id of the event
+     * @return the Organizer of an event
+     */
     public String getOrganizer(int eventId) throws NoSuchEventException {
         Event e = getEventByID(eventId);
         if (e == null) throw new NoSuchEventException();

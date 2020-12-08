@@ -267,7 +267,7 @@ public class EventManagementSystem {
     }
 
     /**
-     * Allows an organiser to add an event to the event list.
+     * Allows an organiser to add a VIP event to the event list.
      * @param eventName the name of the event
      * @param room the name of the room
      * @param ListOfSpeaker the list of Speakers for this event
@@ -439,7 +439,7 @@ public class EventManagementSystem {
     }
 
     /**
-     * 
+     *
      * @return the list of events this Speaker is speaking at in toString form
      */
     public List<String> getAllEventList() {
