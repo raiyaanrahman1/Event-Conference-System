@@ -169,7 +169,7 @@ public class MessageManager {
         }
 
         try {
-            message = this.messages.find(message);
+            message = this.archive.find(message);
         } catch (NoSuchMessageException ex) {
             return false;
         }
@@ -240,7 +240,7 @@ public class MessageManager {
         List<String> userMessages = new ArrayList<>();
 
         if (this.archive.contains(receiver)) {
-            for (Message message: this.messages.get(receiver)) {
+            for (Message message: this.archive.get(receiver)) {
                 userMessages.add(this.getFormattedMessage(message));
             }
         }

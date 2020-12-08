@@ -8,6 +8,10 @@ import java.awt.*;
 import java.util.List;
 
 public class ContactsGUI implements IMessageView{
+    /**
+     *  The GUI class responsible for the Inbox Option in the Main Menu.
+     */
+
     private MessagePanel panelHelper = new MessagePanel();
     private MessengerSystem messenger;
     private PanelStack panelStack;
@@ -22,8 +26,6 @@ public class ContactsGUI implements IMessageView{
     private JPanel viewAllPanel = new JPanel();
     private JPanel addContactPanel = new JPanel();
 
-    private JButton backButton;
-
     //contactPanel elements
     private JList contactsJList;
     private JScrollPane contactPane;
@@ -33,16 +35,15 @@ public class ContactsGUI implements IMessageView{
     private String currSelectedContact;
     private List<JButton> contactOptions;
 
-    //sendMsgPanel
+    //sendMsgPanel elements
     private JScrollPane currMessagePane;
     private JTextArea currMessageText;
     private JButton sendMsgButton;
 
-    //viewAllPanel
+    //viewAllPanel elements
     private JScrollPane currViewMessagePane;
 
-
-    //addContactPanel
+    //addContactPanel elements
     private JButton internalAddButton;
     private JScrollPane addContactPane;
     private JList addContactJList;
@@ -50,7 +51,13 @@ public class ContactsGUI implements IMessageView{
     private JTextField addUserTextField;
 
 
-
+    /**
+     * Instantiates ContactsGUI with the current running instance of MessengerSystem and PanelStack, and
+     * instantiates the relevant builders for each panel.
+     *
+     * @param messenger The current instance of MessengerSystem instantiated in MainGUI
+     * @param panelStack The current instance of PanelStack instantiated in MainGUI
+     */
     public ContactsGUI(MessengerSystem messenger, PanelStack panelStack){
         this.messenger = messenger;
         this.panelStack = panelStack;
@@ -79,8 +86,6 @@ public class ContactsGUI implements IMessageView{
         contactOptions.get(1).addActionListener(e -> {
             messenger.removeUser(currSelectedContact);
             contactListModel.removeElement(currSelectedContact);
-
-
         });
 
         // view msgs
@@ -89,7 +94,7 @@ public class ContactsGUI implements IMessageView{
 
     /**
      * Constructs the main contact page
-     * @return the main contact page
+     * @return a JPanel showing this user's contacts and relevant options.
      */
     public JPanel mainPage() {
         return buildContactPanel();
@@ -111,7 +116,7 @@ public class ContactsGUI implements IMessageView{
         JButton contactBackButton = contactBuilder.makeBackButton();
         contactPanel.add(contactBackButton);
         panelHelper.mainBackListener(panelStack, contactBackButton);
-        addButton = contactBuilder.buildButton("add", 310, 80);
+        addButton = contactBuilder.buildButton("add", 305, 80);
         contactPanel.add(addButton);
 
         contactOptions = contactBuilder.buildOptions(new String[]{"send msg", "remove", "view msgs"}, 300);
@@ -169,7 +174,7 @@ public class ContactsGUI implements IMessageView{
 
     private JPanel buildsSendMsgPanel(){
         Component[] elements = sendMsgBuilder.prepareEditablePane("send msg");
-        sendMsgButton = sendMsgBuilder.buildButton("send", 310, 300);
+        sendMsgButton = sendMsgBuilder.buildButton("send", 305, 300);
         currMessageText = (JTextArea) elements[0];
         currMessagePane = (JScrollPane) elements[1];
         currMessagePane.setVisible(true);
