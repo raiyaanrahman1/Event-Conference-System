@@ -19,17 +19,14 @@ public class SortGUI implements ActionListener {
     private DefaultListModel<String> listModel;
 
     private JPanel mainPanel = new JPanel();
-    private JPanel buttonPanel = new JPanel();
 
-    private JLabel sortJLabel = new JLabel("SORT");
-    private JLabel selectJLabel = new JLabel("Please select one of the sorting methods below, then click the SORT button.");
+    private JLabel sortJLabel = new JLabel("sort");
+    private JLabel selectJLabel = new JLabel("<html>Please select one of the sorting methods below, <br/>then click the sort button.");
+    private JButton backButton = new JButton("back");
+    private JButton sortButton = new JButton("sort");
 
-    private JButton backButton = new JButton("Back");
-    private JButton sortButton = new JButton("SORT");
-
-    private ButtonGroup buttonGroup = new ButtonGroup();
-    private JRadioButton dateSelection = new JRadioButton("Date (MM-DD-YY):");
-    private JRadioButton speakerSelection = new JRadioButton("Speaker:");
+    private JRadioButton dateSelection = new JRadioButton("date (mm-dd-yy):");
+    private JRadioButton speakerSelection = new JRadioButton("speaker:");
 
     private String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
     private JComboBox monthsCombobox = new JComboBox(months);
@@ -57,55 +54,30 @@ public class SortGUI implements ActionListener {
         backButtonListen();
     }
 
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame();
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(500,500);
-//        frame.setResizable(false);
-//        frame.setVisible(true);
-//        frame.setContentPane(new SortGUI().sortPage());
-//        LoginSystem loginSystem = new LoginSystem();
-//        frame.setContentPane(new EventSpeakerGUI(loginSystem.getEventSys()).startEventPage());
-//    }
-
     public JPanel sortPage(){
         // PANEL:
         mainPanel.setLayout(null);
         mainPanel.setSize(500, 500);
         // SORT LABEL:
-        sortJLabel.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 24));
-        sortJLabel.setBounds(25, 25, 200, 25);
-        mainPanel.add(sortJLabel);
+        panelBuilder.buildComponentNullLayout(mainPanel, sortJLabel, 24, 25, 25, 200, 25);
         // SELECT LABEL:
-        selectJLabel.setBounds(25, 70, 500, 100);
-        mainPanel.add(selectJLabel);
-        // RADIO BUTTON GROUP:
-        buttonGroup.add(dateSelection);
-        buttonGroup.add(speakerSelection);
+        panelBuilder.buildComponentNullLayout(mainPanel, selectJLabel, 14, 25, 70, 500, 100);
         // DATE SELECTION BUTTON:
-        dateSelection.setBounds(25, 200, 125, 25);
-        mainPanel.add(dateSelection);
+        panelBuilder.buildComponentNullLayout(mainPanel, dateSelection, 14, 25, 200, 175, 25);
         // MONTH COMBOBOX:
-        monthsCombobox.setBounds(150, 200, 80, 25);
-        mainPanel.add(monthsCombobox);
+        panelBuilder.buildComponentNullLayout(mainPanel, monthsCombobox, 14, 200, 200, 80, 25);
         // DAY COMBOBOX:
-        daysCombobox.setBounds(250, 200, 80, 25);
-        mainPanel.add(daysCombobox);
+        panelBuilder.buildComponentNullLayout(mainPanel, daysCombobox, 14, 290, 200, 80, 25);
         // YEAR COMBOBOX:
-        yearCombobox.setBounds(350, 200, 80, 25);
-        mainPanel.add(yearCombobox);
+        panelBuilder.buildComponentNullLayout(mainPanel, yearCombobox, 14, 380, 200, 80, 25);
         // SPEAKER SELECTION BUTTON:
-        speakerSelection.setBounds(25, 230, 80, 25);
-        mainPanel.add(speakerSelection);
+        panelBuilder.buildComponentNullLayout(mainPanel, speakerSelection, 14, 25, 230, 150, 25);
         // SPEAKER COMBOBOX:
-        speakerCombobox.setBounds(150, 230, 80, 25);
-        mainPanel.add(speakerCombobox);
+        panelBuilder.buildComponentNullLayout(mainPanel, speakerCombobox, 14, 200, 230, 260, 25);
         // SORT BUTTON:
-        sortButton.setBounds(210, 350, 80, 25);
-        mainPanel.add(sortButton);
+        panelBuilder.buildComponentNullLayout(mainPanel, sortButton, 14, 210, 350, 80, 25);
         // BACK BUTTON:
-        backButton.setBounds(25, 420, 80, 25);
-        mainPanel.add(backButton);
+        panelBuilder.buildComponentNullLayout(mainPanel, backButton, 14, 25, 420, 80, 25);
         return mainPanel;
     }
 

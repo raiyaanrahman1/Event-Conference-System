@@ -26,10 +26,15 @@ public class AddEventGUI implements ActionListener {
     private JLabel eventNameJLabel = new JLabel("Event Name:");
     private JLabel speakersJLabel = new JLabel("Speaker(s):");
     private JLabel dateJLabel = new JLabel("Date:");
-    //private JLabel timeJLabel = new JLabel("Time:");
     private JLabel roomNameJLabel = new JLabel("Room Name:");
     private JLabel capacityJLabel = new JLabel("Capacity");
     private JLabel typeJLabel = new JLabel("Type:");
+    private JLabel dayJLabel = new JLabel("Day");
+    private JLabel monthJLabel = new JLabel("Month");
+    private JLabel yearJLabel = new JLabel("Year");
+    private JLabel startTimeJLabel = new JLabel("Start Time");
+    private JLabel endTimeJLabel = new JLabel("End Time");
+    private JLabel time = new JLabel("<html> Time:<br/>(HH:MM)");
     private JTextField startTimeTextField;
     private JTextField endTimeTextField;
     private java.util.List<String> speakers;
@@ -47,7 +52,7 @@ public class AddEventGUI implements ActionListener {
     private JComboBox typeComboBox = new JComboBox(eventTypes);
     private JComboBox monthComboBox = new JComboBox(months);
     private JButton backButton = new JButton("Back");
-    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(addEventPanel);
+    private EventPanelBuilder panelBuilder = new EventPanelBuilder();
     private DefaultListModel s = new DefaultListModel();
 
 
@@ -64,108 +69,58 @@ public class AddEventGUI implements ActionListener {
         addEventPanel.setSize(500, 500);
         addEventPanel.setLayout(null);
         // TITLE:
-        titleLabel.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 20));
-        titleLabel.setBounds(150, 20, 200, 30);
-        addEventPanel.add(titleLabel);
+        panelBuilder.buildComponentNullLayout(addEventPanel, titleLabel, 24, 150, 20, 200, 30);
         // EVENT NAME:
-        eventNameJLabel.setBounds(20, 70, 80, 25);
-        addEventPanel.add(eventNameJLabel);
-        eventNameTextField.setBounds(120, 70, 165, 25);
-        addEventPanel.add(eventNameTextField);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, eventNameJLabel, 12, 20, 70, 80, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, eventNameTextField, 14, 120, 70, 165, 25);
         // SPEAKERS:
-        speakersJLabel.setBounds(20, 120, 80, 25);
-        addEventPanel.add(speakersJLabel);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, speakersJLabel, 12, 20, 120, 80, 25);
         speakers = eventSystem.getSpeakers();
         buildListModel();
 
         speakersJList = new JList(s);
         speakersJList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        speakersJList.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
         speakersJScrollPane = new JScrollPane(speakersJList);
-        speakersJScrollPane.setBounds(120, 120, 150, 50);
-        addEventPanel.add(speakersJScrollPane);
+        panelBuilder.buildComponentNullLayout(addEventPanel, speakersJScrollPane, 10, 120, 120, 150, 50);
 
-        JTextArea instructions = new JTextArea("Hold ctrl to select multiple ordeselect. Can have no " +
-                "        speakers.");
-        instructions.setBounds(300, 120, 150, 50);
+        JTextArea instructions = new JTextArea("Hold ctrl to select  multiple speakers.   Can have no speakers.");
         instructions.setLineWrap(true);
         instructions.setEditable(false);
         instructions.setBackground(addEventPanel.getBackground());
-
-        addEventPanel.add(instructions);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, instructions, 12, 300, 120, 150, 50);
         // ROOM NAME
-        roomNameJLabel.setBounds(20, 180, 80, 25);
-        addEventPanel.add(roomNameJLabel);
-        roomNameTextField.setBounds(120, 180, 165, 25);
-        addEventPanel.add(roomNameTextField);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, roomNameJLabel, 12, 20, 180, 80, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, roomNameTextField, 12, 120, 180, 165, 25);
         // CAPACITY
-        capacityTextField.setBounds(300, 180, 80, 25);
-        addEventPanel.add(capacityTextField);
-
-        capacityJLabel.setBounds(310, 200, 80, 25);
-        addEventPanel.add(capacityJLabel);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, capacityTextField, 12, 300, 180, 80, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, capacityJLabel, 12, 310, 200, 80, 25);
         // DATE
-        dateJLabel.setBounds(20, 230, 80, 25);
-        addEventPanel.add(dateJLabel);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, dateJLabel, 12, 20, 230, 80, 25);
         // DAY
-
-        dateTextField.setBounds(120, 230, 50, 25);
-        addEventPanel.add(dateTextField);
-
-        JLabel dayJLabel = new JLabel("Day");
-        dayJLabel.setBounds(130, 250, 80, 25);
-        addEventPanel.add(dayJLabel);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, dateTextField, 12, 120, 230, 50, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, dayJLabel, 12, 130, 250, 80, 25);
         // MONTH
-        monthComboBox.setBounds(180, 230, 100, 25);
-        addEventPanel.add(monthComboBox);
-
-        JLabel monthJLabel = new JLabel("Month");
-        monthJLabel.setBounds(200, 250, 80, 25);
-        addEventPanel.add(monthJLabel);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, monthComboBox, 12, 180, 230, 100, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, monthJLabel, 12, 200, 250, 80, 25);
         // YEAR
-        yearTextField.setBounds(300, 230, 50, 25);
-        addEventPanel.add(yearTextField);
-
-        JLabel yearJLabel = new JLabel("Year");
-        yearJLabel.setBounds(310, 250, 80, 25);
-        addEventPanel.add(yearJLabel);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, yearTextField, 12, 300, 230, 50, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, yearJLabel, 12, 310, 250, 80, 25);
         // TIME
         startTimeTextField = new JTextField();
-        startTimeTextField.setBounds(120, 290, 80, 25);
-        JLabel startTimeJLabel = new JLabel("Start Time");
-        startTimeJLabel.setBounds(130, 310, 80, 25);
-
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, time, 12, 20, 270, 90, 75);
+        panelBuilder.buildComponentNullLayout(addEventPanel, startTimeTextField, 12, 120, 290, 80, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, startTimeJLabel, 12, 125, 310, 80, 25);
         endTimeTextField = new JTextField();
-        endTimeTextField.setBounds(220, 290, 80, 25);
-        JLabel endTimeJLabel = new JLabel("End Time");
-        endTimeJLabel.setBounds(230, 310, 80, 25);
-
-        addEventPanel.add(startTimeJLabel);
-        addEventPanel.add(startTimeTextField);
-        addEventPanel.add(endTimeJLabel);
-        addEventPanel.add(endTimeTextField);
-
+        panelBuilder.buildComponentNullLayout(addEventPanel, endTimeTextField, 12, 260, 290, 80, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, endTimeJLabel, 12, 270, 310, 80, 25);
         // EVENT TYPE
-        typeJLabel.setBounds(20, 350, 80, 25);
-        addEventPanel.add(typeJLabel);
-        //panelBuilder.buildComponent(typeComboBox, 120, 314, 100, 25);
-        typeComboBox.setBounds(120, 350, 100, 25);
-        addEventPanel.add(typeComboBox);
+        panelBuilder.buildComponentNullLayout(addEventPanel, typeJLabel, 12, 20, 350, 80, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, typeComboBox, 12, 120, 350, 100, 25);
         // ADD EVENT BUTTON:
-        addEventButton.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
-        addEventButton.setBounds(190, 400, 125, 25);
-        addEventPanel.add(addEventButton);
+        panelBuilder.buildComponentNullLayout(addEventPanel, addEventButton, 14, 190, 400, 125, 25);
         // BACK BUTTON:
-        panelBuilder.buildButton(backButton,10, 430, 80, 25);
+        panelBuilder.buildComponentNullLayout(addEventPanel, backButton, 14, 10, 430, 80, 25);
         return addEventPanel;
     }
 
