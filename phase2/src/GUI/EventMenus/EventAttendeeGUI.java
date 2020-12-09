@@ -47,8 +47,8 @@ public class EventAttendeeGUI {
     /**
      * Creates an EventAttendeeGUI and initializes its EventManagementSystem and the panelStack
      *
-     * @param eventSystem the EventManagementSystem that the AddEventGUI communicates with
-     * @param panelStack the stack containing all the panels that have been loaded
+     * @param eventSystem the EventManagementSystem that the EventAttendeeGUI communicates with
+     * @param panelStack The current instance of PanelStack instantiated in MainGUI
      */
     public EventAttendeeGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;

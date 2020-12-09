@@ -46,8 +46,8 @@ public class SortGUI implements ActionListener {
     /**
      * Creates a SortGUI and initializes its EventManagementSystem, the DefaultListModel and the panelStack
      *
-     * @param eventSystem the EventManagementSystem that the AddEventGUI communicates with
-     * @param panelStack the stack containing all the panels that have been loaded
+     * @param eventSystem the EventManagementSystem that the SortGUI communicates with
+     * @param panelStack The current instance of PanelStack instantiated in MainGUI
      */
     public SortGUI(EventManagementSystem eventSystem, DefaultListModel<String> listModel, PanelStack panelStack) {
         sortButton.addActionListener(this);

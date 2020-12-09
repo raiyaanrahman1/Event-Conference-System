@@ -56,7 +56,7 @@ public class AddEventGUI implements ActionListener {
      * Creates an AddEventGUI and initializes its EventManagementSystem and the panelStack
      *
      * @param eventSystem the EventManagementSystem that the AddEventGUI communicates with
-     * @param panelStack the stack containing all the panels that have been loaded
+     * @param panelStack The current instance of PanelStack instantiated in MainGUI
      */
     public AddEventGUI(EventManagementSystem eventSystem, PanelStack panelStack) {
         this.eventSystem = eventSystem;
