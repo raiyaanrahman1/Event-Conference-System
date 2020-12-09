@@ -96,10 +96,9 @@ public class MainMenuGUI {
 
     private void logOutButtonListen(){
         logOutButton.addActionListener(e -> {
-            panelStack.pop();
-            JPanel panel = (JPanel) panelStack.pop();
-            panelStack.loadPanel(panel);
+            panelStack.getMainFrame().dispose();
             loginSystem.signOut();
+            new MainGUI();
         });
     }
 
