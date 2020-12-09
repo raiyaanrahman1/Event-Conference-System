@@ -52,13 +52,14 @@ public class EventManagementSystem {
     /**
      * Cancels event if the user is an organizer.
      */
-    public void deleteEvent(JPanel panel, int eventId) {
+    public boolean deleteEvent(int eventId) {
         if (user.getUserInfoList().get(2).equals("O") &&
                 getter.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0 &&
                 manager.removeEvent(eventId)) {
             manager.storeEvents(eventListGateway);
-            JOptionPane.showMessageDialog(panel, "You have successfully cancelled this event.");
+            return true;
         }
+        return false;
     }
 
 
@@ -81,29 +82,25 @@ public class EventManagementSystem {
     /**
      * Allows a user to sign up for an available event.
      */
-    public boolean eventSignUp(int eventid, JPanel panel){
-        boolean canSignUp = false;
+    public boolean eventSignUp(int eventid){
         if (manager.signUpForEvent(eventid, user.getUserInfoList().get(0),
                 user.getUserType(user.getUserInfoList().get(0)))) {
             manager.storeEvents(eventListGateway);
-            JOptionPane.showMessageDialog(panel, "You have successfully signed up for this event.");
-            canSignUp = true;
+            return true;
         }
-        else {
-            JOptionPane.showMessageDialog(panel, "You cannot sign up for this event.");
-        }
-        return canSignUp;
+        return false;
     }
 
 
     /**
      * Allows a user to cancel an event they have signed up for.
      */
-    public void attendeeCancelEvent(int eventid, JPanel panel){
+    public boolean attendeeCancelEvent(int eventid){
         if (manager.cancelSpot(eventid, user.getUserInfoList().get(0))) {
-            JOptionPane.showMessageDialog(panel,"Successfully cancelled event");
             manager.storeEvents(eventListGateway);
+            return true;
             }
+        return false;
     }
 
 

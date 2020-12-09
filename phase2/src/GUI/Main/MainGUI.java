@@ -24,6 +24,7 @@ public class MainGUI {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(500, 500);
         mainFrame.setResizable(false);
+        mainFrame.setTitle("the imposter summit");
         run();
         exitListener();
     }

@@ -109,9 +109,11 @@ public class EventOrganizerGUI {
     private void deleteButtonListen(){
         deleteButton.addActionListener(e -> {
             String event = eventsJList.getSelectedValue().toString();
-            eventSystem.deleteEvent(eventPanel, Integer.parseInt(event.substring(0, 1)));
-            listModel.removeElementAt(eventsJList.getSelectedIndex());
-            eventsJList.setModel(listModel);
+            if (eventSystem.deleteEvent(Integer.parseInt(event.substring(0, 1)))){
+                listModel.removeElementAt(eventsJList.getSelectedIndex());
+                eventsJList.setModel(listModel);
+                JOptionPane.showMessageDialog(eventPanel, "You have successfully cancelled this event.");
+            }
         });
     }
 

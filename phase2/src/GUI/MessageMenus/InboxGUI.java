@@ -29,14 +29,14 @@ public class InboxGUI {
 
     // inboxPanel elements
     private JScrollPane currInboxPreview;
-    private JList inboxJList;
+    private JList<String> inboxJList;
     private DefaultListModel<String> inboxListModel = new DefaultListModel<>();
     private int currInboxIndex;
     private String currInboxMsg;
 
     // archivePanel elements
     private JScrollPane currArchivePreview;
-    private JList archiveJList;
+    private JList<String> archiveJList;
     private DefaultListModel<String> archiveListModel = new DefaultListModel<>();
     private int currArchiveIndex;
     private String currArchiveMsg;
@@ -114,7 +114,6 @@ public class InboxGUI {
             messenger.markMessageUnread(currInboxIndex);
             panelHelper.makeButtonsInvisible(inboxOptions);
             inboxJList.updateUI();
-            inboxPanel.validate();
         });
 
         // reply
@@ -124,7 +123,7 @@ public class InboxGUI {
         inboxOptions.get(2).addActionListener(e -> {
             messenger.archiveMessage(currInboxIndex);
             inboxListModel.removeElementAt(currInboxIndex);
-//            archiveListModel.addElement(currInboxMsg);
+            archiveListModel.addElement(currInboxMsg);
             currInboxPreview.setVisible(false);
             panelHelper.makeButtonsInvisible(inboxOptions);
         });
@@ -149,16 +148,10 @@ public class InboxGUI {
     }
 
     private JScrollPane loadInbox(){
+        inboxListModel.clear();
         for (String m : messenger.viewReceivedMessages()) {
-            if(!inboxListModel.contains(m))
-                inboxListModel.addElement(m);
+            inboxListModel.addElement(m);
         }
-
-        for (int i=0; i < inboxListModel.size(); i++) {
-            if (!messenger.viewReceivedMessages().contains(inboxListModel.get(i)))
-                inboxListModel.removeElementAt(i);
-        }
-
         inboxJList = inboxBuilder.buildJList(inboxListModel);
         return inboxBuilder.buildMainPane(new JScrollPane(inboxJList), "inbox");
     }
@@ -207,14 +200,9 @@ public class InboxGUI {
     }
 
     private JScrollPane loadArchive(){
+        archiveListModel.clear();
         for (String m : messenger.viewArchivedMessages()) {
-            if(!archiveListModel.contains(m))
-                archiveListModel.addElement(m);
-        }
-
-        for (int i=0; i < archiveListModel.size(); i++) {
-            if (!messenger.viewArchivedMessages().contains(archiveListModel.get(i)))
-                archiveListModel.removeElementAt(i);
+            archiveListModel.addElement(m);
         }
 
         archiveJList = archiveBuilder.buildJList(archiveListModel);
@@ -226,7 +214,7 @@ public class InboxGUI {
         unarchive.addActionListener(e -> {
             messenger.unarchiveMessage(currArchiveIndex);
             archiveListModel.removeElementAt(currArchiveIndex);
-//            inboxListModel.addElement(currArchiveMsg);
+            inboxListModel.addElement(currArchiveMsg);
             currArchivePreview.setVisible(false);
             unarchive.setVisible(false);
         });

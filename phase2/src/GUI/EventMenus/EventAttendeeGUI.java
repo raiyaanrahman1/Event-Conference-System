@@ -121,11 +121,15 @@ public class EventAttendeeGUI {
             int index = eventsJList.getSelectedIndex();
             if(index!= -1) {
                 String event = (String) eventsJList.getSelectedValue();
-                boolean canSignUp = eventSystem.eventSignUp(Integer.parseInt(event.split("//|")[0]), eventsPanel);
-                if (canSignUp) {
+                if (eventSystem.eventSignUp(Integer.parseInt(event.split("//|")[0]))) {
                     yourEventsListModel.addElement(event);
                     eventsListModel.remove(index);
                     yourEventsJList.setModel(yourEventsListModel);
+                    JOptionPane.showMessageDialog(eventsPanel, "You have successfully signed up for this event.");
+                }
+                else{
+                    JOptionPane.showMessageDialog(eventsPanel, "You cannot sign up for this event. \n" +
+                            "This event is either restricted or conflicts with your signed up events");
                 }
             }
         });
@@ -136,10 +140,12 @@ public class EventAttendeeGUI {
             int index = yourEventsJList.getSelectedIndex();
             if(index!= -1) {
                 String event = (String) yourEventsJList.getSelectedValue();
-                eventSystem.attendeeCancelEvent(Integer.parseInt(event.split("//|")[0]), yourEventsPanel);
-                eventsListModel.addElement(event);
-                yourEventsListModel.remove(index);
-                eventsJList.setModel(eventsListModel);
+                if (eventSystem.attendeeCancelEvent(Integer.parseInt(event.split("//|")[0]))) {
+                    eventsListModel.addElement(event);
+                    yourEventsListModel.remove(index);
+                    eventsJList.setModel(eventsListModel);
+                    JOptionPane.showMessageDialog(eventsPanel,"Event cancelled.");
+                }
             }
         });
     }

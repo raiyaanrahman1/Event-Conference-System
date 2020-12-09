@@ -47,7 +47,7 @@ public class MessageMap implements MessageCollection {
 
             Message message;
             if (tokens.length > 4) {
-                Boolean isRead = Boolean.getBoolean(tokens[4]);
+                Boolean isRead = Boolean.parseBoolean(tokens[4]);
                 message = new Message(content, receiver, sender, dateTime, isRead);
             }
             else {

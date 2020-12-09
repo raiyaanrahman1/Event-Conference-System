@@ -47,7 +47,7 @@ public class ContactsGUI {
     //addContactPanel elements
     private JButton internalAddButton;
     private JScrollPane addContactPane;
-    private JList addContactJList;
+    private JList<String> addContactJList;
     private DefaultListModel<String> addContactListModel = new DefaultListModel<>();
     private JTextField addUserTextField;
 
@@ -101,11 +101,10 @@ public class ContactsGUI {
         return buildContactPanel();
     }
 
-    private void loadContacts(DefaultListModel listModel){
+    private void loadContacts(DefaultListModel<String> listModel){
         listModel.clear();
         for (String s: messenger.getContacts()){
-            if (!listModel.contains(s))
-                listModel.addElement(s);
+            listModel.addElement(s);
         }
     }
 
@@ -197,12 +196,7 @@ public class ContactsGUI {
         JButton viewAllBackButton = viewAllBuilder.makeBackButton();
         viewAllPanel.add(viewAllBackButton);
         panelHelper.mainBackListener(panelStack, viewAllBackButton);
-        DefaultListModel<String> list = new DefaultListModel<>();
-        for (String s: messenger.viewMessages(currSelectedContact)){
-            list.addElement(s);
-        }
-        JList messages = viewAllBuilder.buildJList(list);
-        currViewMessagePane = viewAllBuilder.buildMainPane(new JScrollPane(messages), "view all");
+        currViewMessagePane = viewAllBuilder.buildMessageThread(messenger.viewMessages(currSelectedContact));
         viewAllPanel.add(currViewMessagePane);
         return viewAllPanel;
     }

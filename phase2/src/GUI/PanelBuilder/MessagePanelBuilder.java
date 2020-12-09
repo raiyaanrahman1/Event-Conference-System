@@ -224,6 +224,7 @@ public class MessagePanelBuilder {
      */
     public JScrollPane buildMessageThread(List<String> messages){
         title.setText("received");
+        mainPanel.add(title);
         String fullThread = "";
         for (String msg : messages){
             fullThread += formatMessage(msg) + "\n";

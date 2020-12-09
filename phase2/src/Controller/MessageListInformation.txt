@@ -1,8 +1,4 @@
 aa|hala|09/12/2020 20:14:20|reply1|false
 aa|hala|09/12/2020 20:14:26|reply2|false
 hala|aa|09/12/2020 20:11:55|message1|true
-hala|aa|09/12/2020 20:12:00|message2|true
-hala|a|09/12/2020 20:13:30|message2|true
-hala|aa|09/12/2020 20:12:08|message4|true
-hala|aa|09/12/2020 20:12:15|message5|false
 hala|a|09/12/2020 20:13:26|message1|true

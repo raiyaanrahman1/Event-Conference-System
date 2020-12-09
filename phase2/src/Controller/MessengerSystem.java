@@ -63,8 +63,6 @@ public class MessengerSystem {
         String message = viewReceivedMessages().get(index);
         String sender = message.split("\\|")[0];
         messageManager.message(userManager.getUserInfoList().get(0), sender, content);
-//        msgPres.successfulMessage();
-        System.out.println("Success");
     }
 
     /**
@@ -76,6 +74,11 @@ public class MessengerSystem {
         messageManager.archive(getLoggedInUser(), viewReceivedMessages().get(index));
     }
 
+    /**
+     * Unarchives the message at the given index in the list of messages.
+     *
+     * @param index  the index of the message in the archive
+     */
     public void unarchiveMessage(int index) {
         messageManager.unarchive(getLoggedInUser(), viewArchivedMessages().get(index));
     }
@@ -90,6 +93,11 @@ public class MessengerSystem {
         messageManager.delete(getLoggedInUser(), viewReceivedMessages().get(index));
     }
 
+    /**
+     * Returns a boolean representing whether the message at the input index is read
+     * @param index the input index
+     * @return true iff the message is read
+     */
     public boolean isRead(int index){
 
         String[] tokens = viewReceivedMessages().get(index).split("\\|");
