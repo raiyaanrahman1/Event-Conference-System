@@ -30,14 +30,14 @@ public class InboxGUI {
     // inboxPanel elements
     private JScrollPane currInboxPreview;
     private JList inboxJList;
-    private DefaultListModel<String> inboxListModel = new DefaultListModel<String>();;
+    private DefaultListModel<String> inboxListModel = new DefaultListModel<>();
     private int currInboxIndex;
     private String currInboxMsg;
 
     // archivePanel elements
     private JScrollPane currArchivePreview;
     private JList archiveJList;
-    private DefaultListModel<String> archiveListModel = new DefaultListModel<String>();
+    private DefaultListModel<String> archiveListModel = new DefaultListModel<>();
     private int currArchiveIndex;
     private String currArchiveMsg;
 
@@ -59,9 +59,9 @@ public class InboxGUI {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 if (messenger.isRead(index))
-                    setBackground(Color.WHITE);
+                    c.setBackground(Color.WHITE);
                 else
-                    setBackground(Color.LIGHT_GRAY);
+                    c.setBackground(Color.LIGHT_GRAY);
                 return c;
             }
         });
@@ -72,14 +72,14 @@ public class InboxGUI {
      */
     private void setArchiveListCellRendererComponent(){
         archiveJList.setCellRenderer(new DefaultListCellRenderer() {
-        @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-                                                      boolean cellHasFocus) {
-            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+                                                          boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-            setBackground(Color.LIGHT_GRAY);
-            return c;
-        }
+                setBackground(Color.LIGHT_GRAY);
+                return c;
+            }
         });
     }
 
@@ -114,12 +114,11 @@ public class InboxGUI {
             messenger.markMessageUnread(currInboxIndex);
             panelHelper.makeButtonsInvisible(inboxOptions);
             inboxJList.updateUI();
+            inboxPanel.validate();
         });
 
         // reply
-        inboxOptions.get(1).addActionListener(e -> {
-            panelStack.loadPanel(buildReply());
-        });
+        inboxOptions.get(1).addActionListener(e -> panelStack.loadPanel(buildReply()));
 
         // archive
         inboxOptions.get(2).addActionListener(e -> {
@@ -161,7 +160,6 @@ public class InboxGUI {
         }
 
         inboxJList = inboxBuilder.buildJList(inboxListModel);
-        setInboxListCellRendererComponent();
         return inboxBuilder.buildMainPane(new JScrollPane(inboxJList), "inbox");
     }
 
@@ -202,14 +200,12 @@ public class InboxGUI {
         JButton viewArchive = inboxBuilder.buildButton("\uD83D\uDCC2", 225,
                 60, 50, 20);
         inboxPanel.add(viewArchive);
-        viewArchive.addActionListener(e ->{
-            panelStack.loadPanel(buildArchive());
-        });
-
+        viewArchive.addActionListener(e -> panelStack.loadPanel(buildArchive()));
+        setInboxListCellRendererComponent();
         return inboxPanel;
     }
 
-    private void loadArchive(){
+    private JScrollPane loadArchive(){
         for (String m : messenger.viewArchivedMessages()) {
             if(!archiveListModel.contains(m))
                 archiveListModel.addElement(m);
@@ -220,6 +216,9 @@ public class InboxGUI {
                 archiveListModel.removeElementAt(i);
         }
 
+        archiveJList = archiveBuilder.buildJList(archiveListModel);
+        return archiveBuilder.buildMainPane(new JScrollPane(archiveJList), "archive");
+
     }
 
     private void archiveListener(JButton unarchive){
@@ -229,13 +228,13 @@ public class InboxGUI {
             inboxListModel.addElement(currArchiveMsg);
             currArchivePreview.setVisible(false);
             unarchive.setVisible(false);
+
+
         });
     }
 
     private JPanel buildArchive(){
-        loadArchive();
-        archiveJList = archiveBuilder.buildJList(archiveListModel);
-        JScrollPane archivePane = archiveBuilder.buildMainPane(new JScrollPane(archiveJList), "archive");
+        JScrollPane archivePane = loadArchive();
 
         archivePanel.add(archivePane);
         JButton archiveBack = archiveBuilder.makeBackButton();

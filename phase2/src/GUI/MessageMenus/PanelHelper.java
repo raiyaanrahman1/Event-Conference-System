@@ -15,7 +15,8 @@ public class PanelHelper {
 
     public void mainBackListener(PanelStack panelStack, JButton backButton){
         backButton.addActionListener(e -> {
-            panelStack.pop();
+            JPanel panel = (JPanel) panelStack.pop();
+            panel.removeAll();
             panelStack.loadPanel((JPanel) panelStack.pop());
         });
     }

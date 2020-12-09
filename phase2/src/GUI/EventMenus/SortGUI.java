@@ -15,7 +15,6 @@ public class SortGUI implements ActionListener {
     private EventManagementSystem eventSystem;
     private EventPanelBuilder panelBuilder = new EventPanelBuilder();
 
-    private List<String> listEvents;
     private DefaultListModel<String> listModel;
 
     private JPanel mainPanel = new JPanel();
@@ -114,12 +113,10 @@ public class SortGUI implements ActionListener {
         LocalDate localDate = LocalDate.parse(date);
 
         if (dateSelection.isSelected()) {
-            List<String> filteredDateList = eventSystem.filterEventDate(localDate);
-            filteredList = filteredDateList;
+            filteredList = eventSystem.filterEventDate(localDate);
         }
         else if (speakerSelection.isSelected()) {
-            List<String> filteredSpeakerList = eventSystem.filterSpeakerDate((String) speakerCombobox.getSelectedItem());
-            filteredList = filteredSpeakerList;
+            filteredList = eventSystem.filterSpeakerDate((String) speakerCombobox.getSelectedItem());
         }
         eventFilterer();
     }

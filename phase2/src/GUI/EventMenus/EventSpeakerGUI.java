@@ -50,12 +50,13 @@ public class EventSpeakerGUI {
      * @return The Event panel for Speakers
      */
     public JPanel startEventPage() {
+        eventSystem.makeListsEvents();
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
         eventsJLabel.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 48));
         eventPanel.add(eventsJLabel, BorderLayout.NORTH);
         buildListModel();
         eventsJList = new JList(listModel);
-        panelBuilder.buildAttendeeEventsJListPanel(jListPanel, eventsJList, eventsJScrollPane);
+        panelBuilder.buildJScrollPanePanel(jListPanel, eventsJList, eventsJScrollPane);
         eventPanel.add(jListPanel, BorderLayout.CENTER);
         buttonPanel.setLayout(new BorderLayout());
         eventPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -70,8 +71,9 @@ public class EventSpeakerGUI {
         return eventPanel;
     }
 
+
     private void buildListModel(){
-        this.eventList = eventSystem.getSpeakerEventList();
+        this.eventList = eventSystem.getEventLists().get(3);
         if (!eventList.isEmpty()){
             for (String event:eventList) {
                 listModel.addElement(event);

@@ -61,11 +61,12 @@ public class EventOrganizerGUI {
      * @return The Event panel for Organizers
      */
     public JPanel startEventPage() {
+        eventSystem.makeListsEvents();
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
         panelBuilder.buildComponentBorderLayout(eventsJLabel, eventPanel, BorderLayout.NORTH, 48);
         buildListModel();
         eventsJList = new JList(listModel);
-        panelBuilder.buildAttendeeEventsJListPanel(jListPanel, eventsJList, eventsJScrollPane);
+        panelBuilder.buildJScrollPanePanel(jListPanel, eventsJList, eventsJScrollPane);
         eventPanel.add(jListPanel, BorderLayout.CENTER);
         buttonPanel.setLayout(new BorderLayout());
         eventPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -84,7 +85,7 @@ public class EventOrganizerGUI {
     }
 
     private void buildListModel(){
-        List<String> eventList = eventSystem.getOrganizerEventList();
+        List<String> eventList = eventSystem.getEventLists().get(2);
         if (!eventList.isEmpty()){
             for (String event:eventList) {
                 listModel.addElement(event);
@@ -102,15 +103,13 @@ public class EventOrganizerGUI {
     }
 
     private void addEventButtonListener(){
-        addEventButton.addActionListener(e -> {
-            panelStack.loadPanel(new AddEventGUI(eventSystem, panelStack).addEventPage());
-        });
+        addEventButton.addActionListener(e -> panelStack.loadPanel(new AddEventGUI(eventSystem, panelStack).addEventPage()));
     }
 
     private void deleteButtonListen(){
         deleteButton.addActionListener(e -> {
             String event = eventsJList.getSelectedValue().toString();
-            eventSystem.cancelEvent(eventPanel, Integer.parseInt(event.substring(0, 1)));
+            eventSystem.deleteEvent(eventPanel, Integer.parseInt(event.substring(0, 1)));
             listModel.removeElementAt(eventsJList.getSelectedIndex());
             eventsJList.setModel(listModel);
         });
@@ -129,9 +128,7 @@ public class EventOrganizerGUI {
     }
 
     private void sortButtonListener(){
-        sortButton.addActionListener(e -> {
-            panelStack.loadPanel(eventSortGUI.sortPage());
-        });
+        sortButton.addActionListener(e -> panelStack.loadPanel(eventSortGUI.sortPage()));
     }
 
     private void listListener(){
