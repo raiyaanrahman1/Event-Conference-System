@@ -59,9 +59,9 @@ public class InboxGUI {
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 if (messenger.isRead(index))
-                    c.setBackground(Color.WHITE);
-                else
                     c.setBackground(Color.LIGHT_GRAY);
+                else
+                    c.setBackground(Color.WHITE);
                 return c;
             }
         });

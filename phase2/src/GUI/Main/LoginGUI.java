@@ -73,8 +73,8 @@ public class LoginGUI implements ActionListener {
         String pword = passwordTextField.getText();
 
         if (loginSystem.canLogin(uname, pword)) {
-            JLabel label = new JLabel("You have successfully logged in");
-            panelBuilder.buildPanelLabel(label,40,0,0,0, 0);
+            JLabel label = new JLabel("You have successfully logged in!");
+            panelBuilder.buildPanelLabel(label,14,0,0,0, 0);
             JOptionPane.showMessageDialog(null, label,
                     "Nice!",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -83,7 +83,11 @@ public class LoginGUI implements ActionListener {
             panelStack.loadPanel(mainMenuGUI.startMainMenuPage());
         }
         else {
-            JOptionPane.showMessageDialog(loginPanel, "Invalid username or password.");
+            JLabel label = new JLabel("Invalid username or password.");
+            panelBuilder.buildPanelLabel(label,14,0,0,0, 0);
+            JOptionPane.showMessageDialog(null, label,
+                    "Oops...",
+                    JOptionPane.WARNING_MESSAGE);
         }
 
     }

@@ -11,7 +11,6 @@ Eric|Ayah|08/12/2020 21:30:59|hello|false
 Eric|Ayah|08/12/2020 23:36:59|ee|false
 Attendee1|Speaker1|09/12/2020 00:46:45|msg1|false
 Speaker1|Attendee1|08/12/2020 01:29:48|Hello!|false
-hala|Ayah|08/12/2020 21:30:10|hellloo|false
-hala|Ayah|08/12/2020 22:04:18|msg1|false
-hala|Ayah|08/12/2020 22:04:23|msg2|false
-hala|Ayah|09/12/2020 00:10:34|msg1|false
+hala|Ayah|08/12/2020 21:30:10|hellloo|true
+hala|Ayah|08/12/2020 22:04:18|msg1|true
+hala|Ayah|08/12/2020 22:04:23|msg2|true
