@@ -124,7 +124,7 @@ public class InboxGUI {
         inboxOptions.get(2).addActionListener(e -> {
             messenger.archiveMessage(currInboxIndex);
             inboxListModel.removeElementAt(currInboxIndex);
-            archiveListModel.addElement(currInboxMsg);
+//            archiveListModel.addElement(currInboxMsg);
             currInboxPreview.setVisible(false);
             panelHelper.makeButtonsInvisible(inboxOptions);
         });
@@ -202,6 +202,7 @@ public class InboxGUI {
         inboxPanel.add(viewArchive);
         viewArchive.addActionListener(e -> panelStack.loadPanel(buildArchive()));
         setInboxListCellRendererComponent();
+        inboxPanel.revalidate();
         return inboxPanel;
     }
 
@@ -221,15 +222,13 @@ public class InboxGUI {
 
     }
 
-    private void archiveListener(JButton unarchive){
+    private void unarchiveListener(JButton unarchive){
         unarchive.addActionListener(e -> {
             messenger.unarchiveMessage(currArchiveIndex);
             archiveListModel.removeElementAt(currArchiveIndex);
-            inboxListModel.addElement(currArchiveMsg);
+//            inboxListModel.addElement(currArchiveMsg);
             currArchivePreview.setVisible(false);
             unarchive.setVisible(false);
-
-
         });
     }
 
@@ -244,7 +243,7 @@ public class InboxGUI {
         JButton unarchive = archiveBuilder.buildButton("unarchive",310, 260);
         archivePanel.add(unarchive);
         unarchive.setVisible(false);
-        archiveListener(unarchive);
+        unarchiveListener(unarchive);
         archiveJList.addListSelectionListener(e->{
             if (!e.getValueIsAdjusting()) {
                 currArchiveIndex = archiveJList.getSelectedIndex();

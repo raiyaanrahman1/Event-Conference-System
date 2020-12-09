@@ -142,16 +142,19 @@ public class MessagePanelBuilder {
         return jScroll;
     }
 
+    private String formatMessage(String message){
+        String[] msgContent = message.split("\\|");
+        return msgContent[0] + "\n" + msgContent[2] + "\nSent at: \n" +
+                msgContent[1];
+    }
+
     /**
      * Prepares the input message to be presented in the message preview.
      * @param message the input message to be prepared
      * @return a JTextArea containing the formatted message
      */
     public JTextArea prepareSelectedMessage(String message){
-        String[] msgContent = message.split("\\|");
-        String formattedMessage = msgContent[0] + "\n" + msgContent[2] + "\nSent at: \n" +
-                msgContent[1];
-        JTextArea content = new JTextArea(formattedMessage);
+        JTextArea content = new JTextArea(formatMessage(message));
         content.setFont(infoFont);
         content.setVisible(true);
         content.setEditable(false);
@@ -223,7 +226,7 @@ public class MessagePanelBuilder {
         title.setText("received");
         String fullThread = "";
         for (String msg : messages){
-            fullThread += msg + "\n";
+            fullThread += formatMessage(msg) + "\n";
         }
         JTextArea text = new JTextArea(fullThread);
         text.setFont(infoFont);
