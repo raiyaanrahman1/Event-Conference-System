@@ -99,6 +99,7 @@ public class MainMenuGUI {
             panelStack.pop();
             JPanel panel = (JPanel) panelStack.pop();
             panelStack.loadPanel(panel);
+            loginSystem.signOut();
         });
     }
 

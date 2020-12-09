@@ -59,7 +59,6 @@ public class LoginSystem {
         messageMan.storeMessages(messageListInformationGateway, archiveFileGateway);
         userManager.storeContacts();
         eventMan.storeEvents(eventListGateway);
-        System.exit(0);
     }
 
     /**
