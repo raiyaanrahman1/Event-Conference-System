@@ -1,31 +1,35 @@
-# *The AmongUs Summit* (Phase 1)
+# *the imposter summit* (Phase 2)
 
 ## Usage
-To use The AmongUs Summit, you first run the mainConferenceSystem class.
-Follow the instructions on the screen to complete your desired actions.
-
-To sign up as an Organizer, use this code: amongUs
-In order to make a Speaker account, an Organizer must sign up the speaker in the Events menu.
-Organizers can sign up for events they have created.
-Organizers can use the same account to access Attendee functionality.
-Speakers need to create a non-Speaker account in order to access Attendee/Organizer functionality.
-Do not enter a non-numeric input when the program asks for a number.
-When entering the time for an event, please enter a two digit number between 09 and 17.
+To use the imposter summit, navigate to the GUI folder, and then the Main folder.
+Then run the MainSystem class.
+Follow the instructions on the window to complete your desired actions.
+*To sign up as an Organizer, use this code: AmongUs
 
 ## Contributors
 Alex, Ayah, Eric, Hala, Nitin, Olivia, Raiyaan and Tariq (Group 0301).
 
-## Design Choice Questions?
+## Implemented Features
+- All mandatory extensions
+- Optional features
+    -> GUI
+    -> Enhanced user messaging experience which allows to:
+    "mark as unread", delete, or archive messages after reading them
+    -> Program produces a neatly formatted schedule for the conference
+    so that users can request a sorted schedule by either speaker or date
+- Our own feature
+    -> A password strength checker that evaluates the strength of a users password after they
+    sign up. It does not allow a user with a weak password to sign up.
 
-We decided to remove the Facade pattern we were using to a Dependency Injection
-pattern. Does this decrease coupling between classes in general? For example in
-the Controller package, we instantiated all instances in the Login System and
-passed it to the relevant classes in the package.
+## Improvements (optional)
 
-We also decided to remove the hasBroadcastingRights and hasEventCreatingRights
-methods and instead used their type identifiers from the text file. Is this a
-better implementation?
-
-We removed all the entities stored in our User entities and now they all store
-the same variables, and are only distinguished by their types. Should we get
-rid of them and have one single User class with a type identifier method?
+## Design Patterns
+- Iterator
+- Observer
+- Strategy
+- Adapter
+- Builder
+- Dependency Injection
+- Facade
+- Factory
+- Abstract Factory
