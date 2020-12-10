@@ -52,6 +52,7 @@ public class EventOrganizerGUI {
         broadcastButtonListen();
         backButtonListen();
         sortButtonListener();
+        editButtonListen();
         addEventButtonListener();
     }
 
@@ -61,7 +62,6 @@ public class EventOrganizerGUI {
      * @return The Event panel for Organizers
      */
     public JPanel startEventPage() {
-        eventSystem.makeListsEvents();
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
         panelBuilder.buildComponentBorderLayout(eventsJLabel, eventPanel, BorderLayout.NORTH, 48);
         buildListModel();
@@ -85,6 +85,7 @@ public class EventOrganizerGUI {
     }
 
     private void buildListModel(){
+        eventSystem.makeListsEvents();
         List<String> eventList = eventSystem.getEventLists().get(2);
         if (!eventList.isEmpty()){
             for (String event:eventList) {
@@ -100,6 +101,25 @@ public class EventOrganizerGUI {
             JPanel panel = (JPanel) panelStack.pop();
             panelStack.loadPanel(panel);
         });
+    }
+
+    private void editButtonListen(){
+        editButton.addActionListener(e -> {
+            String message = JOptionPane.showInputDialog("Enter the new capacity of the event.");
+            if (message.matches("\\d+")){
+                if(eventSystem.editEvent(eventsJList.getSelectedIndex(), Integer.parseInt(message))){
+                    JOptionPane.showMessageDialog(eventPanel, "Event capacity changed.");
+                }
+                else{
+                    JOptionPane.showMessageDialog(eventPanel, "Please enter a number greater than the " +
+                            "current capacity.");
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(eventPanel, "Please enter a number.");
+            }
+        });
+
     }
 
     private void addEventButtonListener(){
@@ -140,7 +160,6 @@ public class EventOrganizerGUI {
                 broadcastButton.setEnabled(true);
                 editButton.setEnabled(true);
                 deleteButton.setEnabled(true);
-
             }
         });
     }

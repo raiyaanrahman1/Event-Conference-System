@@ -62,6 +62,19 @@ public class EventManagementSystem {
         return false;
     }
 
+    /**
+     * Edits the capacity of an event
+     * @param eventID the id of the event we want to edit
+     * @param capacity the event's new capacity
+     * @return true if the event's capacity is changed to the new capacity
+     */
+    public boolean editEvent(int eventID, int capacity){
+        if (manager.changeRoomCapacity(eventID, capacity)){
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * Takes in
