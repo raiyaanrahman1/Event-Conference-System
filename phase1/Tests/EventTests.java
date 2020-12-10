@@ -45,7 +45,6 @@
 //        event.setDate(date);
 //        event.setTime(time);
 //        event.setSpeaker(speaker);
-//        event.setRoom(room);
 //        assertEquals(event.getDate(), date);
 //        assertEquals(event.getTime(), time);
 //        assertEquals(event.getRoom(), room);

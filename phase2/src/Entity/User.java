@@ -79,15 +79,6 @@ public abstract class User {
         this.contacts.remove(username);
     }
 
-    /**
-     * Sets the username of the User
-     *
-     * @param username new username
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
 
 }
 

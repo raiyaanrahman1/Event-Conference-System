@@ -12,7 +12,6 @@ import GUI.PanelBuilder.LoginPanelBuilder;
 import javax.swing.*;
 
 public class MainMenuGUI {
-    private MessengerSystem messageSystem;
     private EventManagementSystem eventSystem;
     private LoginSystem loginSystem;
     private PanelStack panelStack;
@@ -34,7 +33,6 @@ public class MainMenuGUI {
 
     public MainMenuGUI(LoginSystem loginSystem, EventManagementSystem eventSystem, MessengerSystem messageSystem, PanelStack panelStack) {
         this.panelStack = panelStack;
-        this.messageSystem = messageSystem;
         this.eventSystem = eventSystem;
         this.loginSystem = loginSystem;
         eventSpeakerGUI = new EventSpeakerGUI(eventSystem, panelStack);

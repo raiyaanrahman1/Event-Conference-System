@@ -30,9 +30,6 @@ public class EventSpeakerGUI {
     private JButton broadcastButton = new JButton("✉");
 
 
-    private int selectedEventIndex;
-    private JLabel noEventLabel = new JLabel("You are not speaking at any events.");
-
     /**
      * Creates an EventSpeakerGUI and initializes its EventManagementSystem and the panelStack
      *
@@ -105,7 +102,6 @@ public class EventSpeakerGUI {
     private void listListener(){
         eventsJList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()){
-                selectedEventIndex = eventsJList.getSelectedIndex();
                 broadcastButton.setEnabled(true);
             }
         });

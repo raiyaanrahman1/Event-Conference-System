@@ -90,15 +90,6 @@ public class UserManager {
     }
 
     /**
-     * Gets the user that is currently logged-in
-     *
-     * @return User that is logged in
-     */
-    public User getUser() {
-        return this.user;
-    }
-
-    /**
      * Gets a list containing the username, password and type identifier ("A", "O" or "S") of
      * the current logged-in user.
      *

@@ -66,15 +66,6 @@ public class Message {
     }
 
     /**
-     * Changes the content of the message
-     *
-     * @param content   new content of the message
-     */
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    /**
      * Returns the username of the receiver of the message
      */
     public String getReceiver() {
@@ -86,15 +77,6 @@ public class Message {
      */
     public String getSender() {
         return sender;
-    }
-
-    /**
-     *Changes the sender of the message
-     *
-     * @param sender  username of the new sender of the message
-     */
-    public void setSender(String sender) {
-        this.sender = sender;
     }
 
     /**

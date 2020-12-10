@@ -24,7 +24,7 @@ public class EventManagementSystemTests {
 ////        event.setDate(date);
 ////        event.setTime(time);
 //        event.setSpeaker(speaker);
-//        event.setRoom(room);
+
 //    }
 
 }

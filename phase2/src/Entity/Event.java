@@ -231,18 +231,7 @@ public class Event {
     public String getName() {
         return name;
     }
-    /**
-     * Setter for the room the event is in.
-     */
-    public void setRoom(String room) {
-        this.room = room;
-    }
-    /**
-     * Setter for the name of the Event.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+
     /**
      * Setter for the room capacity.
      */
@@ -267,13 +256,6 @@ public class Event {
      */
     public String getOrganizer() {
         return organizer;
-    }
-
-    /**
-     * Changes the Organizer's username of the Event
-     */
-    public void setOrganizer(String organizer) {
-        this.organizer = organizer;
     }
 
     /**
@@ -302,30 +284,12 @@ public class Event {
     // Phase 2 Functionality
 
     /**
-     * Sets the LocalDateTime of the event
-     *
-     * @param  startTime the date and time of the event
-     */
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
      * Gets the LocalDateTime of the end of the event
      *
      * @return the LocalDateTime
      */
     public LocalDateTime getEndTime() {
         return endTime;
-    }
-
-    /**
-     * Sets the LocalDateTime of the end of the event
-     *
-     * @param  endTime the date and time of the end of the event
-     */
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
     }
 
     /**

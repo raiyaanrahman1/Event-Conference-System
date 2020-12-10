@@ -16,7 +16,7 @@ public class SortGUI implements ActionListener {
     private EventPanelBuilder panelBuilder = new EventPanelBuilder();
 
     private DefaultListModel<String> listModel;
-
+    private ButtonGroup group= new ButtonGroup();
     private JPanel mainPanel = new JPanel();
 
     private JLabel sortJLabel = new JLabel("sort");
@@ -82,6 +82,8 @@ public class SortGUI implements ActionListener {
         panelBuilder.buildComponentNullLayout(mainPanel, yearCombobox, 14, 380, 200, 80, 25);
         // SPEAKER SELECTION BUTTON:
         panelBuilder.buildComponentNullLayout(mainPanel, speakerSelection, 14, 25, 230, 150, 25);
+        group.add(dateSelection);
+        group.add(speakerSelection);
         // SPEAKER COMBOBOX:
         panelBuilder.buildComponentNullLayout(mainPanel, speakerCombobox, 14, 200, 230, 260, 25);
         // SORT BUTTON:

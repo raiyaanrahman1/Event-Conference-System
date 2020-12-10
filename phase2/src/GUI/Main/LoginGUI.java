@@ -31,10 +31,6 @@ public class LoginGUI implements ActionListener {
         logInButton.addActionListener(this);
     }
 
-    public boolean getIsVisible() {
-        return loginPanel.isVisible();
-    }
-
     public JPanel logInPage(){
         // PANEL:
         panelBuilder.buildMainPanel();

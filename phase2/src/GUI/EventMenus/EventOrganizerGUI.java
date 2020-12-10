@@ -35,9 +35,6 @@ public class EventOrganizerGUI {
     private JButton sortButton = new JButton("Sort");
     private JButton addEventButton = new JButton("Add Event");
 
-    private int selectedEventIndex;
-    private JLabel noEventLabel = new JLabel("You are not speaking at any events.");
-
 
     /**
      * Creates an EventOrganizerGUI and initializes its EventManagementSystem and the panelStack
@@ -157,7 +154,6 @@ public class EventOrganizerGUI {
     private void listListener(){
         eventsJList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()){
-                selectedEventIndex = eventsJList.getSelectedIndex();
                 broadcastButton.setEnabled(true);
                 editButton.setEnabled(true);
                 deleteButton.setEnabled(true);

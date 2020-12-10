@@ -40,19 +40,6 @@ public class EventGetter {
     }
 
     /**
-     * Gets the events that this user is speaking in, iff user is an Speaker.
-     *
-     * @return a list of event IDs corresponding to the talks user is giving.
-     */
-    public List<Integer> getTalksBySpeaker(String username){
-        List<Integer> eventListIDs = new ArrayList<>();
-        for(Event e : events){
-            if(e.getSpeaker().contains(username)) eventListIDs.add(e.getEventID());
-        }
-        return eventListIDs;
-    }
-
-    /**
      * Gets the events that this user organised, iff user is an Organizer.
      *
      * @return a list of event IDs corresponding to the events this user organised.
@@ -182,39 +169,12 @@ public class EventGetter {
     }
 
     /**
-     * Gets the dateTime of an event by its eventID.
-     * @param eventID the ID of the event we want to get the datetime of
-     * @return a string representing the formatted dateTime of this event
-     */
-    public String getStartTimeByEventID(int eventID) {
-        return Objects.requireNonNull(this.getEventByID(eventID)).getStartTime().toString();
-    }
-
-    /**
-     * Gets the dateTime of an event by its eventID.
-     * @param eventID the ID of the event we want to get the datetime of
-     * @return a string representing the formatted dateTime of this event
-     */
-    public String getEndTimeByEventID(int eventID) {
-        return Objects.requireNonNull(this.getEventByID(eventID)).getEndTime().toString();
-    }
-
-    /**
      * Gets the string format of this event.
      * @param eventID the ID of the event we want to get the string format of
      * @return a formatted string representing this event
      */
     public String getEventString(int eventID) {
         return Objects.requireNonNull(getEventByID(eventID)).toString();
-    }
-
-    /**
-     * Gets the room of an event by its eventID.
-     * @param eventID the ID of the event we want to get the room of
-     * @return a string representing the room of this event
-     */
-    public String getRoomByEventID(int eventID) {
-        return Objects.requireNonNull(this.getEventByID(eventID)).getRoom();
     }
 
     /**
@@ -263,17 +223,6 @@ public class EventGetter {
         return filterHelper(username, "organizer");
     }
 
-    /**
-     * Returns a list with the string representations of the events
-     * at which the given attendee participates in.
-     *
-     * @param username  the username of the attendee
-     * @return  the list of event strings with that attendee
-     */
-    public List<String> filterEventsByAttendee(String username) {
-        return filterHelper(username, "attendee");
-    }
-
     private List<String> filterHelper(String username, String filterType){
         List<String> events = new ArrayList<>();
         EventFilter filter;
@@ -289,50 +238,6 @@ public class EventGetter {
         }
 
         return events;
-    }
-
-    /**
-     * Gets the speaker of a specific event
-     * @param eventId the id of the event
-     * @return the Speaker of an event
-     */
-    public String getSpeaker(int eventId) throws NoSuchEventException {
-        Event e = getEventByID(eventId);
-        if (e == null) throw new NoSuchEventException();
-        return String.valueOf(e.getSpeaker());
-    }
-
-    /**
-     * Gets the name of a specific event
-     * @param eventId the id of the event
-     * @return the name of an event
-     */
-    public String getName(int eventId) throws NoSuchEventException {
-        Event e = getEventByID(eventId);
-        if (e == null) throw new NoSuchEventException();
-        return e.getName();
-    }
-
-    /**
-     * Gets the capacity of a specific event
-     * @param eventId the id of the event
-     * @return the capacity of an event
-     */
-    public int getRoomCap(int eventId) throws NoSuchEventException {
-        Event e = getEventByID(eventId);
-        if (e == null) throw new NoSuchEventException();
-        return e.getRoomCap();
-    }
-
-    /**
-     * Gets the organizer of a specific event
-     * @param eventId the id of the event
-     * @return the Organizer of an event
-     */
-    public String getOrganizer(int eventId) throws NoSuchEventException {
-        Event e = getEventByID(eventId);
-        if (e == null) throw new NoSuchEventException();
-        return e.getOrganizer();
     }
 
 }
