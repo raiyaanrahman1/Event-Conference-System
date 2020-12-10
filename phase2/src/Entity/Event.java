@@ -219,7 +219,6 @@ public class Event {
         return room;
     }
 
-
     /**
      * Returns the Event's Speaker's username
      */

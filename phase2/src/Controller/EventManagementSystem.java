@@ -69,10 +69,14 @@ public class EventManagementSystem {
      * @return true if the event's capacity is changed to the new capacity
      */
     public boolean editEvent(int eventID, int capacity){
-        if (manager.changeRoomCapacity(eventID, capacity)){
+        if (user.getUserInfoList().get(2).equals("O") &&
+                getter.getOrganizedEventsByOrganizer(user.getUserInfoList().get(0)).size() > 0 &&
+                manager.changeRoomCapacity(eventID, capacity)) {
+            manager.storeEvents(eventListGateway);
             return true;
         }
         return false;
+
     }
 
 

@@ -185,7 +185,7 @@ public class EventManager {
 
     public boolean changeRoomCapacity(int eventID, int newRoomCapacity){
         Event e = this.getEventByID(eventID);
-        if(e.getAttendees().size() <= newRoomCapacity){
+        if(e != null && e.getAttendees().size() <= newRoomCapacity){
             e.setRoomCap(newRoomCapacity);
             return true;
         }

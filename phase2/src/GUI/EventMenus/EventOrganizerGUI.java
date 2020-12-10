@@ -107,7 +107,8 @@ public class EventOrganizerGUI {
         editButton.addActionListener(e -> {
             String message = JOptionPane.showInputDialog("Enter the new capacity of the event.");
             if (message.matches("\\d+")){
-                if(eventSystem.editEvent(eventsJList.getSelectedIndex(), Integer.parseInt(message))){
+                String event = eventsJList.getSelectedValue().toString();
+                if(eventSystem.editEvent(Integer.parseInt(event.substring(0, 1)), Integer.parseInt(message))){
                     JOptionPane.showMessageDialog(eventPanel, "Event capacity changed.");
                 }
                 else{
