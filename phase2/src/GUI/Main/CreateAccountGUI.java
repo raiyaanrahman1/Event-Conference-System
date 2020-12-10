@@ -1,5 +1,6 @@
 package GUI.Main;
 
+import Controller.CheckPassword;
 import Controller.LoginSystem;
 import GUI.PanelBuilder.LoginPanelBuilder;
 
@@ -63,29 +64,35 @@ public class CreateAccountGUI implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String uname = usernameTextField.getText();
         String pword = passwordTextField.getText();
-
-        if (!loginSystem.isUser(uname)) {
-            if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")) {
-                    loginSystem.signUpUser(uname, pword, "A");
-                    JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a Attendee.");
+        CheckPassword checker = new CheckPassword();
+        if (checker.scorePassword(pword).equals("Strong Password") ||
+                checker.scorePassword(pword).equals("Medium Password") ) {
+            if (!loginSystem.isUser(uname)) {
+                if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")) {
+                        loginSystem.signUpUser(uname, pword, "A");
+                        JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a Attendee.");
+                        usernameTextField.setText("");
+                        passwordTextField.setText("");
+                }
+                else if(Objects.equals(typeComboBox.getSelectedItem(), "VIP Attendee")) {
+                    loginSystem.signUpUser(uname, pword, "V");
+                    JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a VIP Attendee.");
                     usernameTextField.setText("");
                     passwordTextField.setText("");
-            }
-            else if(Objects.equals(typeComboBox.getSelectedItem(), "VIP Attendee")) {
-                loginSystem.signUpUser(uname, pword, "V");
-                JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a VIP Attendee.");
-                usernameTextField.setText("");
-                passwordTextField.setText("");
+                }
+                else {
+                    loginSystem.signUpUser(uname, pword, "S");
+                    JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a Speaker.");
+                    usernameTextField.setText("");
+                    passwordTextField.setText("");
+                }
             }
             else {
-                loginSystem.signUpUser(uname, pword, "S");
-                JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a Speaker.");
-                usernameTextField.setText("");
-                passwordTextField.setText("");
+                JOptionPane.showMessageDialog(signUpPanel, "Username already exists. Please select a different username.");
             }
-        }
-        else {
-            JOptionPane.showMessageDialog(signUpPanel, "Username already exists. Please select a different username.");
+        }else {
+            JOptionPane.showMessageDialog(signUpPanel,
+                    "Password is weak. Please make sure your password is longer than 8 characters.");
         }
     }
 }
