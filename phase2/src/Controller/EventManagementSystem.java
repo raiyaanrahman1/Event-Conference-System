@@ -5,13 +5,15 @@ import UseCase.EventGetter;
 import UseCase.EventManager;
 import UseCase.UserManager;
 import UseCase.MessageManager;
+import com.sun.istack.internal.NotNull;
 
-import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Objects.requireNonNull;
 
 public class EventManagementSystem {
 
@@ -188,9 +190,9 @@ public class EventManagementSystem {
      */
     public LocalTime checkEndTime (String inputTime){
         LocalTime time = LocalTime.parse(inputTime + ":00");
-        int before10 = time.compareTo(LocalTime.parse("10:00:00"));
+        int before9 = time.compareTo(LocalTime.parse("09:00:00"));
         int after6 = time.compareTo(LocalTime.parse("18:00:00"));
-        if ((before10 >= 0 && !(after6 >= 0))) {
+        if ((before9 >= 0 && !(after6 >= 0))) {
             return LocalTime.parse(inputTime);
         }
         else {
@@ -252,6 +254,7 @@ public class EventManagementSystem {
      *  - the list of events this Speaker is speaking at in toString form
      */
     public void makeListsEvents(){
+        eventLists.clear();
         eventLists.add(getAllEventList());
         eventLists.add(getAttendeeEventList());
         eventLists.add(getOrganizerEventList());

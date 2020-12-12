@@ -59,6 +59,7 @@ public class EventOrganizerGUI {
      * @return The Event panel for Organizers
      */
     public JPanel startEventPage() {
+        listModel.clear();
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
         panelBuilder.buildComponentBorderLayout(eventsJLabel, eventPanel, BorderLayout.NORTH, 48);
         buildListModel();
@@ -89,14 +90,14 @@ public class EventOrganizerGUI {
                 listModel.addElement(event);
             }
         }
+        eventsJList.setModel(listModel);
     }
 
     private void backButtonListen(){
         backButton.addActionListener(e -> {
-            listModel.clear();
-            panelStack.pop();
             JPanel panel = (JPanel) panelStack.pop();
-            panelStack.loadPanel(panel);
+            panel.removeAll();
+            panelStack.loadPanel((JPanel) panelStack.pop());
         });
     }
 
@@ -126,11 +127,13 @@ public class EventOrganizerGUI {
 
     private void deleteButtonListen(){
         deleteButton.addActionListener(e -> {
-            String event = eventsJList.getSelectedValue().toString();
-            if (eventSystem.deleteEvent(Integer.parseInt(event.substring(0, 1)))){
-                listModel.removeElementAt(eventsJList.getSelectedIndex());
-                eventsJList.setModel(listModel);
-                JOptionPane.showMessageDialog(eventPanel, "You have successfully cancelled this event.");
+            if (eventsJList.getSelectedIndex() != -1) {
+                String event = eventsJList.getSelectedValue().toString();
+                if (eventSystem.deleteEvent(Integer.parseInt(event.substring(0, 1)))) {
+                    listModel.removeElementAt(eventsJList.getSelectedIndex());
+                    eventsJList.setModel(listModel);
+                    JOptionPane.showMessageDialog(eventPanel, "You have successfully cancelled this event.");
+                }
             }
         });
     }

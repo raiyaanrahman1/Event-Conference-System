@@ -66,6 +66,8 @@ public class EventAttendeeGUI {
      * @return The Event panel for Attendees
      */
     public JPanel startEventPage() {
+        yourEventsListModel.clear();
+        eventsListModel.clear();
         eventSystem.makeListsEvents();
         // NorthPanel:
         panelBuilder.buildAttendeeNorthPanel(northPanel, eventsPanel, yourEventsPanel);
@@ -100,11 +102,9 @@ public class EventAttendeeGUI {
 
     private void backButtonListen(){
         backButton.addActionListener(e -> {
-            yourEventsListModel.clear();
-            eventsListModel.clear();
-            panelStack.pop();
             JPanel panel = (JPanel) panelStack.pop();
-            panelStack.loadPanel(panel);
+            panel.removeAll();
+            panelStack.loadPanel((JPanel) panelStack.pop());
         });
     }
 

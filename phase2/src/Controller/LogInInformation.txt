@@ -3,4 +3,6 @@ Attendee1 passwordA1 A
 Speaker1 passwordS1 S
 Olivia passwordOl1 A
 Ayah passwordAya A
-hala passwordHa A
+hala p A
+Speaker2 passwordS2 S
+newaccount fdgfdP921SASAaAa322332 A

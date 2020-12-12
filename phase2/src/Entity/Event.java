@@ -132,13 +132,13 @@ public class Event {
      */
     public String getSaveableInfo(){
         return "E|" + this.eventID + "|" + this.name + "|" +
-                this.room + "|" + getSavableSpeakers() + "|" + this.organizer +
+                this.room + "|" + getFormattedSpeakers() + "|" + this.organizer +
                 "|" + this.roomCap + "|" + getFormattedDateTime() +
                 "|" + getSaveableAttendees();
 
     }
 
-    /**
+    /*
      * Converts this Event's attendee list into a one String in this format:
      *      attendee1,attendee2,attendee3...
      * @return a string representing the attendee list
@@ -151,19 +151,11 @@ public class Event {
         return attendees.toString();
     }
 
-    private String getSavableSpeakers(){
-        StringBuilder speakersBuilder = new StringBuilder();
-        for (String s: this.speakers){
-            speakersBuilder.append(s).append(',');
-        }
-        return speakersBuilder.toString();
-    }
-
     private String getFormattedSpeakers() {
         if (this.speakers.size() > 0) {
-            StringBuilder speakersBuilder = new StringBuilder();
-            for (String s : this.speakers) {
-                speakersBuilder.append(s).append(',');
+            StringBuilder speakersBuilder = new StringBuilder(speakers.get(0));
+            for (int i = 1; i < this.speakers.size(); i++) {
+                speakersBuilder.append(',').append(speakers.get(i));
             }
             return speakersBuilder.toString();
         }

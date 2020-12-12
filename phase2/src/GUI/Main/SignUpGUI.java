@@ -74,7 +74,7 @@ public class SignUpGUI implements ActionListener {
         if (checker.scorePassword(pword).equals("Strong Password") ||
                 checker.scorePassword(pword).equals("Medium Password") ) {
                 if (!loginSystem.isUser(uname)) {
-                    if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")){
+                    if (Objects.equals(typeComboBox.getSelectedItem(), "attendee")){
                         loginSystem.signUpUser(uname, pword, "A");
                     JOptionPane.showMessageDialog(signUpPanel,
                             String.format("You have successfully signed up as an Attendee.\nPassword Strength: %s",

@@ -2,7 +2,7 @@ README
 # *the imposter summit* (Phase 2)
 
 ## Usage
-**NOTE** Some Java.Swing elements are incompatible on Mac OS (such as problems with decoding unicode characters and
+**NOTE** Some Java.Swing elements are incompatible with Mac OS (such as problems with decoding unicode characters and
 rendering the JList cells ('unread' button)). Windows OS is recommended for usage.
 
 To use the imposter summit, navigate to the GUI folder, and then the Main folder.
@@ -13,7 +13,8 @@ Follow the instructions on the window to complete your desired actions.
 To login as a Speaker or a VIP, you must create the accounts logged-in as an Organizer.
 (They cannot be created from the sign-up menu)
 
-*In the Events menu option, please enter a valid date when entering the date to sort a list of events.
+*In the Events menu option, please enter a valid date (must be after the current date and time and in a valid format)
+when entering the date to sort a list of events.
 
 *In the Inbox menu option, click on the top right icon on the inbox panel to navigate to the 'archive', and if you
 have selected any messages, click on the button to the left of the archive to view all your received messages from

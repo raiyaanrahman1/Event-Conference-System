@@ -21,6 +21,7 @@ public class EventManager {
 
     private ArrayList<Event> events;
     public EventGetter eventGetter;
+    private int eventIDCounter;
 
     /**
      * Creates an EventManager and initializes its list of events.
@@ -61,7 +62,13 @@ public class EventManager {
             }
 
             this.events.add(event);
-            this.eventGetter = new EventGetter(this.events);
+        }
+        this.eventGetter = new EventGetter(this.events);
+        if (events.size() > 0) {
+            eventIDCounter = events.get(events.size() - 1).getEventID() + 1;
+        }
+        else {
+            eventIDCounter = 1;
         }
     }
 
@@ -131,7 +138,8 @@ public class EventManager {
         for(String s : speakers){
             event.addSpeaker(s);
         }
-        event.setEventID(events.size()+1);
+        event.setEventID(eventIDCounter);
+        eventIDCounter++;
         events.add(event);
         return true;
     }
@@ -160,7 +168,8 @@ public class EventManager {
         for(String s : speakers){
             event.addSpeaker(s);
         }
-        event.setEventID(events.size()+1);
+        event.setEventID(eventIDCounter);
+        eventIDCounter++;
         events.add(event);
         return true;
     }

@@ -47,6 +47,7 @@ public class EventSpeakerGUI {
      * @return The Event panel for Speakers
      */
     public JPanel startEventPage() {
+        listModel.clear();
         eventSystem.makeListsEvents();
         panelBuilder.buildBorderLayoutPanel(eventPanel, 20, 20, 40, 20);
         eventsJLabel.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 48));
@@ -80,10 +81,9 @@ public class EventSpeakerGUI {
 
     private void backButtonListen(){
         backButton.addActionListener(e -> {
-            listModel.clear();
-            panelStack.pop();
             JPanel panel = (JPanel) panelStack.pop();
-            panelStack.loadPanel(panel);
+            panel.removeAll();
+            panelStack.loadPanel((JPanel) panelStack.pop());
         });
     }
 
