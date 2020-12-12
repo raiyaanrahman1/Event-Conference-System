@@ -1,8 +1,0 @@
-Organizer1
-Attendee1|Speaker1|hala
-Speaker1|hala|Attendee1
-Olivia
-Ayah|hala
-hala
-Speaker2
-newaccount

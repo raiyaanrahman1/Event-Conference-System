@@ -12,23 +12,23 @@ import GUI.PanelBuilder.LoginPanelBuilder;
 import javax.swing.*;
 
 public class MainMenuGUI {
-    private EventManagementSystem eventSystem;
-    private LoginSystem loginSystem;
-    private PanelStack panelStack;
-    private ContactsGUI contactGUI;
+    private final EventManagementSystem eventSystem;
+    private final LoginSystem loginSystem;
+    private final PanelStack panelStack;
+    private final ContactsGUI contactGUI;
     private EventSpeakerGUI eventSpeakerGUI;
     private EventAttendeeGUI eventAttendeeGUI;
-    private EventOrganizerGUI eventOrganizerGUI;
-    private CreateAccountGUI createAccountGUI;
-    private InboxGUI inboxGUI;
-    private JPanel mainMenuPanel = new JPanel();
-    private JLabel mainMenuLabel = new JLabel("main menu");
-    private JButton inboxButton = new JButton("inbox");
-    private JButton contactButton = new JButton("contacts");
-    private JButton eventsButton = new JButton("events");
-    private JButton logOutButton = new JButton("log out");
-    private JButton createAccountButton = new JButton("create account");
-    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(mainMenuPanel);
+    private final EventOrganizerGUI eventOrganizerGUI;
+    private final CreateAccountGUI createAccountGUI;
+    private final InboxGUI inboxGUI;
+    private final JPanel mainMenuPanel = new JPanel();
+    private final JLabel mainMenuLabel = new JLabel("main menu");
+    private final JButton inboxButton = new JButton("inbox");
+    private final JButton contactButton = new JButton("contacts");
+    private final JButton eventsButton = new JButton("events");
+    private final JButton logOutButton = new JButton("log out");
+    private final JButton createAccountButton = new JButton("create account");
+    private final LoginPanelBuilder panelBuilder = new LoginPanelBuilder(mainMenuPanel);
 
 
     public MainMenuGUI(LoginSystem loginSystem, EventManagementSystem eventSystem, MessengerSystem messageSystem, PanelStack panelStack) {

@@ -7,8 +7,8 @@ import java.awt.*;
  * The builder of the classes in the package Main
  */
 public class LoginPanelBuilder {
-    private JPanel panel;
-    private Font infoFont;
+    private final JPanel panel;
+    private final Font infoFont;
 
 
     /**

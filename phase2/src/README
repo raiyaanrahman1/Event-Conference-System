@@ -60,7 +60,7 @@ Alex, Ayah, Eric, Hala, Nitin, Olivia, Raiyaan and Tariq (Group 0301).
 
 - Our own feature:
    -> A password strength checker that evaluates the strength of a user’s password when they sign up. It does not allow
-   a user with a weak password to sign up.
+   a user with a weak password to sign up. (Used source 1)
 
 ## Design Patterns
 - Iterator: We semi-implemented this pattern in InfoFileGateway which implements IGateway2. IGateway2 extends
@@ -82,3 +82,6 @@ inject a MessageCollection into the constructor for MessageManager).
 - Factory: EventFilterFactory obscures the creation process of different EventFilters, where it contains all the
 constructor calls for DateFilter, AttendeeFilter, NullFilter, OrganizerFilter and SpeakerFilter based on the desired
 filtering method.
+
+## Sources
+1. https://www.geeksforgeeks.org/how-to-validate-a-password-using-regular-expressions-in-java/

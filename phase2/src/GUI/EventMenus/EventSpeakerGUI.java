@@ -9,25 +9,25 @@ import java.awt.*;
 import java.util.List;
 
 public class EventSpeakerGUI {
-    private PanelStack panelStack;
-    private EventManagementSystem eventSystem;
-    private EventPanelBuilder panelBuilder = new EventPanelBuilder();
+    private final PanelStack panelStack;
+    private final EventManagementSystem eventSystem;
+    private final EventPanelBuilder panelBuilder = new EventPanelBuilder();
 
-    private DefaultListModel<String> listModel = new DefaultListModel<>();
+    private final DefaultListModel<String> listModel = new DefaultListModel<>();
 
     private List<String> eventList;
 
-    private JPanel eventPanel = new JPanel();
-    private JPanel jListPanel = new JPanel();
-    private JPanel buttonPanel = new JPanel();
+    private final JPanel eventPanel = new JPanel();
+    private final JPanel jListPanel = new JPanel();
+    private final JPanel buttonPanel = new JPanel();
 
-    private JLabel eventsJLabel = new JLabel("EVENTS MENU");
+    private final JLabel eventsJLabel = new JLabel("EVENTS MENU");
 
     private JList eventsJList = new JList(); //TODO pass in list of events of speakers in parameter of JList
 
-    private JScrollPane eventsJScrollPane = new JScrollPane();
-    private JButton backButton = new JButton("Back");
-    private JButton broadcastButton = new JButton("✉");
+    private final JScrollPane eventsJScrollPane = new JScrollPane();
+    private final JButton backButton = new JButton("Back");
+    private final JButton broadcastButton = new JButton("✉");
 
 
     /**

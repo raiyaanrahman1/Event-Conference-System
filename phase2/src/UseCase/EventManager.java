@@ -1,14 +1,8 @@
 package UseCase;
 import Entity.*;
-import Exceptions.NoSuchEventException;
-import Exceptions.NoSuchFilterException;
 import Gateway.IGateway2;
-import UseCase.Filter.EventFilter;
-import UseCase.Filter.EventFilterFactory;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -19,7 +13,7 @@ import java.util.Objects;
  */
 public class EventManager {
 
-    private ArrayList<Event> events;
+    private final ArrayList<Event> events;
     public EventGetter eventGetter;
     private int eventIDCounter;
 

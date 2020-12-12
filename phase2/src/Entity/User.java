@@ -6,8 +6,8 @@ import java.util.List;
  * The User class represents a user, a user can be an Attendee, an Organizer or a Speaker.
  */
 public abstract class User {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
     private List<String> contacts;
 
     /**

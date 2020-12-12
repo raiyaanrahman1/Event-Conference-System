@@ -5,7 +5,6 @@ import Entity.User;
 import Gateway.IGateway;
 import Gateway.IGateway2;
 
-import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
 public class UserManager {
 
     private User user;
-    private UserStore userStore;
+    private final UserStore userStore;
     private List<String> userInfoList;
     private final ArrayList<List<String>> rawUserInfo;
     private final IGateway gateway;

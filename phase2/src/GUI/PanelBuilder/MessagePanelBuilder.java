@@ -9,10 +9,10 @@ import java.awt.*;
  *  The PanelBuilder class responsible for building the GUIs in the MessageMenus package.
  */
 public class MessagePanelBuilder {
-    private JPanel mainPanel;
+    private final JPanel mainPanel;
     private JLabel title;
-    private Font titleFont;
-    private Font infoFont;
+    private final Font titleFont;
+    private final Font infoFont;
 
     /**
      * Sets the input panel to the mainPanel in this builder and prepares the relevant fonts.
@@ -225,11 +225,11 @@ public class MessagePanelBuilder {
     public JScrollPane buildMessageThread(List<String> messages){
         title.setText("received");
         mainPanel.add(title);
-        String fullThread = "";
+        StringBuilder fullThread = new StringBuilder();
         for (String msg : messages){
-            fullThread += formatMessage(msg) + "\n";
+            fullThread.append(formatMessage(msg)).append("\n");
         }
-        JTextArea text = new JTextArea(fullThread);
+        JTextArea text = new JTextArea(fullThread.toString());
         text.setFont(infoFont);
         text.setEditable(false);
         text.setLineWrap(true);

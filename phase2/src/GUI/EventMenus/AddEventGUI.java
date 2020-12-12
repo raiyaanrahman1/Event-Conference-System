@@ -15,41 +15,40 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AddEventGUI implements ActionListener {
-    private PanelStack panelStack;
-    private EventManagementSystem eventSystem;
-    private JPanel addEventPanel = new JPanel();
-    private JLabel titleLabel = new JLabel("Add New Event");
-    private JLabel eventNameJLabel = new JLabel("Event Name:");
-    private JLabel speakersJLabel = new JLabel("Speaker(s):");
-    private JLabel dateJLabel = new JLabel("Date:");
-    private JLabel roomNameJLabel = new JLabel("Room Name:");
-    private JLabel capacityJLabel = new JLabel("Capacity");
-    private JLabel typeJLabel = new JLabel("Type:");
-    private JLabel dayJLabel = new JLabel("Day");
-    private JLabel monthJLabel = new JLabel("Month");
-    private JLabel yearJLabel = new JLabel("Year");
-    private JLabel startTimeJLabel = new JLabel("Start Time");
-    private JLabel endTimeJLabel = new JLabel("End Time");
-    private JLabel time = new JLabel("<html> Time:<br/>(HH:MM)");
+    private final PanelStack panelStack;
+    private final EventManagementSystem eventSystem;
+    private final JPanel addEventPanel = new JPanel();
+    private final JLabel titleLabel = new JLabel("Add New Event");
+    private final JLabel eventNameJLabel = new JLabel("Event Name:");
+    private final JLabel speakersJLabel = new JLabel("Speaker(s):");
+    private final JLabel dateJLabel = new JLabel("Date:");
+    private final JLabel roomNameJLabel = new JLabel("Room Name:");
+    private final JLabel capacityJLabel = new JLabel("Capacity");
+    private final JLabel typeJLabel = new JLabel("Type:");
+    private final JLabel dayJLabel = new JLabel("Day");
+    private final JLabel monthJLabel = new JLabel("Month");
+    private final JLabel yearJLabel = new JLabel("Year");
+    private final JLabel startTimeJLabel = new JLabel("Start Time");
+    private final JLabel endTimeJLabel = new JLabel("End Time");
+    private final JLabel time = new JLabel("<html> Time:<br/>(HH:MM)");
     private JTextField startTimeTextField;
     private JTextField endTimeTextField;
     private java.util.List<String> speakers;
     private JList speakersJList;
-    private JScrollPane speakersJScrollPane;
-    private JTextField eventNameTextField = new JTextField(20);
-    private JTextField roomNameTextField = new JTextField(20);
-    private JTextField capacityTextField = new JTextField(20);
-    private JTextField dateTextField = new JTextField(20);
-    private JTextField yearTextField = new JTextField(20);
-    private JButton addEventButton = new JButton("Add Event");
-    private String[] eventTypes = {"Regular", "VIP Only"};
-    private String[] months = {"January","February","March","April","May","June","July","August","September","October",
+    private final JTextField eventNameTextField = new JTextField(20);
+    private final JTextField roomNameTextField = new JTextField(20);
+    private final JTextField capacityTextField = new JTextField(20);
+    private final JTextField dateTextField = new JTextField(20);
+    private final JTextField yearTextField = new JTextField(20);
+    private final JButton addEventButton = new JButton("Add Event");
+    private final String[] eventTypes = {"Regular", "VIP Only"};
+    private final String[] months = {"January","February","March","April","May","June","July","August","September","October",
             "November","December"};
-    private JComboBox typeComboBox = new JComboBox(eventTypes);
-    private JComboBox monthComboBox = new JComboBox(months);
-    private JButton backButton = new JButton("Back");
-    private EventPanelBuilder panelBuilder = new EventPanelBuilder();
-    private DefaultListModel s = new DefaultListModel();
+    private final JComboBox typeComboBox = new JComboBox(eventTypes);
+    private final JComboBox monthComboBox = new JComboBox(months);
+    private final JButton backButton = new JButton("Back");
+    private final EventPanelBuilder panelBuilder = new EventPanelBuilder();
+    private final DefaultListModel s = new DefaultListModel();
 
 
     /**
@@ -88,7 +87,7 @@ public class AddEventGUI implements ActionListener {
         speakersJList = new JList(s);
         speakersJList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         speakersJList.setFont(new Font(Font.MONOSPACED, Font.TYPE1_FONT, 14));
-        speakersJScrollPane = new JScrollPane(speakersJList);
+        JScrollPane speakersJScrollPane = new JScrollPane(speakersJList);
         panelBuilder.buildComponentNullLayout(addEventPanel, speakersJScrollPane, 10, 120, 120, 150, 50);
 
         JTextArea instructions = new JTextArea("Hold ctrl to select  multiple speakers.   Can have no speakers.");
@@ -150,8 +149,6 @@ public class AddEventGUI implements ActionListener {
 
     /**
      * Builds and loads the Add Event Page
-     *
-     * @return The add event panel
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -172,8 +169,8 @@ public class AddEventGUI implements ActionListener {
 
         int cap = -1;
         boolean cont = true;
-        int m = -1;
-        LocalDate date = null;
+        int m;
+        LocalDate date;
         LocalDateTime start = null;
         LocalDateTime end = null;
         try {
@@ -200,6 +197,7 @@ public class AddEventGUI implements ActionListener {
         }
 
         if (cont){
+            assert type != null;
             if(type.equals("Regular")){
                 if (eventSystem.addEvent(eventName, roomName, selectedSpeakers, cap, start, end)){
                     JOptionPane.showMessageDialog(addEventPanel, "Successfully added event");

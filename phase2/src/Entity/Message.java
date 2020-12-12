@@ -6,9 +6,9 @@ import java.time.format.DateTimeFormatter;
  * The Message class represents a message between two users.
  */
 public class Message {
-    private String content;
-    private String receiver;
-    private String sender;
+    private final String content;
+    private final String receiver;
+    private final String sender;
     private boolean isRead;
     private final LocalDateTime dateTime;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");

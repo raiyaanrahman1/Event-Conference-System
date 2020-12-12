@@ -1,3 +1,0 @@
-Attendee1|hala|12/12/2020 23:08:42|heyyyy|false
-Attendee1|hala|12/12/2020 23:08:52|yoooo whats up|false
-Speaker1|hala|09/12/2020 22:34:15|Hi, how are you?|false

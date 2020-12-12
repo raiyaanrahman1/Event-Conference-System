@@ -5,15 +5,12 @@ import UseCase.EventGetter;
 import UseCase.EventManager;
 import UseCase.UserManager;
 import UseCase.MessageManager;
-import com.sun.istack.internal.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Objects.requireNonNull;
 
 public class EventManagementSystem {
 
@@ -22,7 +19,7 @@ public class EventManagementSystem {
     IGateway2 eventListGateway;
     private final EventGetter getter;
     private final MessageManager mess;
-    private List<List<String>> eventLists = new ArrayList<>();
+    private final List<List<String>> eventLists = new ArrayList<>();
 
     /**
      * Creates an EventManagementSystem and initializes its UserManager, EventManager,

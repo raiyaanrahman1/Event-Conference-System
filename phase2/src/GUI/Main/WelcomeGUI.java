@@ -5,14 +5,14 @@ import GUI.PanelBuilder.LoginPanelBuilder;
 import javax.swing.*;
 
 public class WelcomeGUI {
-    private PanelStack panelStack;
-    private JPanel welcomePanel = new JPanel();
-    private JLabel welcomeJLabel = new JLabel("the imposter summit");
-    private JButton logInButton = new JButton("log in");
-    private JButton signUpButton = new JButton("sign up");
-    private LoginGUI loginGUI;
-    private SignUpGUI signUpGUI;
-    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(welcomePanel);
+    private final PanelStack panelStack;
+    private final JPanel welcomePanel = new JPanel();
+    private final JLabel welcomeJLabel = new JLabel("the imposter summit");
+    private final JButton logInButton = new JButton("log in");
+    private final JButton signUpButton = new JButton("sign up");
+    private final LoginGUI loginGUI;
+    private final SignUpGUI signUpGUI;
+    private final LoginPanelBuilder panelBuilder = new LoginPanelBuilder(welcomePanel);
 
 
 

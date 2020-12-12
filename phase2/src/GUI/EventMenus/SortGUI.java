@@ -12,36 +12,36 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class SortGUI implements ActionListener {
-    private EventManagementSystem eventSystem;
-    private EventPanelBuilder panelBuilder = new EventPanelBuilder();
+    private final EventManagementSystem eventSystem;
+    private final EventPanelBuilder panelBuilder = new EventPanelBuilder();
 
-    private DefaultListModel<String> listModel;
-    private ButtonGroup group= new ButtonGroup();
-    private JPanel mainPanel = new JPanel();
+    private final DefaultListModel<String> listModel;
+    private final ButtonGroup group= new ButtonGroup();
+    private final JPanel mainPanel = new JPanel();
 
-    private JLabel sortJLabel = new JLabel("sort");
-    private JLabel selectJLabel = new JLabel("<html>Please select one of the sorting methods below, <br/>then click the sort button.");
-    private JButton backButton = new JButton("back");
-    private JButton sortButton = new JButton("sort");
+    private final JLabel sortJLabel = new JLabel("sort");
+    private final JLabel selectJLabel = new JLabel("<html>Please select one of the sorting methods below, <br/>then click the sort button.");
+    private final JButton backButton = new JButton("back");
+    private final JButton sortButton = new JButton("sort");
 
-    private JRadioButton dateSelection = new JRadioButton("date (mm-dd-yy):");
-    private JRadioButton speakerSelection = new JRadioButton("speaker:");
+    private final JRadioButton dateSelection = new JRadioButton("date (mm-dd-yy):");
+    private final JRadioButton speakerSelection = new JRadioButton("speaker:");
 
-    private String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
-    private JComboBox monthsCombobox = new JComboBox(months);
+    private final String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+    private final JComboBox monthsCombobox = new JComboBox(months);
 
-    private String[] days = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15",
+    private final String[] days = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15",
             "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
-    private JComboBox daysCombobox = new JComboBox(days);
+    private final JComboBox daysCombobox = new JComboBox(days);
 
-    private String[] year = {"2020", "2021", "2022", "2023", "2024", "2025"};
-    private JComboBox yearCombobox = new JComboBox(year);
-    private String[] speakers;
-    private JComboBox speakerCombobox;
+    private final String[] year = {"2020", "2021", "2022", "2023", "2024", "2025"};
+    private final JComboBox yearCombobox = new JComboBox(year);
+    private final String[] speakers;
+    private final JComboBox speakerCombobox;
 
     private List<String> filteredList;
 
-    private PanelStack panelStack;
+    private final PanelStack panelStack;
 
     /**
      * Creates a SortGUI and initializes its EventManagementSystem, the DefaultListModel and the panelStack

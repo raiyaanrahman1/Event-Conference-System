@@ -8,19 +8,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginGUI implements ActionListener {
-    private PanelStack panelStack;
-    private LoginSystem loginSystem;
-    private JPanel loginPanel = new JPanel();
-    private JLabel titleLabel = new JLabel("login");
-    private JLabel usernameJLabel = new JLabel("username");
-    private JLabel passwordJLabel = new JLabel("password");
-    private JLabel programTitleJLabel = new JLabel("the imposter summit");
-    private JTextField userTextField = new JTextField(20);
-    private JPasswordField passwordTextField = new JPasswordField(20);
-    private JButton logInButton = new JButton("login");
-    private JButton backButton = new JButton("back");
-    private MainMenuGUI mainMenuGUI;
-    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(loginPanel);
+    private final PanelStack panelStack;
+    private final LoginSystem loginSystem;
+    private final JPanel loginPanel = new JPanel();
+    private final JLabel titleLabel = new JLabel("login");
+    private final JLabel usernameJLabel = new JLabel("username");
+    private final JLabel passwordJLabel = new JLabel("password");
+    private final JLabel programTitleJLabel = new JLabel("the imposter summit");
+    private final JTextField userTextField = new JTextField(20);
+    private final JPasswordField passwordTextField = new JPasswordField(20);
+    private final JButton logInButton = new JButton("login");
+    private final JButton backButton = new JButton("back");
+    private final MainMenuGUI mainMenuGUI;
+    private final LoginPanelBuilder panelBuilder = new LoginPanelBuilder(loginPanel);
 
 
     public LoginGUI(MainMenuGUI menu, LoginSystem loginSystem, PanelStack panelStack) {

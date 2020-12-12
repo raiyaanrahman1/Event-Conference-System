@@ -7,7 +7,7 @@ import java.awt.*;
  * Builder class for the event menus
  */
 public class EventPanelBuilder {
-    private Font infoFont;
+    private final Font infoFont;
 
     /**
      * constructor of the eventPanelBuilder which sets the general fonts of the menus

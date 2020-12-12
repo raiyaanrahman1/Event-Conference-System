@@ -1,12 +1,10 @@
 package GUI.Main;
 
-import Controller.LoginSystem;
-
 import javax.swing.*;
 
 public class MainSystem {
     public MainSystem(){
-        MainGUI main = new MainGUI();
+        new MainGUI();
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainSystem::new);

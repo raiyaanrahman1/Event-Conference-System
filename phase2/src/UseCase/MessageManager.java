@@ -8,7 +8,6 @@ import Gateway.IGateway2;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * The MessageManager class manages communications between users.

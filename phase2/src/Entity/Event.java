@@ -10,16 +10,16 @@ import java.time.LocalDateTime;
  * The Event class represents an event in the conference.
  */
 public class Event {
-    private List<String> attendees;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private String room;
-    private List<String> speakers;
-    private String organizer;
+    private final List<String> attendees;
+    private final LocalDateTime startTime;
+    private final LocalDateTime endTime;
+    private final String room;
+    private final List<String> speakers;
+    private final String organizer;
     private int roomCap;
     private int eventID;
-    private String name;
-    private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    private final String name;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     /**
      * Creates a new event object.
@@ -217,12 +217,6 @@ public class Event {
     public List<String> getSpeaker() {
         return speakers;
     }
-    /**
-     * Returns the Name of the event
-     */
-    public String getName() {
-        return name;
-    }
 
     /**
      * Setter for the room capacity.
@@ -237,11 +231,6 @@ public class Event {
     public void addSpeaker(String speaker) {
         this.speakers.add(speaker);
     }
-
-    /**
-     * Removes the Speaker's username of the Event
-     */
-    public void removeSpeaker(String speaker){ this.speakers.remove(speaker); }
 
     /**
      * Returns the Event's Organizer's username

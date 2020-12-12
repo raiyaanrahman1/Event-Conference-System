@@ -9,40 +9,40 @@ import java.awt.*;
 import java.util.List;
 
 public class EventAttendeeGUI {
-    private SortGUI yourEventSortGUI;
-    private SortGUI eventSortGUI;
-    private PanelStack panelStack;
+    private final SortGUI yourEventSortGUI;
+    private final SortGUI eventSortGUI;
+    private final PanelStack panelStack;
     private JList eventsJList = new JList();
     private JList yourEventsJList = new JList();
 
-    private JLabel eventsJLabel = new JLabel("Events");
-    private JLabel yourEventsJLabel = new JLabel("Your Events");
+    private final JLabel eventsJLabel = new JLabel("Events");
+    private final JLabel yourEventsJLabel = new JLabel("Your Events");
 
-    private JButton signUpButton = new JButton("Sign Up");
-    private JButton sort1Button = new JButton("Sort");
-    private JButton sort2Button = new JButton("Sort");
-    private JButton cancelButton = new JButton("Cancel");
-    private JButton backButton = new JButton("Back");
+    private final JButton signUpButton = new JButton("Sign Up");
+    private final JButton sort1Button = new JButton("Sort");
+    private final JButton sort2Button = new JButton("Sort");
+    private final JButton cancelButton = new JButton("Cancel");
+    private final JButton backButton = new JButton("Back");
 
-    private JPanel eventsButtonPanel = new JPanel();
-    private JPanel yourEventsButtonPanel = new JPanel();
-    private JPanel eventsPanel = new JPanel();
-    private JPanel mainPanel = new JPanel();
-    private JPanel eventsJlistPanel = new JPanel();
-    private JPanel yourEventsJlistPanel = new JPanel();
-    private JPanel yourEventsPanel = new JPanel();
-    private JPanel northPanel = new JPanel();
-    private JPanel southPanel = new JPanel();
+    private final JPanel eventsButtonPanel = new JPanel();
+    private final JPanel yourEventsButtonPanel = new JPanel();
+    private final JPanel eventsPanel = new JPanel();
+    private final JPanel mainPanel = new JPanel();
+    private final JPanel eventsJlistPanel = new JPanel();
+    private final JPanel yourEventsJlistPanel = new JPanel();
+    private final JPanel yourEventsPanel = new JPanel();
+    private final JPanel northPanel = new JPanel();
+    private final JPanel southPanel = new JPanel();
 
-    private EventPanelBuilder panelBuilder = new EventPanelBuilder();
+    private final EventPanelBuilder panelBuilder = new EventPanelBuilder();
 
-    private DefaultListModel<String> eventsListModel = new DefaultListModel<>();
-    private DefaultListModel<String> yourEventsListModel = new DefaultListModel<>();
+    private final DefaultListModel<String> eventsListModel = new DefaultListModel<>();
+    private final DefaultListModel<String> yourEventsListModel = new DefaultListModel<>();
 
-    private EventManagementSystem eventSystem;
+    private final EventManagementSystem eventSystem;
 
-    private JScrollPane eventsListScroller = new JScrollPane();
-    private JScrollPane yourEventsListScroller = new JScrollPane();
+    private final JScrollPane eventsListScroller = new JScrollPane();
+    private final JScrollPane yourEventsListScroller = new JScrollPane();
 
     /**
      * Creates an EventAttendeeGUI and initializes its EventManagementSystem and the panelStack

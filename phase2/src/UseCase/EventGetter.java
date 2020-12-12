@@ -1,7 +1,6 @@
 package UseCase;
 
 import Entity.Event;
-import Exceptions.NoSuchEventException;
 import Exceptions.NoSuchFilterException;
 import UseCase.Filter.EventFilter;
 import UseCase.Filter.EventFilterFactory;

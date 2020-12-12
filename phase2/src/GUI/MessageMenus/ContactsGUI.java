@@ -13,24 +13,24 @@ public class ContactsGUI {
      *  The GUI class responsible for the Inbox Option in the Main Menu.
      */
 
-    private PanelHelper panelHelper = new PanelHelper();
-    private MessengerSystem messenger;
-    private PanelStack panelStack;
+    private final PanelHelper panelHelper = new PanelHelper();
+    private final MessengerSystem messenger;
+    private final PanelStack panelStack;
 
-    private MessagePanelBuilder contactBuilder;
-    private MessagePanelBuilder sendMsgBuilder;
-    private MessagePanelBuilder viewAllBuilder;
-    private MessagePanelBuilder addContactBuilder;
+    private final MessagePanelBuilder contactBuilder;
+    private final MessagePanelBuilder sendMsgBuilder;
+    private final MessagePanelBuilder viewAllBuilder;
+    private final MessagePanelBuilder addContactBuilder;
 
-    private JPanel contactPanel = new JPanel();
-    private JPanel sendMsgPanel = new JPanel();
-    private JPanel viewAllPanel = new JPanel();
-    private JPanel addContactPanel = new JPanel();
+    private final JPanel contactPanel = new JPanel();
+    private final JPanel sendMsgPanel = new JPanel();
+    private final JPanel viewAllPanel = new JPanel();
+    private final JPanel addContactPanel = new JPanel();
 
     //contactPanel elements
     private JList contactsJList;
     private JScrollPane contactPane;
-    private DefaultListModel<String> contactListModel = new DefaultListModel<>();
+    private final DefaultListModel<String> contactListModel = new DefaultListModel<>();
     private JButton addButton;
     private int currContactIndex;
     private String currSelectedContact;
@@ -48,7 +48,7 @@ public class ContactsGUI {
     private JButton internalAddButton;
     private JScrollPane addContactPane;
     private JList<String> addContactJList;
-    private DefaultListModel<String> addContactListModel = new DefaultListModel<>();
+    private final DefaultListModel<String> addContactListModel = new DefaultListModel<>();
     private JTextField addUserTextField;
 
 

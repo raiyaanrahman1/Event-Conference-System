@@ -1,7 +1,5 @@
 package Controller;
 
-import Entity.Attendee;
-import Entity.Organizer;
 import Gateway.IGateway;
 import Gateway.IGateway2;
 import Gateway.InfoFileGateway;

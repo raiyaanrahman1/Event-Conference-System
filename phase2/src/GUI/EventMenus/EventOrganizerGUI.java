@@ -9,31 +9,31 @@ import java.awt.*;
 import java.util.List;
 
 public class EventOrganizerGUI {
-    private PanelStack panelStack;
-    private EventManagementSystem eventSystem;
-    private SortGUI eventSortGUI;
+    private final PanelStack panelStack;
+    private final EventManagementSystem eventSystem;
+    private final SortGUI eventSortGUI;
 
-    private EventPanelBuilder panelBuilder = new EventPanelBuilder();
+    private final EventPanelBuilder panelBuilder = new EventPanelBuilder();
 
-    private DefaultListModel<String> listModel = new DefaultListModel<>();
+    private final DefaultListModel<String> listModel = new DefaultListModel<>();
 
 
-    private JPanel eventPanel = new JPanel();
-    private JPanel jListPanel = new JPanel();
-    private JPanel buttonPanel = new JPanel();
-    private JPanel northButtonPanel = new JPanel();
+    private final JPanel eventPanel = new JPanel();
+    private final JPanel jListPanel = new JPanel();
+    private final JPanel buttonPanel = new JPanel();
+    private final JPanel northButtonPanel = new JPanel();
 
-    private JLabel eventsJLabel = new JLabel("EVENTS MENU");
+    private final JLabel eventsJLabel = new JLabel("EVENTS MENU");
 
     private JList eventsJList = new JList(listModel); //TODO pass in list of events of speakers in parameter of JList
 
-    private JScrollPane eventsJScrollPane = new JScrollPane();
-    private JButton backButton = new JButton("Back");
-    private JButton broadcastButton = new JButton("✉");
-    private JButton editButton = new JButton("Edit");
-    private JButton deleteButton = new JButton("Delete");
-    private JButton sortButton = new JButton("Sort");
-    private JButton addEventButton = new JButton("Add Event");
+    private final JScrollPane eventsJScrollPane = new JScrollPane();
+    private final JButton backButton = new JButton("Back");
+    private final JButton broadcastButton = new JButton("✉");
+    private final JButton editButton = new JButton("Edit");
+    private final JButton deleteButton = new JButton("Delete");
+    private final JButton sortButton = new JButton("Sort");
+    private final JButton addEventButton = new JButton("Add Event");
 
 
     /**

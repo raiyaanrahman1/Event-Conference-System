@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class PanelStack extends Stack {
 
-    private JFrame mainFrame;
+    private final JFrame mainFrame;
 
     public PanelStack(JFrame mainFrame){
         this.mainFrame = mainFrame;

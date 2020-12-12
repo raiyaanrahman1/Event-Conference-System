@@ -1,6 +1,6 @@
 package GUI.Main;
 
-import Controller.CheckPassword;
+import Controller.PasswordChecker;
 import Controller.LoginSystem;
 import GUI.PanelBuilder.LoginPanelBuilder;
 
@@ -10,19 +10,19 @@ import java.awt.event.ActionListener;
 import java.util.Objects;
 
 public class CreateAccountGUI implements ActionListener {
-    private PanelStack panelStack;
-    private LoginSystem loginSystem;
-    private JPanel signUpPanel = new JPanel();
-    private JLabel titleLabel = new JLabel("create account");
-    private JLabel usernameJLabel = new JLabel("username");
-    private JLabel passwordJLabel = new JLabel("password");
-    private JTextField usernameTextField = new JTextField(20);
-    private JPasswordField passwordTextField = new JPasswordField(20);
-    private JButton signUpButton = new JButton("create");
-    private String[] userTypes = {"Attendee", "VIP Attendee", "Speaker"};
-    private JComboBox typeComboBox = new JComboBox(userTypes);
-    private JButton backButton = new JButton("back");
-    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(signUpPanel);
+    private final PanelStack panelStack;
+    private final LoginSystem loginSystem;
+    private final JPanel signUpPanel = new JPanel();
+    private final JLabel titleLabel = new JLabel("create account");
+    private final JLabel usernameJLabel = new JLabel("username");
+    private final JLabel passwordJLabel = new JLabel("password");
+    private final JTextField usernameTextField = new JTextField(20);
+    private final JPasswordField passwordTextField = new JPasswordField(20);
+    private final JButton signUpButton = new JButton("create");
+    private final String[] userTypes = {"Attendee", "VIP Attendee", "Speaker"};
+    private final JComboBox typeComboBox = new JComboBox(userTypes);
+    private final JButton backButton = new JButton("back");
+    private final LoginPanelBuilder panelBuilder = new LoginPanelBuilder(signUpPanel);
 
 
     public CreateAccountGUI(LoginSystem loginSystem, PanelStack panelStack) {
@@ -64,25 +64,28 @@ public class CreateAccountGUI implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String uname = usernameTextField.getText();
         String pword = passwordTextField.getText();
-        CheckPassword checker = new CheckPassword();
+        PasswordChecker checker = new PasswordChecker();
         if (checker.scorePassword(pword).equals("Strong Password") ||
                 checker.scorePassword(pword).equals("Medium Password") ) {
             if (!loginSystem.isUser(uname)) {
                 if (Objects.equals(typeComboBox.getSelectedItem(), "Attendee")) {
                         loginSystem.signUpUser(uname, pword, "A");
-                        JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a Attendee.");
+                        JOptionPane.showMessageDialog(signUpPanel, String.format("You have successfully created a " +
+                                "Attendee.\nPassword Strength: %s", checker.scorePassword(pword)));
                         usernameTextField.setText("");
                         passwordTextField.setText("");
                 }
                 else if(Objects.equals(typeComboBox.getSelectedItem(), "VIP Attendee")) {
                     loginSystem.signUpUser(uname, pword, "V");
-                    JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a VIP Attendee.");
+                    JOptionPane.showMessageDialog(signUpPanel, String.format("You have successfully created a VIP " +
+                            "Attendee.\nPassword Strength: %s", checker.scorePassword(pword)));
                     usernameTextField.setText("");
                     passwordTextField.setText("");
                 }
                 else {
                     loginSystem.signUpUser(uname, pword, "S");
-                    JOptionPane.showMessageDialog(signUpPanel, "You have successfully created a Speaker.");
+                    JOptionPane.showMessageDialog(signUpPanel, String.format("You have successfully created a " +
+                            "Speaker.\nPassword Strength: %s", checker.scorePassword(pword)));
                     usernameTextField.setText("");
                     passwordTextField.setText("");
                 }
@@ -92,7 +95,11 @@ public class CreateAccountGUI implements ActionListener {
             }
         }else {
             JOptionPane.showMessageDialog(signUpPanel,
-                    "Password is weak. Please make sure your password is longer than 8 characters.");
+                    "Password is weak. Please make sure your password has the following:\n"+
+                            "- 8-20 characters \n" +
+                            "- At least one uppercase \n" +
+                            "- At least one lowercase \n" +
+                            "- At least one number");
         }
     }
 }

@@ -13,31 +13,31 @@ public class InboxGUI {
      *  The GUI class responsible for the Inbox Option in the Main Menu.
      */
 
-    private MessengerSystem messenger;
-    private PanelStack panelStack;
-    private PanelHelper panelHelper = new PanelHelper();
+    private final MessengerSystem messenger;
+    private final PanelStack panelStack;
+    private final PanelHelper panelHelper = new PanelHelper();
 
-    private MessagePanelBuilder inboxBuilder;
-    private MessagePanelBuilder archiveBuilder;
-    private MessagePanelBuilder replyBuilder;
-    private MessagePanelBuilder viewAllBuilder;
+    private final MessagePanelBuilder inboxBuilder;
+    private final MessagePanelBuilder archiveBuilder;
+    private final MessagePanelBuilder replyBuilder;
+    private final MessagePanelBuilder viewAllBuilder;
 
-    private JPanel inboxPanel = new JPanel();
-    private JPanel archivePanel = new JPanel();
-    private JPanel replyPanel = new JPanel();
-    private JPanel viewAllPanel = new JPanel();
+    private final JPanel inboxPanel = new JPanel();
+    private final JPanel archivePanel = new JPanel();
+    private final JPanel replyPanel = new JPanel();
+    private final JPanel viewAllPanel = new JPanel();
 
     // inboxPanel elements
     private JScrollPane currInboxPreview;
     private JList<String> inboxJList;
-    private DefaultListModel<String> inboxListModel = new DefaultListModel<>();
+    private final DefaultListModel<String> inboxListModel = new DefaultListModel<>();
     private int currInboxIndex;
     private String currInboxMsg;
 
     // archivePanel elements
     private JScrollPane currArchivePreview;
     private JList<String> archiveJList;
-    private DefaultListModel<String> archiveListModel = new DefaultListModel<>();
+    private final DefaultListModel<String> archiveListModel = new DefaultListModel<>();
     private int currArchiveIndex;
     private String currArchiveMsg;
 

@@ -1,6 +1,6 @@
 package GUI.Main;
 
-import Controller.CheckPassword;
+import Controller.PasswordChecker;
 import Controller.LoginSystem;
 import GUI.PanelBuilder.LoginPanelBuilder;
 
@@ -10,21 +10,21 @@ import java.awt.event.ActionListener;
 import java.util.Objects;
 
 public class SignUpGUI implements ActionListener {
-    private PanelStack panelStack;
-    private LoginSystem loginSystem;
-    private JPanel signUpPanel = new JPanel();
-    private JLabel titleLabel = new JLabel("sign up");
-    private JLabel usernameJLabel = new JLabel("username");
-    private JLabel passwordJLabel = new JLabel("password");
-    private JLabel programTitleJLabel = new JLabel("the imposter summit");
-    private JTextField usernameTextField = new JTextField(20);
-    private JPasswordField passwordTextField = new JPasswordField(20);
-    private JButton signUpButton = new JButton("sign up");
-    private String[] userTypes = {"attendee", "organizer"};
-    private JComboBox typeComboBox = new JComboBox(userTypes);
-    private MainMenuGUI mainMenuGUI;
-    private JButton backButton = new JButton("back");
-    private LoginPanelBuilder panelBuilder = new LoginPanelBuilder(signUpPanel);
+    private final PanelStack panelStack;
+    private final LoginSystem loginSystem;
+    private final JPanel signUpPanel = new JPanel();
+    private final JLabel titleLabel = new JLabel("sign up");
+    private final JLabel usernameJLabel = new JLabel("username");
+    private final JLabel passwordJLabel = new JLabel("password");
+    private final JLabel programTitleJLabel = new JLabel("the imposter summit");
+    private final JTextField usernameTextField = new JTextField(20);
+    private final JPasswordField passwordTextField = new JPasswordField(20);
+    private final JButton signUpButton = new JButton("sign up");
+    private final String[] userTypes = {"attendee", "organizer"};
+    private final JComboBox typeComboBox = new JComboBox(userTypes);
+    private final MainMenuGUI mainMenuGUI;
+    private final JButton backButton = new JButton("back");
+    private final LoginPanelBuilder panelBuilder = new LoginPanelBuilder(signUpPanel);
 
 
     public SignUpGUI(MainMenuGUI menu, LoginSystem loginSystem, PanelStack panelStack) {
@@ -70,7 +70,7 @@ public class SignUpGUI implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String uname = usernameTextField.getText();
         String pword = passwordTextField.getText();
-        CheckPassword checker = new CheckPassword();
+        PasswordChecker checker = new PasswordChecker();
         if (checker.scorePassword(pword).equals("Strong Password") ||
                 checker.scorePassword(pword).equals("Medium Password") ) {
                 if (!loginSystem.isUser(uname)) {
@@ -99,7 +99,11 @@ public class SignUpGUI implements ActionListener {
             }
         } else {
             JOptionPane.showMessageDialog(signUpPanel,
-                    "Password is weak. Please make sure your password is longer than 8 characters.");
+                    "Password is weak. Please make sure your password has the following:\n"+
+                    "- 8-20 characters \n" +
+                            "- At least one uppercase \n" +
+                            "- At least one lowercase \n" +
+                            "- At least one number");
         }
     }
 }

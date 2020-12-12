@@ -4,18 +4,17 @@ import Controller.LoginSystem;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
-import java.util.Stack;
 
 public class MainGUI {
 
-    private JFrame mainFrame = new JFrame();
-    private PanelStack panelStack = new PanelStack(mainFrame);
-    private LoginSystem loginSystem = new LoginSystem();
-    private MainMenuGUI mainMenuGUI = new MainMenuGUI(loginSystem, loginSystem.getEventSys(), loginSystem.getMsgSys(), panelStack);
-    private LoginGUI loginGUI = new LoginGUI(mainMenuGUI, loginSystem, panelStack);
-    private SignUpGUI signUpGUI = new SignUpGUI(mainMenuGUI, loginSystem, panelStack);
-    private JPanel currentJPanel = new JPanel();
-    private WelcomeGUI welcomeGUI = new WelcomeGUI(loginGUI, signUpGUI, panelStack);
+    private final JFrame mainFrame = new JFrame();
+    private final PanelStack panelStack = new PanelStack(mainFrame);
+    private final LoginSystem loginSystem = new LoginSystem();
+    private final MainMenuGUI mainMenuGUI = new MainMenuGUI(loginSystem, loginSystem.getEventSys(), loginSystem.getMsgSys(), panelStack);
+    private final LoginGUI loginGUI = new LoginGUI(mainMenuGUI, loginSystem, panelStack);
+    private final SignUpGUI signUpGUI = new SignUpGUI(mainMenuGUI, loginSystem, panelStack);
+    private final JPanel currentJPanel = new JPanel();
+    private final WelcomeGUI welcomeGUI = new WelcomeGUI(loginGUI, signUpGUI, panelStack);
 
     public MainGUI(){
         currentJPanel.setSize(500, 500);
