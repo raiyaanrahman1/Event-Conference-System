@@ -2,6 +2,9 @@ README
 # *the imposter summit* (Phase 2)
 
 ## Usage
+**NOTE** Some Java.Swing elements are incompatible on Mac OS (such as problems with decoding unicode characters and
+rendering the JList cells ('unread' button)). Windows OS is recommended for usage.
+
 To use the imposter summit, navigate to the GUI folder, and then the Main folder.
 Then run the MainSystem class.
 Follow the instructions on the window to complete your desired actions.
@@ -11,6 +14,10 @@ To login as a Speaker or a VIP, you must create the accounts logged-in as an Org
 (They cannot be created from the sign-up menu)
 
 *In the Events menu option, please enter a valid date when entering the date to sort a list of events.
+
+*In the Inbox menu option, click on the top right icon on the inbox panel to navigate to the 'archive', and if you
+have selected any messages, click on the button to the left of the archive to view all your received messages from
+this sender.
 
 *When logged-in as an Organizer, to change an event’s maximum room capacity, navigate to Manage Events and
  click Edit after selecting an event. The capacity can only be decreased if the new capacity is at least the number of
@@ -23,6 +30,7 @@ Alex, Ayah, Eric, Hala, Nitin, Olivia, Raiyaan and Tariq (Group 0301).
 - All mandatory extensions
 - Optional features
    -> Implemented a GUI using Java.Swing to replace the text UI.
+
    -> Allow users to "mark as unread", delete, reply to, archive messages after reading them.
 
    -> Users also have access to an inbox ‘archive’ where they can unarchive archived messages.
