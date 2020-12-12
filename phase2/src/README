@@ -5,23 +5,36 @@ README
 **NOTE** Some Java.Swing elements are incompatible on Mac OS (such as problems with decoding unicode characters and
 rendering the JList cells ('unread' button)). Windows OS is recommended for usage.
 
-To use the imposter summit, navigate to the GUI folder, and then the Main folder.
-Then run the MainSystem class.
+To use the imposter summit, navigate to the GUI package --> Main package, and run the MainSystem class.
 Follow the instructions on the window to complete your desired actions.
-*To sign up as an Organizer, use this code: AmongUs
 
-To login as a Speaker or a VIP, you must create the accounts logged-in as an Organizer.
+*To sign up as an Organizer, use the Organizer code: AmongUs
+
+*To login as a Speaker or a VIP, you must first create the respective accounts while logged-in as an Organizer.
 (They cannot be created from the sign-up menu)
+
+*Only Organizers are able to create events. Do so by navigating to Manage Events --> Add Event and enter the details
+about the event.
 
 *In the Events menu option, please enter a valid date when entering the date to sort a list of events.
 
-*In the Inbox menu option, click on the top right icon on the inbox panel to navigate to the 'archive', and if you
-have selected any messages, click on the button to the left of the archive to view all your received messages from
-this sender.
+*To add a contact, navigate to contacts --> add and enter the username in the box that appears below.
+This must be done before sending a message to a user.
 
-*When logged-in as an Organizer, to change an event’s maximum room capacity, navigate to Manage Events and
- click Edit after selecting an event. The capacity can only be decreased if the new capacity is at least the number of
- people already signed up for the event.
+*To send a message, select a contact to message under contact and click 'send msg'. Enter the message in the box and
+click 'send' once you have typed in the message you want to send.
+
+*In the Inbox menu option, click on the top right icon on the inbox panel to navigate to 'archive' to see the messages
+you have archived.
+Click on the button to the left of archive to view all your received messages from this sender.
+
+*An event's maximum capacity can only be done by an Organizer account. Navigate to Event --> Manage Events, select an
+event and click on Edit. The capacity of an event can only be decreased if the new capacity is at least the number of
+people signed up for the event.
+
+*To broadcast a message to people signed up to an event, ensure that you are logged in as a Speaker or Organizer.
+Navigate to event --> Manage Event, select an event you want to broadcast a message to, and click the envelope icon.
+You will then be prompted to enter the content of your message and press OK when finished.
 
 ## Contributors
 Alex, Ayah, Eric, Hala, Nitin, Olivia, Raiyaan and Tariq (Group 0301).
@@ -31,14 +44,14 @@ Alex, Ayah, Eric, Hala, Nitin, Olivia, Raiyaan and Tariq (Group 0301).
 - Optional features
    -> Implemented a GUI using Java.Swing to replace the text UI.
 
-   -> Allow users to "mark as unread", delete, reply to, archive messages after reading them.
+   -> Allow users to delete, reply to, archive or unread messages after reading them.
 
    -> Users also have access to an inbox ‘archive’ where they can unarchive archived messages.
 
-   -> Program produces a neatly formatted schedule of the events in the conference so that users can request a sorted
+   -> Program produces a neatly formatted schedule of the events in the conference that allows users to sort the
    schedule by speaker or date. Users can also sort their signed-up events by the same filters.
 
-   -> Added VIP Attendees that have exclusive access to VIP events. VIP Attendee accounts can only be created by
+   -> Added VIP Attendees, who have exclusive access to VIP events. VIP Attendee accounts can only be created by
    Organizers.
 
    -> Allow Organizers to edit an event by changing the maximum capacity of an event. Organizers can only decrease the
