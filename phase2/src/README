@@ -1,3 +1,4 @@
+README 
 # *the imposter summit* (Phase 2)
 
 ## Usage
@@ -6,30 +7,56 @@ Then run the MainSystem class.
 Follow the instructions on the window to complete your desired actions.
 *To sign up as an Organizer, use this code: AmongUs
 
+To login as a Speaker or a VIP, you must create the accounts logged-in as an Organizer.
+(They cannot be created from the sign-up menu)
+
+*In the Events menu option, please enter a valid date when entering the date to sort a list of events.
+
+*When logged-in as an Organizer, to change an event’s maximum room capacity, navigate to Manage Events and
+ click Edit after selecting an event. The capacity can only be decreased if the new capacity is at least the number of
+ people already signed up for the event.
+
 ## Contributors
 Alex, Ayah, Eric, Hala, Nitin, Olivia, Raiyaan and Tariq (Group 0301).
 
 ## Implemented Features
 - All mandatory extensions
 - Optional features
-    -> GUI
-    -> Enhanced user messaging experience which allows to:
-    "mark as unread", delete, or archive messages after reading them
-    -> Program produces a neatly formatted schedule for the conference
-    so that users can request a sorted schedule by either speaker or date
-- Our own feature
-    -> A password strength checker that evaluates the strength of a users password after they
-    sign up. It does not allow a user with a weak password to sign up.
+   -> Implemented a GUI using Java.Swing to replace the text UI.
+   -> Allow users to "mark as unread", delete, reply to, archive messages after reading them.
 
-## Improvements (optional)
+   -> Users also have access to an inbox ‘archive’ where they can unarchive archived messages.
+
+   -> Program produces a neatly formatted schedule of the events in the conference so that users can request a sorted
+   schedule by speaker or date. Users can also sort their signed-up events by the same filters.
+
+   -> Added VIP Attendees that have exclusive access to VIP events. VIP Attendee accounts can only be created by
+   Organizers.
+
+   -> Allow Organizers to edit an event by changing the maximum capacity of an event. Organizers can only decrease the
+   maximum capacity if no signed-up Attendees will be affected by the change.
+
+- Our own feature:
+   -> A password strength checker that evaluates the strength of a user’s password when they sign up. It does not allow
+   a user with a weak password to sign up.
 
 ## Design Patterns
-- Iterator
-- Observer
-- Strategy
-- Adapter
-- Builder
-- Dependency Injection
-- Facade
-- Factory
-- Abstract Factory
+- Iterator: We semi-implemented this pattern in InfoFileGateway which implements IGateway2. IGateway2 extends
+Iterator<String> since we’re iterating over strings in a .txt file, so we chose not to implement a specific Iterable in
+this pattern. InfoFileGateway overrides the next() and hasNext() Iterator methods to suit it for file reading.
+
+- Strategy: We have multiple filter classes that differ only in their behaviour, since we use different versions of an
+algorithm. This includes the AttendeeFilter, DateFilter, OrganizerFilter, etc. We separated the implementation of the
+class from the implementations of the algorithms. All the filters implement the EventFiler interface.
+
+- Builder: All the GUIs utilise a Builder class to build the JPanels associated with each GUI (the ‘Director’ objects)
+to decouple the creation and formatting of the different Panels.
+
+- Dependency Injection: We implement this pattern to maintain one single running instance of each GUI / Controller,
+instantiated in MainGUI, MainMenuGUI and LoginSystem (e.g. We pass the same instance of EventManagementSystem to
+EventAttendeeGUI, EventSpeakerGUI and EventOrganizerGUI.) This pattern is also used in the Use Case layer (e.g. we
+inject a MessageCollection into the constructor for MessageManager).
+
+- Factory: EventFilterFactory obscures the creation process of different EventFilters, where it contains all the
+constructor calls for DateFilter, AttendeeFilter, NullFilter, OrganizerFilter and SpeakerFilter based on the desired
+filtering method.
