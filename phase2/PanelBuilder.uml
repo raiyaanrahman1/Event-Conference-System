@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>GUI.PanelBuilder</OriginalElement>
+  <nodes>
+    <node x="538.0" y="519.0">GUI.PanelBuilder.LoginPanelBuilder</node>
+    <node x="0.0" y="0.0">GUI.PanelBuilder.MessagePanelBuilder</node>
+    <node x="0.0" y="519.0">GUI.PanelBuilder.EventPanelBuilder</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.9033760186263097" x="447.0" y="419.5" />
+  <SelectedNodes>
+    <node>GUI.PanelBuilder.LoginPanelBuilder</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>GUI.Main</OriginalElement>
+  <nodes>
+    <node x="273.0" y="1060.0">GUI.Main.PanelStack</node>
+    <node x="509.0" y="1060.0">GUI.Main.MainSystem</node>
+    <node x="0.0" y="0.0">GUI.Main.MainMenuGUI</node>
+    <node x="641.0" y="0.0">GUI.Main.SignUpGUI</node>
+    <node x="0.0" y="607.0">GUI.Main.LoginGUI</node>
+    <node x="794.0" y="607.0">GUI.Main.WelcomeGUI</node>
+    <node x="0.0" y="1060.0">GUI.Main.MainGUI</node>
+    <node x="415.0" y="607.0">GUI.Main.CreateAccountGUI</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.5722713864306784" x="572.5" y="668.0" />
+  <SelectedNodes>
+    <node>GUI.Main.PanelStack</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

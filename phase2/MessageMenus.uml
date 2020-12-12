@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>GUI.MessageMenus</OriginalElement>
+  <nodes>
+    <node x="767.0" y="0.0">GUI.MessageMenus.PanelHelper</node>
+    <node x="0.0" y="0.0">GUI.MessageMenus.ContactsGUI</node>
+    <node x="391.0" y="0.0">GUI.MessageMenus.InboxGUI</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.8940092165898618" x="545.5" y="424.0" />
+  <SelectedNodes>
+    <node>GUI.MessageMenus.PanelHelper</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
