@@ -111,6 +111,7 @@ public class InboxGUI {
     private void inboxOptionListener(List<JButton> inboxOptions){
         // unread
         inboxOptions.get(0).addActionListener(e -> {
+            currInboxPreview.setVisible(false);
             messenger.markMessageUnread(currInboxIndex);
             panelHelper.makeButtonsInvisible(inboxOptions);
             inboxJList.updateUI();

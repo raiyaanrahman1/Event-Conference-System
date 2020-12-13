@@ -17,7 +17,7 @@ public class PasswordChecker {
 
         String regexStrong = "^(?=.*[0-9])"
                 + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[@#$%^&+=)(])"
+                + "(?=.*[@#$%*^&+=)(])"
                 + "(?=\\S+$).{8,20}$";
 
         String regexMedium = "^(?=.*[0-9])"
