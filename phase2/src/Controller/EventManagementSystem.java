@@ -157,11 +157,7 @@ public class EventManagementSystem {
         }
         List<String> speaker = checkValidSpeaker(ListOfSpeaker);
         String org = user.getUserInfoList().get(0);
-        if (!speaker.isEmpty()) {
-            return manager.addVIPEvent(eventName, room, speaker, org, cap, inputStart, inputEnd);
-        } else {
-            return false;
-        }
+        return manager.addVIPEvent(eventName, room, speaker, org, cap, inputStart, inputEnd);
     }
 
 
