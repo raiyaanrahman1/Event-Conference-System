@@ -58,6 +58,8 @@ public class EventAttendeeGUI {
         backButtonListen();
         sortButtonListener();
         sort2ButtonListener();
+        signUpButtonListener();
+        cancelButtonListener();
     }
 
     /**
@@ -95,8 +97,6 @@ public class EventAttendeeGUI {
         panelBuilder.buildAttendeeMainPanel(mainPanel, northPanel, southPanel, backButton);
         buildEventListModel();
         buildYourEventListModel();
-        signUpButtonListener();
-        cancelButtonListener();
         return mainPanel;
     }
 
@@ -123,7 +123,6 @@ public class EventAttendeeGUI {
                 String event = (String) eventsJList.getSelectedValue();
                 if (eventSystem.eventSignUp(Integer.parseInt(event.split("//|")[0]))) {
                     yourEventsListModel.addElement(event);
-                    eventsListModel.remove(index);
                     yourEventsJList.setModel(yourEventsListModel);
                     JOptionPane.showMessageDialog(eventsPanel, "You have successfully signed up for this event.");
                 }
@@ -141,7 +140,6 @@ public class EventAttendeeGUI {
             if(index!= -1) {
                 String event = (String) yourEventsJList.getSelectedValue();
                 if (eventSystem.attendeeCancelEvent(Integer.parseInt(event.split("//|")[0]))) {
-                    eventsListModel.addElement(event);
                     yourEventsListModel.remove(index);
                     eventsJList.setModel(eventsListModel);
                     JOptionPane.showMessageDialog(eventsPanel,"Event cancelled.");
